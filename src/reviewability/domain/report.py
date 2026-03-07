@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from enum import Enum
 from typing import Any
 
@@ -28,8 +28,8 @@ class HunkAnalysis:
     """All metric results for a single hunk, plus its reviewability score."""
 
     hunk: Hunk
-    metrics: list[MetricValue] = field(default_factory=list)
-    score: float | None = None
+    metrics: list[MetricValue]
+    score: float
 
 
 @dataclass(frozen=True)
@@ -37,20 +37,26 @@ class FileAnalysis:
     """All metric results for a single file, plus its reviewability score."""
 
     file: FileDiff
-    metrics: list[MetricValue] = field(default_factory=list)
-    score: float | None = None
+    metrics: list[MetricValue]
+    score: float
+
+
+@dataclass(frozen=True)
+class OverallAnalysis:
+    """Diff-level metric results and the overall reviewability score."""
+
+    metrics: list[MetricValue]
+    score: float
 
 
 @dataclass(frozen=True)
 class AnalysisReport:
     """The complete analysis result for a diff.
 
-    Contains per-hunk and per-file analyses, overall (diff-level) metrics,
-    and an overall reviewability score. Scores range from 0.0 (hardest to review)
-    to 1.0 (easiest to review) and are populated by a Scorer after construction.
+    Contains per-hunk and per-file analyses plus an overall analysis.
+    All scores range from 0.0 (hardest to review) to 1.0 (easiest to review).
     """
 
-    overall: list[MetricValue] = field(default_factory=list)
-    files: list[FileAnalysis] = field(default_factory=list)
-    hunks: list[HunkAnalysis] = field(default_factory=list)
-    score: float | None = None
+    overall: OverallAnalysis
+    files: list[FileAnalysis]
+    hunks: list[HunkAnalysis]
