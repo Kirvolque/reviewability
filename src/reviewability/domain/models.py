@@ -1,3 +1,4 @@
+import itertools
 from dataclasses import dataclass, field
 
 
@@ -20,7 +21,8 @@ class Hunk:
 
     @property
     def char_count(self) -> int:
-        return sum(len(line) for line in self.added_lines + self.removed_lines + self.context_lines)
+        all_lines = itertools.chain(self.added_lines, self.removed_lines, self.context_lines)
+        return sum(len(line) for line in all_lines)
 
     @property
     def added_count(self) -> int:

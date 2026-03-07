@@ -11,21 +11,10 @@ class Metric(ABC):
     and a remediation hint shown when a rule threshold is violated.
     """
 
-    @property
-    @abstractmethod
-    def name(self) -> str: ...
-
-    @property
-    @abstractmethod
-    def value_type(self) -> MetricValueType: ...
-
-    @property
-    @abstractmethod
-    def description(self) -> str: ...
-
-    @property
-    @abstractmethod
-    def remediation(self) -> str: ...
+    name: str
+    value_type: MetricValueType
+    description: str
+    remediation: str
 
 
 class HunkMetric(Metric, ABC):
