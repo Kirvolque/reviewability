@@ -6,7 +6,7 @@ from reviewability.metrics.base import DiffMetric, FileMetric, HunkMetric
 class HunkLinesChanged(HunkMetric):
     """Total lines added + removed in a hunk."""
 
-    name = "hunk.lines_changed"
+    name: str = "hunk.lines_changed"
 
     def calculate(self, hunk: Hunk) -> MetricValue:
         return MetricValue(
@@ -19,7 +19,7 @@ class HunkLinesChanged(HunkMetric):
 class HunkAddedLines(HunkMetric):
     """Number of added lines in a hunk."""
 
-    name = "hunk.added_lines"
+    name: str = "hunk.added_lines"
 
     def calculate(self, hunk: Hunk) -> MetricValue:
         return MetricValue(
@@ -32,7 +32,7 @@ class HunkAddedLines(HunkMetric):
 class HunkRemovedLines(HunkMetric):
     """Number of removed lines in a hunk."""
 
-    name = "hunk.removed_lines"
+    name: str = "hunk.removed_lines"
 
     def calculate(self, hunk: Hunk) -> MetricValue:
         return MetricValue(
@@ -45,7 +45,7 @@ class HunkRemovedLines(HunkMetric):
 class FileHunkCount(FileMetric):
     """Number of hunks in a file."""
 
-    name = "file.hunk_count"
+    name: str = "file.hunk_count"
 
     def calculate(self, file: FileDiff) -> MetricValue:
         return MetricValue(
@@ -58,7 +58,7 @@ class FileHunkCount(FileMetric):
 class FileLinesChanged(FileMetric):
     """Total lines added + removed across all hunks in a file."""
 
-    name = "file.lines_changed"
+    name: str = "file.lines_changed"
 
     def calculate(self, file: FileDiff) -> MetricValue:
         total = sum(h.added_count + h.removed_count for h in file.hunks)
@@ -72,7 +72,7 @@ class FileLinesChanged(FileMetric):
 class DiffFilesChanged(DiffMetric):
     """Total number of files changed in the diff."""
 
-    name = "diff.files_changed"
+    name: str = "diff.files_changed"
 
     def calculate(self, diff: Diff) -> MetricValue:
         return MetricValue(
@@ -85,7 +85,7 @@ class DiffFilesChanged(DiffMetric):
 class DiffTotalLinesChanged(DiffMetric):
     """Total lines added + removed across the entire diff."""
 
-    name = "diff.total_lines_changed"
+    name: str = "diff.total_lines_changed"
 
     def calculate(self, diff: Diff) -> MetricValue:
         total = sum(h.added_count + h.removed_count for f in diff.files for h in f.hunks)
