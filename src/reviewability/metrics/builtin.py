@@ -96,6 +96,8 @@ class OverallLinesChanged(OverallMetric):
     def calculate(self, hunks: list[HunkAnalysis], files: list[FileAnalysis]) -> MetricValue:
         return MetricValue(
             name=self.name,
-            value=sum(m.value for h in hunks for m in h.metrics if m.name == HunkLinesChanged.name),
+            value=sum(
+                m.value for h in hunks if (m := h.metrics.get(HunkLinesChanged.name)) is not None
+            ),
             value_type=self.value_type,
         )

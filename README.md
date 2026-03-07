@@ -20,4 +20,5 @@ to produce warnings or fail a CI check.
 
 - **Hunk** — a contiguous block of changes within a single file (the smallest unit of analysis)
 - **Metric** — a calculated value attached to a hunk, a file, or the whole diff
+- **Score** — a float [0.0, 1.0] representing reviewability at hunk, file, or diff level
 - **Rule** — a threshold applied to a metric, producing a warning or error
