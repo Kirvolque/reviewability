@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 
 
-@dataclass
+@dataclass(frozen=True)
 class Hunk:
     """A contiguous block of changes within a single file."""
 
@@ -20,8 +20,7 @@ class Hunk:
 
     @property
     def char_count(self) -> int:
-        all_lines = self.added_lines + self.removed_lines + self.context_lines
-        return sum(len(line) for line in all_lines)
+        return sum(len(line) for line in self.added_lines + self.removed_lines + self.context_lines)
 
     @property
     def added_count(self) -> int:
@@ -32,7 +31,7 @@ class Hunk:
         return len(self.removed_lines)
 
 
-@dataclass
+@dataclass(frozen=True)
 class FileDiff:
     """All changes to a single file within a diff."""
 
@@ -51,7 +50,7 @@ class FileDiff:
         return sum(h.removed_count for h in self.hunks)
 
 
-@dataclass
+@dataclass(frozen=True)
 class Diff:
     """The complete diff (e.g. a pull request or branch comparison)."""
 
