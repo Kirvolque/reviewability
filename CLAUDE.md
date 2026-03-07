@@ -89,7 +89,9 @@ currently `0.0` placeholder).
 ## Coding Principles
 
 - **Immutability**: all dataclasses are `frozen=True`. Objects are fully constructed
-  in one shot — never mutated after creation. Use `dataclasses.replace()` for copies.
+  in one shot — never mutated after creation. Avoid `dataclasses.replace()`.
+- **Bottom-up construction**: children are fully built before their parent.
+  Scores are computed before constructing the analysis object, not patched in afterwards.
 - **Effectively final**: variables are not reassigned after initial assignment.
   Collections are built via comprehensions, never via `.append()` loops.
 - **MetricRegistry** is the only intentionally mutable structure — add-only.
