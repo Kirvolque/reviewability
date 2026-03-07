@@ -8,13 +8,13 @@ from reviewability.domain.report import (
     MetricValueType,
 )
 from reviewability.metrics.builtin import (
-    DiffFilesChanged,
-    DiffTotalLinesChanged,
     FileHunkCount,
     FileLinesChanged,
     HunkAddedLines,
     HunkLinesChanged,
     HunkRemovedLines,
+    OverallFilesChanged,
+    OverallLinesChanged,
 )
 from reviewability.metrics.registry import MetricRegistry
 from reviewability.parser.git import parse_diff_text
@@ -34,10 +34,10 @@ def make_registry() -> MetricRegistry:
         HunkRemovedLines(),
         FileHunkCount(),
         FileLinesChanged(),
-        DiffFilesChanged(),
-        DiffTotalLinesChanged(),
+        OverallFilesChanged(),
+        OverallLinesChanged(),
     ]:
-        registry.register(metric)
+        registry.add(metric)
     return registry
 
 
@@ -47,8 +47,8 @@ def test_logic_change_report():
 
     assert report == AnalysisReport(
         overall=[
-            MetricValue("diff.files_changed", 1, MetricValueType.INTEGER),
-            MetricValue("diff.total_lines_changed", 2, MetricValueType.INTEGER),
+            MetricValue("overall.files_changed", 1, MetricValueType.INTEGER),
+            MetricValue("overall.lines_changed", 2, MetricValueType.INTEGER),
         ],
         files=[
             FileAnalysis(
@@ -77,8 +77,8 @@ def test_multi_file_change_report():
     report = make_registry().run(diff)
 
     assert report.overall == [
-        MetricValue("diff.files_changed", 2, MetricValueType.INTEGER),
-        MetricValue("diff.total_lines_changed", 12, MetricValueType.INTEGER),
+        MetricValue("overall.files_changed", 2, MetricValueType.INTEGER),
+        MetricValue("overall.lines_changed", 12, MetricValueType.INTEGER),
     ]
     assert len(report.files) == 2
     assert len(report.hunks) == 2
