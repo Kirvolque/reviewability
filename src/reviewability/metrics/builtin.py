@@ -4,10 +4,10 @@ from reviewability.metrics.base import FileMetric, HunkMetric, OverallMetric
 
 
 class HunkLinesChanged(HunkMetric):
-    """Total lines added + removed in a hunk."""
-
     name: str = "hunk.lines_changed"
     value_type: MetricValueType = MetricValueType.INTEGER
+    description: str = "Total lines added and removed in a hunk."
+    remediation: str = "Split the hunk into smaller, focused changes."
 
     def calculate(self, hunk: Hunk) -> MetricValue:
         return MetricValue(
@@ -18,10 +18,10 @@ class HunkLinesChanged(HunkMetric):
 
 
 class HunkAddedLines(HunkMetric):
-    """Number of added lines in a hunk."""
-
     name: str = "hunk.added_lines"
     value_type: MetricValueType = MetricValueType.INTEGER
+    description: str = "Number of lines added in a hunk."
+    remediation: str = "Break large additions into smaller, reviewable chunks."
 
     def calculate(self, hunk: Hunk) -> MetricValue:
         return MetricValue(
@@ -32,10 +32,10 @@ class HunkAddedLines(HunkMetric):
 
 
 class HunkRemovedLines(HunkMetric):
-    """Number of removed lines in a hunk."""
-
     name: str = "hunk.removed_lines"
     value_type: MetricValueType = MetricValueType.INTEGER
+    description: str = "Number of lines removed in a hunk."
+    remediation: str = "Ensure deletions are isolated from unrelated changes."
 
     def calculate(self, hunk: Hunk) -> MetricValue:
         return MetricValue(
@@ -46,10 +46,10 @@ class HunkRemovedLines(HunkMetric):
 
 
 class FileHunkCount(FileMetric):
-    """Number of hunks in a file."""
-
     name: str = "file.hunk_count"
     value_type: MetricValueType = MetricValueType.INTEGER
+    description: str = "Number of separate change regions (hunks) in a file."
+    remediation: str = "Consider grouping related changes to reduce scattered edits."
 
     def calculate(self, file: FileDiff) -> MetricValue:
         return MetricValue(
@@ -60,10 +60,10 @@ class FileHunkCount(FileMetric):
 
 
 class FileLinesChanged(FileMetric):
-    """Total lines added + removed across all hunks in a file."""
-
     name: str = "file.lines_changed"
     value_type: MetricValueType = MetricValueType.INTEGER
+    description: str = "Total lines added and removed across all hunks in a file."
+    remediation: str = "Split large file changes across multiple commits or pull requests."
 
     def calculate(self, file: FileDiff) -> MetricValue:
         return MetricValue(
@@ -74,10 +74,10 @@ class FileLinesChanged(FileMetric):
 
 
 class OverallFilesChanged(OverallMetric):
-    """Total number of files changed in the diff."""
-
     name: str = "overall.files_changed"
     value_type: MetricValueType = MetricValueType.INTEGER
+    description: str = "Total number of files changed in the diff."
+    remediation: str = "Split the change into smaller pull requests by concern."
 
     def calculate(self, hunks: list[HunkAnalysis], files: list[FileAnalysis]) -> MetricValue:
         return MetricValue(
@@ -88,15 +88,14 @@ class OverallFilesChanged(OverallMetric):
 
 
 class OverallLinesChanged(OverallMetric):
-    """Total lines changed across the entire diff, derived from hunk analyses."""
-
     name: str = "overall.lines_changed"
     value_type: MetricValueType = MetricValueType.INTEGER
+    description: str = "Total lines changed across the entire diff."
+    remediation: str = "Reduce patch size by splitting unrelated changes into separate commits."
 
     def calculate(self, hunks: list[HunkAnalysis], files: list[FileAnalysis]) -> MetricValue:
-        total = sum(m.value for h in hunks for m in h.metrics if m.name == HunkLinesChanged.name)
         return MetricValue(
             name=self.name,
-            value=total,
+            value=sum(m.value for h in hunks for m in h.metrics if m.name == HunkLinesChanged.name),
             value_type=self.value_type,
         )
