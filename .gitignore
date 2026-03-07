@@ -7,4 +7,3 @@ dist/
 build/
 .pytest_cache/
 .idea/
-code_review_cognitive_load.md
