@@ -9,15 +9,9 @@ from reviewability.domain.report import (
     MetricValueType,
     OverallAnalysis,
 )
-from reviewability.metrics.builtin import (
-    FileHunkCount,
-    FileLinesChanged,
-    HunkAddedLines,
-    HunkLinesChanged,
-    HunkRemovedLines,
-    OverallFilesChanged,
-    OverallLinesChanged,
-)
+from reviewability.metrics.file import FileHunkCount, FileLinesChanged
+from reviewability.metrics.hunk import HunkAddedLines, HunkLinesChanged, HunkRemovedLines
+from reviewability.metrics.overall import OverallFilesChanged, OverallLinesChanged
 from reviewability.metrics.registry import MetricRegistry
 from reviewability.parser.git import parse_diff_text
 from reviewability.scoring.weighted import MetricWeight, WeightedReviewabilityScorer
