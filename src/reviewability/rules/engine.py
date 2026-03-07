@@ -12,15 +12,22 @@ class Severity(Enum):
 
 @dataclass(frozen=True)
 class Rule:
+    """A threshold rule applied to a named metric.
+
+    Operators: "gt", "lt", "gte", "lte", "eq"
+    """
+
     metric_name: str
     threshold: float
-    operator: str  # "gt", "lt", "gte", "lte", "eq"
+    operator: str
     severity: Severity
     message: str
 
 
 @dataclass(frozen=True)
 class RuleViolation:
+    """A rule that was triggered by a metric value exceeding its threshold."""
+
     rule: Rule
     metric_value: MetricValue
 
@@ -41,10 +48,13 @@ _OPS: dict[str, Callable[[float, float], bool]] = {
 
 
 class RuleEngine:
+    """Evaluates a set of rules against a collection of metric values."""
+
     def __init__(self, rules: list[Rule]) -> None:
         self._rules = rules
 
     def evaluate(self, metrics: list[MetricValue]) -> list[RuleViolation]:
+        """Return all rule violations found in the given metric values."""
         metrics_by_name: dict[str, list[MetricValue]] = {
             name: [m for m in metrics if m.name == name] for name in {m.name for m in metrics}
         }
