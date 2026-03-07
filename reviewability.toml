@@ -1,0 +1,20 @@
+[reviewability]
+
+# A hunk is considered problematic if its reviewability score drops below this.
+# Scores range from 0.0 (hardest to review) to 1.0 (easiest to review).
+hunk_score_threshold = 0.5
+
+# A file is considered problematic if its reviewability score drops below this.
+file_score_threshold = 0.5
+
+# Maximum total lines changed across the entire diff.
+max_diff_lines = 500
+
+# Maximum number of problematic hunks allowed before a violation is raised.
+max_problematic_hunks = 3
+
+# Maximum number of problematic files allowed before a violation is raised.
+max_problematic_files = 2
+
+# Maximum lines changed in a single hunk.
+max_hunk_lines = 50

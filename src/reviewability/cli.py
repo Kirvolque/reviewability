@@ -1,16 +1,33 @@
 import argparse
 import json
 import sys
+from pathlib import Path
 
-from reviewability.metrics.registry import MetricRegistry
+from reviewability.analyzer import Analyzer
+from reviewability.config.models import ReviewabilityConfig
+from reviewability.config.parser import parse_config
 from reviewability.parser.git import parse_diff_text, parse_git_diff
-from reviewability.rules.engine import RuleEngine
+
+_DEFAULT_CONFIG = Path("reviewability.toml")
+
+
+def _load_config(path: Path) -> ReviewabilityConfig:
+    if path.exists():
+        return parse_config(path)
+    return ReviewabilityConfig()
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(
         prog="reviewability",
-        description="Analyze code diffs for review cognitive load.",
+        description="Analyze code diffs and score their reviewability.",
+    )
+    parser.add_argument(
+        "--config",
+        type=Path,
+        default=_DEFAULT_CONFIG,
+        metavar="PATH",
+        help=f"Path to config file (default: {_DEFAULT_CONFIG})",
     )
     parser.add_argument(
         "--from-stdin",
@@ -25,44 +42,30 @@ def main() -> None:
     args = parser.parse_args()
 
     diff = parse_diff_text(sys.stdin.read()) if args.from_stdin else parse_git_diff(*args.git_args)
-
-    registry = MetricRegistry()
-    # TODO: register metrics here
-
-    engine = RuleEngine(rules=[])
-    # TODO: load rules from config
-
-    report = registry.run(diff)
-    all_metrics = [
-        *report.overall.metrics,
-        *(m for f in report.files for m in f.metrics),
-        *(m for h in report.hunks for m in h.metrics),
-    ]
-    violations = engine.evaluate(all_metrics)
+    config = _load_config(args.config)
+    report, violations = Analyzer(config).run(diff)
 
     output = {
-        "files": diff.total_files_changed,
-        "hunks": diff.total_hunks,
         "score": report.overall.score,
-        "metrics": {
-            "overall": [{"name": m.name, "value": m.value} for m in report.overall.metrics],
-            "files": [
-                {
-                    "file": f.file.path,
-                    "score": f.score,
-                    "metrics": [{"name": m.name, "value": m.value} for m in f.metrics],
-                }
-                for f in report.files
-            ],
-            "hunks": [
-                {
-                    "file": h.hunk.file_path,
-                    "score": h.score,
-                    "metrics": [{"name": m.name, "value": m.value} for m in h.metrics],
-                }
-                for h in report.hunks
-            ],
-        },
+        "files_changed": len(report.files),
+        "hunks_changed": len(report.hunks),
+        "overall": [{"name": m.name, "value": m.value} for m in report.overall.metrics],
+        "files": [
+            {
+                "file": f.file.path,
+                "score": f.score,
+                "metrics": [{"name": m.name, "value": m.value} for m in f.metrics],
+            }
+            for f in report.files
+        ],
+        "hunks": [
+            {
+                "file": h.hunk.file_path,
+                "score": h.score,
+                "metrics": [{"name": m.name, "value": m.value} for m in h.metrics],
+            }
+            for h in report.hunks
+        ],
         "violations": [str(v) for v in violations],
     }
 
