@@ -2,13 +2,13 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any
 
-from reviewability.domain.models import Hunk, FileDiff
+from reviewability.domain.models import FileDiff, Hunk
 
 
 class MetricValueType(Enum):
     INTEGER = "integer"
     FLOAT = "float"
-    RATIO = "ratio"      # float in range [0.0, 1.0]
+    RATIO = "ratio"  # float in range [0.0, 1.0]
     BOOLEAN = "boolean"
 
 

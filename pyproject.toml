@@ -14,7 +14,14 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
     "pytest>=8",
+    "ruff>=0.9",
 ]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]  # pycodestyle errors, pyflakes, isort
 
 [project.scripts]
 reviewability = "reviewability.cli:main"

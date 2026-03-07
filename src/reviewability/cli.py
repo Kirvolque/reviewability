@@ -2,8 +2,8 @@ import argparse
 import json
 import sys
 
-from reviewability.parser.git import parse_diff_text, parse_git_diff
 from reviewability.metrics.registry import MetricRegistry
+from reviewability.parser.git import parse_diff_text, parse_git_diff
 from reviewability.rules.engine import RuleEngine
 
 

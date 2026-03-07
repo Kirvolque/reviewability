@@ -1,12 +1,20 @@
 from pathlib import Path
 
 from reviewability.domain.report import (
-    AnalysisReport, FileAnalysis, HunkAnalysis, MetricValue, MetricValueType,
+    AnalysisReport,
+    FileAnalysis,
+    HunkAnalysis,
+    MetricValue,
+    MetricValueType,
 )
 from reviewability.metrics.builtin import (
-    HunkLinesChanged, HunkAddedLines, HunkRemovedLines,
-    FileHunkCount, FileLinesChanged,
-    DiffFilesChanged, DiffTotalLinesChanged,
+    DiffFilesChanged,
+    DiffTotalLinesChanged,
+    FileHunkCount,
+    FileLinesChanged,
+    HunkAddedLines,
+    HunkLinesChanged,
+    HunkRemovedLines,
 )
 from reviewability.metrics.registry import MetricRegistry
 from reviewability.parser.git import parse_diff_text

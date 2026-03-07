@@ -1,6 +1,6 @@
-from reviewability.metrics.base import HunkMetric, FileMetric, DiffMetric
 from reviewability.domain.models import Diff
-from reviewability.domain.report import AnalysisReport, HunkAnalysis, FileAnalysis
+from reviewability.domain.report import AnalysisReport, FileAnalysis, HunkAnalysis
+from reviewability.metrics.base import DiffMetric, FileMetric, HunkMetric
 
 
 class MetricRegistry:

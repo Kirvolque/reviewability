@@ -4,6 +4,7 @@ from dataclasses import dataclass, field
 @dataclass
 class Hunk:
     """A contiguous block of changes within a single file."""
+
     file_path: str
     source_start: int
     source_length: int
@@ -34,6 +35,7 @@ class Hunk:
 @dataclass
 class FileDiff:
     """All changes to a single file within a diff."""
+
     path: str
     old_path: str | None  # set if file was renamed
     is_new_file: bool
@@ -52,6 +54,7 @@ class FileDiff:
 @dataclass
 class Diff:
     """The complete diff (e.g. a pull request or branch comparison)."""
+
     files: list[FileDiff] = field(default_factory=list)
 
     @property

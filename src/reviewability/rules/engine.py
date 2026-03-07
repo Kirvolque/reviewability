@@ -34,11 +34,11 @@ class RuleViolation:
 
 
 _OPS = {
-    "gt":  lambda v, t: v > t,
-    "lt":  lambda v, t: v < t,
+    "gt": lambda v, t: v > t,
+    "lt": lambda v, t: v < t,
     "gte": lambda v, t: v >= t,
     "lte": lambda v, t: v <= t,
-    "eq":  lambda v, t: v == t,
+    "eq": lambda v, t: v == t,
 }
 
 

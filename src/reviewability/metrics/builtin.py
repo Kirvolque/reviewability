@@ -1,10 +1,11 @@
 from reviewability.domain.models import Diff, FileDiff, Hunk
 from reviewability.domain.report import MetricValue, MetricValueType
-from reviewability.metrics.base import HunkMetric, FileMetric, DiffMetric
+from reviewability.metrics.base import DiffMetric, FileMetric, HunkMetric
 
 
 class HunkLinesChanged(HunkMetric):
     """Total lines added + removed in a hunk."""
+
     name = "hunk.lines_changed"
 
     def calculate(self, hunk: Hunk) -> MetricValue:
@@ -17,6 +18,7 @@ class HunkLinesChanged(HunkMetric):
 
 class HunkAddedLines(HunkMetric):
     """Number of added lines in a hunk."""
+
     name = "hunk.added_lines"
 
     def calculate(self, hunk: Hunk) -> MetricValue:
@@ -29,6 +31,7 @@ class HunkAddedLines(HunkMetric):
 
 class HunkRemovedLines(HunkMetric):
     """Number of removed lines in a hunk."""
+
     name = "hunk.removed_lines"
 
     def calculate(self, hunk: Hunk) -> MetricValue:
@@ -41,6 +44,7 @@ class HunkRemovedLines(HunkMetric):
 
 class FileHunkCount(FileMetric):
     """Number of hunks in a file."""
+
     name = "file.hunk_count"
 
     def calculate(self, file: FileDiff) -> MetricValue:
@@ -53,6 +57,7 @@ class FileHunkCount(FileMetric):
 
 class FileLinesChanged(FileMetric):
     """Total lines added + removed across all hunks in a file."""
+
     name = "file.lines_changed"
 
     def calculate(self, file: FileDiff) -> MetricValue:
@@ -66,6 +71,7 @@ class FileLinesChanged(FileMetric):
 
 class DiffFilesChanged(DiffMetric):
     """Total number of files changed in the diff."""
+
     name = "diff.files_changed"
 
     def calculate(self, diff: Diff) -> MetricValue:
@@ -78,14 +84,11 @@ class DiffFilesChanged(DiffMetric):
 
 class DiffTotalLinesChanged(DiffMetric):
     """Total lines added + removed across the entire diff."""
+
     name = "diff.total_lines_changed"
 
     def calculate(self, diff: Diff) -> MetricValue:
-        total = sum(
-            h.added_count + h.removed_count
-            for f in diff.files
-            for h in f.hunks
-        )
+        total = sum(h.added_count + h.removed_count for f in diff.files for h in f.hunks)
         return MetricValue(
             name=self.name,
             value=total,
