@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any
+from typing import Any, Iterator
 
 from reviewability.domain.models import FileDiff, Hunk
 
@@ -23,12 +23,44 @@ class MetricValue:
     value_type: MetricValueType
 
 
+class MetricResults:
+    """An immutable, name-indexed collection of computed metric values.
+
+    Supports iteration over all values and lookup by metric name.
+    """
+
+    def __init__(self, metrics: list[MetricValue]) -> None:
+        self._by_name: dict[str, MetricValue] = {m.name: m for m in metrics}
+
+    def get(self, name: str) -> MetricValue | None:
+        """Return the MetricValue for the given metric name, or None if not present."""
+        return self._by_name.get(name)
+
+    def all(self) -> list[MetricValue]:
+        """Return all metric values as a list."""
+        return list(self._by_name.values())
+
+    def __iter__(self) -> Iterator[MetricValue]:
+        return iter(self._by_name.values())
+
+    def __len__(self) -> int:
+        return len(self._by_name)
+
+    def __eq__(self, other: object) -> bool:
+        if isinstance(other, MetricResults):
+            return self._by_name == other._by_name
+        return NotImplemented
+
+    def __repr__(self) -> str:
+        return f"MetricResults({list(self._by_name.values())!r})"
+
+
 @dataclass(frozen=True)
 class HunkAnalysis:
     """All metric results for a single hunk, plus its reviewability score."""
 
     hunk: Hunk
-    metrics: list[MetricValue]
+    metrics: MetricResults
     score: float
 
 
@@ -37,7 +69,7 @@ class FileAnalysis:
     """All metric results for a single file, plus its reviewability score."""
 
     file: FileDiff
-    metrics: list[MetricValue]
+    metrics: MetricResults
     score: float
 
 
@@ -45,7 +77,7 @@ class FileAnalysis:
 class OverallAnalysis:
     """Diff-level metric results and the overall reviewability score."""
 
-    metrics: list[MetricValue]
+    metrics: MetricResults
     score: float
 
 

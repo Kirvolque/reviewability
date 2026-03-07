@@ -1,6 +1,13 @@
-from reviewability.domain.models import Diff
-from reviewability.domain.report import AnalysisReport, FileAnalysis, HunkAnalysis, OverallAnalysis
+from reviewability.domain.models import Diff, FileDiff, Hunk
+from reviewability.domain.report import (
+    AnalysisReport,
+    FileAnalysis,
+    HunkAnalysis,
+    MetricResults,
+    OverallAnalysis,
+)
 from reviewability.metrics.base import FileMetric, HunkMetric, OverallMetric
+from reviewability.scoring.base import ReviewabilityScorer
 
 
 class MetricRegistry:
@@ -34,35 +41,36 @@ class MetricRegistry:
     def overall_metrics(self) -> list[OverallMetric]:
         return list(self._overall_metrics.values())
 
-    def run(self, diff: Diff) -> AnalysisReport:
-        """Run all registered metrics against the diff and return a fully computed report."""
-        # Step 1: hunk metrics
+    def run(self, diff: Diff, scorer: ReviewabilityScorer) -> AnalysisReport:
+        """Run all registered metrics against the diff and return a fully computed report.
+
+        Construction is strictly bottom-up: scores are computed before each
+        analysis object is constructed, so no object is ever incomplete.
+        """
+        # Step 1: hunk metrics + scores -> HunkAnalysis (fully built)
         hunk_analyses = [
-            HunkAnalysis(
-                hunk=hunk,
-                metrics=[m.calculate(hunk) for m in self._hunk_metrics.values()],
-                score=0.0,  # TODO: populated by Scorer
-            )
+            _build_hunk_analysis(
+                hunk, [m.calculate(hunk) for m in self._hunk_metrics.values()], scorer
+            )  # noqa: E501
             for file in diff.files
             for hunk in file.hunks
         ]
 
-        # Step 2: file metrics
+        # Step 2: file metrics + scores -> FileAnalysis (fully built)
         file_analyses = [
-            FileAnalysis(
-                file=file,
-                metrics=[m.calculate(file) for m in self._file_metrics.values()],
-                score=0.0,  # TODO: populated by Scorer
-            )
+            _build_file_analysis(
+                file, [m.calculate(file) for m in self._file_metrics.values()], scorer
+            )  # noqa: E501
             for file in diff.files
         ]
 
-        # Step 3: overall metrics — derived from already-computed analyses
+        # Step 3: overall metrics + score -> OverallAnalysis (fully built)
+        overall_metrics = MetricResults(
+            [m.calculate(hunk_analyses, file_analyses) for m in self._overall_metrics.values()]
+        )
         overall = OverallAnalysis(
-            metrics=[
-                m.calculate(hunk_analyses, file_analyses) for m in self._overall_metrics.values()
-            ],
-            score=0.0,  # TODO: populated by Scorer
+            metrics=overall_metrics,
+            score=scorer.overall_score(overall_metrics),
         )
 
         return AnalysisReport(
@@ -70,3 +78,15 @@ class MetricRegistry:
             files=file_analyses,
             hunks=hunk_analyses,
         )
+
+
+def _build_hunk_analysis(hunk: Hunk, metrics: list, scorer: ReviewabilityScorer) -> HunkAnalysis:
+    results = MetricResults(metrics)
+    return HunkAnalysis(hunk=hunk, metrics=results, score=scorer.hunk_score(results))
+
+
+def _build_file_analysis(
+    file: FileDiff, metrics: list, scorer: ReviewabilityScorer
+) -> FileAnalysis:
+    results = MetricResults(metrics)
+    return FileAnalysis(file=file, metrics=results, score=scorer.file_score(results))

@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Callable
 
-from reviewability.domain.report import MetricValue
+from reviewability.domain.report import MetricResults, MetricValue
 
 
 class Severity(Enum):
@@ -53,14 +53,11 @@ class RuleEngine:
     def __init__(self, rules: list[Rule]) -> None:
         self._rules = rules
 
-    def evaluate(self, metrics: list[MetricValue]) -> list[RuleViolation]:
+    def evaluate(self, metrics: MetricResults) -> list[RuleViolation]:
         """Return all rule violations found in the given metric values."""
-        metrics_by_name: dict[str, list[MetricValue]] = {
-            name: [m for m in metrics if m.name == name] for name in {m.name for m in metrics}
-        }
         return [
             RuleViolation(rule=rule, metric_value=metric)
             for rule in self._rules
-            for metric in metrics_by_name.get(rule.metric_name, [])
+            if (metric := metrics.get(rule.metric_name)) is not None
             if (op := _OPS.get(rule.operator)) and op(metric.value, rule.threshold)
         ]

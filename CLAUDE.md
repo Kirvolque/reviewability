@@ -32,11 +32,14 @@ src/reviewability/
   domain/
     models.py       — Diff, FileDiff, Hunk (raw diff data)
     report.py       — AnalysisReport, OverallAnalysis, FileAnalysis, HunkAnalysis,
-                      MetricValue, MetricValueType
+                      MetricResults, MetricValue, MetricValueType
   metrics/
     base.py         — Metric, HunkMetric, FileMetric, OverallMetric (interfaces)
     builtin.py      — Built-in metric implementations
     registry.py     — MetricRegistry (the only mutable structure)
+  scoring/
+    base.py         — ReviewabilityScorer (abstract: hunk_score, file_score, overall_score)
+    weighted.py     — WeightedReviewabilityScorer, MetricWeight
   rules/
     engine.py       — Rule, RuleViolation, RuleEngine
   parser/
@@ -83,8 +86,8 @@ AnalysisReport
   └── hunks:   list[HunkAnalysis]  (per hunk: metrics + score)
 ```
 
-Scores are `float` — always present, populated by a Scorer (not yet implemented,
-currently `0.0` placeholder).
+Scores are `float` in range [0.0, 1.0] — always present, computed by a
+`ReviewabilityScorer` before the analysis object is constructed.
 
 ## Coding Principles
 
