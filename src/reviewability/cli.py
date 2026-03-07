@@ -24,10 +24,7 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    if args.from_stdin:
-        diff = parse_diff_text(sys.stdin.read())
-    else:
-        diff = parse_git_diff(*args.git_args)
+    diff = parse_diff_text(sys.stdin.read()) if args.from_stdin else parse_git_diff(*args.git_args)
 
     registry = MetricRegistry()
     # TODO: register metrics here
@@ -35,22 +32,37 @@ def main() -> None:
     engine = RuleEngine(rules=[])
     # TODO: load rules from config
 
-    results = registry.run(diff)
-    violations = engine.evaluate(results)
+    report = registry.run(diff)
+    all_metrics = [
+        *report.overall,
+        *(m for f in report.files for m in f.metrics),
+        *(m for h in report.hunks for m in h.metrics),
+    ]  # noqa: E501
+    violations = engine.evaluate(all_metrics)
 
     output = {
         "files": diff.total_files_changed,
         "hunks": diff.total_hunks,
-        "metrics": [
-            {
-                "metric": r.metric_name,
-                "scope": r.scope.value,
-                "value": r.value,
-                "file": r.file_path,
-                "hunk": r.hunk_index,
-            }
-            for r in results
-        ],
+        "score": report.score,
+        "metrics": {
+            "overall": [{"name": m.name, "value": m.value} for m in report.overall],
+            "files": [
+                {
+                    "file": f.file.path,
+                    "score": f.score,
+                    "metrics": [{"name": m.name, "value": m.value} for m in f.metrics],
+                }
+                for f in report.files
+            ],
+            "hunks": [
+                {
+                    "file": h.hunk.file_path,
+                    "score": h.score,
+                    "metrics": [{"name": m.name, "value": m.value} for m in h.metrics],
+                }
+                for h in report.hunks
+            ],
+        },
         "violations": [str(v) for v in violations],
     }
 
