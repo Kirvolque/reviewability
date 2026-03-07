@@ -4,41 +4,11 @@ from reviewability.domain.models import FileDiff, Hunk
 from reviewability.domain.report import FileAnalysis, HunkAnalysis, MetricValue, MetricValueType
 
 
-class HunkMetric(ABC):
-    """Calculates a metric for a single hunk."""
+class Metric(ABC):
+    """Base interface for all metrics.
 
-    @property
-    @abstractmethod
-    def name(self) -> str: ...
-
-    @property
-    @abstractmethod
-    def value_type(self) -> MetricValueType: ...
-
-    @abstractmethod
-    def calculate(self, hunk: Hunk) -> MetricValue: ...
-
-
-class FileMetric(ABC):
-    """Calculates a metric for a single file across all its hunks."""
-
-    @property
-    @abstractmethod
-    def name(self) -> str: ...
-
-    @property
-    @abstractmethod
-    def value_type(self) -> MetricValueType: ...
-
-    @abstractmethod
-    def calculate(self, file: FileDiff) -> MetricValue: ...
-
-
-class OverallMetric(ABC):
-    """Calculates a diff-level metric derived from already-computed hunk and file analyses.
-
-    Overall metrics are second-order: they aggregate lower-level results
-    rather than traversing the raw diff again.
+    Every metric has a name, a value type, a human-readable description,
+    and a remediation hint shown when a rule threshold is violated.
     """
 
     @property
@@ -48,6 +18,36 @@ class OverallMetric(ABC):
     @property
     @abstractmethod
     def value_type(self) -> MetricValueType: ...
+
+    @property
+    @abstractmethod
+    def description(self) -> str: ...
+
+    @property
+    @abstractmethod
+    def remediation(self) -> str: ...
+
+
+class HunkMetric(Metric, ABC):
+    """Calculates a metric for a single hunk."""
+
+    @abstractmethod
+    def calculate(self, hunk: Hunk) -> MetricValue: ...
+
+
+class FileMetric(Metric, ABC):
+    """Calculates a metric for a single file across all its hunks."""
+
+    @abstractmethod
+    def calculate(self, file: FileDiff) -> MetricValue: ...
+
+
+class OverallMetric(Metric, ABC):
+    """Calculates a diff-level metric derived from already-computed hunk and file analyses.
+
+    Overall metrics are second-order: they aggregate lower-level results
+    rather than traversing the raw diff again.
+    """
 
     @abstractmethod
     def calculate(self, hunks: list[HunkAnalysis], files: list[FileAnalysis]) -> MetricValue: ...
