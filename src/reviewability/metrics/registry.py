@@ -1,5 +1,5 @@
 from reviewability.domain.models import Diff
-from reviewability.domain.report import AnalysisReport, FileAnalysis, HunkAnalysis
+from reviewability.domain.report import AnalysisReport, FileAnalysis, HunkAnalysis, OverallAnalysis
 from reviewability.metrics.base import FileMetric, HunkMetric, OverallMetric
 
 
@@ -41,6 +41,7 @@ class MetricRegistry:
             HunkAnalysis(
                 hunk=hunk,
                 metrics=[m.calculate(hunk) for m in self._hunk_metrics.values()],
+                score=0.0,  # TODO: populated by Scorer
             )
             for file in diff.files
             for hunk in file.hunks
@@ -51,14 +52,18 @@ class MetricRegistry:
             FileAnalysis(
                 file=file,
                 metrics=[m.calculate(file) for m in self._file_metrics.values()],
+                score=0.0,  # TODO: populated by Scorer
             )
             for file in diff.files
         ]
 
         # Step 3: overall metrics — derived from already-computed analyses
-        overall = [
-            m.calculate(hunk_analyses, file_analyses) for m in self._overall_metrics.values()
-        ]
+        overall = OverallAnalysis(
+            metrics=[
+                m.calculate(hunk_analyses, file_analyses) for m in self._overall_metrics.values()
+            ],
+            score=0.0,  # TODO: populated by Scorer
+        )
 
         return AnalysisReport(
             overall=overall,

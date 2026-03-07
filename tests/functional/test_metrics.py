@@ -6,6 +6,7 @@ from reviewability.domain.report import (
     HunkAnalysis,
     MetricValue,
     MetricValueType,
+    OverallAnalysis,
 )
 from reviewability.metrics.builtin import (
     FileHunkCount,
@@ -46,10 +47,13 @@ def test_logic_change_report():
     report = make_registry().run(diff)
 
     assert report == AnalysisReport(
-        overall=[
-            MetricValue("overall.files_changed", 1, MetricValueType.INTEGER),
-            MetricValue("overall.lines_changed", 2, MetricValueType.INTEGER),
-        ],
+        overall=OverallAnalysis(
+            metrics=[
+                MetricValue("overall.files_changed", 1, MetricValueType.INTEGER),
+                MetricValue("overall.lines_changed", 2, MetricValueType.INTEGER),
+            ],
+            score=0.0,
+        ),
         files=[
             FileAnalysis(
                 file=diff.files[0],
@@ -57,6 +61,7 @@ def test_logic_change_report():
                     MetricValue("file.hunk_count", 1, MetricValueType.INTEGER),
                     MetricValue("file.lines_changed", 2, MetricValueType.INTEGER),
                 ],
+                score=0.0,
             )
         ],
         hunks=[
@@ -67,6 +72,7 @@ def test_logic_change_report():
                     MetricValue("hunk.added_lines", 2, MetricValueType.INTEGER),
                     MetricValue("hunk.removed_lines", 0, MetricValueType.INTEGER),
                 ],
+                score=0.0,
             )
         ],
     )
@@ -76,10 +82,13 @@ def test_multi_file_change_report():
     diff = parse_diff_text(load("multi_file_change.diff"))
     report = make_registry().run(diff)
 
-    assert report.overall == [
-        MetricValue("overall.files_changed", 2, MetricValueType.INTEGER),
-        MetricValue("overall.lines_changed", 12, MetricValueType.INTEGER),
-    ]
+    assert report.overall == OverallAnalysis(
+        metrics=[
+            MetricValue("overall.files_changed", 2, MetricValueType.INTEGER),
+            MetricValue("overall.lines_changed", 12, MetricValueType.INTEGER),
+        ],
+        score=0.0,
+    )
     assert len(report.files) == 2
     assert len(report.hunks) == 2
 
