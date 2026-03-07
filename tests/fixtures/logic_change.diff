@@ -1,0 +1,9 @@
+diff --git a/src/greeter.py b/src/greeter.py
+index 1e21eeb..0faa2d4 100644
+--- a/src/greeter.py
++++ b/src/greeter.py
+@@ -1,2 +1,4 @@
+ def greet(name: str) -> str:
++    if not name:
++        raise ValueError("name must not be empty")
+     return f"Hello, {name}!"

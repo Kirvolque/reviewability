@@ -1,0 +1,18 @@
+diff --git a/src/farewell.py b/src/farewell.py
+new file mode 100644
+index 0000000..3ed3c12
+--- /dev/null
++++ b/src/farewell.py
+@@ -0,0 +1,4 @@
++def say_goodbye(name: str) -> str:
++    if not name:
++        raise ValueError("name required")
++    return f"Goodbye, {name}!"
+diff --git a/src/hello.py b/src/hello.py
+deleted file mode 100644
+index 7467285..0000000
+--- a/src/hello.py
++++ /dev/null
+@@ -1,2 +0,0 @@
+-def say_hello(name: str) -> str:
+-    return f"Hi, {name}!"
