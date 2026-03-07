@@ -4,12 +4,20 @@ from reviewability.metrics.base import FileMetric, HunkMetric, OverallMetric
 
 
 class MetricRegistry:
+    """Stores metric definitions and runs them against a diff in the correct order.
+
+    This is the only intentionally mutable structure in the codebase.
+    Metrics can only be added, not removed or replaced.
+    Calculation order is enforced: hunk -> file -> overall.
+    """
+
     def __init__(self) -> None:
         self._hunk_metrics: dict[str, HunkMetric] = {}
         self._file_metrics: dict[str, FileMetric] = {}
         self._overall_metrics: dict[str, OverallMetric] = {}
 
     def add(self, metric: HunkMetric | FileMetric | OverallMetric) -> None:
+        """Register a metric. Silently replaces if a metric with the same name exists."""
         if isinstance(metric, HunkMetric):
             self._hunk_metrics[metric.name] = metric
         elif isinstance(metric, FileMetric):
@@ -27,6 +35,7 @@ class MetricRegistry:
         return list(self._overall_metrics.values())
 
     def run(self, diff: Diff) -> AnalysisReport:
+        """Run all registered metrics against the diff and return a fully computed report."""
         # Step 1: hunk metrics
         hunk_analyses = [
             HunkAnalysis(
