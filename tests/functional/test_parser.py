@@ -128,7 +128,7 @@ def test_multi_file_change():
                         added_lines=[
                             'DEFAULT_FAREWELL = "Goodbye"\n',
                             "\n",
-                            "def say_goodbye(name: str, farewell: str = DEFAULT_FAREWELL) -> str:\n",
+                            "def say_goodbye(name: str, farewell: str = DEFAULT_FAREWELL) -> str:\n",  # noqa: E501
                             '    return f"{farewell}, {name}!"\n',
                         ],
                         removed_lines=[

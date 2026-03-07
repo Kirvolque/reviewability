@@ -18,18 +18,27 @@ class MetricRegistry:
             self._diff_metrics[metric.name] = metric
 
     def run(self, diff: Diff) -> AnalysisReport:
-        report = AnalysisReport()
+        file_analyses = []
+        hunk_analyses = []
 
         for file in diff.files:
-            hunk_analyses = []
-            for hunk in file.hunks:
-                metrics = [m.calculate(hunk) for m in self._hunk_metrics.values()]
-                hunk_analyses.append(HunkAnalysis(hunk=hunk, metrics=metrics))
+            hunks = tuple(
+                HunkAnalysis(
+                    hunk=hunk,
+                    metrics=tuple(m.calculate(hunk) for m in self._hunk_metrics.values()),
+                )
+                for hunk in file.hunks
+            )
+            hunk_analyses.extend(hunks)
+            file_analyses.append(
+                FileAnalysis(
+                    file=file,
+                    metrics=tuple(m.calculate(file) for m in self._file_metrics.values()),
+                )
+            )
 
-            file_metrics = [m.calculate(file) for m in self._file_metrics.values()]
-            report.files.append(FileAnalysis(file=file, metrics=file_metrics))
-            report.hunks.extend(hunk_analyses)
-
-        report.overall = [m.calculate(diff) for m in self._diff_metrics.values()]
-
-        return report
+        return AnalysisReport(
+            overall=tuple(m.calculate(diff) for m in self._diff_metrics.values()),
+            files=tuple(file_analyses),
+            hunks=tuple(hunk_analyses),
+        )
