@@ -1,6 +1,6 @@
 # reviewability
 
-A tool for measuring the cognitive load of code reviews.
+A tool that scores the reviewability of code changes.
 
 ## The Idea
 
@@ -11,8 +11,10 @@ PR that mixes a logic change with a refactor can be surprisingly hard.
 
 This tool analyzes code diffs and computes metrics that approximate review
 difficulty — at the level of individual hunks, files, or an entire diff.
-These metrics can then be compared against configurable thresholds to
-produce warnings or fail a CI check.
+These metrics feed into **Reviewability Scores** — aggregated values
+(e.g. overall diff score, per-file, per-hunk) representing how hard a
+diff is to review. Scores can be compared against configurable thresholds
+to produce warnings or fail a CI check.
 
 ## Key Concepts
 
