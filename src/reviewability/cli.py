@@ -34,18 +34,18 @@ def main() -> None:
 
     report = registry.run(diff)
     all_metrics = [
-        *report.overall,
+        *report.overall.metrics,
         *(m for f in report.files for m in f.metrics),
         *(m for h in report.hunks for m in h.metrics),
-    ]  # noqa: E501
+    ]
     violations = engine.evaluate(all_metrics)
 
     output = {
         "files": diff.total_files_changed,
         "hunks": diff.total_hunks,
-        "score": report.score,
+        "score": report.overall.score,
         "metrics": {
-            "overall": [{"name": m.name, "value": m.value} for m in report.overall],
+            "overall": [{"name": m.name, "value": m.value} for m in report.overall.metrics],
             "files": [
                 {
                     "file": f.file.path,
