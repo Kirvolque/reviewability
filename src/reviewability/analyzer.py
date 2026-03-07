@@ -1,16 +1,29 @@
 from reviewability.config.models import ReviewabilityConfig
 from reviewability.domain.models import Diff
 from reviewability.domain.report import AnalysisReport
-from reviewability.metrics.builtin import (
+from reviewability.metrics.file import (
+    FileAddedLines,
     FileHunkCount,
     FileLinesChanged,
+    FileMaxHunkLines,
+    FileRemovedLines,
+)
+from reviewability.metrics.hunk import (
     HunkAddedLines,
+    HunkChurnRatio,
+    HunkContextLines,
     HunkLinesChanged,
     HunkRemovedLines,
+)
+from reviewability.metrics.overall import (
+    OverallAddedLines,
+    OverallChangeEntropy,
     OverallFilesChanged,
+    OverallLargestFileRatio,
     OverallLinesChanged,
     OverallProblematicFileCount,
     OverallProblematicHunkCount,
+    OverallRemovedLines,
 )
 from reviewability.metrics.registry import MetricRegistry
 from reviewability.rules.engine import Rule, RuleEngine, RuleViolation, Severity
@@ -23,12 +36,21 @@ def _build_registry(config: ReviewabilityConfig) -> MetricRegistry:
         HunkLinesChanged(),
         HunkAddedLines(),
         HunkRemovedLines(),
+        HunkContextLines(),
+        HunkChurnRatio(),
         FileHunkCount(),
         FileLinesChanged(),
+        FileAddedLines(),
+        FileRemovedLines(),
+        FileMaxHunkLines(),
         OverallFilesChanged(),
         OverallLinesChanged(),
+        OverallAddedLines(),
+        OverallRemovedLines(),
         OverallProblematicHunkCount(config.hunk_score_threshold),
         OverallProblematicFileCount(config.file_score_threshold),
+        OverallChangeEntropy(),
+        OverallLargestFileRatio(),
     ]:
         registry.add(metric)
     return registry
