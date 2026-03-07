@@ -12,27 +12,30 @@ class MetricValueType(Enum):
     BOOLEAN = "boolean"
 
 
-@dataclass
+@dataclass(frozen=True)
 class MetricValue:
     name: str
     value: Any
     value_type: MetricValueType
 
 
-@dataclass
+@dataclass(frozen=True)
 class HunkAnalysis:
     hunk: Hunk
-    metrics: list[MetricValue] = field(default_factory=list)
+    metrics: tuple[MetricValue, ...] = field(default_factory=tuple)
+    score: float | None = None
 
 
-@dataclass
+@dataclass(frozen=True)
 class FileAnalysis:
     file: FileDiff
-    metrics: list[MetricValue] = field(default_factory=list)
+    metrics: tuple[MetricValue, ...] = field(default_factory=tuple)
+    score: float | None = None
 
 
-@dataclass
+@dataclass(frozen=True)
 class AnalysisReport:
-    overall: list[MetricValue] = field(default_factory=list)
-    files: list[FileAnalysis] = field(default_factory=list)
-    hunks: list[HunkAnalysis] = field(default_factory=list)
+    overall: tuple[MetricValue, ...] = field(default_factory=tuple)
+    files: tuple[FileAnalysis, ...] = field(default_factory=tuple)
+    hunks: tuple[HunkAnalysis, ...] = field(default_factory=tuple)
+    score: float | None = None
