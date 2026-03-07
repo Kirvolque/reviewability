@@ -46,29 +46,29 @@ def test_logic_change_report():
     report = make_registry().run(diff)
 
     assert report == AnalysisReport(
-        overall=(
+        overall=[
             MetricValue("diff.files_changed", 1, MetricValueType.INTEGER),
             MetricValue("diff.total_lines_changed", 2, MetricValueType.INTEGER),
-        ),
-        files=(
+        ],
+        files=[
             FileAnalysis(
                 file=diff.files[0],
-                metrics=(
+                metrics=[
                     MetricValue("file.hunk_count", 1, MetricValueType.INTEGER),
                     MetricValue("file.lines_changed", 2, MetricValueType.INTEGER),
-                ),
-            ),
-        ),
-        hunks=(
+                ],
+            )
+        ],
+        hunks=[
             HunkAnalysis(
                 hunk=diff.files[0].hunks[0],
-                metrics=(
+                metrics=[
                     MetricValue("hunk.lines_changed", 2, MetricValueType.INTEGER),
                     MetricValue("hunk.added_lines", 2, MetricValueType.INTEGER),
                     MetricValue("hunk.removed_lines", 0, MetricValueType.INTEGER),
-                ),
-            ),
-        ),
+                ],
+            )
+        ],
     )
 
 
@@ -76,10 +76,10 @@ def test_multi_file_change_report():
     diff = parse_diff_text(load("multi_file_change.diff"))
     report = make_registry().run(diff)
 
-    assert report.overall == (
+    assert report.overall == [
         MetricValue("diff.files_changed", 2, MetricValueType.INTEGER),
         MetricValue("diff.total_lines_changed", 12, MetricValueType.INTEGER),
-    )
+    ]
     assert len(report.files) == 2
     assert len(report.hunks) == 2
 

@@ -22,20 +22,20 @@ class MetricValue:
 @dataclass(frozen=True)
 class HunkAnalysis:
     hunk: Hunk
-    metrics: tuple[MetricValue, ...] = field(default_factory=tuple)
+    metrics: list[MetricValue] = field(default_factory=list)
     score: float | None = None
 
 
 @dataclass(frozen=True)
 class FileAnalysis:
     file: FileDiff
-    metrics: tuple[MetricValue, ...] = field(default_factory=tuple)
+    metrics: list[MetricValue] = field(default_factory=list)
     score: float | None = None
 
 
 @dataclass(frozen=True)
 class AnalysisReport:
-    overall: tuple[MetricValue, ...] = field(default_factory=tuple)
-    files: tuple[FileAnalysis, ...] = field(default_factory=tuple)
-    hunks: tuple[HunkAnalysis, ...] = field(default_factory=tuple)
+    overall: list[MetricValue] = field(default_factory=list)
+    files: list[FileAnalysis] = field(default_factory=list)
+    hunks: list[HunkAnalysis] = field(default_factory=list)
     score: float | None = None
