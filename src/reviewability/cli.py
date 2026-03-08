@@ -36,6 +36,11 @@ def main() -> None:
         help="Read diff from stdin instead of running git diff",
     )
     parser.add_argument(
+        "--detailed",
+        action="store_true",
+        help="Include per-file and per-hunk metric breakdowns in the output",
+    )
+    parser.add_argument(
         "git_args",
         nargs="*",
         help="Arguments forwarded to git diff (e.g. HEAD~1 HEAD)",
@@ -47,39 +52,43 @@ def main() -> None:
     report, violations = create_analyzer(config).run(diff)
     gate_result = QualityGate(config).evaluate(report, violations)
 
-    output = {
+    recommendations = [
+        {
+            "location": r.location,
+            "metric": r.metric,
+            "value": r.value,
+            "remediation": r.remediation,
+        }
+        for r in gate_result.recommendations
+    ]
+
+    output: dict = {
         "score": report.overall.score,
-        "files_changed": len(report.files),
-        "hunks_changed": len(report.hunks),
-        "overall": [{"name": m.name, "value": m.value} for m in report.overall.metrics],
-        "files": [
+        "passed": gate_result.passed,
+        "violations": [str(v) for v in violations],
+        "recommendations": recommendations,
+    }
+
+    if args.detailed:
+        output["files_changed"] = len(report.files)
+        output["hunks_changed"] = len(report.hunks)
+        output["overall"] = [{"name": m.name, "value": m.value} for m in report.overall.metrics]
+        output["files"] = [
             {
                 "file": f.file.path,
                 "score": f.score,
                 "metrics": [{"name": m.name, "value": m.value} for m in f.metrics],
             }
             for f in report.files
-        ],
-        "hunks": [
+        ]
+        output["hunks"] = [
             {
                 "file": h.hunk.file_path,
                 "score": h.score,
                 "metrics": [{"name": m.name, "value": m.value} for m in h.metrics],
             }
             for h in report.hunks
-        ],
-        "violations": [str(v) for v in violations],
-        "passed": gate_result.passed,
-        "recommendations": [
-            {
-                "location": r.location,
-                "metric": r.metric,
-                "value": r.value,
-                "remediation": r.remediation,
-            }
-            for r in gate_result.recommendations
-        ],
-    }
+        ]
 
     print(json.dumps(output, indent=2))
 

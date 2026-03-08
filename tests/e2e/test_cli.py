@@ -23,6 +23,7 @@ def _run(case_name: str) -> tuple[int, dict]:
             "-m",
             "reviewability.cli",
             "--from-stdin",
+            "--detailed",
             "--config",
             str(config_path),
         ],
