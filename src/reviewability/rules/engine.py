@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Callable
 
-from reviewability.domain.report import MetricResults, MetricValue
+from reviewability.domain.report import MetricResults
 
 
 class Severity(Enum):
@@ -12,39 +12,26 @@ class Severity(Enum):
 
 @dataclass(frozen=True)
 class Rule:
-    """A threshold rule applied to a named metric.
+    """A predicate rule evaluated against a MetricResults collection.
 
-    Operators: "gt", "lt", "gte", "lte", "eq"
+    ``check`` receives the metrics and returns None if the rule passes,
+    or a human-readable message string if it fails. The message may
+    include actual metric values for context.
     """
 
-    metric_name: str
-    threshold: float
-    operator: str
     severity: Severity
-    message: str
+    check: Callable[[MetricResults], str | None]
 
 
 @dataclass(frozen=True)
 class RuleViolation:
-    """A rule that was triggered by a metric value exceeding its threshold."""
+    """A rule whose predicate failed, with the message produced by the check."""
 
     rule: Rule
-    metric_value: MetricValue
+    message: str
 
     def __str__(self) -> str:
-        return (
-            f"[{self.rule.severity.value.upper()}] {self.rule.message} "
-            f"(value={self.metric_value.value}, threshold={self.rule.threshold})"
-        )
-
-
-_OPS: dict[str, Callable[[float, float], bool]] = {
-    "gt": lambda v, t: v > t,
-    "lt": lambda v, t: v < t,
-    "gte": lambda v, t: v >= t,
-    "lte": lambda v, t: v <= t,
-    "eq": lambda v, t: v == t,
-}
+        return f"[{self.rule.severity.value.upper()}] {self.message}"
 
 
 class RuleEngine:
@@ -56,8 +43,7 @@ class RuleEngine:
     def evaluate(self, metrics: MetricResults) -> list[RuleViolation]:
         """Return all rule violations found in the given metric values."""
         return [
-            RuleViolation(rule=rule, metric_value=metric)
+            RuleViolation(rule=rule, message=message)
             for rule in self._rules
-            if (metric := metrics.get(rule.metric_name)) is not None
-            if (op := _OPS.get(rule.operator)) and op(metric.value, rule.threshold)
+            if (message := rule.check(metrics)) is not None
         ]

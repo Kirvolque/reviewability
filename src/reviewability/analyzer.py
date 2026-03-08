@@ -69,11 +69,13 @@ def _build_scorer(config: ReviewabilityConfig) -> WeightedReviewabilityScorer:
 def _build_hunk_rules(config: ReviewabilityConfig) -> list[Rule]:
     return [
         Rule(
-            metric_name="hunk.lines_changed",
-            threshold=config.max_hunk_lines,
-            operator="gt",
             severity=Severity.WARNING,
-            message="Hunk exceeds the maximum allowed size",
+            check=lambda m: (
+                f"Hunk has {v.value} lines, exceeds limit of {config.max_hunk_lines}"
+                if (v := m.get("hunk.lines_changed")) is not None
+                and v.value > config.max_hunk_lines
+                else None
+            ),
         ),
     ]
 
@@ -81,25 +83,31 @@ def _build_hunk_rules(config: ReviewabilityConfig) -> list[Rule]:
 def _build_overall_rules(config: ReviewabilityConfig) -> list[Rule]:
     return [
         Rule(
-            metric_name="overall.lines_changed",
-            threshold=config.max_diff_lines,
-            operator="gt",
             severity=Severity.ERROR,
-            message="Diff exceeds the maximum total lines changed",
+            check=lambda m: (
+                f"Diff has {v.value} lines changed, exceeds limit of {config.max_diff_lines}"
+                if (v := m.get("overall.lines_changed")) is not None
+                and v.value > config.max_diff_lines
+                else None
+            ),
         ),
         Rule(
-            metric_name="overall.problematic_hunk_count",
-            threshold=config.max_problematic_hunks,
-            operator="gt",
             severity=Severity.WARNING,
-            message="Diff contains too many problematic hunks",
+            check=lambda m: (
+                f"Diff has {v.value} problematic hunks, exceeds limit of {config.max_problematic_hunks}"  # noqa: E501
+                if (v := m.get("overall.problematic_hunk_count")) is not None
+                and v.value > config.max_problematic_hunks
+                else None
+            ),
         ),
         Rule(
-            metric_name="overall.problematic_file_count",
-            threshold=config.max_problematic_files,
-            operator="gt",
             severity=Severity.WARNING,
-            message="Diff contains too many problematic files",
+            check=lambda m: (
+                f"Diff has {v.value} problematic files, exceeds limit of {config.max_problematic_files}"  # noqa: E501
+                if (v := m.get("overall.problematic_file_count")) is not None
+                and v.value > config.max_problematic_files
+                else None
+            ),
         ),
     ]
 
