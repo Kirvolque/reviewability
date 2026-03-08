@@ -1,5 +1,8 @@
 {
   "score": 0.998,
+  "passed": true,
+  "violations": [],
+  "recommendations": [],
   "files_changed": 1,
   "hunks_changed": 1,
   "overall": [
@@ -91,8 +94,5 @@
         }
       ]
     }
-  ],
-  "violations": [],
-  "passed": true,
-  "recommendations": []
+  ]
 }
