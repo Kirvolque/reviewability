@@ -37,6 +37,10 @@
     {
       "name": "overall.largest_file_ratio",
       "value": 1.0
+    },
+    {
+      "name": "overall.churn_complexity",
+      "value": 0.0
     }
   ],
   "files": [

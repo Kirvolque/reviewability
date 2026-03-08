@@ -86,4 +86,15 @@ class QualityGate:
                                     remediation=inner.remediation,
                                 )
                             )
+        if not recs:
+            for cause in report.overall.causes:
+                if isinstance(cause.value, MetricValue):
+                    recs.append(
+                        Recommendation(
+                            location="overall",
+                            metric=cause.value.name,
+                            value=cause.value.value,
+                            remediation=cause.remediation,
+                        )
+                    )
         return recs

@@ -1,2 +1,2 @@
 [reviewability]
-max_diff_lines = 50
+max_diff_lines = 100

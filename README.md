@@ -40,6 +40,22 @@ git diff HEAD~1 | reviewability --from-stdin
 reviewability --config path/to/reviewability.toml HEAD~1 HEAD
 ```
 
+## Overall Scoring
+
+The overall score is computed as:
+
+```
+score = 1 − size_ratio × (1 + churn_complexity)
+```
+
+where:
+- **`size_ratio`** = `min(lines_changed / max_diff_lines, 1.0)` — how close the diff is to the configured size limit
+- **`churn_complexity`** = average interleaving per hunk; `0.0` means all hunks are directional (pure additions or pure deletions), `1.0` means all hunks equally mix adds and removes
+
+The formula means: **the larger the diff, the less complexity is tolerated.**
+A small diff can have interleaved changes without penalty; a diff approaching the size limit
+needs to be directional (deletions separate from additions) to score well.
+
 ## Research
 
 Metrics are grounded in peer-reviewed research on code review effectiveness:

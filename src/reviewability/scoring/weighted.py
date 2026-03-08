@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import override
 
 from reviewability.domain.report import MetricResults
 from reviewability.scoring.base import ReviewabilityScorer
@@ -59,3 +60,45 @@ class WeightedReviewabilityScorer(ReviewabilityScorer):
             if (m := metrics.get(name)) is not None
         )
         return max(0.0, 1.0 - weighted_load / total_weight)
+
+
+class SizeChurnWeightedScorer(WeightedReviewabilityScorer):
+    """Extends the weighted scorer with a size×churn interaction for the overall score.
+
+    overall_score = max(0, 1 − size_ratio × (1 + churn_complexity))
+
+    where:
+      size_ratio       = overall.lines_changed / max_diff_lines  (clamped to 1.0)
+      churn_complexity = overall.churn_complexity                (0.0–1.0)
+
+    Effect: a small diff passes even if changes are highly interleaved.
+    As the diff grows toward the limit, interleaved hunks are penalised
+    progressively more — a large diff of pure additions/deletions scores
+    better than one of equal size with mixed adds and removes throughout.
+
+    Hunk and file scoring are unchanged (linear by lines_changed).
+    """
+
+    def __init__(
+        self,
+        max_diff_lines: float,
+        hunk_weights: list[MetricWeight],
+        file_weights: list[MetricWeight],
+    ) -> None:
+        super().__init__(
+            hunk_weights=hunk_weights,
+            file_weights=file_weights,
+            overall_weights=[],
+        )
+        self._max_diff_lines = max_diff_lines
+
+    @override
+    def overall_score(self, metrics: MetricResults) -> float:
+        """Score = max(0, 1 − size_ratio × (1 + churn_complexity))."""
+        lines = metrics.get("overall.lines_changed")
+        if lines is None:
+            return 1.0
+        size_ratio = min(lines.value / self._max_diff_lines, 1.0)
+        churn_mv = metrics.get("overall.churn_complexity")
+        churn = churn_mv.value if churn_mv is not None else 0.0
+        return max(0.0, 1.0 - size_ratio * (1.0 + churn))

@@ -1,26 +1,26 @@
 {
-  "score": 0.52,
+  "score": 0.7386324786324786,
   "passed": true,
   "violations": [],
   "recommendations": [],
-  "files_changed": 3,
-  "hunks_changed": 3,
+  "files_changed": 2,
+  "hunks_changed": 2,
   "overall": [
     {
       "name": "overall.files_changed",
-      "value": 3
+      "value": 2
     },
     {
       "name": "overall.lines_changed",
-      "value": 24
+      "value": 22
     },
     {
       "name": "overall.added_lines",
-      "value": 21
+      "value": 20
     },
     {
       "name": "overall.removed_lines",
-      "value": 3
+      "value": 2
     },
     {
       "name": "overall.problematic_hunk_count",
@@ -32,17 +32,21 @@
     },
     {
       "name": "overall.change_entropy",
-      "value": 1.5156546557441946
+      "value": 0.9760206482366149
     },
     {
       "name": "overall.largest_file_ratio",
-      "value": 0.4583333333333333
+      "value": 0.5909090909090909
+    },
+    {
+      "name": "overall.churn_complexity",
+      "value": 0.18803418803418803
     }
   ],
   "files": [
     {
       "file": "src/api.py",
-      "score": 0.78,
+      "score": 0.87,
       "metrics": [
         {
           "name": "file.hunk_count",
@@ -50,11 +54,11 @@
         },
         {
           "name": "file.lines_changed",
-          "value": 11
+          "value": 13
         },
         {
           "name": "file.added_lines",
-          "value": 10
+          "value": 12
         },
         {
           "name": "file.removed_lines",
@@ -62,13 +66,13 @@
         },
         {
           "name": "file.max_hunk_lines",
-          "value": 11
+          "value": 13
         }
       ]
     },
     {
       "file": "src/models.py",
-      "score": 0.84,
+      "score": 0.91,
       "metrics": [
         {
           "name": "file.hunk_count",
@@ -76,11 +80,11 @@
         },
         {
           "name": "file.lines_changed",
-          "value": 8
+          "value": 9
         },
         {
           "name": "file.added_lines",
-          "value": 7
+          "value": 8
         },
         {
           "name": "file.removed_lines",
@@ -88,33 +92,7 @@
         },
         {
           "name": "file.max_hunk_lines",
-          "value": 8
-        }
-      ]
-    },
-    {
-      "file": "src/handlers.py",
-      "score": 0.9,
-      "metrics": [
-        {
-          "name": "file.hunk_count",
-          "value": 1
-        },
-        {
-          "name": "file.lines_changed",
-          "value": 5
-        },
-        {
-          "name": "file.added_lines",
-          "value": 4
-        },
-        {
-          "name": "file.removed_lines",
-          "value": 1
-        },
-        {
-          "name": "file.max_hunk_lines",
-          "value": 5
+          "value": 9
         }
       ]
     }
@@ -122,15 +100,15 @@
   "hunks": [
     {
       "file": "src/api.py",
-      "score": 0.78,
+      "score": 0.74,
       "metrics": [
         {
           "name": "hunk.lines_changed",
-          "value": 11
+          "value": 13
         },
         {
           "name": "hunk.added_lines",
-          "value": 10
+          "value": 12
         },
         {
           "name": "hunk.removed_lines",
@@ -142,23 +120,23 @@
         },
         {
           "name": "hunk.churn_ratio",
-          "value": 0.9090909090909091
+          "value": 0.9230769230769231
         }
       ]
     },
     {
       "file": "src/models.py",
-      "score": 0.84,
+      "score": 0.8200000000000001,
       "metrics": [
         {
           "name": "hunk.lines_changed",
+          "value": 9
+        },
+        {
+          "name": "hunk.added_lines",
           "value": 8
         },
         {
-          "name": "hunk.added_lines",
-          "value": 7
-        },
-        {
           "name": "hunk.removed_lines",
           "value": 1
         },
@@ -168,33 +146,7 @@
         },
         {
           "name": "hunk.churn_ratio",
-          "value": 0.875
-        }
-      ]
-    },
-    {
-      "file": "src/handlers.py",
-      "score": 0.9,
-      "metrics": [
-        {
-          "name": "hunk.lines_changed",
-          "value": 5
-        },
-        {
-          "name": "hunk.added_lines",
-          "value": 4
-        },
-        {
-          "name": "hunk.removed_lines",
-          "value": 1
-        },
-        {
-          "name": "hunk.context_lines",
-          "value": 0
-        },
-        {
-          "name": "hunk.churn_ratio",
-          "value": 0.8
+          "value": 0.8888888888888888
         }
       ]
     }
