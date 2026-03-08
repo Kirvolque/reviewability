@@ -4,15 +4,29 @@ A tool that scores the reviewability of code changes.
 
 ## The Idea
 
-Not all diffs are equally hard to review. Research shows that what makes
-a diff difficult is not just its size, but the **nature and mix of changes**
-it contains. A large rename-only PR can be trivial to review, while a small
-PR that mixes a logic change with a refactor can be surprisingly hard.
+A diff can be hard to review for a reason that has nothing to do with code
+quality: the *representation* of the change obscures what actually happened.
 
-This tool analyzes code diffs and computes metrics that approximate review
-difficulty — at the level of individual hunks, files, or an entire diff.
-These metrics feed into **Reviewability Scores** (0.0 = hardest, 1.0 = easiest)
-with configurable thresholds for what counts as problematic.
+Think of it like genetic variants. Some changes are simple to read:
+
+- a line was inserted
+- a line was deleted
+- a value was substituted
+
+Others are structurally complex — a block was moved, reindented, and partially
+rewritten at the same time. The result is a wall of red and green that makes
+it genuinely difficult to answer the most basic question a reviewer needs to
+answer: **what changed?**
+
+This is distinct from what linters and static analyzers check. They answer
+*why* something is wrong or *how* it should be written. This tool answers a
+different question: given the diff as it is, how easy is it to understand
+*what* was done?
+
+This tool analyzes diffs and computes metrics that approximate that difficulty
+— at the level of individual hunks, files, or an entire diff. These metrics
+feed into **Reviewability Scores** (0.0 = hardest, 1.0 = easiest) with
+configurable thresholds for what counts as problematic.
 
 ## Key Concepts
 
@@ -54,7 +68,7 @@ Metrics are grounded in peer-reviewed research on code review effectiveness:
 - McIntosh et al. — *The Impact of Code Review Coverage and Code Review Participation on Software Quality* (MSR, 2014)  
   https://doi.org/10.1145/2597073.2597076
 
-- Fregnan et al. — First Come First Served: The Impact of File Position on Code Review (EMSE, 2022)
+No- Fregnan et al. — First Come First Served: The Impact of File Position on Code Review (EMSE, 2022)
   https://doi.org/10.1007/s10664-021-10034-0
 
 - Uchôa et al. — *Predicting Design Impactful Changes in Modern Code Review* (MSR, 2020)  
