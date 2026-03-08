@@ -19,26 +19,26 @@ def make_file_analysis(lines_changed: int) -> FileAnalysis:
 
 def test_no_files():
     result = metric.calculate([], [])
-    assert result == MetricValue("overall.change_entropy", 0.0, MetricValueType.FLOAT)
+    assert result.value == MetricValue("overall.change_entropy", 0.0, MetricValueType.FLOAT)
 
 
 def test_single_file():
     # All changes in one file → entropy = 0
     result = metric.calculate([], [make_file_analysis(10)])
-    assert result == MetricValue("overall.change_entropy", 0.0, MetricValueType.FLOAT)
+    assert result.value == MetricValue("overall.change_entropy", 0.0, MetricValueType.FLOAT)
 
 
 def test_two_equal_files():
     # Equal split → entropy = log2(2) = 1.0
     result = metric.calculate([], [make_file_analysis(5), make_file_analysis(5)])
-    assert result.value == pytest_approx(1.0)
+    assert result.value.value == pytest_approx(1.0)
 
 
 def test_two_unequal_files():
     # Unequal split → entropy < 1.0
     result = metric.calculate([], [make_file_analysis(9), make_file_analysis(1)])
     expected = -(0.9 * math.log2(0.9) + 0.1 * math.log2(0.1))
-    assert abs(result.value - expected) < 1e-9
+    assert abs(result.value.value - expected) < 1e-9
 
 
 def test_three_equal_files():
@@ -46,20 +46,20 @@ def test_three_equal_files():
     result = metric.calculate(
         [], [make_file_analysis(4), make_file_analysis(4), make_file_analysis(4)]
     )
-    assert abs(result.value - math.log2(3)) < 1e-9
+    assert abs(result.value.value - math.log2(3)) < 1e-9
 
 
 def test_file_with_zero_lines_is_excluded():
     # A file with 0 lines_changed contributes nothing and must not cause log2(0).
     result = metric.calculate([], [make_file_analysis(0), make_file_analysis(10)])
     # Only one file with actual changes → entropy = 0
-    assert result == MetricValue("overall.change_entropy", 0.0, MetricValueType.FLOAT)
+    assert result.value == MetricValue("overall.change_entropy", 0.0, MetricValueType.FLOAT)
 
 
 def test_all_files_zero_lines():
     # All files have 0 lines changed → total = 0 → entropy = 0
     result = metric.calculate([], [make_file_analysis(0), make_file_analysis(0)])
-    assert result == MetricValue("overall.change_entropy", 0.0, MetricValueType.FLOAT)
+    assert result.value == MetricValue("overall.change_entropy", 0.0, MetricValueType.FLOAT)
 
 
 def test_file_missing_metric_is_excluded():
@@ -71,7 +71,7 @@ def test_file_missing_metric_is_excluded():
     )
     result = metric.calculate([], [file_without_metric, make_file_analysis(10)])
     # Only one file contributes → entropy = 0
-    assert result == MetricValue("overall.change_entropy", 0.0, MetricValueType.FLOAT)
+    assert result.value == MetricValue("overall.change_entropy", 0.0, MetricValueType.FLOAT)
 
 
 # pytest.approx helper used inline

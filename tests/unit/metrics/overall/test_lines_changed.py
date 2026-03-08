@@ -19,17 +19,17 @@ def make_hunk_analysis(lines_changed: int) -> HunkAnalysis:
 
 def test_no_hunks():
     result = metric.calculate([], [])
-    assert result == MetricValue("overall.lines_changed", 0, MetricValueType.INTEGER)
+    assert result.value == MetricValue("overall.lines_changed", 0, MetricValueType.INTEGER)
 
 
 def test_single_hunk():
     result = metric.calculate([make_hunk_analysis(5)], [])
-    assert result == MetricValue("overall.lines_changed", 5, MetricValueType.INTEGER)
+    assert result.value == MetricValue("overall.lines_changed", 5, MetricValueType.INTEGER)
 
 
 def test_multiple_hunks():
     result = metric.calculate([make_hunk_analysis(3), make_hunk_analysis(7)], [])
-    assert result == MetricValue("overall.lines_changed", 10, MetricValueType.INTEGER)
+    assert result.value == MetricValue("overall.lines_changed", 10, MetricValueType.INTEGER)
 
 
 def test_hunk_missing_metric_is_skipped():
@@ -42,4 +42,4 @@ def test_hunk_missing_metric_is_skipped():
         score=1.0,
     )
     result = metric.calculate([hunk_without_metric, make_hunk_analysis(4)], [])
-    assert result == MetricValue("overall.lines_changed", 4, MetricValueType.INTEGER)
+    assert result.value == MetricValue("overall.lines_changed", 4, MetricValueType.INTEGER)

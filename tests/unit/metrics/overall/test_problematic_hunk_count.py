@@ -1,5 +1,11 @@
 from reviewability.domain.models import Hunk
-from reviewability.domain.report import HunkAnalysis, MetricResults, MetricValue, MetricValueType
+from reviewability.domain.report import (
+    Cause,
+    HunkAnalysis,
+    MetricResults,
+    MetricValue,
+    MetricValueType,
+)
 from reviewability.metrics.overall.problematic_hunk_count import OverallProblematicHunkCount
 
 
@@ -16,49 +22,63 @@ def make_hunk_analysis(score: float) -> HunkAnalysis:
 def test_none_problematic():
     metric = OverallProblematicHunkCount(score_threshold=0.5)
     result = metric.calculate([make_hunk_analysis(0.8), make_hunk_analysis(0.9)], [])
-    assert result == MetricValue("overall.problematic_hunk_count", 0, MetricValueType.INTEGER)
+    assert result.value == MetricValue("overall.problematic_hunk_count", 0, MetricValueType.INTEGER)
+    assert result.causes == []
 
 
 def test_all_problematic():
     metric = OverallProblematicHunkCount(score_threshold=0.5)
-    result = metric.calculate([make_hunk_analysis(0.1), make_hunk_analysis(0.3)], [])
-    assert result == MetricValue("overall.problematic_hunk_count", 2, MetricValueType.INTEGER)
+    h1 = make_hunk_analysis(0.1)
+    h2 = make_hunk_analysis(0.3)
+    result = metric.calculate([h1, h2], [])
+    assert result.value == MetricValue("overall.problematic_hunk_count", 2, MetricValueType.INTEGER)
+    assert result.causes == [Cause(value=h1), Cause(value=h2)]
 
 
 def test_some_problematic():
     metric = OverallProblematicHunkCount(score_threshold=0.5)
-    result = metric.calculate([make_hunk_analysis(0.2), make_hunk_analysis(0.7)], [])
-    assert result == MetricValue("overall.problematic_hunk_count", 1, MetricValueType.INTEGER)
+    h1 = make_hunk_analysis(0.2)
+    h2 = make_hunk_analysis(0.7)
+    result = metric.calculate([h1, h2], [])
+    assert result.value == MetricValue("overall.problematic_hunk_count", 1, MetricValueType.INTEGER)
+    assert result.causes == [Cause(value=h1)]
 
 
 def test_threshold_boundary_is_exclusive():
     metric = OverallProblematicHunkCount(score_threshold=0.5)
     # score == threshold is NOT problematic (requires strictly less than)
     result = metric.calculate([make_hunk_analysis(0.5)], [])
-    assert result == MetricValue("overall.problematic_hunk_count", 0, MetricValueType.INTEGER)
+    assert result.value == MetricValue("overall.problematic_hunk_count", 0, MetricValueType.INTEGER)
+    assert result.causes == []
 
 
 def test_no_hunks():
     metric = OverallProblematicHunkCount(score_threshold=0.5)
     result = metric.calculate([], [])
-    assert result == MetricValue("overall.problematic_hunk_count", 0, MetricValueType.INTEGER)
+    assert result.value == MetricValue("overall.problematic_hunk_count", 0, MetricValueType.INTEGER)
+    assert result.causes == []
 
 
 def test_threshold_zero_marks_nothing_problematic():
     # score is always >= 0.0, so threshold=0.0 → nothing is strictly less than 0
     metric = OverallProblematicHunkCount(score_threshold=0.0)
     result = metric.calculate([make_hunk_analysis(0.0), make_hunk_analysis(0.5)], [])
-    assert result == MetricValue("overall.problematic_hunk_count", 0, MetricValueType.INTEGER)
+    assert result.value == MetricValue("overall.problematic_hunk_count", 0, MetricValueType.INTEGER)
+    assert result.causes == []
 
 
 def test_threshold_one_marks_all_problematic():
     # Every score is strictly less than 1.0 (unless perfect)
     metric = OverallProblematicHunkCount(score_threshold=1.0)
-    result = metric.calculate([make_hunk_analysis(0.0), make_hunk_analysis(0.99)], [])
-    assert result == MetricValue("overall.problematic_hunk_count", 2, MetricValueType.INTEGER)
+    h1 = make_hunk_analysis(0.0)
+    h2 = make_hunk_analysis(0.99)
+    result = metric.calculate([h1, h2], [])
+    assert result.value == MetricValue("overall.problematic_hunk_count", 2, MetricValueType.INTEGER)
+    assert len(result.causes) == 2
 
 
 def test_perfect_score_not_problematic_at_threshold_one():
     metric = OverallProblematicHunkCount(score_threshold=1.0)
     result = metric.calculate([make_hunk_analysis(1.0)], [])
-    assert result == MetricValue("overall.problematic_hunk_count", 0, MetricValueType.INTEGER)
+    assert result.value == MetricValue("overall.problematic_hunk_count", 0, MetricValueType.INTEGER)
+    assert result.causes == []

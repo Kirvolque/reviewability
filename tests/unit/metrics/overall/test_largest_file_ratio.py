@@ -19,23 +19,23 @@ def make_file_analysis(lines_changed: int) -> FileAnalysis:
 
 def test_no_files():
     result = metric.calculate([], [])
-    assert result == MetricValue("overall.largest_file_ratio", 0.0, MetricValueType.RATIO)
+    assert result.value == MetricValue("overall.largest_file_ratio", 0.0, MetricValueType.RATIO)
 
 
 def test_single_file():
     result = metric.calculate([], [make_file_analysis(20)])
-    assert result == MetricValue("overall.largest_file_ratio", 1.0, MetricValueType.RATIO)
+    assert result.value == MetricValue("overall.largest_file_ratio", 1.0, MetricValueType.RATIO)
 
 
 def test_two_equal_files():
     result = metric.calculate([], [make_file_analysis(10), make_file_analysis(10)])
-    assert result == MetricValue("overall.largest_file_ratio", 0.5, MetricValueType.RATIO)
+    assert result.value == MetricValue("overall.largest_file_ratio", 0.5, MetricValueType.RATIO)
 
 
 def test_dominant_file():
     # 80 of 100 lines in one file → ratio = 0.8
     result = metric.calculate([], [make_file_analysis(80), make_file_analysis(20)])
-    assert result.value == pytest.approx(0.8)
+    assert result.value.value == pytest.approx(0.8)
 
 
 def test_picks_max():
@@ -43,13 +43,13 @@ def test_picks_max():
         [],
         [make_file_analysis(10), make_file_analysis(40), make_file_analysis(10)],
     )
-    assert result.value == pytest.approx(40 / 60)
+    assert result.value.value == pytest.approx(40 / 60)
 
 
 def test_all_files_zero_lines():
     # total = 0 → ratio = 0.0, must not divide by zero
     result = metric.calculate([], [make_file_analysis(0), make_file_analysis(0)])
-    assert result == MetricValue("overall.largest_file_ratio", 0.0, MetricValueType.RATIO)
+    assert result.value == MetricValue("overall.largest_file_ratio", 0.0, MetricValueType.RATIO)
 
 
 def test_file_missing_metric_is_treated_as_zero():
@@ -61,4 +61,4 @@ def test_file_missing_metric_is_treated_as_zero():
         score=1.0,
     )
     result = metric.calculate([], [file_without_metric, make_file_analysis(10)])
-    assert result == MetricValue("overall.largest_file_ratio", 1.0, MetricValueType.RATIO)
+    assert result.value == MetricValue("overall.largest_file_ratio", 1.0, MetricValueType.RATIO)

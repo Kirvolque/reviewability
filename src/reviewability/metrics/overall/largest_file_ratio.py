@@ -1,4 +1,12 @@
-from reviewability.domain.report import FileAnalysis, HunkAnalysis, MetricValue, MetricValueType
+from typing import override
+
+from reviewability.domain.report import (
+    FileAnalysis,
+    HunkAnalysis,
+    MetricValue,
+    MetricValueType,
+    OverallMetricResult,
+)
 from reviewability.metrics.base import OverallMetric
 
 
@@ -11,8 +19,13 @@ class OverallLargestFileRatio(OverallMetric):
     )
     remediation: str = "Split the diff so no single file dominates, or group scattered changes."
 
-    def calculate(self, hunks: list[HunkAnalysis], files: list[FileAnalysis]) -> MetricValue:
+    @override
+    def calculate(
+        self, hunks: list[HunkAnalysis], files: list[FileAnalysis]
+    ) -> OverallMetricResult:
         values = [m.value for f in files if (m := f.metrics.get("file.lines_changed")) is not None]
         total = sum(values)
         ratio = max(values) / total if total > 0 else 0.0
-        return MetricValue(name=self.name, value=ratio, value_type=self.value_type)
+        return OverallMetricResult(
+            value=MetricValue(name=self.name, value=ratio, value_type=self.value_type)
+        )

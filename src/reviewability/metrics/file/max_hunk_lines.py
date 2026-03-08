@@ -1,3 +1,5 @@
+from typing import override
+
 from reviewability.domain.models import FileDiff
 from reviewability.domain.report import MetricValue, MetricValueType
 from reviewability.metrics.base import FileMetric
@@ -9,6 +11,7 @@ class FileMaxHunkLines(FileMetric):
     description: str = "Lines changed in the largest single hunk within a file."
     remediation: str = "Split the large hunk into smaller, focused changes."
 
+    @override
     def calculate(self, file: FileDiff) -> MetricValue:
         return MetricValue(
             name=self.name,

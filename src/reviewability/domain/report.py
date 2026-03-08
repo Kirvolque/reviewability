@@ -1,4 +1,6 @@
-from dataclasses import dataclass
+from __future__ import annotations
+
+from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any, Iterator
 
@@ -56,29 +58,77 @@ class MetricResults:
 
 
 @dataclass(frozen=True)
+class Cause:
+    """A single cause explaining why a score is imperfect or why a metric counted something.
+
+    ``value`` can be any analysis object or metric value:
+    - ``MetricValue`` — a specific metric that drove a score below 1.0
+    - ``HunkAnalysis`` — a hunk counted as problematic by an overall metric
+    - ``FileAnalysis`` — a file counted as problematic by an overall metric
+
+    ``remediation`` is populated when ``value`` is a ``MetricValue``;
+    empty otherwise (the inner analysis object carries its own causes).
+    """
+
+    value: MetricValue | HunkAnalysis | FileAnalysis
+    remediation: str = ""
+
+
+@dataclass(frozen=True)
 class HunkAnalysis:
-    """All metric results for a single hunk, plus its reviewability score."""
+    """All metric results for a single hunk, plus its reviewability score.
+
+    ``causes`` is non-empty when ``score < 1.0``, listing every metric
+    that caused the imperfect score along with its remediation hint.
+    """
 
     hunk: Hunk
     metrics: MetricResults
     score: float
+    causes: list[Cause] = field(default_factory=list)
 
 
 @dataclass(frozen=True)
 class FileAnalysis:
-    """All metric results for a single file, plus its reviewability score."""
+    """All metric results for a single file, plus its reviewability score.
+
+    ``causes`` is non-empty when ``score < 1.0``, listing every metric
+    that caused the imperfect score along with its remediation hint.
+    """
 
     file: FileDiff
     metrics: MetricResults
     score: float
+    causes: list[Cause] = field(default_factory=list)
+
+
+@dataclass(frozen=True)
+class OverallMetricResult:
+    """The result of an overall metric calculation.
+
+    Extends a plain ``MetricValue`` with the analyses that directly caused
+    the metric's value (e.g. the specific hunks counted as problematic).
+    Empty ``causes`` means the metric is purely aggregate with no traceable
+    sub-analyses.
+    """
+
+    value: MetricValue
+    causes: list[Cause] = field(default_factory=list)
 
 
 @dataclass(frozen=True)
 class OverallAnalysis:
-    """Diff-level metric results and the overall reviewability score."""
+    """Diff-level metric results and the overall reviewability score.
+
+    ``causes`` is non-empty when ``score < 1.0``.
+    ``metric_results`` carries the full per-metric results including any
+    traceable causes, enabling downstream recommendation logic.
+    """
 
     metrics: MetricResults
     score: float
+    causes: list[Cause] = field(default_factory=list)
+    metric_results: list[OverallMetricResult] = field(default_factory=list)
 
 
 @dataclass(frozen=True)
