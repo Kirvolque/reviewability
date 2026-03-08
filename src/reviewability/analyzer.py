@@ -32,7 +32,43 @@ from reviewability.rules.engine import RuleEngine, RuleViolation
 from reviewability.scoring.weighted import MetricWeight, WeightedReviewabilityScorer
 
 
-def _build_registry(config: ReviewabilityConfig) -> MetricRegistry:
+class Analyzer:
+    """Orchestrates diff analysis: runs the metric engine and evaluates rules.
+
+    Dependencies are injected via the constructor. Use ``create_analyzer``
+    to build a fully configured instance from a ``ReviewabilityConfig``.
+    """
+
+    def __init__(
+        self,
+        engine: MetricEngine,
+        hunk_rule_engine: RuleEngine,
+        overall_rule_engine: RuleEngine,
+    ) -> None:
+        self._engine = engine
+        self._hunk_rules = hunk_rule_engine
+        self._overall_rules = overall_rule_engine
+
+    def run(self, diff: Diff) -> tuple[AnalysisReport, list[RuleViolation]]:
+        """Analyze a diff and return the report with all rule violations.
+
+        Hunk-level rules are evaluated against each hunk's metrics.
+        Overall rules are evaluated against the diff-level metrics.
+        """
+        report = self._engine.run(diff)
+
+        hunk_violations = [
+            violation
+            for hunk in report.hunks
+            for violation in self._hunk_rules.evaluate(hunk.metrics)
+        ]
+        overall_violations = self._overall_rules.evaluate(report.overall.metrics)
+
+        return report, hunk_violations + overall_violations
+
+
+def create_analyzer(config: ReviewabilityConfig) -> Analyzer:
+    """Build a fully configured ``Analyzer`` from a ``ReviewabilityConfig``."""
     registry = MetricRegistry()
     for metric in [
         HunkLinesChanged(),
@@ -55,11 +91,8 @@ def _build_registry(config: ReviewabilityConfig) -> MetricRegistry:
         OverallLargestFileRatio(),
     ]:
         registry.add(metric)
-    return registry
 
-
-def _build_scorer(config: ReviewabilityConfig) -> WeightedReviewabilityScorer:
-    return WeightedReviewabilityScorer(
+    scorer = WeightedReviewabilityScorer(
         hunk_weights=[MetricWeight("hunk.lines_changed", max_value=float(config.max_hunk_lines))],
         file_weights=[MetricWeight("file.lines_changed", max_value=float(config.max_diff_lines))],
         overall_weights=[
@@ -67,34 +100,8 @@ def _build_scorer(config: ReviewabilityConfig) -> WeightedReviewabilityScorer:
         ],
     )
 
-
-class Analyzer:
-    """Runs diff analysis and rule evaluation driven by a ReviewabilityConfig.
-
-    Builds the metric registry, scorer, and rule engine from the config,
-    then exposes a single ``run`` method to analyze a diff.
-    """
-
-    def __init__(self, config: ReviewabilityConfig) -> None:
-        registry = _build_registry(config)
-        scorer = _build_scorer(config)
-        self._engine = MetricEngine(registry, scorer)
-        self._hunk_rules = RuleEngine(hunk_rules(config))
-        self._overall_rules = RuleEngine(overall_rules(config))
-
-    def run(self, diff: Diff) -> tuple[AnalysisReport, list[RuleViolation]]:
-        """Analyze a diff and return the report with all rule violations.
-
-        Hunk-level rules are evaluated against each hunk's metrics.
-        Overall rules are evaluated against the diff-level metrics.
-        """
-        report = self._engine.run(diff)
-
-        hunk_violations = [
-            violation
-            for hunk in report.hunks
-            for violation in self._hunk_rules.evaluate(hunk.metrics)
-        ]
-        overall_violations = self._overall_rules.evaluate(report.overall.metrics)
-
-        return report, hunk_violations + overall_violations
+    return Analyzer(
+        engine=MetricEngine(registry, scorer),
+        hunk_rule_engine=RuleEngine(hunk_rules(config)),
+        overall_rule_engine=RuleEngine(overall_rules(config)),
+    )

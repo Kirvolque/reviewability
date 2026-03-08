@@ -3,7 +3,7 @@ import json
 import sys
 from pathlib import Path
 
-from reviewability.analyzer import Analyzer
+from reviewability.analyzer import create_analyzer
 from reviewability.config.models import ReviewabilityConfig
 from reviewability.config.parser import parse_config
 from reviewability.parser.git import parse_diff_text, parse_git_diff
@@ -43,7 +43,7 @@ def main() -> None:
 
     diff = parse_diff_text(sys.stdin.read()) if args.from_stdin else parse_git_diff(*args.git_args)
     config = _load_config(args.config)
-    report, violations = Analyzer(config).run(diff)
+    report, violations = create_analyzer(config).run(diff)
 
     output = {
         "score": report.overall.score,
