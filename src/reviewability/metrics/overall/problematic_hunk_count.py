@@ -1,4 +1,13 @@
-from reviewability.domain.report import FileAnalysis, HunkAnalysis, MetricValue, MetricValueType
+from typing import override
+
+from reviewability.domain.report import (
+    Cause,
+    FileAnalysis,
+    HunkAnalysis,
+    MetricValue,
+    MetricValueType,
+    OverallMetricResult,
+)
 from reviewability.metrics.base import OverallMetric
 
 
@@ -11,9 +20,12 @@ class OverallProblematicHunkCount(OverallMetric):
     def __init__(self, score_threshold: float) -> None:
         self._score_threshold = score_threshold
 
-    def calculate(self, hunks: list[HunkAnalysis], files: list[FileAnalysis]) -> MetricValue:
-        return MetricValue(
-            name=self.name,
-            value=sum(1 for h in hunks if h.score < self._score_threshold),
-            value_type=self.value_type,
+    @override
+    def calculate(
+        self, hunks: list[HunkAnalysis], files: list[FileAnalysis]
+    ) -> OverallMetricResult:
+        problematic = [h for h in hunks if h.score < self._score_threshold]
+        return OverallMetricResult(
+            value=MetricValue(name=self.name, value=len(problematic), value_type=self.value_type),
+            causes=[Cause(value=h) for h in problematic],
         )

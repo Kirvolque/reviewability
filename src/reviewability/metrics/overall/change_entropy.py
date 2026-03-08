@@ -1,6 +1,13 @@
 import math
+from typing import override
 
-from reviewability.domain.report import FileAnalysis, HunkAnalysis, MetricValue, MetricValueType
+from reviewability.domain.report import (
+    FileAnalysis,
+    HunkAnalysis,
+    MetricValue,
+    MetricValueType,
+    OverallMetricResult,
+)
 from reviewability.metrics.base import OverallMetric
 
 
@@ -13,7 +20,10 @@ class OverallChangeEntropy(OverallMetric):
     )
     remediation: str = "Group related changes into fewer files, or split the diff by concern."
 
-    def calculate(self, hunks: list[HunkAnalysis], files: list[FileAnalysis]) -> MetricValue:
+    @override
+    def calculate(
+        self, hunks: list[HunkAnalysis], files: list[FileAnalysis]
+    ) -> OverallMetricResult:
         values = [
             m.value
             for f in files
@@ -21,7 +31,11 @@ class OverallChangeEntropy(OverallMetric):
         ]
         total = sum(values)
         if total == 0:
-            return MetricValue(name=self.name, value=0.0, value_type=self.value_type)
+            return OverallMetricResult(
+                value=MetricValue(name=self.name, value=0.0, value_type=self.value_type)
+            )
 
         entropy = -sum((v / total) * math.log2(v / total) for v in values)
-        return MetricValue(name=self.name, value=entropy, value_type=self.value_type)
+        return OverallMetricResult(
+            value=MetricValue(name=self.name, value=entropy, value_type=self.value_type)
+        )

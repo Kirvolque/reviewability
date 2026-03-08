@@ -1,3 +1,5 @@
+from typing import override
+
 from reviewability.domain.models import Hunk
 from reviewability.domain.report import MetricValue, MetricValueType
 from reviewability.metrics.base import HunkMetric
@@ -15,6 +17,7 @@ class HunkChurnRatio(HunkMetric):
         "into a separate commit."
     )
 
+    @override
     def calculate(self, hunk: Hunk) -> MetricValue:
         total = hunk.added_count + hunk.removed_count
         ratio = hunk.added_count / total if total > 0 else 0.0

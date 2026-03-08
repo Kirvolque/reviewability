@@ -1,3 +1,5 @@
+from typing import override
+
 from reviewability.domain.models import Hunk
 from reviewability.domain.report import MetricValue, MetricValueType
 from reviewability.metrics.base import HunkMetric
@@ -9,6 +11,7 @@ class HunkRemovedLines(HunkMetric):
     description: str = "Number of lines removed in a hunk."
     remediation: str = "Ensure deletions are isolated from unrelated changes."
 
+    @override
     def calculate(self, hunk: Hunk) -> MetricValue:
         return MetricValue(
             name=self.name,

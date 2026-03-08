@@ -1,3 +1,5 @@
+from typing import override
+
 from reviewability.domain.models import FileDiff
 from reviewability.domain.report import MetricValue, MetricValueType
 from reviewability.metrics.base import FileMetric
@@ -9,6 +11,7 @@ class FileHunkCount(FileMetric):
     description: str = "Number of separate change regions (hunks) in a file."
     remediation: str = "Consider grouping related changes to reduce scattered edits."
 
+    @override
     def calculate(self, file: FileDiff) -> MetricValue:
         return MetricValue(
             name=self.name,

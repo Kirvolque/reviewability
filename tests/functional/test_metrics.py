@@ -1,18 +1,14 @@
 from pathlib import Path
 
 from reviewability.domain.report import (
-    AnalysisReport,
-    FileAnalysis,
-    HunkAnalysis,
     MetricResults,
     MetricValue,
     MetricValueType,
-    OverallAnalysis,
 )
+from reviewability.metrics.engine import MetricEngine
 from reviewability.metrics.file import FileHunkCount, FileLinesChanged
 from reviewability.metrics.hunk import HunkAddedLines, HunkLinesChanged, HunkRemovedLines
 from reviewability.metrics.overall import OverallFilesChanged, OverallLinesChanged
-from reviewability.metrics.engine import MetricEngine
 from reviewability.metrics.registry import MetricRegistry
 from reviewability.parser.git import parse_diff_text
 from reviewability.scoring.weighted import MetricWeight, WeightedReviewabilityScorer
@@ -72,26 +68,26 @@ def test_logic_change_report():
         ]
     )
 
-    assert report == AnalysisReport(
-        overall=OverallAnalysis(
-            metrics=overall_metrics,
-            score=scorer.overall_score(overall_metrics),
-        ),
-        files=[
-            FileAnalysis(
-                file=diff.files[0],
-                metrics=file_metrics,
-                score=scorer.file_score(file_metrics),
-            )
-        ],
-        hunks=[
-            HunkAnalysis(
-                hunk=diff.files[0].hunks[0],
-                metrics=hunk_metrics,
-                score=scorer.hunk_score(hunk_metrics),
-            )
-        ],
-    )
+    # Check overall
+    assert report.overall.metrics == overall_metrics
+    assert report.overall.score == scorer.overall_score(overall_metrics)
+    assert len(report.overall.metric_results) == 2  # 2 overall metrics registered
+    # score < 1.0 so causes should be non-empty
+    assert len(report.overall.causes) > 0
+
+    # Check files
+    assert len(report.files) == 1
+    assert report.files[0].file == diff.files[0]
+    assert report.files[0].metrics == file_metrics
+    assert report.files[0].score == scorer.file_score(file_metrics)
+
+    # Check hunks
+    assert len(report.hunks) == 1
+    assert report.hunks[0].hunk == diff.files[0].hunks[0]
+    assert report.hunks[0].metrics == hunk_metrics
+    assert report.hunks[0].score == scorer.hunk_score(hunk_metrics)
+    # score < 1.0 so causes should be non-empty
+    assert len(report.hunks[0].causes) > 0
 
 
 def test_multi_file_change_report():
