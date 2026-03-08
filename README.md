@@ -4,28 +4,13 @@ A tool that scores the reviewability of code changes.
 
 ## The Idea
 
-A diff can be hard to review for a reason that has nothing to do with code
-quality: the *representation* of the change obscures what actually happened.
+A diff can be hard to review not because the code is bad, but because the
+*representation* of the change obscures **what** happened. A block moved and
+reindented looks like a wall of red and green even if nothing changed logically.
+Unlike linters, it does not analyze the code — only the diff as a whole.
 
-Think of it like genetic variants. Some changes are simple to read:
-
-- a line was inserted
-- a line was deleted
-- a value was substituted
-
-Others are structurally complex — a block was moved, reindented, and partially
-rewritten at the same time. The result is a wall of red and green that makes
-it genuinely difficult to answer the most basic question a reviewer needs to
-answer: **what changed?**
-
-This is distinct from what linters and static analyzers check. They answer
-*why* something is wrong or *how* it should be written. This tool answers a
-different question: given the diff as it is, how easy is it to understand
-*what* was done?
-
-This tool analyzes diffs and computes metrics that approximate that difficulty
-— at the level of individual hunks, files, or an entire diff. These metrics
-feed into **Reviewability Scores** (0.0 = hardest, 1.0 = easiest) with
+It computes metrics at the level of individual hunks, files, and the whole diff,
+feeding into **Reviewability Scores** (0.0 = hardest, 1.0 = easiest) with
 configurable thresholds for what counts as problematic.
 
 ## Key Concepts
