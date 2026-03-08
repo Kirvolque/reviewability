@@ -70,7 +70,15 @@ def main() -> None:
         ],
         "violations": [str(v) for v in violations],
         "passed": gate_result.passed,
-        "recommendations": gate_result.recommendations,
+        "recommendations": [
+            {
+                "location": r.location,
+                "metric": r.metric,
+                "value": r.value,
+                "remediation": r.remediation,
+            }
+            for r in gate_result.recommendations
+        ],
     }
 
     print(json.dumps(output, indent=2))

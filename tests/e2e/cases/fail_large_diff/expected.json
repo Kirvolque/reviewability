@@ -1,0 +1,213 @@
+{
+  "score": 0.0,
+  "files_changed": 2,
+  "hunks_changed": 2,
+  "overall": [
+    {
+      "name": "overall.files_changed",
+      "value": 2
+    },
+    {
+      "name": "overall.lines_changed",
+      "value": 12
+    },
+    {
+      "name": "overall.added_lines",
+      "value": 8
+    },
+    {
+      "name": "overall.removed_lines",
+      "value": 4
+    },
+    {
+      "name": "overall.problematic_hunk_count",
+      "value": 0
+    },
+    {
+      "name": "overall.problematic_file_count",
+      "value": 2
+    },
+    {
+      "name": "overall.change_entropy",
+      "value": 1.0
+    },
+    {
+      "name": "overall.largest_file_ratio",
+      "value": 0.5
+    }
+  ],
+  "files": [
+    {
+      "file": "src/farewell.py",
+      "score": 0.0,
+      "metrics": [
+        {
+          "name": "file.hunk_count",
+          "value": 1
+        },
+        {
+          "name": "file.lines_changed",
+          "value": 6
+        },
+        {
+          "name": "file.added_lines",
+          "value": 4
+        },
+        {
+          "name": "file.removed_lines",
+          "value": 2
+        },
+        {
+          "name": "file.max_hunk_lines",
+          "value": 6
+        }
+      ]
+    },
+    {
+      "file": "src/greeter.py",
+      "score": 0.0,
+      "metrics": [
+        {
+          "name": "file.hunk_count",
+          "value": 1
+        },
+        {
+          "name": "file.lines_changed",
+          "value": 6
+        },
+        {
+          "name": "file.added_lines",
+          "value": 4
+        },
+        {
+          "name": "file.removed_lines",
+          "value": 2
+        },
+        {
+          "name": "file.max_hunk_lines",
+          "value": 6
+        }
+      ]
+    }
+  ],
+  "hunks": [
+    {
+      "file": "src/farewell.py",
+      "score": 0.97,
+      "metrics": [
+        {
+          "name": "hunk.lines_changed",
+          "value": 6
+        },
+        {
+          "name": "hunk.added_lines",
+          "value": 4
+        },
+        {
+          "name": "hunk.removed_lines",
+          "value": 2
+        },
+        {
+          "name": "hunk.context_lines",
+          "value": 2
+        },
+        {
+          "name": "hunk.churn_ratio",
+          "value": 0.6666666666666666
+        }
+      ]
+    },
+    {
+      "file": "src/greeter.py",
+      "score": 0.97,
+      "metrics": [
+        {
+          "name": "hunk.lines_changed",
+          "value": 6
+        },
+        {
+          "name": "hunk.added_lines",
+          "value": 4
+        },
+        {
+          "name": "hunk.removed_lines",
+          "value": 2
+        },
+        {
+          "name": "hunk.context_lines",
+          "value": 2
+        },
+        {
+          "name": "hunk.churn_ratio",
+          "value": 0.6666666666666666
+        }
+      ]
+    }
+  ],
+  "violations": [
+    "[ERROR] Diff has 12 lines changed, exceeds limit of 1"
+  ],
+  "passed": false,
+  "recommendations": [
+    {
+      "location": "src/farewell.py",
+      "metric": "file.hunk_count",
+      "value": 1,
+      "remediation": "Consider grouping related changes to reduce scattered edits."
+    },
+    {
+      "location": "src/farewell.py",
+      "metric": "file.lines_changed",
+      "value": 6,
+      "remediation": "Split large file changes across multiple commits or pull requests."
+    },
+    {
+      "location": "src/farewell.py",
+      "metric": "file.added_lines",
+      "value": 4,
+      "remediation": "Break large additions into smaller, reviewable pull requests."
+    },
+    {
+      "location": "src/farewell.py",
+      "metric": "file.removed_lines",
+      "value": 2,
+      "remediation": "Ensure deletions are isolated from unrelated additions."
+    },
+    {
+      "location": "src/farewell.py",
+      "metric": "file.max_hunk_lines",
+      "value": 6,
+      "remediation": "Split the large hunk into smaller, focused changes."
+    },
+    {
+      "location": "src/greeter.py",
+      "metric": "file.hunk_count",
+      "value": 1,
+      "remediation": "Consider grouping related changes to reduce scattered edits."
+    },
+    {
+      "location": "src/greeter.py",
+      "metric": "file.lines_changed",
+      "value": 6,
+      "remediation": "Split large file changes across multiple commits or pull requests."
+    },
+    {
+      "location": "src/greeter.py",
+      "metric": "file.added_lines",
+      "value": 4,
+      "remediation": "Break large additions into smaller, reviewable pull requests."
+    },
+    {
+      "location": "src/greeter.py",
+      "metric": "file.removed_lines",
+      "value": 2,
+      "remediation": "Ensure deletions are isolated from unrelated additions."
+    },
+    {
+      "location": "src/greeter.py",
+      "metric": "file.max_hunk_lines",
+      "value": 6,
+      "remediation": "Split the large hunk into smaller, focused changes."
+    }
+  ]
+}

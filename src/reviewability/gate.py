@@ -1,8 +1,25 @@
 from dataclasses import dataclass
+from typing import Any
 
 from reviewability.config.models import ReviewabilityConfig
-from reviewability.domain.report import AnalysisReport
+from reviewability.domain.report import AnalysisReport, FileAnalysis, HunkAnalysis, MetricValue
 from reviewability.rules.engine import RuleViolation, Severity
+
+
+@dataclass(frozen=True)
+class Recommendation:
+    """An actionable suggestion derived from a problematic file or hunk.
+
+    ``location`` identifies where the issue was found (file path or hunk coordinates).
+    ``metric`` is the metric name that caused the low score.
+    ``value`` is the computed metric value.
+    ``remediation`` is the suggested action.
+    """
+
+    location: str
+    metric: str
+    value: Any
+    remediation: str
 
 
 @dataclass(frozen=True)
@@ -10,12 +27,11 @@ class GateResult:
     """The outcome of a quality gate evaluation.
 
     ``passed`` is True if the diff meets all configured thresholds.
-    ``recommendations`` contains actionable suggestions when the gate fails
-    (populated in a future step).
+    ``recommendations`` contains actionable suggestions when the gate fails.
     """
 
     passed: bool
-    recommendations: list[str]
+    recommendations: list[Recommendation]
 
 
 class QualityGate:
@@ -33,6 +49,41 @@ class QualityGate:
         """Evaluate the analysis report and return a gate result."""
         score_failed = report.overall.score < self._config.min_overall_score
         error_violations = any(v.rule.severity == Severity.ERROR for v in violations)
-
         passed = not score_failed and not error_violations
-        return GateResult(passed=passed, recommendations=[])
+        recommendations = self._build_recommendations(report) if not passed else []
+        return GateResult(passed=passed, recommendations=recommendations)
+
+    def _build_recommendations(self, report: AnalysisReport) -> list[Recommendation]:
+        recs = []
+        for omr in report.overall.metric_results:
+            for cause in omr.causes:
+                if isinstance(cause.value, FileAnalysis):
+                    location = cause.value.file.path
+                    for inner in cause.value.causes:
+                        if isinstance(inner.value, MetricValue):
+                            recs.append(
+                                Recommendation(
+                                    location=location,
+                                    metric=inner.value.name,
+                                    value=inner.value.value,
+                                    remediation=inner.remediation,
+                                )
+                            )
+                elif isinstance(cause.value, HunkAnalysis):
+                    hunk = cause.value.hunk
+                    location = (
+                        f"{hunk.file_path}"
+                        f" @@ -{hunk.source_start},{hunk.source_length}"
+                        f" +{hunk.target_start},{hunk.target_length} @@"
+                    )
+                    for inner in cause.value.causes:
+                        if isinstance(inner.value, MetricValue):
+                            recs.append(
+                                Recommendation(
+                                    location=location,
+                                    metric=inner.value.name,
+                                    value=inner.value.value,
+                                    remediation=inner.remediation,
+                                )
+                            )
+        return recs
