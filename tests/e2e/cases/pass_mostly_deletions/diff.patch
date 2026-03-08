@@ -1,0 +1,29 @@
+diff --git a/src/legacy.py b/src/legacy.py
+--- a/src/legacy.py
++++ b/src/legacy.py
+@@ -1,20 +1,5 @@
+-# Deprecated legacy authentication utilities
+-import hashlib
+-import base64
+-
+-
+-def _hash(pw: str, salt: str) -> str:
+-    return hashlib.md5((pw + salt).encode()).hexdigest()
+-
+-
+-def _verify(pw: str, stored: str) -> bool:
+-    parts = stored.split(":")
+-    return _hash(pw, parts[0]) == parts[1]
+-
+-
+-def _encode(data: str) -> str:
+-    return base64.b64encode(data.encode()).decode()
+-
+-
+-def get_token(user_id: int) -> str:
+-    return _encode(f"user:{user_id}")
++from auth import verify, make_token
++
++
++def authenticate(username: str, password: str) -> bool:
++    return verify(username, password)

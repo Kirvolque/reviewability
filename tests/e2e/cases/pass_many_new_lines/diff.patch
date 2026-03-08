@@ -1,0 +1,36 @@
+diff --git a/src/api.py b/src/api.py
+--- a/src/api.py
++++ b/src/api.py
+@@ -1,1 +1,10 @@
+-def get_users() -> list:
++def get_users(
++    active_only: bool = True,
++    limit: int = 100,
++    offset: int = 0,
++    order_by: str = "created_at",
++) -> list:
++    """Return a paginated, filtered list of users."""
++    q = db.session.query(User)
++    if active_only:
++        q = q.filter(User.is_active == True)
+diff --git a/src/models.py b/src/models.py
+--- a/src/models.py
++++ b/src/models.py
+@@ -1,1 +1,7 @@
+-class User(Base):
++@dataclass
++class User(Base):
++    """Represents an application user."""
++
++    created_at: datetime = field(default_factory=datetime.utcnow)
++    is_active: bool = True
++    display_name: str = ""
+diff --git a/src/handlers.py b/src/handlers.py
+--- a/src/handlers.py
++++ b/src/handlers.py
+@@ -1,1 +1,4 @@
+-def handle_request(req):
++def handle_request(
++    req: Request,
++    timeout: int = 30,
++) -> Response:

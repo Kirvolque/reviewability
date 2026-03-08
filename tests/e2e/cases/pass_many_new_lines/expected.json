@@ -1,0 +1,202 @@
+{
+  "score": 0.52,
+  "passed": true,
+  "violations": [],
+  "recommendations": [],
+  "files_changed": 3,
+  "hunks_changed": 3,
+  "overall": [
+    {
+      "name": "overall.files_changed",
+      "value": 3
+    },
+    {
+      "name": "overall.lines_changed",
+      "value": 24
+    },
+    {
+      "name": "overall.added_lines",
+      "value": 21
+    },
+    {
+      "name": "overall.removed_lines",
+      "value": 3
+    },
+    {
+      "name": "overall.problematic_hunk_count",
+      "value": 0
+    },
+    {
+      "name": "overall.problematic_file_count",
+      "value": 0
+    },
+    {
+      "name": "overall.change_entropy",
+      "value": 1.5156546557441946
+    },
+    {
+      "name": "overall.largest_file_ratio",
+      "value": 0.4583333333333333
+    }
+  ],
+  "files": [
+    {
+      "file": "src/api.py",
+      "score": 0.78,
+      "metrics": [
+        {
+          "name": "file.hunk_count",
+          "value": 1
+        },
+        {
+          "name": "file.lines_changed",
+          "value": 11
+        },
+        {
+          "name": "file.added_lines",
+          "value": 10
+        },
+        {
+          "name": "file.removed_lines",
+          "value": 1
+        },
+        {
+          "name": "file.max_hunk_lines",
+          "value": 11
+        }
+      ]
+    },
+    {
+      "file": "src/models.py",
+      "score": 0.84,
+      "metrics": [
+        {
+          "name": "file.hunk_count",
+          "value": 1
+        },
+        {
+          "name": "file.lines_changed",
+          "value": 8
+        },
+        {
+          "name": "file.added_lines",
+          "value": 7
+        },
+        {
+          "name": "file.removed_lines",
+          "value": 1
+        },
+        {
+          "name": "file.max_hunk_lines",
+          "value": 8
+        }
+      ]
+    },
+    {
+      "file": "src/handlers.py",
+      "score": 0.9,
+      "metrics": [
+        {
+          "name": "file.hunk_count",
+          "value": 1
+        },
+        {
+          "name": "file.lines_changed",
+          "value": 5
+        },
+        {
+          "name": "file.added_lines",
+          "value": 4
+        },
+        {
+          "name": "file.removed_lines",
+          "value": 1
+        },
+        {
+          "name": "file.max_hunk_lines",
+          "value": 5
+        }
+      ]
+    }
+  ],
+  "hunks": [
+    {
+      "file": "src/api.py",
+      "score": 0.78,
+      "metrics": [
+        {
+          "name": "hunk.lines_changed",
+          "value": 11
+        },
+        {
+          "name": "hunk.added_lines",
+          "value": 10
+        },
+        {
+          "name": "hunk.removed_lines",
+          "value": 1
+        },
+        {
+          "name": "hunk.context_lines",
+          "value": 0
+        },
+        {
+          "name": "hunk.churn_ratio",
+          "value": 0.9090909090909091
+        }
+      ]
+    },
+    {
+      "file": "src/models.py",
+      "score": 0.84,
+      "metrics": [
+        {
+          "name": "hunk.lines_changed",
+          "value": 8
+        },
+        {
+          "name": "hunk.added_lines",
+          "value": 7
+        },
+        {
+          "name": "hunk.removed_lines",
+          "value": 1
+        },
+        {
+          "name": "hunk.context_lines",
+          "value": 0
+        },
+        {
+          "name": "hunk.churn_ratio",
+          "value": 0.875
+        }
+      ]
+    },
+    {
+      "file": "src/handlers.py",
+      "score": 0.9,
+      "metrics": [
+        {
+          "name": "hunk.lines_changed",
+          "value": 5
+        },
+        {
+          "name": "hunk.added_lines",
+          "value": 4
+        },
+        {
+          "name": "hunk.removed_lines",
+          "value": 1
+        },
+        {
+          "name": "hunk.context_lines",
+          "value": 0
+        },
+        {
+          "name": "hunk.churn_ratio",
+          "value": 0.8
+        }
+      ]
+    }
+  ]
+}

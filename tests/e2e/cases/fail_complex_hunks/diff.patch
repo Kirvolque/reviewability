@@ -1,0 +1,53 @@
+diff --git a/src/processor.py b/src/processor.py
+--- a/src/processor.py
++++ b/src/processor.py
+@@ -1,4 +1,3 @@
+-def process(data):
+-    result = []
+-    for item in data:
+-        result.append(item)
++def process(data: list) -> list:
++    return [transform(item) for item in data]
++
+@@ -20,3 +19,2 @@
+-def flush(queue):
+-    queue.clear()
+-    return None
++def flush(queue: list) -> None:
++    queue.clear()
+diff --git a/src/validator.py b/src/validator.py
+--- a/src/validator.py
++++ b/src/validator.py
+@@ -1,3 +1,4 @@
+-def validate(data):
+-    if not data:
+-        return False
++def validate(data: dict) -> bool:
++    if not isinstance(data, dict):
++        raise TypeError(f"expected dict, got {type(data).__name__}")
++    return bool(data)
+@@ -20,2 +21,3 @@
+-def is_valid_email(s):
+-    return "@" in s
++def is_valid_email(address: str) -> bool:
++    parts = address.split("@")
++    return len(parts) == 2 and all(parts)
+diff --git a/src/formatter.py b/src/formatter.py
+--- a/src/formatter.py
++++ b/src/formatter.py
+@@ -1,5 +1,7 @@
+-def format_output(data):
+-    lines = []
+-    for k, v in data.items():
+-        lines.append(f"{k}={v}")
+-    return "\n".join(lines)
++def format_output(
++    data: dict,
++    separator: str = "\n",
++    key_value_sep: str = "=",
++    prefix: str = "",
++) -> str:
++    """Format a dict as a human-readable string."""
++    return separator.join(
++        f"{prefix}{k}{key_value_sep}{v}" for k, v in data.items()
++    )
