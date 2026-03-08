@@ -27,16 +27,18 @@ code region, which increases cognitive load for the reviewer to locate the actua
 
 ### `hunk.churn_ratio`
 Ratio of added lines to total changed lines within a hunk. Measures whether a hunk
-is balanced (refactor) or one-sided (pure addition or deletion).
+is directional (pure additions or pure deletions) or interleaved (mixed adds and removes).
 
 **Calculation:** `added_lines / (added_lines + removed_lines)`, or `0.0` if both are zero
 
 **Value type:** RATIO (0.0–1.0)
 
-**Rationale:** A ratio near 0.0 (pure deletion) or 1.0 (pure addition) may indicate
-an unbalanced change that is harder to reason about than a balanced edit.
+**Rationale:** A ratio near 0.0 (pure deletion) or 1.0 (pure addition) is **easier** to
+review — the change moves clearly in one direction. A ratio near 0.5 means additions and
+removals are interleaved, forcing the reviewer to track both simultaneously — this is
+**harder** to review. Used as input to `overall.churn_complexity`.
 
-**Suggested rule:** warn if `hunk.churn_ratio > 0.9` (nearly all additions — no cleanup)
+**Suggested rule:** warn if `hunk.churn_ratio` is near 0.5 and the hunk is large
 
 > "The size of the initial patch and the new lines of code added are statistically
 > significant factors in predicting the number of review changes."
@@ -167,6 +169,33 @@ AND many files — combined with high entropy, this is the worst case)
 > effectiveness, and both comment density and reviewers' decisions are
 > disproportionately low."
 > — `IET Software - 2021 - Jureczko - Code review effectiveness...pdf` (Jureczko et al.)
+
+---
+
+### `overall.churn_complexity`
+Average interleaving complexity across all hunks. Measures how much the diff mixes
+additions and deletions rather than making directional changes.
+
+**Calculation:**
+```
+mix_i = 1 − |2 × hunk.churn_ratio_i − 1|   (per hunk; 0.0 = directional, 1.0 = fully interleaved)
+overall.churn_complexity = mean(mix_i)
+```
+
+**Value type:** RATIO (0.0–1.0)
+
+**Rationale:** Interleaved hunks (equal adds and removes scattered throughout) require
+the reviewer to simultaneously track what was removed and what replaced it, which is
+cognitively demanding. Directional hunks (all adds or all removes) are easier to follow.
+Used together with diff size in the `SizeChurnWeightedScorer`: the overall score is
+`1 − size_ratio × (1 + churn_complexity)`, so a large, interleaved diff scores near 0
+while a large but directional diff scores much higher.
+
+**Suggested rule:** warn if `overall.churn_complexity > 0.7` combined with
+`overall.lines_changed` approaching the configured limit
+
+> "Patch Churn: the number of lines added and removed to the code during a review."
+> — `UchoaCWPRAC20.pdf` (Uchôa et al.)
 
 ---
 

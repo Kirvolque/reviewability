@@ -1,5 +1,5 @@
 {
-  "score": 0.5,
+  "score": 0.61,
   "passed": true,
   "violations": [],
   "recommendations": [],
@@ -12,19 +12,19 @@
     },
     {
       "name": "overall.lines_changed",
-      "value": 25
+      "value": 33
     },
     {
       "name": "overall.added_lines",
-      "value": 5
+      "value": 3
     },
     {
       "name": "overall.removed_lines",
-      "value": 20
+      "value": 30
     },
     {
       "name": "overall.problematic_hunk_count",
-      "value": 0
+      "value": 1
     },
     {
       "name": "overall.problematic_file_count",
@@ -37,12 +37,16 @@
     {
       "name": "overall.largest_file_ratio",
       "value": 1.0
+    },
+    {
+      "name": "overall.churn_complexity",
+      "value": 0.18181818181818188
     }
   ],
   "files": [
     {
       "file": "src/legacy.py",
-      "score": 0.5,
+      "score": 0.6699999999999999,
       "metrics": [
         {
           "name": "file.hunk_count",
@@ -50,19 +54,19 @@
         },
         {
           "name": "file.lines_changed",
-          "value": 25
+          "value": 33
         },
         {
           "name": "file.added_lines",
-          "value": 5
+          "value": 3
         },
         {
           "name": "file.removed_lines",
-          "value": 20
+          "value": 30
         },
         {
           "name": "file.max_hunk_lines",
-          "value": 25
+          "value": 33
         }
       ]
     }
@@ -70,19 +74,19 @@
   "hunks": [
     {
       "file": "src/legacy.py",
-      "score": 0.5,
+      "score": 0.33999999999999997,
       "metrics": [
         {
           "name": "hunk.lines_changed",
-          "value": 25
+          "value": 33
         },
         {
           "name": "hunk.added_lines",
-          "value": 5
+          "value": 3
         },
         {
           "name": "hunk.removed_lines",
-          "value": 20
+          "value": 30
         },
         {
           "name": "hunk.context_lines",
@@ -90,7 +94,7 @@
         },
         {
           "name": "hunk.churn_ratio",
-          "value": 0.2
+          "value": 0.09090909090909091
         }
       ]
     }

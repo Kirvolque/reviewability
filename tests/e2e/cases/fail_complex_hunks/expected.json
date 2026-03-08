@@ -1,8 +1,63 @@
 {
-  "score": 0.28,
+  "score": 0.040000000000000036,
   "passed": false,
   "violations": [],
-  "recommendations": [],
+  "recommendations": [
+    {
+      "location": "overall",
+      "metric": "overall.files_changed",
+      "value": 3,
+      "remediation": "Split the change into smaller pull requests by concern."
+    },
+    {
+      "location": "overall",
+      "metric": "overall.lines_changed",
+      "value": 48,
+      "remediation": "Reduce patch size by splitting unrelated changes into separate commits."
+    },
+    {
+      "location": "overall",
+      "metric": "overall.added_lines",
+      "value": 24,
+      "remediation": "Keep additions under 400 lines per review session."
+    },
+    {
+      "location": "overall",
+      "metric": "overall.removed_lines",
+      "value": 24,
+      "remediation": "Ensure large deletions are reviewed separately from additions."
+    },
+    {
+      "location": "overall",
+      "metric": "overall.problematic_hunk_count",
+      "value": 0,
+      "remediation": "Simplify or split hunks with low reviewability scores."
+    },
+    {
+      "location": "overall",
+      "metric": "overall.problematic_file_count",
+      "value": 0,
+      "remediation": "Simplify or split files with low reviewability scores."
+    },
+    {
+      "location": "overall",
+      "metric": "overall.change_entropy",
+      "value": 1.5545851693377994,
+      "remediation": "Group related changes into fewer files, or split the diff by concern."
+    },
+    {
+      "location": "overall",
+      "metric": "overall.largest_file_ratio",
+      "value": 0.4166666666666667,
+      "remediation": "Split the diff so no single file dominates, or group scattered changes."
+    },
+    {
+      "location": "overall",
+      "metric": "overall.churn_complexity",
+      "value": 1.0,
+      "remediation": "Split mixed hunks into separate directional commits: one for deletions, one for additions."
+    }
+  ],
   "files_changed": 3,
   "hunks_changed": 5,
   "overall": [
@@ -12,15 +67,15 @@
     },
     {
       "name": "overall.lines_changed",
-      "value": 36
+      "value": 48
     },
     {
       "name": "overall.added_lines",
-      "value": 19
+      "value": 24
     },
     {
       "name": "overall.removed_lines",
-      "value": 17
+      "value": 24
     },
     {
       "name": "overall.problematic_hunk_count",
@@ -32,17 +87,21 @@
     },
     {
       "name": "overall.change_entropy",
-      "value": 1.584962500721156
+      "value": 1.5545851693377994
     },
     {
       "name": "overall.largest_file_ratio",
-      "value": 0.3333333333333333
+      "value": 0.4166666666666667
+    },
+    {
+      "name": "overall.churn_complexity",
+      "value": 1.0
     }
   ],
   "files": [
     {
       "file": "src/processor.py",
-      "score": 0.76,
+      "score": 0.8,
       "metrics": [
         {
           "name": "file.hunk_count",
@@ -50,25 +109,25 @@
         },
         {
           "name": "file.lines_changed",
-          "value": 12
+          "value": 20
         },
         {
           "name": "file.added_lines",
-          "value": 5
+          "value": 10
         },
         {
           "name": "file.removed_lines",
-          "value": 7
+          "value": 10
         },
         {
           "name": "file.max_hunk_lines",
-          "value": 7
+          "value": 10
         }
       ]
     },
     {
       "file": "src/validator.py",
-      "score": 0.76,
+      "score": 0.84,
       "metrics": [
         {
           "name": "file.hunk_count",
@@ -76,25 +135,25 @@
         },
         {
           "name": "file.lines_changed",
-          "value": 12
+          "value": 16
         },
         {
           "name": "file.added_lines",
-          "value": 7
+          "value": 8
         },
         {
           "name": "file.removed_lines",
-          "value": 5
+          "value": 8
         },
         {
           "name": "file.max_hunk_lines",
-          "value": 7
+          "value": 8
         }
       ]
     },
     {
       "file": "src/formatter.py",
-      "score": 0.76,
+      "score": 0.88,
       "metrics": [
         {
           "name": "file.hunk_count",
@@ -106,11 +165,11 @@
         },
         {
           "name": "file.added_lines",
-          "value": 7
+          "value": 6
         },
         {
           "name": "file.removed_lines",
-          "value": 5
+          "value": 6
         },
         {
           "name": "file.max_hunk_lines",
@@ -122,19 +181,19 @@
   "hunks": [
     {
       "file": "src/processor.py",
-      "score": 0.86,
+      "score": 0.8,
       "metrics": [
         {
           "name": "hunk.lines_changed",
-          "value": 7
+          "value": 10
         },
         {
           "name": "hunk.added_lines",
-          "value": 3
+          "value": 5
         },
         {
           "name": "hunk.removed_lines",
-          "value": 4
+          "value": 5
         },
         {
           "name": "hunk.context_lines",
@@ -142,25 +201,25 @@
         },
         {
           "name": "hunk.churn_ratio",
-          "value": 0.42857142857142855
+          "value": 0.5
         }
       ]
     },
     {
       "file": "src/processor.py",
-      "score": 0.9,
+      "score": 0.8,
       "metrics": [
         {
           "name": "hunk.lines_changed",
-          "value": 5
+          "value": 10
         },
         {
           "name": "hunk.added_lines",
-          "value": 2
+          "value": 5
         },
         {
           "name": "hunk.removed_lines",
-          "value": 3
+          "value": 5
         },
         {
           "name": "hunk.context_lines",
@@ -168,17 +227,17 @@
         },
         {
           "name": "hunk.churn_ratio",
-          "value": 0.4
+          "value": 0.5
         }
       ]
     },
     {
       "file": "src/validator.py",
-      "score": 0.86,
+      "score": 0.84,
       "metrics": [
         {
           "name": "hunk.lines_changed",
-          "value": 7
+          "value": 8
         },
         {
           "name": "hunk.added_lines",
@@ -186,7 +245,7 @@
         },
         {
           "name": "hunk.removed_lines",
-          "value": 3
+          "value": 4
         },
         {
           "name": "hunk.context_lines",
@@ -194,25 +253,25 @@
         },
         {
           "name": "hunk.churn_ratio",
-          "value": 0.5714285714285714
+          "value": 0.5
         }
       ]
     },
     {
       "file": "src/validator.py",
-      "score": 0.9,
+      "score": 0.84,
       "metrics": [
         {
           "name": "hunk.lines_changed",
-          "value": 5
+          "value": 8
         },
         {
           "name": "hunk.added_lines",
-          "value": 3
+          "value": 4
         },
         {
           "name": "hunk.removed_lines",
-          "value": 2
+          "value": 4
         },
         {
           "name": "hunk.context_lines",
@@ -220,7 +279,7 @@
         },
         {
           "name": "hunk.churn_ratio",
-          "value": 0.6
+          "value": 0.5
         }
       ]
     },
@@ -234,11 +293,11 @@
         },
         {
           "name": "hunk.added_lines",
-          "value": 7
+          "value": 6
         },
         {
           "name": "hunk.removed_lines",
-          "value": 5
+          "value": 6
         },
         {
           "name": "hunk.context_lines",
@@ -246,7 +305,7 @@
         },
         {
           "name": "hunk.churn_ratio",
-          "value": 0.5833333333333334
+          "value": 0.5
         }
       ]
     }

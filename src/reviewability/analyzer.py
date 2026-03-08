@@ -19,6 +19,7 @@ from reviewability.metrics.hunk import (
 from reviewability.metrics.overall import (
     OverallAddedLines,
     OverallChangeEntropy,
+    OverallChurnComplexity,
     OverallFilesChanged,
     OverallLargestFileRatio,
     OverallLinesChanged,
@@ -29,7 +30,7 @@ from reviewability.metrics.overall import (
 from reviewability.metrics.registry import MetricRegistry
 from reviewability.rules.definitions import hunk_rules, overall_rules
 from reviewability.rules.engine import RuleEngine, RuleViolation
-from reviewability.scoring.weighted import MetricWeight, WeightedReviewabilityScorer
+from reviewability.scoring.weighted import MetricWeight, SizeChurnWeightedScorer
 
 
 class Analyzer:
@@ -89,15 +90,14 @@ def create_analyzer(config: ReviewabilityConfig) -> Analyzer:
         OverallProblematicFileCount(config.file_score_threshold),
         OverallChangeEntropy(),
         OverallLargestFileRatio(),
+        OverallChurnComplexity(),
     ]:
         registry.add(metric)
 
-    scorer = WeightedReviewabilityScorer(
+    scorer = SizeChurnWeightedScorer(
+        max_diff_lines=float(config.max_diff_lines),
         hunk_weights=[MetricWeight("hunk.lines_changed", max_value=float(config.max_hunk_lines))],
         file_weights=[MetricWeight("file.lines_changed", max_value=float(config.max_diff_lines))],
-        overall_weights=[
-            MetricWeight("overall.lines_changed", max_value=float(config.max_diff_lines))
-        ],
     )
 
     return Analyzer(
