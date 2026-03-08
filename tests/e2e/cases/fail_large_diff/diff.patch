@@ -1,0 +1,26 @@
+diff --git a/src/farewell.py b/src/farewell.py
+index 3ed3c12..67a5314 100644
+--- a/src/farewell.py
++++ b/src/farewell.py
+@@ -1,4 +1,6 @@
+-def say_goodbye(name: str) -> str:
++DEFAULT_FAREWELL = "Goodbye"
++
++def say_goodbye(name: str, farewell: str = DEFAULT_FAREWELL) -> str:
+     if not name:
+         raise ValueError("name required")
+-    return f"Goodbye, {name}!"
++    return f"{farewell}, {name}!"
+diff --git a/src/greeter.py b/src/greeter.py
+index 0faa2d4..db927ef 100644
+--- a/src/greeter.py
++++ b/src/greeter.py
+@@ -1,4 +1,6 @@
+-def greet(name: str) -> str:
++DEFAULT_GREETING = "Hello"
++
++def greet(name: str, greeting: str = DEFAULT_GREETING) -> str:
+     if not name:
+         raise ValueError("name must not be empty")
+-    return f"Hello, {name}!"
++    return f"{greeting}, {name}!"

@@ -35,7 +35,7 @@ class OverallChangeEntropy(OverallMetric):
                 value=MetricValue(name=self.name, value=0.0, value_type=self.value_type)
             )
 
-        entropy = -sum((v / total) * math.log2(v / total) for v in values)
+        entropy = -sum((v / total) * math.log2(v / total) for v in values) + 0.0
         return OverallMetricResult(
             value=MetricValue(name=self.name, value=entropy, value_type=self.value_type)
         )

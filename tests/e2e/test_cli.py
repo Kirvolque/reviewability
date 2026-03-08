@@ -1,89 +1,52 @@
 import json
 import subprocess
 import sys
-import tempfile
 from pathlib import Path
 
-FIXTURES_DIR = Path(__file__).parent.parent / "fixtures"
-MULTI_FILE_DIFF = FIXTURES_DIR / "multi_file_change.diff"
+import pytest
+
+CASES_DIR = Path(__file__).parent / "cases"
+
+_pass_cases = sorted(p.name for p in CASES_DIR.iterdir() if p.name.startswith("pass_"))
+_fail_cases = sorted(p.name for p in CASES_DIR.iterdir() if p.name.startswith("fail_"))
+
+_EXPECTED_EXIT_CODE = {"pass": 0, "fail": 1}
 
 
-def _write_config(content: str) -> Path:
-    """Write a TOML config to a temporary file and return its path."""
-    tmp = tempfile.NamedTemporaryFile(suffix=".toml", delete=False, mode="w")
-    tmp.write(content)
-    tmp.close()
-    return Path(tmp.name)
-
-
-def test_passing_analysis() -> None:
-    """Permissive config should result in a passing analysis with exit code 0."""
-    config_content = """\
-[reviewability]
-min_overall_score = 0.0
-max_diff_lines = 1000
-max_hunk_lines = 200
-hunk_score_threshold = 0.1
-file_score_threshold = 0.1
-max_problematic_hunks = 100
-max_problematic_files = 100
-"""
-    config_path = _write_config(config_content)
-    try:
-        diff_text = MULTI_FILE_DIFF.read_text()
-        cmd = [
+def _run(case_name: str) -> tuple[int, dict]:
+    case = CASES_DIR / case_name
+    diff_text = (case / "diff.patch").read_text()
+    config_path = case / "config.toml"
+    result = subprocess.run(
+        [
             sys.executable,
             "-m",
             "reviewability.cli",
             "--from-stdin",
             "--config",
             str(config_path),
-        ]
-        result = subprocess.run(cmd, input=diff_text, capture_output=True, text=True)
-        assert result.returncode == 0, (
-            f"Expected exit code 0, got {result.returncode}.\nstderr: {result.stderr}"
-        )
-        output = json.loads(result.stdout)
-        assert output["passed"] is True
-        assert 0.0 <= output["score"] <= 1.0
-        assert output["files_changed"] > 0
-        assert output["hunks_changed"] > 0
-        assert isinstance(output["violations"], list)
-        assert output["recommendations"] == []
-    finally:
-        config_path.unlink(missing_ok=True)
+        ],
+        input=diff_text,
+        capture_output=True,
+        text=True,
+    )
+    output = json.loads(result.stdout)
+    return result.returncode, output
 
 
-def test_failing_analysis() -> None:
-    """Strict config should result in a failing analysis with exit code 1."""
-    config_content = """\
-[reviewability]
-min_overall_score = 0.99
-max_diff_lines = 1
-max_hunk_lines = 200
-hunk_score_threshold = 0.1
-file_score_threshold = 0.1
-max_problematic_hunks = 100
-max_problematic_files = 100
-"""
-    config_path = _write_config(config_content)
-    try:
-        diff_text = MULTI_FILE_DIFF.read_text()
-        cmd = [
-            sys.executable,
-            "-m",
-            "reviewability.cli",
-            "--from-stdin",
-            "--config",
-            str(config_path),
-        ]
-        result = subprocess.run(cmd, input=diff_text, capture_output=True, text=True)
-        assert result.returncode == 1, (
-            f"Expected exit code 1, got {result.returncode}.\nstderr: {result.stderr}"
-        )
-        output = json.loads(result.stdout)
-        assert output["passed"] is False
-        assert len(output["violations"]) > 0
-        assert 0.0 <= output["score"] <= 1.0
-    finally:
-        config_path.unlink(missing_ok=True)
+@pytest.mark.parametrize("case_name", _pass_cases)
+def test_pass_case(case_name: str) -> None:
+    case = CASES_DIR / case_name
+    expected = json.loads((case / "expected.json").read_text())
+    returncode, output = _run(case_name)
+    assert returncode == 0, f"[{case_name}] expected exit 0, got {returncode}"
+    assert output == expected, f"[{case_name}] output mismatch"
+
+
+@pytest.mark.parametrize("case_name", _fail_cases)
+def test_fail_case(case_name: str) -> None:
+    case = CASES_DIR / case_name
+    expected = json.loads((case / "expected.json").read_text())
+    returncode, output = _run(case_name)
+    assert returncode == 1, f"[{case_name}] expected exit 1, got {returncode}"
+    assert output == expected, f"[{case_name}] output mismatch"
