@@ -1,6 +1,7 @@
 from reviewability.config.models import ReviewabilityConfig
 from reviewability.domain.models import Diff
 from reviewability.domain.report import AnalysisReport
+from reviewability.metrics.engine import MetricEngine
 from reviewability.metrics.file import (
     FileAddedLines,
     FileHunkCount,
@@ -26,7 +27,8 @@ from reviewability.metrics.overall import (
     OverallRemovedLines,
 )
 from reviewability.metrics.registry import MetricRegistry
-from reviewability.rules.engine import Rule, RuleEngine, RuleViolation, Severity
+from reviewability.rules.definitions import hunk_rules, overall_rules
+from reviewability.rules.engine import RuleEngine, RuleViolation
 from reviewability.scoring.weighted import MetricWeight, WeightedReviewabilityScorer
 
 
@@ -66,52 +68,6 @@ def _build_scorer(config: ReviewabilityConfig) -> WeightedReviewabilityScorer:
     )
 
 
-def _build_hunk_rules(config: ReviewabilityConfig) -> list[Rule]:
-    return [
-        Rule(
-            severity=Severity.WARNING,
-            check=lambda m: (
-                f"Hunk has {v.value} lines, exceeds limit of {config.max_hunk_lines}"
-                if (v := m.get("hunk.lines_changed")) is not None
-                and v.value > config.max_hunk_lines
-                else None
-            ),
-        ),
-    ]
-
-
-def _build_overall_rules(config: ReviewabilityConfig) -> list[Rule]:
-    return [
-        Rule(
-            severity=Severity.ERROR,
-            check=lambda m: (
-                f"Diff has {v.value} lines changed, exceeds limit of {config.max_diff_lines}"
-                if (v := m.get("overall.lines_changed")) is not None
-                and v.value > config.max_diff_lines
-                else None
-            ),
-        ),
-        Rule(
-            severity=Severity.WARNING,
-            check=lambda m: (
-                f"Diff has {v.value} problematic hunks, exceeds limit of {config.max_problematic_hunks}"  # noqa: E501
-                if (v := m.get("overall.problematic_hunk_count")) is not None
-                and v.value > config.max_problematic_hunks
-                else None
-            ),
-        ),
-        Rule(
-            severity=Severity.WARNING,
-            check=lambda m: (
-                f"Diff has {v.value} problematic files, exceeds limit of {config.max_problematic_files}"  # noqa: E501
-                if (v := m.get("overall.problematic_file_count")) is not None
-                and v.value > config.max_problematic_files
-                else None
-            ),
-        ),
-    ]
-
-
 class Analyzer:
     """Runs diff analysis and rule evaluation driven by a ReviewabilityConfig.
 
@@ -120,10 +76,11 @@ class Analyzer:
     """
 
     def __init__(self, config: ReviewabilityConfig) -> None:
-        self._registry = _build_registry(config)
-        self._scorer = _build_scorer(config)
-        self._hunk_rules = RuleEngine(_build_hunk_rules(config))
-        self._overall_rules = RuleEngine(_build_overall_rules(config))
+        registry = _build_registry(config)
+        scorer = _build_scorer(config)
+        self._engine = MetricEngine(registry, scorer)
+        self._hunk_rules = RuleEngine(hunk_rules(config))
+        self._overall_rules = RuleEngine(overall_rules(config))
 
     def run(self, diff: Diff) -> tuple[AnalysisReport, list[RuleViolation]]:
         """Analyze a diff and return the report with all rule violations.
@@ -131,7 +88,7 @@ class Analyzer:
         Hunk-level rules are evaluated against each hunk's metrics.
         Overall rules are evaluated against the diff-level metrics.
         """
-        report = self._registry.run(diff, self._scorer)
+        report = self._engine.run(diff)
 
         hunk_violations = [
             violation

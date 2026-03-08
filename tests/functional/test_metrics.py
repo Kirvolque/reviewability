@@ -12,6 +12,7 @@ from reviewability.domain.report import (
 from reviewability.metrics.file import FileHunkCount, FileLinesChanged
 from reviewability.metrics.hunk import HunkAddedLines, HunkLinesChanged, HunkRemovedLines
 from reviewability.metrics.overall import OverallFilesChanged, OverallLinesChanged
+from reviewability.metrics.engine import MetricEngine
 from reviewability.metrics.registry import MetricRegistry
 from reviewability.parser.git import parse_diff_text
 from reviewability.scoring.weighted import MetricWeight, WeightedReviewabilityScorer
@@ -49,7 +50,7 @@ def make_scorer() -> WeightedReviewabilityScorer:
 def test_logic_change_report():
     diff = parse_diff_text(load("logic_change.diff"))
     scorer = make_scorer()
-    report = make_registry().run(diff, scorer)
+    report = MetricEngine(make_registry(), scorer).run(diff)
 
     overall_metrics = MetricResults(
         [
@@ -95,7 +96,7 @@ def test_logic_change_report():
 
 def test_multi_file_change_report():
     diff = parse_diff_text(load("multi_file_change.diff"))
-    report = make_registry().run(diff, make_scorer())
+    report = MetricEngine(make_registry(), make_scorer()).run(diff)
 
     assert len(report.overall.metrics) == 2
     assert len(report.files) == 2
