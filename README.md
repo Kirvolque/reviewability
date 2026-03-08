@@ -45,11 +45,26 @@ reviewability --config path/to/reviewability.toml HEAD~1 HEAD
 
 Metrics are grounded in peer-reviewed research on code review effectiveness:
 
-- Jureczko et al. — *Code review effectiveness: an empirical study on selected factors influence* (IET Software, 2021)
-- McIntosh et al. — *An Empirical Study of the Impact of Modern Code Review Practices on Software Quality* (EMSE, 2015)
-- McIntosh et al. — *The Impact of Code Review Coverage and Code Review Participation on Software Quality* (EMSE, 2016)
-- Fregnan et al. — *First Come First Served: The Impact of File Position on Code Review* (EMSE, 2022)
-- Uchôa et al. — *Predicting Design Impactful Changes in Modern Code Review* (MSR, 2020)
-- Baum et al. — *The Choice of Code Review Process: A Survey on the State of the Practice* (EMSE, 2019)
-- Hijazi et al. — *Using Biometric Data to Measure Code Review Quality* (TSE, 2021)
-- Olewicki et al. — *Towards Better Code Reviews: Using Mutation Testing to Prioritise Code Changes* (2024)
+- Jureczko et al. — *Code review effectiveness: an empirical study on selected factors influence* (IET Software, 2021)  
+  https://doi.org/10.1049/iet-sen.2020.0134
+
+- McIntosh et al. — *An Empirical Study of the Impact of Modern Code Review Practices on Software Quality* (EMSE, 2015)  
+  https://doi.org/10.1007/s10664-015-9381-9
+
+- McIntosh et al. — *The Impact of Code Review Coverage and Code Review Participation on Software Quality* (MSR, 2014)  
+  https://doi.org/10.1145/2597073.2597076
+
+- Fregnan et al. — First Come First Served: The Impact of File Position on Code Review (EMSE, 2022)
+  https://doi.org/10.1007/s10664-021-10034-0
+
+- Uchôa et al. — *Predicting Design Impactful Changes in Modern Code Review* (MSR, 2020)  
+  https://doi.org/10.1145/3379597.3387480
+
+- Baum et al. — *The Choice of Code Review Process: A Survey on the State of the Practice* (EMSE, 2019)  
+  https://doi.org/10.1007/s10664-018-9657-6
+
+- Hijazi et al. — *Using Biometric Data to Measure Code Review Quality* (TSE, 2021)  
+  https://doi.org/10.1109/TSE.2020.2992169
+
+- Olewicki et al. — *Towards Better Code Reviews: Using Mutation Testing to Prioritise Code Changes* (2024)  
+  https://arxiv.org/abs/2402.01860
