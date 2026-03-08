@@ -1,0 +1,98 @@
+{
+  "score": 0.5,
+  "passed": true,
+  "violations": [],
+  "recommendations": [],
+  "files_changed": 1,
+  "hunks_changed": 1,
+  "overall": [
+    {
+      "name": "overall.files_changed",
+      "value": 1
+    },
+    {
+      "name": "overall.lines_changed",
+      "value": 25
+    },
+    {
+      "name": "overall.added_lines",
+      "value": 5
+    },
+    {
+      "name": "overall.removed_lines",
+      "value": 20
+    },
+    {
+      "name": "overall.problematic_hunk_count",
+      "value": 0
+    },
+    {
+      "name": "overall.problematic_file_count",
+      "value": 0
+    },
+    {
+      "name": "overall.change_entropy",
+      "value": 0.0
+    },
+    {
+      "name": "overall.largest_file_ratio",
+      "value": 1.0
+    }
+  ],
+  "files": [
+    {
+      "file": "src/legacy.py",
+      "score": 0.5,
+      "metrics": [
+        {
+          "name": "file.hunk_count",
+          "value": 1
+        },
+        {
+          "name": "file.lines_changed",
+          "value": 25
+        },
+        {
+          "name": "file.added_lines",
+          "value": 5
+        },
+        {
+          "name": "file.removed_lines",
+          "value": 20
+        },
+        {
+          "name": "file.max_hunk_lines",
+          "value": 25
+        }
+      ]
+    }
+  ],
+  "hunks": [
+    {
+      "file": "src/legacy.py",
+      "score": 0.5,
+      "metrics": [
+        {
+          "name": "hunk.lines_changed",
+          "value": 25
+        },
+        {
+          "name": "hunk.added_lines",
+          "value": 5
+        },
+        {
+          "name": "hunk.removed_lines",
+          "value": 20
+        },
+        {
+          "name": "hunk.context_lines",
+          "value": 0
+        },
+        {
+          "name": "hunk.churn_ratio",
+          "value": 0.2
+        }
+      ]
+    }
+  ]
+}
