@@ -27,3 +27,6 @@ class ReviewabilityConfig:
 
     max_hunk_lines: int = 50
     """Maximum lines changed in a single hunk."""
+
+    min_overall_score: float = 0.5
+    """Overall diff score below this causes the gate to fail. Range [0.0, 1.0]."""

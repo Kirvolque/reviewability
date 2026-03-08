@@ -6,6 +6,7 @@ from pathlib import Path
 from reviewability.analyzer import create_analyzer
 from reviewability.config.models import ReviewabilityConfig
 from reviewability.config.parser import parse_config
+from reviewability.gate import QualityGate
 from reviewability.parser.git import parse_diff_text, parse_git_diff
 
 _DEFAULT_CONFIG = Path("reviewability.toml")
@@ -44,6 +45,7 @@ def main() -> None:
     diff = parse_diff_text(sys.stdin.read()) if args.from_stdin else parse_git_diff(*args.git_args)
     config = _load_config(args.config)
     report, violations = create_analyzer(config).run(diff)
+    gate_result = QualityGate(config).evaluate(report, violations)
 
     output = {
         "score": report.overall.score,
@@ -67,9 +69,14 @@ def main() -> None:
             for h in report.hunks
         ],
         "violations": [str(v) for v in violations],
+        "passed": gate_result.passed,
+        "recommendations": gate_result.recommendations,
     }
 
     print(json.dumps(output, indent=2))
+
+    if not gate_result.passed:
+        sys.exit(1)
 
 
 if __name__ == "__main__":

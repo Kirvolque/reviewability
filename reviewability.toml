@@ -18,3 +18,7 @@ max_problematic_files = 2
 
 # Maximum lines changed in a single hunk.
 max_hunk_lines = 50
+
+# Overall diff score below this causes the gate to fail.
+# Scores range from 0.0 (hardest to review) to 1.0 (easiest to review).
+min_overall_score = 0.5
