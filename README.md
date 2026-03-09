@@ -8,8 +8,8 @@ A tool that scores the reviewability of code changes.
 
 ## The Idea
 
-A diff can be hard to review not because the code is bad, but because the
-*representation* of the change obscures **what** happened. A block moved and
+A diff can be hard to review not because the code is poorly written, but because the
+*intent* of the change is unclear from the diff itself. A block moved and
 reindented looks like a wall of red and green even if nothing changed logically.
 Unlike linters, it does not analyze the code — only the diff as a whole.
 
@@ -51,19 +51,13 @@ Output is JSON. Exit code is `0` if the gate passes, `1` if it fails.
 
 ## Overall Scoring
 
-The overall score is computed as:
+The overall score is driven by two factors: **diff size** and **churn complexity**.
 
-```
-score = 1 − size_ratio × (1 + churn_complexity)
-```
-
-where:
-- **`size_ratio`** = `min(lines_changed / max_diff_lines, 1.0)` — how close the diff is to the configured size limit
-- **`churn_complexity`** = average interleaving per hunk; `0.0` means all hunks are directional (pure additions or pure deletions), `1.0` means all hunks equally mix adds and removes
-
-The formula means: **the larger the diff, the less complexity is tolerated.**
-A small diff can have interleaved changes without penalty; a diff approaching the size limit
-needs to be directional (deletions separate from additions) to score well.
+A larger diff is harder to review. A diff where adds and removes are interleaved within the
+same hunks is harder to review than one where they are separated. The score penalizes both —
+but only when they occur together. A large but directional diff (e.g. a bulk rename) scores
+well. A small but tangled diff also scores well. The worst score comes from a diff that is
+both large *and* internally mixed.
 
 ## Research
 
