@@ -13,8 +13,8 @@ class HunkChurnRatio(HunkMetric):
         "Values near 0.0 indicate a mostly-deletion hunk; near 1.0, a mostly-addition hunk."
     )
     remediation: str = (
-        "Balance additions with corresponding deletions, or split pure additions "
-        "into a separate commit."
+        "This hunk mixes deletions and additions together, making it hard to follow. "
+        "Split into two separate commits: one that removes the old code, one that adds the new."
     )
 
     @override
