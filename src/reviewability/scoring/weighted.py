@@ -2,6 +2,8 @@ from dataclasses import dataclass
 from typing import override
 
 from reviewability.domain.report import MetricResults
+from reviewability.metrics.overall.churn_complexity import OverallChurnComplexity
+from reviewability.metrics.overall.lines_changed import OverallLinesChanged
 from reviewability.scoring.base import ReviewabilityScorer
 
 
@@ -95,10 +97,15 @@ class SizeChurnWeightedScorer(WeightedReviewabilityScorer):
     @override
     def overall_score(self, metrics: MetricResults) -> float:
         """Score = max(0, 1 − size_ratio × (1 + churn_complexity))."""
-        lines = metrics.get("overall.lines_changed")
+        lines = metrics.get(OverallLinesChanged.name)
         if lines is None:
             return 1.0
         size_ratio = min(lines.value / self._max_diff_lines, 1.0)
-        churn_mv = metrics.get("overall.churn_complexity")
+        churn_mv = metrics.get(OverallChurnComplexity.name)
         churn = churn_mv.value if churn_mv is not None else 0.0
         return max(0.0, 1.0 - size_ratio * (1.0 + churn))
+
+    @override
+    def overall_score_inputs(self) -> set[str]:
+        return {OverallLinesChanged.name, OverallChurnComplexity.name}
+
