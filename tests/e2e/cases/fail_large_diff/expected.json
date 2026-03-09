@@ -2,6 +2,7 @@
   "score": 0.0,
   "passed": false,
   "violations": [
+    "[ERROR] Overall score 0.00 is below the minimum of 0.99",
     "[ERROR] Diff has 12 lines changed, exceeds limit of 1"
   ],
   "recommendations": [

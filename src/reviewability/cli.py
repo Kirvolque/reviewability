@@ -50,7 +50,7 @@ def main() -> None:
     diff = parse_diff_text(sys.stdin.read()) if args.from_stdin else parse_git_diff(*args.git_args)
     config = _load_config(args.config)
     report, violations = create_analyzer(config).run(diff)
-    gate_result = QualityGate(config).evaluate(report, violations)
+    gate_result = QualityGate().evaluate(report, violations)
 
     recommendations = [
         {

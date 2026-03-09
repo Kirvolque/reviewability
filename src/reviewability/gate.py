@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from typing import Any
 
-from reviewability.config.models import ReviewabilityConfig
 from reviewability.domain.report import AnalysisReport, FileAnalysis, HunkAnalysis, MetricValue
 from reviewability.metrics.hunk.churn_ratio import HunkChurnRatio
 from reviewability.metrics.overall.churn_complexity import OverallChurnComplexity
@@ -50,14 +49,9 @@ class QualityGate:
     - Any rule violation has ERROR severity
     """
 
-    def __init__(self, config: ReviewabilityConfig) -> None:
-        self._config = config
-
     def evaluate(self, report: AnalysisReport, violations: list[RuleViolation]) -> GateResult:
         """Evaluate the analysis report and return a gate result."""
-        score_failed = report.overall.score < self._config.min_overall_score
-        error_violations = any(v.rule.severity == Severity.ERROR for v in violations)
-        passed = not score_failed and not error_violations
+        passed = not any(v.rule.severity == Severity.ERROR for v in violations)
         recommendations = self._build_recommendations(report) if not passed else []
         return GateResult(passed=passed, recommendations=recommendations)
 
