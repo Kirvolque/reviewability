@@ -7,66 +7,6 @@
   ],
   "recommendations": [
     {
-      "location": "src/farewell.py",
-      "metric": "file.hunk_count",
-      "value": 1,
-      "remediation": "Consider grouping related changes to reduce scattered edits."
-    },
-    {
-      "location": "src/farewell.py",
-      "metric": "file.lines_changed",
-      "value": 6,
-      "remediation": "Split large file changes across multiple commits or pull requests."
-    },
-    {
-      "location": "src/farewell.py",
-      "metric": "file.added_lines",
-      "value": 4,
-      "remediation": "Break large additions into smaller, reviewable pull requests."
-    },
-    {
-      "location": "src/farewell.py",
-      "metric": "file.removed_lines",
-      "value": 2,
-      "remediation": "Ensure deletions are isolated from unrelated additions."
-    },
-    {
-      "location": "src/farewell.py",
-      "metric": "file.max_hunk_lines",
-      "value": 6,
-      "remediation": "Split the large hunk into smaller, focused changes."
-    },
-    {
-      "location": "src/greeter.py",
-      "metric": "file.hunk_count",
-      "value": 1,
-      "remediation": "Consider grouping related changes to reduce scattered edits."
-    },
-    {
-      "location": "src/greeter.py",
-      "metric": "file.lines_changed",
-      "value": 6,
-      "remediation": "Split large file changes across multiple commits or pull requests."
-    },
-    {
-      "location": "src/greeter.py",
-      "metric": "file.added_lines",
-      "value": 4,
-      "remediation": "Break large additions into smaller, reviewable pull requests."
-    },
-    {
-      "location": "src/greeter.py",
-      "metric": "file.removed_lines",
-      "value": 2,
-      "remediation": "Ensure deletions are isolated from unrelated additions."
-    },
-    {
-      "location": "src/greeter.py",
-      "metric": "file.max_hunk_lines",
-      "value": 6,
-      "remediation": "Split the large hunk into smaller, focused changes."
-    },
-    {
       "location": "src/farewell.py @@ -1,4 +1,6 @@",
       "metric": "hunk.churn_ratio",
       "value": 0.6666666666666666,

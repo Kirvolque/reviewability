@@ -6,6 +6,12 @@
   ],
   "recommendations": [
     {
+      "location": "src/formatter.py @@ -1,6 +1,6 @@",
+      "metric": "hunk.churn_ratio",
+      "value": 0.5,
+      "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
+    },
+    {
       "location": "src/processor.py @@ -1,5 +1,5 @@",
       "metric": "hunk.churn_ratio",
       "value": 0.5,
@@ -25,12 +31,6 @@
     },
     {
       "location": "src/validator.py @@ -15,4 +15,4 @@",
-      "metric": "hunk.churn_ratio",
-      "value": 0.5,
-      "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
-    },
-    {
-      "location": "src/formatter.py @@ -1,6 +1,6 @@",
       "metric": "hunk.churn_ratio",
       "value": 0.5,
       "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."

@@ -145,14 +145,11 @@ def test_rule_engine_rule_uses_metric_value():
 
 
 def test_rule_engine_rule_uses_score():
-    from reviewability.domain.report import SCORE_KEY
-
     context = make_context(score=0.3)
 
     def check_low_score(s: OverallAnalysis) -> str | None:
-        v = s.get(SCORE_KEY)
-        if v is not None and v.value < 0.5:
-            return f"Score too low: {v.value}"
+        if s.score < 0.5:
+            return f"Score too low: {s.score}"
         return None
 
     rule = Rule(severity=Severity.ERROR, check=check_low_score)

@@ -88,8 +88,6 @@ def test_logic_change_report():
         ]
     )
     assert report.hunks[0].score == scorer.hunk_score(hunk_for_score)
-    # score < 1.0 so causes should be non-empty
-    assert len(report.hunks[0].causes) > 0
 
 
 def test_multi_file_change_report():

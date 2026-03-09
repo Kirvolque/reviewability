@@ -1,9 +1,7 @@
 from reviewability.domain.models import FileDiff, Hunk
 from reviewability.domain.report import (
-    SCORE_KEY,
     Analysis,
     AnalysisReport,
-    Cause,
     MetricResults,
     MetricValue,
     MetricValueType,
@@ -76,9 +74,9 @@ def test_metric_value_type_boolean():
     assert mv.value_type == MetricValueType.BOOLEAN
 
 
-def test_metric_value_remediation_defaults_empty():
+def test_metric_value_remediation_defaults_none():
     mv = MetricValue("a", 1, MetricValueType.INTEGER)
-    assert mv.remediation == ""
+    assert mv.remediation is None
 
 
 def test_metric_value_remediation_set():
@@ -93,9 +91,8 @@ def test_metric_value_causes_defaults_empty():
 
 def test_metric_value_causes_set():
     inner = MetricValue("b", 2, MetricValueType.INTEGER)
-    cause = Cause(value=inner)
-    mv = MetricValue("a", 1, MetricValueType.INTEGER, causes=[cause])
-    assert mv.causes == [cause]
+    mv = MetricValue("a", 1, MetricValueType.INTEGER, causes=[inner])
+    assert mv.causes == [inner]
 
 
 # --- MetricResults tests ---
@@ -177,52 +174,6 @@ def test_metric_results_deduplicates_by_name():
     assert mr.get("a") == mv2
 
 
-# --- Cause tests ---
-
-
-def test_cause_with_metric_value():
-    mv = make_metric_value("m")
-    cause = Cause(value=mv, remediation="Fix it")
-    assert cause.value == mv
-    assert cause.remediation == "Fix it"
-
-
-def test_cause_remediation_defaults_empty():
-    mv = make_metric_value("m")
-    cause = Cause(value=mv)
-    assert cause.remediation == ""
-
-
-def test_cause_with_hunk_analysis():
-    ha = Analysis(subject=make_hunk(), metrics=MetricResults([]), score=0.3)
-    cause = Cause(value=ha)
-    assert cause.value == ha
-    assert cause.remediation == ""
-
-
-def test_cause_with_file_analysis():
-    fa = Analysis(subject=make_file(), metrics=MetricResults([]), score=0.4)
-    cause = Cause(value=fa)
-    assert cause.value == fa
-
-
-def test_cause_frozen():
-    mv = make_metric_value("m")
-    cause = Cause(value=mv)
-    try:
-        cause.remediation = "new"  # type: ignore[misc]
-        assert False, "Should have raised FrozenInstanceError"
-    except Exception:
-        pass
-
-
-def test_cause_equality():
-    mv = make_metric_value("m")
-    c1 = Cause(value=mv, remediation="r")
-    c2 = Cause(value=mv, remediation="r")
-    assert c1 == c2
-
-
 # --- Analysis (hunk) tests ---
 
 
@@ -233,15 +184,6 @@ def test_hunk_analysis_fields():
     assert ha.subject == hunk
     assert ha.metrics == metrics
     assert ha.score == 0.8
-    assert ha.causes == []
-
-
-def test_hunk_analysis_with_causes():
-    hunk = make_hunk()
-    mv = make_metric_value("m")
-    cause = Cause(value=mv, remediation="fix")
-    ha = Analysis(subject=hunk, metrics=MetricResults([mv]), score=0.5, causes=[cause])
-    assert ha.causes == [cause]
 
 
 def test_hunk_analysis_frozen():
@@ -269,15 +211,6 @@ def test_analysis_get_metric():
     assert ha.get("m") == mv
 
 
-def test_analysis_get_score_key():
-    ha = Analysis(subject=make_hunk(), metrics=MetricResults([]), score=0.75)
-    result = ha.get(SCORE_KEY)
-    assert result is not None
-    assert result.name == SCORE_KEY
-    assert result.value == 0.75
-    assert result.value_type == MetricValueType.RATIO
-
-
 def test_analysis_get_missing_returns_none():
     ha = Analysis(subject=make_hunk(), metrics=MetricResults([]), score=1.0)
     assert ha.get("nonexistent") is None
@@ -293,14 +226,6 @@ def test_file_analysis_fields():
     assert fa.subject == f
     assert fa.metrics == metrics
     assert fa.score == 0.7
-    assert fa.causes == []
-
-
-def test_file_analysis_with_causes():
-    mv = make_metric_value("m")
-    cause = Cause(value=mv, remediation="hint")
-    fa = Analysis(subject=make_file(), metrics=MetricResults([mv]), score=0.3, causes=[cause])
-    assert fa.causes == [cause]
 
 
 def test_file_analysis_frozen():
@@ -310,17 +235,6 @@ def test_file_analysis_frozen():
         assert False, "Should have raised FrozenInstanceError"
     except Exception:
         pass
-
-
-def test_file_analysis_multiple_causes():
-    mv1 = make_metric_value("a")
-    mv2 = make_metric_value("b")
-    c1 = Cause(value=mv1)
-    c2 = Cause(value=mv2)
-    fa = Analysis(
-        subject=make_file(), metrics=MetricResults([mv1, mv2]), score=0.2, causes=[c1, c2]
-    )
-    assert len(fa.causes) == 2
 
 
 # --- OverallAnalysis tests ---
@@ -346,15 +260,6 @@ def test_overall_analysis_get_metric():
     mv = make_metric_value("overall.m")
     oa = OverallAnalysis(metrics=MetricResults([mv]), score=0.5)
     assert oa.get("overall.m") == mv
-
-
-def test_overall_analysis_get_score_key():
-    oa = OverallAnalysis(metrics=MetricResults([]), score=0.42)
-    result = oa.get(SCORE_KEY)
-    assert result is not None
-    assert result.name == SCORE_KEY
-    assert result.value == 0.42
-    assert result.value_type == MetricValueType.RATIO
 
 
 def test_overall_analysis_get_missing_returns_none():
@@ -401,10 +306,3 @@ def test_analysis_report_multiple_hunks_and_files():
     report = AnalysisReport(overall=oa, files=[fa1, fa2], hunks=[ha1, ha2])
     assert len(report.hunks) == 2
     assert len(report.files) == 2
-
-
-# --- SCORE_KEY tests ---
-
-
-def test_score_key_value():
-    assert SCORE_KEY == "score"
