@@ -1,8 +1,7 @@
 from typing import override
 
 from reviewability.domain.report import (
-    FileAnalysis,
-    HunkAnalysis,
+    Analysis,
     MetricValue,
     MetricValueType,
     OverallMetricResult,
@@ -20,9 +19,7 @@ class OverallLargestFileRatio(OverallMetric):
     remediation: str = "Split the diff so no single file dominates, or group scattered changes."
 
     @override
-    def calculate(
-        self, hunks: list[HunkAnalysis], files: list[FileAnalysis]
-    ) -> OverallMetricResult:
+    def calculate(self, hunks: list[Analysis], files: list[Analysis]) -> OverallMetricResult:
         values = [m.value for f in files if (m := f.metrics.get("file.lines_changed")) is not None]
         total = sum(values)
         ratio = max(values) / total if total > 0 else 0.0

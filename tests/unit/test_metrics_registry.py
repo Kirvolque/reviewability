@@ -1,7 +1,6 @@
 from reviewability.domain.models import FileDiff, Hunk
 from reviewability.domain.report import (
-    FileAnalysis,
-    HunkAnalysis,
+    Analysis,
     MetricValue,
     MetricValueType,
     OverallMetricResult,
@@ -56,9 +55,7 @@ class _SimpleOverallMetric(OverallMetric):
     description = "A test overall metric"
     remediation = ""
 
-    def calculate(
-        self, hunks: list[HunkAnalysis], files: list[FileAnalysis]
-    ) -> OverallMetricResult:
+    def calculate(self, hunks: list[Analysis], files: list[Analysis]) -> OverallMetricResult:
         return OverallMetricResult(
             value=MetricValue(self.name, 0, self.value_type),
         )
@@ -70,9 +67,7 @@ class _AnotherOverallMetric(OverallMetric):
     description = "Another overall metric"
     remediation = ""
 
-    def calculate(
-        self, hunks: list[HunkAnalysis], files: list[FileAnalysis]
-    ) -> OverallMetricResult:
+    def calculate(self, hunks: list[Analysis], files: list[Analysis]) -> OverallMetricResult:
         return OverallMetricResult(
             value=MetricValue(self.name, 0, self.value_type),
         )
@@ -208,9 +203,7 @@ def test_duplicate_overall_metric_is_replaced():
         description = "Replacement"
         remediation = ""
 
-        def calculate(
-            self, hunks: list[HunkAnalysis], files: list[FileAnalysis]
-        ) -> OverallMetricResult:
+        def calculate(self, hunks: list[Analysis], files: list[Analysis]) -> OverallMetricResult:
             return OverallMetricResult(value=MetricValue(self.name, 99, self.value_type))
 
     original = _SimpleOverallMetric()

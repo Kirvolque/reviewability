@@ -1,13 +1,13 @@
 from reviewability.domain.models import FileDiff
-from reviewability.domain.report import FileAnalysis, MetricResults, MetricValue, MetricValueType
+from reviewability.domain.report import Analysis, MetricResults, MetricValue, MetricValueType
 from reviewability.metrics.overall.files_changed import OverallFilesChanged
 
 metric = OverallFilesChanged()
 
 
-def make_file_analysis(score: float = 1.0) -> FileAnalysis:
-    return FileAnalysis(
-        file=FileDiff(path="a.py", old_path=None, is_new_file=False, is_deleted_file=False),
+def make_file_analysis(score: float = 1.0) -> Analysis:
+    return Analysis(
+        subject=FileDiff(path="a.py", old_path=None, is_new_file=False, is_deleted_file=False),
         metrics=MetricResults([]),
         score=score,
     )

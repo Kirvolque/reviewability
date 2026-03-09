@@ -1,5 +1,4 @@
 from reviewability.config.models import ReviewabilityConfig
-from reviewability.domain.report import Statistics
 from reviewability.rules.engine import Rule, Severity
 
 

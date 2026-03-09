@@ -1,9 +1,11 @@
 from dataclasses import dataclass
 from typing import Any
 
-from reviewability.domain.report import AnalysisReport, FileAnalysis, HunkAnalysis, MetricValue
+from reviewability.domain.models import FileDiff, Hunk
+from reviewability.domain.report import Analysis, AnalysisReport, MetricValue
 from reviewability.metrics.hunk.churn_ratio import HunkChurnRatio
 from reviewability.metrics.overall.churn_complexity import OverallChurnComplexity
+from reviewability.metrics.overall.lines_changed import OverallLinesChanged
 from reviewability.rules.engine import RuleViolation, Severity
 
 # Maps an overall metric to the single hunk/file metric that best explains its value.
@@ -11,6 +13,8 @@ from reviewability.rules.engine import RuleViolation, Severity
 _FOCUS_METRIC: dict[str, str] = {
     OverallChurnComplexity.name: HunkChurnRatio.name,
 }
+
+_SCORER_INPUTS = {OverallLinesChanged.name, OverallChurnComplexity.name}
 
 
 @dataclass(frozen=True)
@@ -60,8 +64,8 @@ class QualityGate:
         for omr in report.overall.metric_results:
             focus = _FOCUS_METRIC.get(omr.value.name)
             for cause in omr.causes:
-                if isinstance(cause.value, FileAnalysis):
-                    location = cause.value.file.path
+                if isinstance(cause.value, Analysis) and isinstance(cause.value.subject, FileDiff):
+                    location = cause.value.subject.path
                     for inner in cause.value.causes:
                         if isinstance(inner.value, MetricValue):
                             if focus is None or inner.value.name == focus:
@@ -73,8 +77,8 @@ class QualityGate:
                                         remediation=inner.remediation,
                                     )
                                 )
-                elif isinstance(cause.value, HunkAnalysis):
-                    hunk = cause.value.hunk
+                elif isinstance(cause.value, Analysis) and isinstance(cause.value.subject, Hunk):
+                    hunk = cause.value.subject
                     location = (
                         f"{hunk.file_path}"
                         f" @@ -{hunk.source_start},{hunk.source_length}"
@@ -93,17 +97,14 @@ class QualityGate:
                                 )
 
         if not recs:
-            # Fallback: no sub-cause recommendations found; surface the overall-level
-            # metrics that actually drove the score (filtered by scorer.overall_score_inputs).
-            # Skip zero-valued metrics — a metric at 0 did not contribute to the failure.
-            for cause in report.overall.causes:
-                if isinstance(cause.value, MetricValue) and cause.value.value:
+            for omr in report.overall.metric_results:
+                if omr.value.name in _SCORER_INPUTS and omr.value.value:
                     recs.append(
                         Recommendation(
                             location="overall",
-                            metric=cause.value.name,
-                            value=cause.value.value,
-                            remediation=cause.remediation,
+                            metric=omr.value.name,
+                            value=omr.value.value,
+                            remediation=omr.remediation,
                         )
                     )
         return recs

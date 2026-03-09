@@ -1,8 +1,7 @@
 from typing import override
 
 from reviewability.domain.report import (
-    FileAnalysis,
-    HunkAnalysis,
+    Analysis,
     MetricValue,
     MetricValueType,
     OverallMetricResult,
@@ -17,9 +16,7 @@ class OverallRemovedLines(OverallMetric):
     remediation: str = "Ensure large deletions are reviewed separately from additions."
 
     @override
-    def calculate(
-        self, hunks: list[HunkAnalysis], files: list[FileAnalysis]
-    ) -> OverallMetricResult:
+    def calculate(self, hunks: list[Analysis], files: list[Analysis]) -> OverallMetricResult:
         value = sum(
             m.value for h in hunks if (m := h.metrics.get("hunk.removed_lines")) is not None
         )

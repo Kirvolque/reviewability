@@ -1,15 +1,15 @@
 import math
 
 from reviewability.domain.models import FileDiff
-from reviewability.domain.report import FileAnalysis, MetricResults, MetricValue, MetricValueType
+from reviewability.domain.report import Analysis, MetricResults, MetricValue, MetricValueType
 from reviewability.metrics.overall.change_entropy import OverallChangeEntropy
 
 metric = OverallChangeEntropy()
 
 
-def make_file_analysis(lines_changed: int) -> FileAnalysis:
-    return FileAnalysis(
-        file=FileDiff(path="a.py", old_path=None, is_new_file=False, is_deleted_file=False),
+def make_file_analysis(lines_changed: int) -> Analysis:
+    return Analysis(
+        subject=FileDiff(path="a.py", old_path=None, is_new_file=False, is_deleted_file=False),
         metrics=MetricResults(
             [MetricValue("file.lines_changed", lines_changed, MetricValueType.INTEGER)]
         ),
@@ -63,9 +63,9 @@ def test_all_files_zero_lines():
 
 
 def test_file_missing_metric_is_excluded():
-    # A FileAnalysis without file.lines_changed must be silently ignored.
-    file_without_metric = FileAnalysis(
-        file=FileDiff(path="b.py", old_path=None, is_new_file=False, is_deleted_file=False),
+    # An Analysis without file.lines_changed must be silently ignored.
+    file_without_metric = Analysis(
+        subject=FileDiff(path="b.py", old_path=None, is_new_file=False, is_deleted_file=False),
         metrics=MetricResults([]),
         score=1.0,
     )

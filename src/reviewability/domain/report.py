@@ -63,40 +63,25 @@ class Cause:
 
     ``value`` can be any analysis object or metric value:
     - ``MetricValue`` — a specific metric that drove a score below 1.0
-    - ``HunkAnalysis`` — a hunk counted as problematic by an overall metric
-    - ``FileAnalysis`` — a file counted as problematic by an overall metric
+    - ``Analysis`` — a hunk or file counted as problematic by an overall metric
 
     ``remediation`` is populated when ``value`` is a ``MetricValue``;
     empty otherwise (the inner analysis object carries its own causes).
     """
 
-    value: MetricValue | HunkAnalysis | FileAnalysis
+    value: MetricValue | Analysis
     remediation: str = ""
 
 
 @dataclass(frozen=True)
-class HunkAnalysis:
-    """All metric results for a single hunk, plus its reviewability score.
+class Analysis:
+    """Metric results and reviewability score for a single hunk or file.
 
-    ``causes`` is non-empty when ``score < 1.0``, listing every metric
-    that caused the imperfect score along with its remediation hint.
+    ``subject`` is the domain object being analysed (``Hunk`` or ``FileDiff``).
+    ``causes`` is non-empty when ``score < 1.0``.
     """
 
-    hunk: Hunk
-    metrics: MetricResults
-    score: float
-    causes: list[Cause] = field(default_factory=list)
-
-
-@dataclass(frozen=True)
-class FileAnalysis:
-    """All metric results for a single file, plus its reviewability score.
-
-    ``causes`` is non-empty when ``score < 1.0``, listing every metric
-    that caused the imperfect score along with its remediation hint.
-    """
-
-    file: FileDiff
+    subject: Hunk | FileDiff
     metrics: MetricResults
     score: float
     causes: list[Cause] = field(default_factory=list)
@@ -114,20 +99,19 @@ class OverallMetricResult:
 
     value: MetricValue
     causes: list[Cause] = field(default_factory=list)
+    remediation: str = ""
 
 
 @dataclass(frozen=True)
 class OverallAnalysis:
     """Diff-level metric results and the overall reviewability score.
 
-    ``causes`` is non-empty when ``score < 1.0``.
     ``metric_results`` carries the full per-metric results including any
     traceable causes, enabling downstream recommendation logic.
     """
 
     metrics: MetricResults
     score: float
-    causes: list[Cause] = field(default_factory=list)
     metric_results: list[OverallMetricResult] = field(default_factory=list)
 
 
@@ -177,5 +161,5 @@ class AnalysisReport:
     """
 
     overall: OverallAnalysis
-    files: list[FileAnalysis]
-    hunks: list[HunkAnalysis]
+    files: list[Analysis]
+    hunks: list[Analysis]

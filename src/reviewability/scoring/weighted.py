@@ -1,8 +1,8 @@
 from typing import override
 
 from reviewability.domain.report import MetricResults
-from reviewability.metrics.hunk.lines_changed import HunkLinesChanged
 from reviewability.metrics.file.lines_changed import FileLinesChanged
+from reviewability.metrics.hunk.lines_changed import HunkLinesChanged
 from reviewability.metrics.overall.churn_complexity import OverallChurnComplexity
 from reviewability.metrics.overall.lines_changed import OverallLinesChanged
 from reviewability.scoring.base import ReviewabilityScorer
@@ -42,7 +42,3 @@ class DefaultScorer(ReviewabilityScorer):
         churn_mv = metrics.get(OverallChurnComplexity.name)
         churn = churn_mv.value if churn_mv is not None else 0.0
         return max(0.0, 1.0 - size_ratio * (1.0 + churn))
-
-    @override
-    def overall_score_inputs(self) -> set[str]:
-        return {OverallLinesChanged.name, OverallChurnComplexity.name}

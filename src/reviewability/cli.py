@@ -75,7 +75,7 @@ def main() -> None:
         output["overall"] = [{"name": m.name, "value": m.value} for m in report.overall.metrics]
         output["files"] = [
             {
-                "file": f.file.path,
+                "file": f.subject.path,
                 "score": round(f.score, 2),
                 "metrics": [{"name": m.name, "value": m.value} for m in f.metrics],
             }
@@ -83,7 +83,7 @@ def main() -> None:
         ]
         output["hunks"] = [
             {
-                "file": h.hunk.file_path,
+                "file": h.subject.file_path,
                 "score": round(h.score, 2),
                 "metrics": [{"name": m.name, "value": m.value} for m in h.metrics],
             }
