@@ -1,8 +1,17 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import Callable
+from typing import Callable, Protocol
 
-from reviewability.domain.report import Statistics
+from reviewability.domain.report import MetricValue
+
+
+class RuleContext(Protocol):
+    """Minimal interface required by rules for evaluation."""
+
+    @property
+    def score(self) -> float: ...
+
+    def get(self, name: str) -> MetricValue | None: ...
 
 
 class Severity(Enum):
@@ -12,14 +21,14 @@ class Severity(Enum):
 
 @dataclass(frozen=True)
 class Rule:
-    """A predicate rule evaluated against a Statistics context.
+    """A predicate rule evaluated against a RuleContext.
 
-    ``check`` receives the full statistics (metrics + score) and returns
+    ``check`` receives the full context (metrics + score) and returns
     None if the rule passes, or a human-readable message string if it fails.
     """
 
     severity: Severity
-    check: Callable[[Statistics], str | None]
+    check: Callable[[RuleContext], str | None]
 
 
 @dataclass(frozen=True)
@@ -39,10 +48,10 @@ class RuleEngine:
     def __init__(self, rules: list[Rule]) -> None:
         self._rules = rules
 
-    def evaluate(self, stats: Statistics) -> list[RuleViolation]:
-        """Return all rule violations found in the given statistics."""
+    def evaluate(self, context: RuleContext) -> list[RuleViolation]:
+        """Return all rule violations found in the given context."""
         return [
             RuleViolation(rule=rule, message=message)
             for rule in self._rules
-            if (message := rule.check(stats)) is not None
+            if (message := rule.check(context)) is not None
         ]

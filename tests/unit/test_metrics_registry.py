@@ -3,7 +3,6 @@ from reviewability.domain.report import (
     Analysis,
     MetricValue,
     MetricValueType,
-    OverallMetricResult,
 )
 from reviewability.metrics.base import FileMetric, HunkMetric, OverallMetric
 from reviewability.metrics.registry import MetricRegistry
@@ -55,10 +54,8 @@ class _SimpleOverallMetric(OverallMetric):
     description = "A test overall metric"
     remediation = ""
 
-    def calculate(self, hunks: list[Analysis], files: list[Analysis]) -> OverallMetricResult:
-        return OverallMetricResult(
-            value=MetricValue(self.name, 0, self.value_type),
-        )
+    def calculate(self, hunks: list[Analysis], files: list[Analysis]) -> MetricValue:
+        return MetricValue(self.name, 0, self.value_type)
 
 
 class _AnotherOverallMetric(OverallMetric):
@@ -67,10 +64,8 @@ class _AnotherOverallMetric(OverallMetric):
     description = "Another overall metric"
     remediation = ""
 
-    def calculate(self, hunks: list[Analysis], files: list[Analysis]) -> OverallMetricResult:
-        return OverallMetricResult(
-            value=MetricValue(self.name, 0, self.value_type),
-        )
+    def calculate(self, hunks: list[Analysis], files: list[Analysis]) -> MetricValue:
+        return MetricValue(self.name, 0, self.value_type)
 
 
 # --- MetricRegistry tests ---
@@ -203,8 +198,8 @@ def test_duplicate_overall_metric_is_replaced():
         description = "Replacement"
         remediation = ""
 
-        def calculate(self, hunks: list[Analysis], files: list[Analysis]) -> OverallMetricResult:
-            return OverallMetricResult(value=MetricValue(self.name, 99, self.value_type))
+        def calculate(self, hunks: list[Analysis], files: list[Analysis]) -> MetricValue:
+            return MetricValue(self.name, 99, self.value_type)
 
     original = _SimpleOverallMetric()
     replacement = _Replacement()

@@ -47,42 +47,47 @@ def test_logic_change_report():
     scorer = make_scorer()
     report = MetricEngine(make_registry(), scorer).run(diff)
 
-    overall_metrics = MetricResults(
+    # Check overall metric values (name and value only; remediation varies per metric)
+    assert len(report.overall.metrics) == 2  # 2 overall metrics registered
+    assert report.overall.metrics.get("overall.files_changed").value == 1  # type: ignore[union-attr]
+    assert report.overall.metrics.get("overall.lines_changed").value == 2  # type: ignore[union-attr]
+
+    # Build a MetricResults without remediation for score calculation comparison
+    overall_for_score = MetricResults(
         [
             MetricValue("overall.files_changed", 1, MetricValueType.INTEGER),
             MetricValue("overall.lines_changed", 2, MetricValueType.INTEGER),
         ]
     )
-    file_metrics = MetricResults(
+    assert report.overall.score == scorer.overall_score(overall_for_score)
+
+    # Check files
+    assert len(report.files) == 1
+    assert report.files[0].subject == diff.files[0]
+    assert report.files[0].metrics.get("file.hunk_count").value == 1  # type: ignore[union-attr]
+    assert report.files[0].metrics.get("file.lines_changed").value == 2  # type: ignore[union-attr]
+    file_for_score = MetricResults(
         [
             MetricValue("file.hunk_count", 1, MetricValueType.INTEGER),
             MetricValue("file.lines_changed", 2, MetricValueType.INTEGER),
         ]
     )
-    hunk_metrics = MetricResults(
+    assert report.files[0].score == scorer.file_score(file_for_score)
+
+    # Check hunks
+    assert len(report.hunks) == 1
+    assert report.hunks[0].subject == diff.files[0].hunks[0]
+    assert report.hunks[0].metrics.get("hunk.lines_changed").value == 2  # type: ignore[union-attr]
+    assert report.hunks[0].metrics.get("hunk.added_lines").value == 2  # type: ignore[union-attr]
+    assert report.hunks[0].metrics.get("hunk.removed_lines").value == 0  # type: ignore[union-attr]
+    hunk_for_score = MetricResults(
         [
             MetricValue("hunk.lines_changed", 2, MetricValueType.INTEGER),
             MetricValue("hunk.added_lines", 2, MetricValueType.INTEGER),
             MetricValue("hunk.removed_lines", 0, MetricValueType.INTEGER),
         ]
     )
-
-    # Check overall
-    assert report.overall.metrics == overall_metrics
-    assert report.overall.score == scorer.overall_score(overall_metrics)
-    assert len(report.overall.metric_results) == 2  # 2 overall metrics registered
-
-    # Check files
-    assert len(report.files) == 1
-    assert report.files[0].subject == diff.files[0]
-    assert report.files[0].metrics == file_metrics
-    assert report.files[0].score == scorer.file_score(file_metrics)
-
-    # Check hunks
-    assert len(report.hunks) == 1
-    assert report.hunks[0].subject == diff.files[0].hunks[0]
-    assert report.hunks[0].metrics == hunk_metrics
-    assert report.hunks[0].score == scorer.hunk_score(hunk_metrics)
+    assert report.hunks[0].score == scorer.hunk_score(hunk_for_score)
     # score < 1.0 so causes should be non-empty
     assert len(report.hunks[0].causes) > 0
 

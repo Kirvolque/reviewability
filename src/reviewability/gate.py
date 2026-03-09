@@ -61,9 +61,9 @@ class QualityGate:
 
     def _build_recommendations(self, report: AnalysisReport) -> list[Recommendation]:
         recs = []
-        for omr in report.overall.metric_results:
-            focus = _FOCUS_METRIC.get(omr.value.name)
-            for cause in omr.causes:
+        for mv in report.overall.metrics:
+            focus = _FOCUS_METRIC.get(mv.name)
+            for cause in mv.causes:
                 if isinstance(cause.value, Analysis) and isinstance(cause.value.subject, FileDiff):
                     location = cause.value.subject.path
                     for inner in cause.value.causes:
@@ -97,14 +97,14 @@ class QualityGate:
                                 )
 
         if not recs:
-            for omr in report.overall.metric_results:
-                if omr.value.name in _SCORER_INPUTS and omr.value.value:
+            for mv in report.overall.metrics:
+                if mv.name in _SCORER_INPUTS and mv.value:
                     recs.append(
                         Recommendation(
                             location="overall",
-                            metric=omr.value.name,
-                            value=omr.value.value,
-                            remediation=omr.remediation,
+                            metric=mv.name,
+                            value=mv.value,
+                            remediation=mv.remediation,
                         )
                     )
         return recs

@@ -5,7 +5,6 @@ from reviewability.domain.report import (
     Analysis,
     MetricValue,
     MetricValueType,
-    OverallMetricResult,
 )
 
 
@@ -44,4 +43,4 @@ class OverallMetric(Metric, ABC):
     """
 
     @abstractmethod
-    def calculate(self, hunks: list[Analysis], files: list[Analysis]) -> OverallMetricResult: ...
+    def calculate(self, hunks: list[Analysis], files: list[Analysis]) -> MetricValue: ...

@@ -4,7 +4,6 @@ from reviewability.domain.report import (
     Analysis,
     MetricValue,
     MetricValueType,
-    OverallMetricResult,
 )
 from reviewability.metrics.base import OverallMetric
 
@@ -16,7 +15,10 @@ class OverallFilesChanged(OverallMetric):
     remediation: str = "Split the change into smaller pull requests by concern."
 
     @override
-    def calculate(self, hunks: list[Analysis], files: list[Analysis]) -> OverallMetricResult:
-        return OverallMetricResult(
-            value=MetricValue(name=self.name, value=len(files), value_type=self.value_type)
+    def calculate(self, hunks: list[Analysis], files: list[Analysis]) -> MetricValue:
+        return MetricValue(
+            name=self.name,
+            value=len(files),
+            value_type=self.value_type,
+            remediation=self.remediation,
         )

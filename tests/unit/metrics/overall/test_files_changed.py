@@ -1,5 +1,5 @@
 from reviewability.domain.models import FileDiff
-from reviewability.domain.report import Analysis, MetricResults, MetricValue, MetricValueType
+from reviewability.domain.report import Analysis, MetricResults, MetricValueType
 from reviewability.metrics.overall.files_changed import OverallFilesChanged
 
 metric = OverallFilesChanged()
@@ -15,16 +15,18 @@ def make_file_analysis(score: float = 1.0) -> Analysis:
 
 def test_no_files():
     result = metric.calculate([], [])
-    assert result.value == MetricValue("overall.files_changed", 0, MetricValueType.INTEGER)
+    assert result.name == "overall.files_changed"
+    assert result.value == 0
+    assert result.value_type == MetricValueType.INTEGER
 
 
 def test_single_file():
     result = metric.calculate([], [make_file_analysis()])
-    assert result.value == MetricValue("overall.files_changed", 1, MetricValueType.INTEGER)
+    assert result.value == 1
 
 
 def test_multiple_files():
     result = metric.calculate(
         [], [make_file_analysis(), make_file_analysis(), make_file_analysis()]
     )
-    assert result.value == MetricValue("overall.files_changed", 3, MetricValueType.INTEGER)
+    assert result.value == 3

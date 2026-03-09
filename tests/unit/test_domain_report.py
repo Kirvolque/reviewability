@@ -1,5 +1,6 @@
 from reviewability.domain.models import FileDiff, Hunk
 from reviewability.domain.report import (
+    SCORE_KEY,
     Analysis,
     AnalysisReport,
     Cause,
@@ -7,7 +8,6 @@ from reviewability.domain.report import (
     MetricValue,
     MetricValueType,
     OverallAnalysis,
-    OverallMetricResult,
 )
 
 
@@ -74,6 +74,28 @@ def test_metric_value_type_ratio():
 def test_metric_value_type_boolean():
     mv = MetricValue("bool_metric", True, MetricValueType.BOOLEAN)
     assert mv.value_type == MetricValueType.BOOLEAN
+
+
+def test_metric_value_remediation_defaults_empty():
+    mv = MetricValue("a", 1, MetricValueType.INTEGER)
+    assert mv.remediation == ""
+
+
+def test_metric_value_remediation_set():
+    mv = MetricValue("a", 1, MetricValueType.INTEGER, remediation="Fix it")
+    assert mv.remediation == "Fix it"
+
+
+def test_metric_value_causes_defaults_empty():
+    mv = MetricValue("a", 1, MetricValueType.INTEGER)
+    assert mv.causes == []
+
+
+def test_metric_value_causes_set():
+    inner = MetricValue("b", 2, MetricValueType.INTEGER)
+    cause = Cause(value=inner)
+    mv = MetricValue("a", 1, MetricValueType.INTEGER, causes=[cause])
+    assert mv.causes == [cause]
 
 
 # --- MetricResults tests ---
@@ -241,6 +263,26 @@ def test_hunk_analysis_zero_score():
     assert ha.score == 0.0
 
 
+def test_analysis_get_metric():
+    mv = make_metric_value("m")
+    ha = Analysis(subject=make_hunk(), metrics=MetricResults([mv]), score=0.8)
+    assert ha.get("m") == mv
+
+
+def test_analysis_get_score_key():
+    ha = Analysis(subject=make_hunk(), metrics=MetricResults([]), score=0.75)
+    result = ha.get(SCORE_KEY)
+    assert result is not None
+    assert result.name == SCORE_KEY
+    assert result.value == 0.75
+    assert result.value_type == MetricValueType.RATIO
+
+
+def test_analysis_get_missing_returns_none():
+    ha = Analysis(subject=make_hunk(), metrics=MetricResults([]), score=1.0)
+    assert ha.get("nonexistent") is None
+
+
 # --- Analysis (file) tests ---
 
 
@@ -281,41 +323,6 @@ def test_file_analysis_multiple_causes():
     assert len(fa.causes) == 2
 
 
-# --- OverallMetricResult tests ---
-
-
-def test_overall_metric_result_fields():
-    mv = make_metric_value("overall.m")
-    omr = OverallMetricResult(value=mv)
-    assert omr.value == mv
-    assert omr.causes == []
-    assert omr.remediation == ""
-
-
-def test_overall_metric_result_with_causes():
-    mv = make_metric_value("overall.m")
-    ha = Analysis(subject=make_hunk(), metrics=MetricResults([]), score=0.1)
-    cause = Cause(value=ha)
-    omr = OverallMetricResult(value=mv, causes=[cause])
-    assert omr.causes == [cause]
-
-
-def test_overall_metric_result_with_remediation():
-    mv = make_metric_value("overall.m")
-    omr = OverallMetricResult(value=mv, remediation="Fix it")
-    assert omr.remediation == "Fix it"
-
-
-def test_overall_metric_result_frozen():
-    mv = make_metric_value("overall.m")
-    omr = OverallMetricResult(value=mv)
-    try:
-        omr.value = make_metric_value("other")  # type: ignore[misc]
-        assert False, "Should have raised FrozenInstanceError"
-    except Exception:
-        pass
-
-
 # --- OverallAnalysis tests ---
 
 
@@ -324,18 +331,6 @@ def test_overall_analysis_fields():
     oa = OverallAnalysis(metrics=metrics, score=0.9)
     assert oa.metrics == metrics
     assert oa.score == 0.9
-    assert oa.metric_results == []
-
-
-def test_overall_analysis_with_results():
-    mv = make_metric_value("overall.m")
-    omr = OverallMetricResult(value=mv)
-    oa = OverallAnalysis(
-        metrics=MetricResults([mv]),
-        score=0.5,
-        metric_results=[omr],
-    )
-    assert oa.metric_results == [omr]
 
 
 def test_overall_analysis_frozen():
@@ -345,6 +340,26 @@ def test_overall_analysis_frozen():
         assert False, "Should have raised FrozenInstanceError"
     except Exception:
         pass
+
+
+def test_overall_analysis_get_metric():
+    mv = make_metric_value("overall.m")
+    oa = OverallAnalysis(metrics=MetricResults([mv]), score=0.5)
+    assert oa.get("overall.m") == mv
+
+
+def test_overall_analysis_get_score_key():
+    oa = OverallAnalysis(metrics=MetricResults([]), score=0.42)
+    result = oa.get(SCORE_KEY)
+    assert result is not None
+    assert result.name == SCORE_KEY
+    assert result.value == 0.42
+    assert result.value_type == MetricValueType.RATIO
+
+
+def test_overall_analysis_get_missing_returns_none():
+    oa = OverallAnalysis(metrics=MetricResults([]), score=1.0)
+    assert oa.get("nonexistent") is None
 
 
 # --- AnalysisReport tests ---
@@ -386,3 +401,10 @@ def test_analysis_report_multiple_hunks_and_files():
     report = AnalysisReport(overall=oa, files=[fa1, fa2], hunks=[ha1, ha2])
     assert len(report.hunks) == 2
     assert len(report.files) == 2
+
+
+# --- SCORE_KEY tests ---
+
+
+def test_score_key_value():
+    assert SCORE_KEY == "score"
