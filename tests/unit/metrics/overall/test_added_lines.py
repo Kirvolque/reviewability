@@ -1,5 +1,6 @@
+from reviewability.domain.metric import MetricResults, MetricValue, MetricValueType
 from reviewability.domain.models import Hunk
-from reviewability.domain.report import Analysis, MetricResults, MetricValue, MetricValueType
+from reviewability.domain.report import Analysis
 from reviewability.metrics.overall.added_lines import OverallAddedLines
 
 metric = OverallAddedLines()

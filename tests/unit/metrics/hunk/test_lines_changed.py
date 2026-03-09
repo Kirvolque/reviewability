@@ -1,5 +1,5 @@
+from reviewability.domain.metric import MetricValue, MetricValueType
 from reviewability.domain.models import Hunk
-from reviewability.domain.report import MetricValue, MetricValueType
 from reviewability.metrics.hunk.lines_changed import HunkLinesChanged
 
 metric = HunkLinesChanged()

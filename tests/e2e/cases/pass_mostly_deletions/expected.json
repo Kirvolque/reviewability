@@ -40,7 +40,7 @@
     },
     {
       "name": "overall.churn_complexity",
-      "value": 0.18181818181818188
+      "value": 0.18
     }
   ],
   "files": [
@@ -94,7 +94,7 @@
         },
         {
           "name": "hunk.churn_ratio",
-          "value": 0.09090909090909091
+          "value": 0.09
         }
       ]
     }

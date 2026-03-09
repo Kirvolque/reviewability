@@ -1,10 +1,6 @@
 from pathlib import Path
 
-from reviewability.domain.report import (
-    MetricResults,
-    MetricValue,
-    MetricValueType,
-)
+from reviewability.domain.metric import MetricResults, MetricValue, MetricValueType
 from reviewability.metrics.engine import MetricEngine
 from reviewability.metrics.file import FileHunkCount, FileLinesChanged
 from reviewability.metrics.hunk import HunkAddedLines, HunkLinesChanged, HunkRemovedLines

@@ -1,7 +1,8 @@
 import math
 
+from reviewability.domain.metric import MetricResults, MetricValue, MetricValueType
 from reviewability.domain.models import FileDiff
-from reviewability.domain.report import Analysis, MetricResults, MetricValue, MetricValueType
+from reviewability.domain.report import Analysis
 from reviewability.metrics.overall.change_entropy import OverallChangeEntropy
 
 metric = OverallChangeEntropy()
@@ -37,18 +38,18 @@ def test_two_equal_files():
 
 
 def test_two_unequal_files():
-    # Unequal split → entropy < 1.0
+    # Unequal split → entropy < 1.0; value is rounded to 2 decimal places
     result = metric.calculate([], [make_file_analysis(9), make_file_analysis(1)])
-    expected = -(0.9 * math.log2(0.9) + 0.1 * math.log2(0.1))
-    assert abs(result.value - expected) < 1e-9
+    expected = round(-(0.9 * math.log2(0.9) + 0.1 * math.log2(0.1)), 2)
+    assert result.value == expected
 
 
 def test_three_equal_files():
-    # Equal 3-way split → entropy = log2(3) ≈ 1.585
+    # Equal 3-way split → entropy = log2(3) ≈ 1.585; value is rounded to 2 decimal places
     result = metric.calculate(
         [], [make_file_analysis(4), make_file_analysis(4), make_file_analysis(4)]
     )
-    assert abs(result.value - math.log2(3)) < 1e-9
+    assert result.value == round(math.log2(3), 2)
 
 
 def test_file_with_zero_lines_is_excluded():

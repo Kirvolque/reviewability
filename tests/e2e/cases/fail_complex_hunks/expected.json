@@ -65,11 +65,11 @@
     },
     {
       "name": "overall.change_entropy",
-      "value": 1.5545851693377994
+      "value": 1.55
     },
     {
       "name": "overall.largest_file_ratio",
-      "value": 0.4166666666666667
+      "value": 0.42
     },
     {
       "name": "overall.churn_complexity",
