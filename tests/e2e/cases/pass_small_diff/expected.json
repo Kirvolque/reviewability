@@ -1,5 +1,5 @@
 {
-  "score": 0.998,
+  "score": 1.0,
   "passed": true,
   "violations": [],
   "recommendations": [],
@@ -46,7 +46,7 @@
   "files": [
     {
       "file": "src/greeter.py",
-      "score": 0.998,
+      "score": 1.0,
       "metrics": [
         {
           "name": "file.hunk_count",

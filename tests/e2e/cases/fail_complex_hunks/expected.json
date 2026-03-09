@@ -1,5 +1,5 @@
 {
-  "score": 0.040000000000000036,
+  "score": 0.04,
   "passed": false,
   "violations": [
     "[ERROR] Overall score 0.04 is below the minimum of 0.5"

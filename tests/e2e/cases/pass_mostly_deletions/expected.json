@@ -46,7 +46,7 @@
   "files": [
     {
       "file": "src/legacy.py",
-      "score": 0.6699999999999999,
+      "score": 0.67,
       "metrics": [
         {
           "name": "file.hunk_count",
@@ -74,7 +74,7 @@
   "hunks": [
     {
       "file": "src/legacy.py",
-      "score": 0.33999999999999997,
+      "score": 0.34,
       "metrics": [
         {
           "name": "hunk.lines_changed",

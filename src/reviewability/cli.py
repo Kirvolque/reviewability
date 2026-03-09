@@ -63,7 +63,7 @@ def main() -> None:
     ]
 
     output: dict = {
-        "score": report.overall.score,
+        "score": round(report.overall.score, 2),
         "passed": gate_result.passed,
         "violations": [str(v) for v in violations],
         "recommendations": recommendations,
@@ -76,7 +76,7 @@ def main() -> None:
         output["files"] = [
             {
                 "file": f.file.path,
-                "score": f.score,
+                "score": round(f.score, 2),
                 "metrics": [{"name": m.name, "value": m.value} for m in f.metrics],
             }
             for f in report.files
@@ -84,7 +84,7 @@ def main() -> None:
         output["hunks"] = [
             {
                 "file": h.hunk.file_path,
-                "score": h.score,
+                "score": round(h.score, 2),
                 "metrics": [{"name": m.name, "value": m.value} for m in h.metrics],
             }
             for h in report.hunks

@@ -1,5 +1,5 @@
 {
-  "score": 0.7386324786324786,
+  "score": 0.74,
   "passed": true,
   "violations": [],
   "recommendations": [],
@@ -126,7 +126,7 @@
     },
     {
       "file": "src/models.py",
-      "score": 0.8200000000000001,
+      "score": 0.82,
       "metrics": [
         {
           "name": "hunk.lines_changed",
