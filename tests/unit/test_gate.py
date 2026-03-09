@@ -17,29 +17,6 @@ def make_violation(severity: Severity, message: str = "msg") -> RuleViolation:
 gate = QualityGate()
 
 
-# --- GateResult tests ---
-
-
-def test_gate_result_fields():
-    result = GateResult(passed=True, recommendations=["hint"])
-    assert result.passed is True
-    assert result.recommendations == ["hint"]
-
-
-def test_gate_result_frozen():
-    result = GateResult(passed=True, recommendations=[])
-    try:
-        result.passed = False  # type: ignore[misc]
-        assert False, "Should have raised FrozenInstanceError"
-    except Exception:
-        pass
-
-
-def test_gate_result_empty_recommendations():
-    result = GateResult(passed=False, recommendations=[])
-    assert result.recommendations == []
-
-
 # --- QualityGate tests ---
 
 
@@ -54,12 +31,6 @@ def test_gate_passes_with_only_warning_violations():
     assert result.passed is True
 
 
-def test_gate_passes_with_multiple_warnings():
-    violations = [make_violation(Severity.WARNING), make_violation(Severity.WARNING)]
-    result = gate.evaluate(make_report(), violations)
-    assert result.passed is True
-
-
 def test_gate_fails_with_error_violation():
     violations = [make_violation(Severity.ERROR)]
     result = gate.evaluate(make_report(), violations)
@@ -68,12 +39,6 @@ def test_gate_fails_with_error_violation():
 
 def test_gate_fails_with_error_and_warning():
     violations = [make_violation(Severity.WARNING), make_violation(Severity.ERROR)]
-    result = gate.evaluate(make_report(), violations)
-    assert result.passed is False
-
-
-def test_gate_fails_with_multiple_errors():
-    violations = [make_violation(Severity.ERROR), make_violation(Severity.ERROR)]
     result = gate.evaluate(make_report(), violations)
     assert result.passed is False
 

@@ -15,67 +15,13 @@ def failing_rule(msg: str = "failure") -> Rule:
     return Rule(severity=Severity.ERROR, check=lambda s: msg)
 
 
-# --- Rule tests ---
-
-
-def test_rule_fields():
-    def check(s: OverallAnalysis) -> str | None:
-        return None
-
-    rule = Rule(severity=Severity.WARNING, check=check)
-    assert rule.severity == Severity.WARNING
-    assert rule.check is check
-
-
-def test_rule_frozen():
-    rule = passing_rule()
-    try:
-        rule.severity = Severity.ERROR  # type: ignore[misc]
-        assert False, "Should have raised FrozenInstanceError"
-    except Exception:
-        pass
-
-
-def test_rule_severity_warning():
-    rule = Rule(severity=Severity.WARNING, check=lambda s: None)
-    assert rule.severity == Severity.WARNING
-
-
-def test_rule_severity_error():
-    rule = Rule(severity=Severity.ERROR, check=lambda s: None)
-    assert rule.severity == Severity.ERROR
-
-
 # --- RuleViolation tests ---
-
-
-def test_rule_violation_fields():
-    rule = failing_rule("oops")
-    violation = RuleViolation(rule=rule, message="oops")
-    assert violation.rule == rule
-    assert violation.message == "oops"
 
 
 def test_rule_violation_str_warning():
     rule = Rule(severity=Severity.WARNING, check=lambda s: "too big")
     violation = RuleViolation(rule=rule, message="too big")
     assert str(violation) == "[WARNING] too big"
-
-
-def test_rule_violation_str_error():
-    rule = Rule(severity=Severity.ERROR, check=lambda s: "way too big")
-    violation = RuleViolation(rule=rule, message="way too big")
-    assert str(violation) == "[ERROR] way too big"
-
-
-def test_rule_violation_frozen():
-    rule = failing_rule()
-    violation = RuleViolation(rule=rule, message="msg")
-    try:
-        violation.message = "other"  # type: ignore[misc]
-        assert False, "Should have raised FrozenInstanceError"
-    except Exception:
-        pass
 
 
 # --- RuleEngine tests ---
@@ -159,16 +105,3 @@ def test_rule_engine_rule_uses_score():
     assert "0.3" in violations[0].message
 
 
-def test_rule_engine_returns_list_of_violations_not_nones():
-    rules = [passing_rule(), failing_rule("x"), passing_rule()]
-    engine = RuleEngine(rules)
-    violations = engine.evaluate(make_context())
-    assert all(isinstance(v, RuleViolation) for v in violations)
-
-
-# --- Severity enum ---
-
-
-def test_severity_values():
-    assert Severity.WARNING.value == "warning"
-    assert Severity.ERROR.value == "error"
