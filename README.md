@@ -2,6 +2,8 @@
 
 A tool that scores the reviewability of code changes.
 
+![AI can generate code faster than humans can review it](img/code-review-bottleneck.png)
+
 ## The Idea
 
 A diff can be hard to review not because the code is bad, but because the
