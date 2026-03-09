@@ -2,7 +2,7 @@
 
 A tool that scores the reviewability of code changes.
 
-![AI can generate code faster than humans can review it](img/code-review-bottleneck.png)
+![It doesn't matter how fast AI generates code — the bottleneck is the human reviewer](img/code-review-bottleneck.png)
 
 ## The Idea
 
