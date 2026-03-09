@@ -2,7 +2,6 @@ from typing import override
 
 from reviewability.domain.report import (
     Analysis,
-    Cause,
     MetricValue,
     MetricValueType,
 )
@@ -43,5 +42,4 @@ class OverallChurnComplexity(OverallMetric):
             value=avg,
             value_type=self.value_type,
             remediation=self.remediation,
-            causes=[Cause(value=h) for h in interleaved],
         )

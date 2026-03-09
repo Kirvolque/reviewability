@@ -1,15 +1,16 @@
 from dataclasses import dataclass
 from typing import Any
 
-from reviewability.domain.models import FileDiff, Hunk
-from reviewability.domain.report import Analysis, AnalysisReport, MetricValue
+from reviewability.domain.models import Hunk
+from reviewability.domain.report import AnalysisReport
 from reviewability.metrics.hunk.churn_ratio import HunkChurnRatio
 from reviewability.metrics.overall.churn_complexity import OverallChurnComplexity
 from reviewability.metrics.overall.lines_changed import OverallLinesChanged
 from reviewability.rules.engine import RuleViolation, Severity
 
-# Maps an overall metric to the single hunk/file metric that best explains its value.
-# When drilling into sub-causes for these metrics, only the focused metric is surfaced.
+# Maps an overall metric to the hunk metric that best explains it.
+# When this overall metric contributes to failure, the gate surfaces the
+# worst hunks ranked by their score, annotated with the focus metric.
 _FOCUS_METRIC: dict[str, str] = {
     OverallChurnComplexity.name: HunkChurnRatio.name,
 }
@@ -30,7 +31,7 @@ class Recommendation:
     location: str
     metric: str
     value: Any
-    remediation: str
+    remediation: str | None
 
 
 @dataclass(frozen=True)
@@ -61,40 +62,31 @@ class QualityGate:
 
     def _build_recommendations(self, report: AnalysisReport) -> list[Recommendation]:
         recs = []
+
         for mv in report.overall.metrics:
             focus = _FOCUS_METRIC.get(mv.name)
-            for cause in mv.causes:
-                if isinstance(cause.value, Analysis) and isinstance(cause.value.subject, FileDiff):
-                    location = cause.value.subject.path
-                    for inner in cause.value.causes:
-                        if isinstance(inner.value, MetricValue):
-                            if focus is None or inner.value.name == focus:
-                                recs.append(
-                                    Recommendation(
-                                        location=location,
-                                        metric=inner.value.name,
-                                        value=inner.value.value,
-                                        remediation=inner.remediation,
-                                    )
-                                )
-                elif isinstance(cause.value, Analysis) and isinstance(cause.value.subject, Hunk):
-                    hunk = cause.value.subject
-                    location = (
-                        f"{hunk.file_path}"
-                        f" @@ -{hunk.source_start},{hunk.source_length}"
-                        f" +{hunk.target_start},{hunk.target_length} @@"
+            if focus is None:
+                continue
+
+            for h in sorted(report.hunks, key=lambda h: h.score):
+                if not isinstance(h.subject, Hunk):
+                    continue
+                focus_mv = h.metrics.get(focus)
+                if focus_mv is None or not focus_mv.value:
+                    continue
+                hunk = h.subject
+                recs.append(
+                    Recommendation(
+                        location=(
+                            f"{hunk.file_path}"
+                            f" @@ -{hunk.source_start},{hunk.source_length}"
+                            f" +{hunk.target_start},{hunk.target_length} @@"
+                        ),
+                        metric=focus_mv.name,
+                        value=focus_mv.value,
+                        remediation=focus_mv.remediation,
                     )
-                    for inner in cause.value.causes:
-                        if isinstance(inner.value, MetricValue):
-                            if focus is None or inner.value.name == focus:
-                                recs.append(
-                                    Recommendation(
-                                        location=location,
-                                        metric=inner.value.name,
-                                        value=inner.value.value,
-                                        remediation=inner.remediation,
-                                    )
-                                )
+                )
 
         if not recs:
             for mv in report.overall.metrics:
@@ -107,4 +99,5 @@ class QualityGate:
                             remediation=mv.remediation,
                         )
                     )
+
         return recs

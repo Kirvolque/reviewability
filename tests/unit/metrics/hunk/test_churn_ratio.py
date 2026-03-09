@@ -4,6 +4,8 @@ from reviewability.metrics.hunk.churn_ratio import HunkChurnRatio
 
 metric = HunkChurnRatio()
 
+_REMEDIATION = metric.remediation
+
 
 def make_hunk(added: list[str], removed: list[str]) -> Hunk:
     return Hunk(
@@ -19,25 +21,25 @@ def make_hunk(added: list[str], removed: list[str]) -> Hunk:
 
 def test_pure_addition():
     result = metric.calculate(make_hunk(["a", "b"], []))
-    assert result == MetricValue("hunk.churn_ratio", 1.0, MetricValueType.RATIO)
+    assert result == MetricValue("hunk.churn_ratio", 1.0, MetricValueType.RATIO, _REMEDIATION)
 
 
 def test_pure_deletion():
     result = metric.calculate(make_hunk([], ["x", "y"]))
-    assert result == MetricValue("hunk.churn_ratio", 0.0, MetricValueType.RATIO)
+    assert result == MetricValue("hunk.churn_ratio", 0.0, MetricValueType.RATIO, _REMEDIATION)
 
 
 def test_balanced_edit():
     result = metric.calculate(make_hunk(["a"], ["x"]))
-    assert result == MetricValue("hunk.churn_ratio", 0.5, MetricValueType.RATIO)
+    assert result == MetricValue("hunk.churn_ratio", 0.5, MetricValueType.RATIO, _REMEDIATION)
 
 
 def test_empty_hunk():
     result = metric.calculate(make_hunk([], []))
-    assert result == MetricValue("hunk.churn_ratio", 0.0, MetricValueType.RATIO)
+    assert result == MetricValue("hunk.churn_ratio", 0.0, MetricValueType.RATIO, _REMEDIATION)
 
 
 def test_unbalanced_edit():
     # 3 added, 1 removed → ratio = 0.75
     result = metric.calculate(make_hunk(["a", "b", "c"], ["x"]))
-    assert result == MetricValue("hunk.churn_ratio", 0.75, MetricValueType.RATIO)
+    assert result == MetricValue("hunk.churn_ratio", 0.75, MetricValueType.RATIO, _REMEDIATION)

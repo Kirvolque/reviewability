@@ -6,8 +6,6 @@ from typing import Any, Iterator
 
 from reviewability.domain.models import FileDiff, Hunk
 
-SCORE_KEY: str = "score"
-
 
 class MetricValueType(Enum):
     """The data type of a metric's value, used for threshold comparison and display."""
@@ -25,8 +23,8 @@ class MetricValue:
     name: str
     value: Any
     value_type: MetricValueType
-    remediation: str = ""
-    causes: list["Cause"] = field(default_factory=list)
+    remediation: str | None = None
+    causes: list[MetricValue] = field(default_factory=list)
 
 
 class MetricResults:
@@ -62,38 +60,18 @@ class MetricResults:
 
 
 @dataclass(frozen=True)
-class Cause:
-    """A single cause explaining why a score is imperfect or why a metric counted something.
-
-    ``value`` can be any analysis object or metric value:
-    - ``MetricValue`` — a specific metric that drove a score below 1.0
-    - ``Analysis`` — a hunk or file counted as problematic by an overall metric
-
-    ``remediation`` is populated when ``value`` is a ``MetricValue``;
-    empty otherwise (the inner analysis object carries its own causes).
-    """
-
-    value: MetricValue | Analysis
-    remediation: str = ""
-
-
-@dataclass(frozen=True)
 class Analysis:
     """Metric results and reviewability score for a single hunk or file.
 
     ``subject`` is the domain object being analysed (``Hunk`` or ``FileDiff``).
-    ``causes`` is non-empty when ``score < 1.0``.
     """
 
     subject: Hunk | FileDiff
     metrics: MetricResults
     score: float
-    causes: list[Cause] = field(default_factory=list)
 
     def get(self, name: str) -> MetricValue | None:
-        """Return MetricValue for name, or a synthetic score metric when name == SCORE_KEY."""
-        if name == SCORE_KEY:
-            return MetricValue(name=name, value=self.score, value_type=MetricValueType.RATIO)
+        """Return the MetricValue for the given metric name, or None if not present."""
         return self.metrics.get(name)
 
 
@@ -105,9 +83,7 @@ class OverallAnalysis:
     score: float
 
     def get(self, name: str) -> MetricValue | None:
-        """Return MetricValue for name, or a synthetic score metric when name == SCORE_KEY."""
-        if name == SCORE_KEY:
-            return MetricValue(name=name, value=self.score, value_type=MetricValueType.RATIO)
+        """Return the MetricValue for the given metric name, or None if not present."""
         return self.metrics.get(name)
 
 

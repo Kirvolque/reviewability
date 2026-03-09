@@ -2,7 +2,6 @@ from typing import override
 
 from reviewability.domain.report import (
     Analysis,
-    Cause,
     MetricValue,
     MetricValueType,
 )
@@ -26,5 +25,4 @@ class OverallProblematicFileCount(OverallMetric):
             value=len(problematic),
             value_type=self.value_type,
             remediation=self.remediation,
-            causes=[Cause(value=f) for f in problematic],
         )

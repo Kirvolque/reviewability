@@ -25,4 +25,5 @@ class HunkChurnRatio(HunkMetric):
             name=self.name,
             value=ratio,
             value_type=self.value_type,
+            remediation=self.remediation,
         )
