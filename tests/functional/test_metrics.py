@@ -11,7 +11,7 @@ from reviewability.metrics.hunk import HunkAddedLines, HunkLinesChanged, HunkRem
 from reviewability.metrics.overall import OverallFilesChanged, OverallLinesChanged
 from reviewability.metrics.registry import MetricRegistry
 from reviewability.parser.git import parse_diff_text
-from reviewability.scoring.weighted import MetricWeight, WeightedReviewabilityScorer
+from reviewability.scoring.weighted import DefaultScorer
 
 FIXTURES = Path(__file__).parent.parent / "fixtures"
 
@@ -35,11 +35,10 @@ def make_registry() -> MetricRegistry:
     return registry
 
 
-def make_scorer() -> WeightedReviewabilityScorer:
-    return WeightedReviewabilityScorer(
-        hunk_weights=[MetricWeight("hunk.lines_changed", max_value=50.0)],
-        file_weights=[MetricWeight("file.lines_changed", max_value=200.0)],
-        overall_weights=[MetricWeight("overall.lines_changed", max_value=500.0)],
+def make_scorer() -> DefaultScorer:
+    return DefaultScorer(
+        max_hunk_lines=50.0,
+        max_diff_lines=200.0,
     )
 
 
