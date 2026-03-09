@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Callable, Protocol
 
-from reviewability.domain.report import MetricValue
+from reviewability.domain.metric import MetricValue
 
 
 class RuleContext(Protocol):

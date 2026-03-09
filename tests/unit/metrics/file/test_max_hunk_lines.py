@@ -1,5 +1,5 @@
+from reviewability.domain.metric import MetricValue, MetricValueType
 from reviewability.domain.models import FileDiff, Hunk
-from reviewability.domain.report import MetricValue, MetricValueType
 from reviewability.metrics.file.max_hunk_lines import FileMaxHunkLines
 
 metric = FileMaxHunkLines()

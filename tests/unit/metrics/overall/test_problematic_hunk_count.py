@@ -1,9 +1,6 @@
+from reviewability.domain.metric import MetricResults, MetricValueType
 from reviewability.domain.models import Hunk
-from reviewability.domain.report import (
-    Analysis,
-    MetricResults,
-    MetricValueType,
-)
+from reviewability.domain.report import Analysis
 from reviewability.metrics.overall.problematic_hunk_count import OverallProblematicHunkCount
 
 

@@ -1,7 +1,8 @@
 import pytest
 
+from reviewability.domain.metric import MetricResults, MetricValue, MetricValueType
 from reviewability.domain.models import FileDiff
-from reviewability.domain.report import Analysis, MetricResults, MetricValue, MetricValueType
+from reviewability.domain.report import Analysis
 from reviewability.metrics.overall.largest_file_ratio import OverallLargestFileRatio
 
 metric = OverallLargestFileRatio()
@@ -45,7 +46,7 @@ def test_picks_max():
         [],
         [make_file_analysis(10), make_file_analysis(40), make_file_analysis(10)],
     )
-    assert result.value == pytest.approx(40 / 60)
+    assert result.value == round(40 / 60, 2)
 
 
 def test_all_files_zero_lines():

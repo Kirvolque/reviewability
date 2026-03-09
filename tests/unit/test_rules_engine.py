@@ -1,4 +1,5 @@
-from reviewability.domain.report import MetricResults, MetricValue, MetricValueType, OverallAnalysis
+from reviewability.domain.metric import MetricResults, MetricValue, MetricValueType
+from reviewability.domain.report import OverallAnalysis
 from reviewability.rules.engine import Rule, RuleEngine, RuleViolation, Severity
 
 

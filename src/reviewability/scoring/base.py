@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from reviewability.domain.report import MetricResults
+from reviewability.domain.metric import MetricResults
 
 
 class ReviewabilityScorer(ABC):

@@ -1,12 +1,6 @@
+from reviewability.domain.metric import MetricResults, MetricValue, MetricValueType
 from reviewability.domain.models import FileDiff, Hunk
-from reviewability.domain.report import (
-    Analysis,
-    AnalysisReport,
-    MetricResults,
-    MetricValue,
-    MetricValueType,
-    OverallAnalysis,
-)
+from reviewability.domain.report import Analysis, AnalysisReport, OverallAnalysis
 
 
 def make_metric_value(name: str = "m", value: int = 1) -> MetricValue:

@@ -9,13 +9,13 @@
     {
       "location": "src/farewell.py @@ -1,4 +1,6 @@",
       "metric": "hunk.churn_ratio",
-      "value": 0.6666666666666666,
+      "value": 0.67,
       "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
     },
     {
       "location": "src/greeter.py @@ -1,4 +1,6 @@",
       "metric": "hunk.churn_ratio",
-      "value": 0.6666666666666666,
+      "value": 0.67,
       "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
     }
   ],
@@ -56,7 +56,7 @@
     },
     {
       "name": "overall.churn_complexity",
-      "value": 0.6666666666666667
+      "value": 0.66
     }
   ],
   "files": [
@@ -136,7 +136,7 @@
         },
         {
           "name": "hunk.churn_ratio",
-          "value": 0.6666666666666666
+          "value": 0.67
         }
       ]
     },
@@ -162,7 +162,7 @@
         },
         {
           "name": "hunk.churn_ratio",
-          "value": 0.6666666666666666
+          "value": 0.67
         }
       ]
     }

@@ -1,5 +1,5 @@
+from reviewability.domain.metric import MetricValue, MetricValueType
 from reviewability.domain.models import FileDiff, Hunk
-from reviewability.domain.report import MetricValue, MetricValueType
 from reviewability.metrics.file.added_lines import FileAddedLines
 
 metric = FileAddedLines()

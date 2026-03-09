@@ -1,10 +1,6 @@
+from reviewability.domain.metric import MetricResults
 from reviewability.domain.models import Diff, FileDiff, Hunk
-from reviewability.domain.report import (
-    Analysis,
-    AnalysisReport,
-    MetricResults,
-    OverallAnalysis,
-)
+from reviewability.domain.report import Analysis, AnalysisReport, OverallAnalysis
 from reviewability.metrics.registry import MetricRegistry
 from reviewability.scoring.base import ReviewabilityScorer
 

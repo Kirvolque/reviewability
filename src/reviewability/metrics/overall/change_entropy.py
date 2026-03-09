@@ -1,11 +1,8 @@
 import math
 from typing import override
 
-from reviewability.domain.report import (
-    Analysis,
-    MetricValue,
-    MetricValueType,
-)
+from reviewability.domain.metric import MetricValue, MetricValueType
+from reviewability.domain.report import Analysis
 from reviewability.metrics.base import OverallMetric
 
 

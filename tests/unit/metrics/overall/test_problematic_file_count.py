@@ -1,9 +1,6 @@
+from reviewability.domain.metric import MetricResults, MetricValueType
 from reviewability.domain.models import FileDiff
-from reviewability.domain.report import (
-    Analysis,
-    MetricResults,
-    MetricValueType,
-)
+from reviewability.domain.report import Analysis
 from reviewability.metrics.overall.problematic_file_count import OverallProblematicFileCount
 
 

@@ -1,6 +1,6 @@
 from typing import override
 
-from reviewability.domain.report import MetricResults
+from reviewability.domain.metric import MetricResults
 from reviewability.metrics.file.lines_changed import FileLinesChanged
 from reviewability.metrics.hunk.lines_changed import HunkLinesChanged
 from reviewability.metrics.overall.churn_complexity import OverallChurnComplexity

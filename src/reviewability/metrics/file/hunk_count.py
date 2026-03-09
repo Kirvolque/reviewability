@@ -1,7 +1,7 @@
 from typing import override
 
+from reviewability.domain.metric import MetricValue, MetricValueType
 from reviewability.domain.models import FileDiff
-from reviewability.domain.report import MetricValue, MetricValueType
 from reviewability.metrics.base import FileMetric
 
 

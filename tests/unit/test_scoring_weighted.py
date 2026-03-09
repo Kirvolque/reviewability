@@ -1,6 +1,6 @@
 import pytest
 
-from reviewability.domain.report import MetricResults, MetricValue, MetricValueType
+from reviewability.domain.metric import MetricResults, MetricValue, MetricValueType
 from reviewability.scoring.weighted import DefaultScorer
 
 

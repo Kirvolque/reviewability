@@ -1,5 +1,6 @@
 from reviewability.config.models import ReviewabilityConfig
-from reviewability.domain.report import MetricResults, MetricValue, MetricValueType, OverallAnalysis
+from reviewability.domain.metric import MetricResults, MetricValue, MetricValueType
+from reviewability.domain.report import OverallAnalysis
 from reviewability.rules.definitions import hunk_rules, overall_rules
 from reviewability.rules.engine import RuleEngine, Severity
 

@@ -32,15 +32,15 @@
     },
     {
       "name": "overall.change_entropy",
-      "value": 0.9760206482366149
+      "value": 0.98
     },
     {
       "name": "overall.largest_file_ratio",
-      "value": 0.5909090909090909
+      "value": 0.59
     },
     {
       "name": "overall.churn_complexity",
-      "value": 0.18803418803418803
+      "value": 0.19
     }
   ],
   "files": [
@@ -120,7 +120,7 @@
         },
         {
           "name": "hunk.churn_ratio",
-          "value": 0.9230769230769231
+          "value": 0.92
         }
       ]
     },
@@ -146,7 +146,7 @@
         },
         {
           "name": "hunk.churn_ratio",
-          "value": 0.8888888888888888
+          "value": 0.89
         }
       ]
     }

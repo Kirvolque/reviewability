@@ -1,11 +1,8 @@
 from abc import ABC, abstractmethod
 
+from reviewability.domain.metric import MetricValue, MetricValueType
 from reviewability.domain.models import FileDiff, Hunk
-from reviewability.domain.report import (
-    Analysis,
-    MetricValue,
-    MetricValueType,
-)
+from reviewability.domain.report import Analysis
 
 
 class Metric(ABC):
