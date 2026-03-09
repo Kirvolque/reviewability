@@ -24,7 +24,7 @@ configurable thresholds for what counts as problematic.
 The metric system is designed to be extended:
 
 - **Add a metric** — subclass `HunkMetric`, `FileMetric`, or `OverallMetric`, implement `calculate()`, register via `registry.add()`
-- **Adjust scoring** — provide a custom `ReviewabilityScorer` implementation, or tune the weights in `WeightedReviewabilityScorer`
+- **Adjust scoring** — provide a custom `ReviewabilityScorer` implementation
 - **Adjust thresholds** — edit `reviewability.toml` to change what score counts as problematic and what limits trigger violations
 
 ## Usage
@@ -38,7 +38,12 @@ git diff HEAD~1 | reviewability --from-stdin
 
 # Use a custom config
 reviewability --config path/to/reviewability.toml HEAD~1 HEAD
+
+# Include per-file and per-hunk breakdowns
+reviewability --detailed HEAD~1 HEAD
 ```
+
+Output is JSON. Exit code is `0` if the gate passes, `1` if it fails.
 
 ## Overall Scoring
 
@@ -69,7 +74,7 @@ Metrics are grounded in peer-reviewed research on code review effectiveness:
 - McIntosh et al. — *The Impact of Code Review Coverage and Code Review Participation on Software Quality* (MSR, 2014)  
   https://doi.org/10.1145/2597073.2597076
 
-No- Fregnan et al. — First Come First Served: The Impact of File Position on Code Review (EMSE, 2022)
+- Fregnan et al. — First Come First Served: The Impact of File Position on Code Review (EMSE, 2022)
   https://doi.org/10.1007/s10664-021-10034-0
 
 - Uchôa et al. — *Predicting Design Impactful Changes in Modern Code Review* (MSR, 2020)  
