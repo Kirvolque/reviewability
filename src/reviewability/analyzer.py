@@ -30,7 +30,7 @@ from reviewability.metrics.overall import (
 from reviewability.metrics.registry import MetricRegistry
 from reviewability.rules.definitions import hunk_rules, overall_rules
 from reviewability.rules.engine import RuleEngine, RuleViolation
-from reviewability.scoring.weighted import MetricWeight, SizeChurnWeightedScorer
+from reviewability.scoring.weighted import DefaultScorer
 
 
 class Analyzer:
@@ -96,10 +96,9 @@ def create_analyzer(config: ReviewabilityConfig) -> Analyzer:
     ]:
         registry.add(metric)
 
-    scorer = SizeChurnWeightedScorer(
+    scorer = DefaultScorer(
+        max_hunk_lines=float(config.max_hunk_lines),
         max_diff_lines=float(config.max_diff_lines),
-        hunk_weights=[MetricWeight("hunk.lines_changed", max_value=float(config.max_hunk_lines))],
-        file_weights=[MetricWeight("file.lines_changed", max_value=float(config.max_diff_lines))],
     )
 
     return Analyzer(
