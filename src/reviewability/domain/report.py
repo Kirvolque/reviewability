@@ -6,6 +6,8 @@ from typing import Any, Iterator
 
 from reviewability.domain.models import FileDiff, Hunk
 
+SCORE_KEY: str = "score"
+
 
 class MetricValueType(Enum):
     """The data type of a metric's value, used for threshold comparison and display."""
@@ -18,11 +20,13 @@ class MetricValueType(Enum):
 
 @dataclass(frozen=True)
 class MetricValue:
-    """A single computed metric result: name, value, and its type."""
+    """A single computed metric result: name, value, type, and optional causes."""
 
     name: str
     value: Any
     value_type: MetricValueType
+    remediation: str = ""
+    causes: list["Cause"] = field(default_factory=list)
 
 
 class MetricResults:
@@ -86,70 +90,25 @@ class Analysis:
     score: float
     causes: list[Cause] = field(default_factory=list)
 
-
-@dataclass(frozen=True)
-class OverallMetricResult:
-    """The result of an overall metric calculation.
-
-    Extends a plain ``MetricValue`` with the analyses that directly caused
-    the metric's value (e.g. the specific hunks counted as problematic).
-    Empty ``causes`` means the metric is purely aggregate with no traceable
-    sub-analyses.
-    """
-
-    value: MetricValue
-    causes: list[Cause] = field(default_factory=list)
-    remediation: str = ""
+    def get(self, name: str) -> MetricValue | None:
+        """Return MetricValue for name, or a synthetic score metric when name == SCORE_KEY."""
+        if name == SCORE_KEY:
+            return MetricValue(name=name, value=self.score, value_type=MetricValueType.RATIO)
+        return self.metrics.get(name)
 
 
 @dataclass(frozen=True)
 class OverallAnalysis:
-    """Diff-level metric results and the overall reviewability score.
-
-    ``metric_results`` carries the full per-metric results including any
-    traceable causes, enabling downstream recommendation logic.
-    """
+    """Diff-level metric results and the overall reviewability score."""
 
     metrics: MetricResults
     score: float
-    metric_results: list[OverallMetricResult] = field(default_factory=list)
-
-
-class Statistics:
-    """Unified context object passed to rules during evaluation.
-
-    Combines ``MetricResults`` with the computed score for the same level
-    (hunk, file, or overall). Rules can inspect any metric by name, or the
-    score via the ``SCORE_KEY`` constant — without needing to know which
-    analysis level they are operating at.
-    """
-
-    SCORE_KEY: str = "score"
-
-    def __init__(self, metrics: MetricResults, score: float) -> None:
-        self._metrics = metrics
-        self._score = score
-
-    @property
-    def score(self) -> float:
-        """The reviewability score for this analysis level (0.0–1.0)."""
-        return self._score
-
-    @property
-    def metrics(self) -> MetricResults:
-        """All computed metric values at this analysis level."""
-        return self._metrics
 
     def get(self, name: str) -> MetricValue | None:
-        """Return the MetricValue for ``name``, or None if not present.
-
-        The special key ``Statistics.SCORE_KEY`` returns the score as a
-        synthetic ``MetricValue`` so score-based rules use the same interface
-        as metric-based rules.
-        """
-        if name == self.SCORE_KEY:
-            return MetricValue(name=name, value=self._score, value_type=MetricValueType.RATIO)
-        return self._metrics.get(name)
+        """Return MetricValue for name, or a synthetic score metric when name == SCORE_KEY."""
+        if name == SCORE_KEY:
+            return MetricValue(name=name, value=self.score, value_type=MetricValueType.RATIO)
+        return self.metrics.get(name)
 
 
 @dataclass(frozen=True)

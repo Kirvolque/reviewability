@@ -5,7 +5,6 @@ from reviewability.domain.report import (
     Cause,
     MetricValue,
     MetricValueType,
-    OverallMetricResult,
 )
 from reviewability.metrics.base import OverallMetric
 from reviewability.metrics.hunk.churn_ratio import HunkChurnRatio
@@ -27,7 +26,7 @@ class OverallChurnComplexity(OverallMetric):
     )
 
     @override
-    def calculate(self, hunks: list[Analysis], files: list[Analysis]) -> OverallMetricResult:
+    def calculate(self, hunks: list[Analysis], files: list[Analysis]) -> MetricValue:
         mix_per_hunk: list[tuple[float, Analysis]] = []
         for h in hunks:
             mv = h.metrics.get(HunkChurnRatio.name)
@@ -39,7 +38,10 @@ class OverallChurnComplexity(OverallMetric):
 
         interleaved = [h for mix, h in mix_per_hunk if mix > _INTERLEAVING_THRESHOLD]
 
-        return OverallMetricResult(
-            value=MetricValue(name=self.name, value=avg, value_type=self.value_type),
+        return MetricValue(
+            name=self.name,
+            value=avg,
+            value_type=self.value_type,
+            remediation=self.remediation,
             causes=[Cause(value=h) for h in interleaved],
         )

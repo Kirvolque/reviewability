@@ -1,6 +1,6 @@
 from reviewability.config.models import ReviewabilityConfig
 from reviewability.domain.models import Diff
-from reviewability.domain.report import AnalysisReport, Statistics
+from reviewability.domain.report import AnalysisReport
 from reviewability.metrics.engine import MetricEngine
 from reviewability.metrics.file import (
     FileAddedLines,
@@ -61,11 +61,9 @@ class Analyzer:
         hunk_violations = [
             violation
             for hunk in report.hunks
-            for violation in self._hunk_rules.evaluate(Statistics(hunk.metrics, hunk.score))
+            for violation in self._hunk_rules.evaluate(hunk)
         ]
-        overall_violations = self._overall_rules.evaluate(
-            Statistics(report.overall.metrics, report.overall.score)
-        )
+        overall_violations = self._overall_rules.evaluate(report.overall)
 
         return report, hunk_violations + overall_violations
 

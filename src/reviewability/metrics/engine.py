@@ -5,7 +5,6 @@ from reviewability.domain.report import (
     Cause,
     MetricResults,
     OverallAnalysis,
-    OverallMetricResult,
 )
 from reviewability.metrics.registry import MetricRegistry
 from reviewability.scoring.base import ReviewabilityScorer
@@ -34,21 +33,16 @@ class MetricEngine:
         ]
         file_analyses = [self._build_file_analysis(file) for file in diff.files]
 
-        overall_metrics_list = self._registry.overall_metrics()
         overall_results = [
-            OverallMetricResult(value=r.value, causes=r.causes, remediation=m.remediation)
-            for m, r in zip(
-                overall_metrics_list,
-                [m.calculate(hunk_analyses, file_analyses) for m in overall_metrics_list],
-            )
+            m.calculate(hunk_analyses, file_analyses)
+            for m in self._registry.overall_metrics()
         ]
-        overall_metric_values = MetricResults([r.value for r in overall_results])
+        overall_metric_values = MetricResults(overall_results)
         overall_score = self._scorer.overall_score(overall_metric_values)
 
         overall = OverallAnalysis(
             metrics=overall_metric_values,
             score=overall_score,
-            metric_results=overall_results,
         )
 
         return AnalysisReport(overall=overall, files=file_analyses, hunks=hunk_analyses)

@@ -5,7 +5,6 @@ from reviewability.domain.report import (
     Cause,
     MetricValue,
     MetricValueType,
-    OverallMetricResult,
 )
 from reviewability.metrics.base import OverallMetric
 
@@ -20,9 +19,12 @@ class OverallProblematicFileCount(OverallMetric):
         self._score_threshold = score_threshold
 
     @override
-    def calculate(self, hunks: list[Analysis], files: list[Analysis]) -> OverallMetricResult:
+    def calculate(self, hunks: list[Analysis], files: list[Analysis]) -> MetricValue:
         problematic = [f for f in files if f.score < self._score_threshold]
-        return OverallMetricResult(
-            value=MetricValue(name=self.name, value=len(problematic), value_type=self.value_type),
+        return MetricValue(
+            name=self.name,
+            value=len(problematic),
+            value_type=self.value_type,
+            remediation=self.remediation,
             causes=[Cause(value=f) for f in problematic],
         )
