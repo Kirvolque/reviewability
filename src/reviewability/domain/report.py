@@ -131,6 +131,43 @@ class OverallAnalysis:
     metric_results: list[OverallMetricResult] = field(default_factory=list)
 
 
+class Statistics:
+    """Unified context object passed to rules during evaluation.
+
+    Combines ``MetricResults`` with the computed score for the same level
+    (hunk, file, or overall). Rules can inspect any metric by name, or the
+    score via the ``SCORE_KEY`` constant — without needing to know which
+    analysis level they are operating at.
+    """
+
+    SCORE_KEY: str = "score"
+
+    def __init__(self, metrics: MetricResults, score: float) -> None:
+        self._metrics = metrics
+        self._score = score
+
+    @property
+    def score(self) -> float:
+        """The reviewability score for this analysis level (0.0–1.0)."""
+        return self._score
+
+    @property
+    def metrics(self) -> MetricResults:
+        """All computed metric values at this analysis level."""
+        return self._metrics
+
+    def get(self, name: str) -> MetricValue | None:
+        """Return the MetricValue for ``name``, or None if not present.
+
+        The special key ``Statistics.SCORE_KEY`` returns the score as a
+        synthetic ``MetricValue`` so score-based rules use the same interface
+        as metric-based rules.
+        """
+        if name == self.SCORE_KEY:
+            return MetricValue(name=name, value=self._score, value_type=MetricValueType.RATIO)
+        return self._metrics.get(name)
+
+
 @dataclass(frozen=True)
 class AnalysisReport:
     """The complete analysis result for a diff.
