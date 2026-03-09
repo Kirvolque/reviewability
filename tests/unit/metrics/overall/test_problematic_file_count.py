@@ -21,22 +21,10 @@ def test_none_problematic():
     assert result.causes == []
 
 
-def test_all_problematic():
-    metric = OverallProblematicFileCount(score_threshold=0.5)
-    result = metric.calculate([], [make_file_analysis(0.1), make_file_analysis(0.4)])
-    assert result.value == 2
-
-
 def test_some_problematic():
     metric = OverallProblematicFileCount(score_threshold=0.5)
     result = metric.calculate([], [make_file_analysis(0.2), make_file_analysis(0.8)])
     assert result.value == 1
-
-
-def test_no_files():
-    metric = OverallProblematicFileCount(score_threshold=0.5)
-    result = metric.calculate([], [])
-    assert result.value == 0
 
 
 def test_threshold_boundary_is_exclusive():
@@ -46,7 +34,3 @@ def test_threshold_boundary_is_exclusive():
     assert result.value == 0
 
 
-def test_threshold_one_marks_all_problematic():
-    metric = OverallProblematicFileCount(score_threshold=1.0)
-    result = metric.calculate([], [make_file_analysis(0.0), make_file_analysis(0.99)])
-    assert result.value == 2

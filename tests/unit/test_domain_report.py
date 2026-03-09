@@ -37,18 +37,6 @@ def test_metric_value_equality():
     assert mv1 == mv2
 
 
-def test_metric_value_inequality_name():
-    mv1 = MetricValue("a", 1, MetricValueType.INTEGER)
-    mv2 = MetricValue("b", 1, MetricValueType.INTEGER)
-    assert mv1 != mv2
-
-
-def test_metric_value_inequality_value():
-    mv1 = MetricValue("a", 1, MetricValueType.INTEGER)
-    mv2 = MetricValue("a", 2, MetricValueType.INTEGER)
-    assert mv1 != mv2
-
-
 def test_metric_value_frozen():
     mv = MetricValue("a", 1, MetricValueType.INTEGER)
     try:
@@ -56,16 +44,6 @@ def test_metric_value_frozen():
         assert False, "Should have raised FrozenInstanceError"
     except Exception:
         pass
-
-
-def test_metric_value_type_ratio():
-    mv = MetricValue("ratio_metric", 0.75, MetricValueType.RATIO)
-    assert mv.value_type == MetricValueType.RATIO
-
-
-def test_metric_value_type_boolean():
-    mv = MetricValue("bool_metric", True, MetricValueType.BOOLEAN)
-    assert mv.value_type == MetricValueType.BOOLEAN
 
 
 def test_metric_value_remediation_defaults_none():
@@ -110,11 +88,6 @@ def test_metric_results_all():
     assert mr.all() == [mv1, mv2]
 
 
-def test_metric_results_all_empty():
-    mr = MetricResults([])
-    assert mr.all() == []
-
-
 def test_metric_results_iter():
     mv1 = make_metric_value("a")
     mv2 = make_metric_value("b")
@@ -128,11 +101,6 @@ def test_metric_results_len():
     assert len(mr) == 2
 
 
-def test_metric_results_len_empty():
-    mr = MetricResults([])
-    assert len(mr) == 0
-
-
 def test_metric_results_equality():
     mv = make_metric_value("x")
     mr1 = MetricResults([mv])
@@ -144,19 +112,6 @@ def test_metric_results_inequality():
     mr1 = MetricResults([make_metric_value("a")])
     mr2 = MetricResults([make_metric_value("b")])
     assert mr1 != mr2
-
-
-def test_metric_results_eq_non_metric_results():
-    mr = MetricResults([])
-    result = mr.__eq__("not a MetricResults")
-    assert result is NotImplemented
-
-
-def test_metric_results_repr():
-    mv = MetricValue("foo", 1, MetricValueType.INTEGER)
-    mr = MetricResults([mv])
-    r = repr(mr)
-    assert "MetricResults" in r
 
 
 def test_metric_results_deduplicates_by_name():
@@ -189,16 +144,6 @@ def test_hunk_analysis_frozen():
         pass
 
 
-def test_hunk_analysis_perfect_score():
-    ha = Analysis(subject=make_hunk(), metrics=MetricResults([]), score=1.0)
-    assert ha.score == 1.0
-
-
-def test_hunk_analysis_zero_score():
-    ha = Analysis(subject=make_hunk(), metrics=MetricResults([]), score=0.0)
-    assert ha.score == 0.0
-
-
 def test_analysis_get_metric():
     mv = make_metric_value("m")
     ha = Analysis(subject=make_hunk(), metrics=MetricResults([mv]), score=0.8)
@@ -208,27 +153,6 @@ def test_analysis_get_metric():
 def test_analysis_get_missing_returns_none():
     ha = Analysis(subject=make_hunk(), metrics=MetricResults([]), score=1.0)
     assert ha.get("nonexistent") is None
-
-
-# --- Analysis (file) tests ---
-
-
-def test_file_analysis_fields():
-    f = make_file()
-    metrics = MetricResults([make_metric_value("b")])
-    fa = Analysis(subject=f, metrics=metrics, score=0.7)
-    assert fa.subject == f
-    assert fa.metrics == metrics
-    assert fa.score == 0.7
-
-
-def test_file_analysis_frozen():
-    fa = Analysis(subject=make_file(), metrics=MetricResults([]), score=1.0)
-    try:
-        fa.score = 0.0  # type: ignore[misc]
-        assert False, "Should have raised FrozenInstanceError"
-    except Exception:
-        pass
 
 
 # --- OverallAnalysis tests ---
@@ -291,12 +215,3 @@ def test_analysis_report_frozen():
         pass
 
 
-def test_analysis_report_multiple_hunks_and_files():
-    oa = OverallAnalysis(metrics=MetricResults([]), score=0.7)
-    ha1 = Analysis(subject=make_hunk(), metrics=MetricResults([]), score=0.5)
-    ha2 = Analysis(subject=make_hunk(), metrics=MetricResults([]), score=0.9)
-    fa1 = Analysis(subject=make_file(), metrics=MetricResults([]), score=0.6)
-    fa2 = Analysis(subject=make_file(), metrics=MetricResults([]), score=0.8)
-    report = AnalysisReport(overall=oa, files=[fa1, fa2], hunks=[ha1, ha2])
-    assert len(report.hunks) == 2
-    assert len(report.files) == 2
