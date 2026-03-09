@@ -1,13 +1,13 @@
 from reviewability.domain.models import Hunk
-from reviewability.domain.report import HunkAnalysis, MetricResults, MetricValue, MetricValueType
+from reviewability.domain.report import Analysis, MetricResults, MetricValue, MetricValueType
 from reviewability.metrics.overall.removed_lines import OverallRemovedLines
 
 metric = OverallRemovedLines()
 
 
-def make_hunk_analysis(removed: int) -> HunkAnalysis:
-    return HunkAnalysis(
-        hunk=Hunk(
+def make_hunk_analysis(removed: int) -> Analysis:
+    return Analysis(
+        subject=Hunk(
             file_path="a.py", source_start=1, source_length=1, target_start=1, target_length=1
         ),
         metrics=MetricResults(
@@ -33,8 +33,8 @@ def test_multiple_hunks():
 
 
 def test_hunk_missing_metric_is_skipped():
-    hunk_without_metric = HunkAnalysis(
-        hunk=Hunk(
+    hunk_without_metric = Analysis(
+        subject=Hunk(
             file_path="a.py", source_start=1, source_length=1, target_start=1, target_length=1
         ),
         metrics=MetricResults([]),

@@ -1,15 +1,15 @@
 import pytest
 
 from reviewability.domain.models import FileDiff
-from reviewability.domain.report import FileAnalysis, MetricResults, MetricValue, MetricValueType
+from reviewability.domain.report import Analysis, MetricResults, MetricValue, MetricValueType
 from reviewability.metrics.overall.largest_file_ratio import OverallLargestFileRatio
 
 metric = OverallLargestFileRatio()
 
 
-def make_file_analysis(lines_changed: int) -> FileAnalysis:
-    return FileAnalysis(
-        file=FileDiff(path="a.py", old_path=None, is_new_file=False, is_deleted_file=False),
+def make_file_analysis(lines_changed: int) -> Analysis:
+    return Analysis(
+        subject=FileDiff(path="a.py", old_path=None, is_new_file=False, is_deleted_file=False),
         metrics=MetricResults(
             [MetricValue("file.lines_changed", lines_changed, MetricValueType.INTEGER)]
         ),
@@ -53,10 +53,10 @@ def test_all_files_zero_lines():
 
 
 def test_file_missing_metric_is_treated_as_zero():
-    # FileAnalysis without file.lines_changed is excluded from values list.
+    # Analysis without file.lines_changed is excluded from values list.
     # Only the file with the metric contributes → ratio = 1.0
-    file_without_metric = FileAnalysis(
-        file=FileDiff(path="b.py", old_path=None, is_new_file=False, is_deleted_file=False),
+    file_without_metric = Analysis(
+        subject=FileDiff(path="b.py", old_path=None, is_new_file=False, is_deleted_file=False),
         metrics=MetricResults([]),
         score=1.0,
     )

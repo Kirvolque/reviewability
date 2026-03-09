@@ -1,9 +1,8 @@
 from typing import override
 
 from reviewability.domain.report import (
+    Analysis,
     Cause,
-    FileAnalysis,
-    HunkAnalysis,
     MetricValue,
     MetricValueType,
     OverallMetricResult,
@@ -24,15 +23,12 @@ class OverallChurnComplexity(OverallMetric):
         "1.0 means all hunks are maximally interleaved (equal adds and removes)."
     )
     remediation: str = (
-        "Split mixed hunks into separate directional commits: "
-        "one for deletions, one for additions."
+        "Split mixed hunks into separate directional commits: one for deletions, one for additions."
     )
 
     @override
-    def calculate(
-        self, hunks: list[HunkAnalysis], files: list[FileAnalysis]
-    ) -> OverallMetricResult:
-        mix_per_hunk: list[tuple[float, HunkAnalysis]] = []
+    def calculate(self, hunks: list[Analysis], files: list[Analysis]) -> OverallMetricResult:
+        mix_per_hunk: list[tuple[float, Analysis]] = []
         for h in hunks:
             mv = h.metrics.get(HunkChurnRatio.name)
             if mv is not None:

@@ -1,7 +1,7 @@
 from reviewability.domain.models import Hunk
 from reviewability.domain.report import (
+    Analysis,
     Cause,
-    HunkAnalysis,
     MetricResults,
     MetricValue,
     MetricValueType,
@@ -9,9 +9,9 @@ from reviewability.domain.report import (
 from reviewability.metrics.overall.problematic_hunk_count import OverallProblematicHunkCount
 
 
-def make_hunk_analysis(score: float) -> HunkAnalysis:
-    return HunkAnalysis(
-        hunk=Hunk(
+def make_hunk_analysis(score: float) -> Analysis:
+    return Analysis(
+        subject=Hunk(
             file_path="a.py", source_start=1, source_length=1, target_start=1, target_length=1
         ),
         metrics=MetricResults([]),

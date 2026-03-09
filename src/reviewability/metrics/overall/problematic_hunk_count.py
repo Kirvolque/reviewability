@@ -1,9 +1,8 @@
 from typing import override
 
 from reviewability.domain.report import (
+    Analysis,
     Cause,
-    FileAnalysis,
-    HunkAnalysis,
     MetricValue,
     MetricValueType,
     OverallMetricResult,
@@ -21,9 +20,7 @@ class OverallProblematicHunkCount(OverallMetric):
         self._score_threshold = score_threshold
 
     @override
-    def calculate(
-        self, hunks: list[HunkAnalysis], files: list[FileAnalysis]
-    ) -> OverallMetricResult:
+    def calculate(self, hunks: list[Analysis], files: list[Analysis]) -> OverallMetricResult:
         problematic = [h for h in hunks if h.score < self._score_threshold]
         return OverallMetricResult(
             value=MetricValue(name=self.name, value=len(problematic), value_type=self.value_type),

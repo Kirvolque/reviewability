@@ -2,8 +2,7 @@ from abc import ABC, abstractmethod
 
 from reviewability.domain.models import FileDiff, Hunk
 from reviewability.domain.report import (
-    FileAnalysis,
-    HunkAnalysis,
+    Analysis,
     MetricValue,
     MetricValueType,
     OverallMetricResult,
@@ -45,6 +44,4 @@ class OverallMetric(Metric, ABC):
     """
 
     @abstractmethod
-    def calculate(
-        self, hunks: list[HunkAnalysis], files: list[FileAnalysis]
-    ) -> OverallMetricResult: ...
+    def calculate(self, hunks: list[Analysis], files: list[Analysis]) -> OverallMetricResult: ...

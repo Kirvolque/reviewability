@@ -1,9 +1,8 @@
 from reviewability.domain.models import FileDiff, Hunk
 from reviewability.domain.report import (
+    Analysis,
     AnalysisReport,
     Cause,
-    FileAnalysis,
-    HunkAnalysis,
     MetricResults,
     MetricValue,
     MetricValueType,
@@ -173,14 +172,14 @@ def test_cause_remediation_defaults_empty():
 
 
 def test_cause_with_hunk_analysis():
-    ha = HunkAnalysis(hunk=make_hunk(), metrics=MetricResults([]), score=0.3)
+    ha = Analysis(subject=make_hunk(), metrics=MetricResults([]), score=0.3)
     cause = Cause(value=ha)
     assert cause.value == ha
     assert cause.remediation == ""
 
 
 def test_cause_with_file_analysis():
-    fa = FileAnalysis(file=make_file(), metrics=MetricResults([]), score=0.4)
+    fa = Analysis(subject=make_file(), metrics=MetricResults([]), score=0.4)
     cause = Cause(value=fa)
     assert cause.value == fa
 
@@ -202,14 +201,14 @@ def test_cause_equality():
     assert c1 == c2
 
 
-# --- HunkAnalysis tests ---
+# --- Analysis (hunk) tests ---
 
 
 def test_hunk_analysis_fields():
     hunk = make_hunk()
     metrics = MetricResults([make_metric_value("a")])
-    ha = HunkAnalysis(hunk=hunk, metrics=metrics, score=0.8)
-    assert ha.hunk == hunk
+    ha = Analysis(subject=hunk, metrics=metrics, score=0.8)
+    assert ha.subject == hunk
     assert ha.metrics == metrics
     assert ha.score == 0.8
     assert ha.causes == []
@@ -219,12 +218,12 @@ def test_hunk_analysis_with_causes():
     hunk = make_hunk()
     mv = make_metric_value("m")
     cause = Cause(value=mv, remediation="fix")
-    ha = HunkAnalysis(hunk=hunk, metrics=MetricResults([mv]), score=0.5, causes=[cause])
+    ha = Analysis(subject=hunk, metrics=MetricResults([mv]), score=0.5, causes=[cause])
     assert ha.causes == [cause]
 
 
 def test_hunk_analysis_frozen():
-    ha = HunkAnalysis(hunk=make_hunk(), metrics=MetricResults([]), score=1.0)
+    ha = Analysis(subject=make_hunk(), metrics=MetricResults([]), score=1.0)
     try:
         ha.score = 0.5  # type: ignore[misc]
         assert False, "Should have raised FrozenInstanceError"
@@ -233,23 +232,23 @@ def test_hunk_analysis_frozen():
 
 
 def test_hunk_analysis_perfect_score():
-    ha = HunkAnalysis(hunk=make_hunk(), metrics=MetricResults([]), score=1.0)
+    ha = Analysis(subject=make_hunk(), metrics=MetricResults([]), score=1.0)
     assert ha.score == 1.0
 
 
 def test_hunk_analysis_zero_score():
-    ha = HunkAnalysis(hunk=make_hunk(), metrics=MetricResults([]), score=0.0)
+    ha = Analysis(subject=make_hunk(), metrics=MetricResults([]), score=0.0)
     assert ha.score == 0.0
 
 
-# --- FileAnalysis tests ---
+# --- Analysis (file) tests ---
 
 
 def test_file_analysis_fields():
     f = make_file()
     metrics = MetricResults([make_metric_value("b")])
-    fa = FileAnalysis(file=f, metrics=metrics, score=0.7)
-    assert fa.file == f
+    fa = Analysis(subject=f, metrics=metrics, score=0.7)
+    assert fa.subject == f
     assert fa.metrics == metrics
     assert fa.score == 0.7
     assert fa.causes == []
@@ -258,12 +257,12 @@ def test_file_analysis_fields():
 def test_file_analysis_with_causes():
     mv = make_metric_value("m")
     cause = Cause(value=mv, remediation="hint")
-    fa = FileAnalysis(file=make_file(), metrics=MetricResults([mv]), score=0.3, causes=[cause])
+    fa = Analysis(subject=make_file(), metrics=MetricResults([mv]), score=0.3, causes=[cause])
     assert fa.causes == [cause]
 
 
 def test_file_analysis_frozen():
-    fa = FileAnalysis(file=make_file(), metrics=MetricResults([]), score=1.0)
+    fa = Analysis(subject=make_file(), metrics=MetricResults([]), score=1.0)
     try:
         fa.score = 0.0  # type: ignore[misc]
         assert False, "Should have raised FrozenInstanceError"
@@ -276,8 +275,8 @@ def test_file_analysis_multiple_causes():
     mv2 = make_metric_value("b")
     c1 = Cause(value=mv1)
     c2 = Cause(value=mv2)
-    fa = FileAnalysis(
-        file=make_file(), metrics=MetricResults([mv1, mv2]), score=0.2, causes=[c1, c2]
+    fa = Analysis(
+        subject=make_file(), metrics=MetricResults([mv1, mv2]), score=0.2, causes=[c1, c2]
     )
     assert len(fa.causes) == 2
 
@@ -290,14 +289,21 @@ def test_overall_metric_result_fields():
     omr = OverallMetricResult(value=mv)
     assert omr.value == mv
     assert omr.causes == []
+    assert omr.remediation == ""
 
 
 def test_overall_metric_result_with_causes():
     mv = make_metric_value("overall.m")
-    ha = HunkAnalysis(hunk=make_hunk(), metrics=MetricResults([]), score=0.1)
+    ha = Analysis(subject=make_hunk(), metrics=MetricResults([]), score=0.1)
     cause = Cause(value=ha)
     omr = OverallMetricResult(value=mv, causes=[cause])
     assert omr.causes == [cause]
+
+
+def test_overall_metric_result_with_remediation():
+    mv = make_metric_value("overall.m")
+    omr = OverallMetricResult(value=mv, remediation="Fix it")
+    assert omr.remediation == "Fix it"
 
 
 def test_overall_metric_result_frozen():
@@ -318,21 +324,17 @@ def test_overall_analysis_fields():
     oa = OverallAnalysis(metrics=metrics, score=0.9)
     assert oa.metrics == metrics
     assert oa.score == 0.9
-    assert oa.causes == []
     assert oa.metric_results == []
 
 
-def test_overall_analysis_with_causes_and_results():
+def test_overall_analysis_with_results():
     mv = make_metric_value("overall.m")
-    cause = Cause(value=mv)
     omr = OverallMetricResult(value=mv)
     oa = OverallAnalysis(
         metrics=MetricResults([mv]),
         score=0.5,
-        causes=[cause],
         metric_results=[omr],
     )
-    assert oa.causes == [cause]
     assert oa.metric_results == [omr]
 
 
@@ -350,8 +352,8 @@ def test_overall_analysis_frozen():
 
 def test_analysis_report_fields():
     oa = OverallAnalysis(metrics=MetricResults([]), score=1.0)
-    ha = HunkAnalysis(hunk=make_hunk(), metrics=MetricResults([]), score=0.8)
-    fa = FileAnalysis(file=make_file(), metrics=MetricResults([]), score=0.9)
+    ha = Analysis(subject=make_hunk(), metrics=MetricResults([]), score=0.8)
+    fa = Analysis(subject=make_file(), metrics=MetricResults([]), score=0.9)
     report = AnalysisReport(overall=oa, files=[fa], hunks=[ha])
     assert report.overall == oa
     assert report.files == [fa]
@@ -377,10 +379,10 @@ def test_analysis_report_frozen():
 
 def test_analysis_report_multiple_hunks_and_files():
     oa = OverallAnalysis(metrics=MetricResults([]), score=0.7)
-    ha1 = HunkAnalysis(hunk=make_hunk(), metrics=MetricResults([]), score=0.5)
-    ha2 = HunkAnalysis(hunk=make_hunk(), metrics=MetricResults([]), score=0.9)
-    fa1 = FileAnalysis(file=make_file(), metrics=MetricResults([]), score=0.6)
-    fa2 = FileAnalysis(file=make_file(), metrics=MetricResults([]), score=0.8)
+    ha1 = Analysis(subject=make_hunk(), metrics=MetricResults([]), score=0.5)
+    ha2 = Analysis(subject=make_hunk(), metrics=MetricResults([]), score=0.9)
+    fa1 = Analysis(subject=make_file(), metrics=MetricResults([]), score=0.6)
+    fa2 = Analysis(subject=make_file(), metrics=MetricResults([]), score=0.8)
     report = AnalysisReport(overall=oa, files=[fa1, fa2], hunks=[ha1, ha2])
     assert len(report.hunks) == 2
     assert len(report.files) == 2

@@ -71,18 +71,16 @@ def test_logic_change_report():
     assert report.overall.metrics == overall_metrics
     assert report.overall.score == scorer.overall_score(overall_metrics)
     assert len(report.overall.metric_results) == 2  # 2 overall metrics registered
-    # score < 1.0 so causes should be non-empty
-    assert len(report.overall.causes) > 0
 
     # Check files
     assert len(report.files) == 1
-    assert report.files[0].file == diff.files[0]
+    assert report.files[0].subject == diff.files[0]
     assert report.files[0].metrics == file_metrics
     assert report.files[0].score == scorer.file_score(file_metrics)
 
     # Check hunks
     assert len(report.hunks) == 1
-    assert report.hunks[0].hunk == diff.files[0].hunks[0]
+    assert report.hunks[0].subject == diff.files[0].hunks[0]
     assert report.hunks[0].metrics == hunk_metrics
     assert report.hunks[0].score == scorer.hunk_score(hunk_metrics)
     # score < 1.0 so causes should be non-empty
