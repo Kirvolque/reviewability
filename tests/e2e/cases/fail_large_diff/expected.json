@@ -64,6 +64,18 @@
       "metric": "file.max_hunk_lines",
       "value": 6,
       "remediation": "Split the large hunk into smaller, focused changes."
+    },
+    {
+      "location": "src/farewell.py @@ -1,4 +1,6 @@",
+      "metric": "hunk.churn_ratio",
+      "value": 0.6666666666666666,
+      "remediation": "Balance additions with corresponding deletions, or split pure additions into a separate commit."
+    },
+    {
+      "location": "src/greeter.py @@ -1,4 +1,6 @@",
+      "metric": "hunk.churn_ratio",
+      "value": 0.6666666666666666,
+      "remediation": "Balance additions with corresponding deletions, or split pure additions into a separate commit."
     }
   ],
   "files_changed": 2,

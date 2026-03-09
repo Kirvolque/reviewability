@@ -39,10 +39,12 @@ class MetricEngine:
         overall_metric_values = MetricResults([r.value for r in overall_results])
         overall_score = self._scorer.overall_score(overall_metric_values)
 
+        score_inputs = self._scorer.overall_score_inputs()
         overall_causes = (
             [
                 Cause(value=r.value, remediation=m.remediation)
                 for m, r in zip(overall_metrics_list, overall_results)
+                if score_inputs is None or r.value.name in score_inputs
             ]
             if overall_score < 1.0
             else []

@@ -4,58 +4,34 @@
   "violations": [],
   "recommendations": [
     {
-      "location": "overall",
-      "metric": "overall.files_changed",
-      "value": 3,
-      "remediation": "Split the change into smaller pull requests by concern."
+      "location": "src/processor.py @@ -1,5 +1,5 @@",
+      "metric": "hunk.churn_ratio",
+      "value": 0.5,
+      "remediation": "Balance additions with corresponding deletions, or split pure additions into a separate commit."
     },
     {
-      "location": "overall",
-      "metric": "overall.lines_changed",
-      "value": 48,
-      "remediation": "Reduce patch size by splitting unrelated changes into separate commits."
+      "location": "src/processor.py @@ -15,5 +15,5 @@",
+      "metric": "hunk.churn_ratio",
+      "value": 0.5,
+      "remediation": "Balance additions with corresponding deletions, or split pure additions into a separate commit."
     },
     {
-      "location": "overall",
-      "metric": "overall.added_lines",
-      "value": 24,
-      "remediation": "Keep additions under 400 lines per review session."
+      "location": "src/validator.py @@ -1,4 +1,4 @@",
+      "metric": "hunk.churn_ratio",
+      "value": 0.5,
+      "remediation": "Balance additions with corresponding deletions, or split pure additions into a separate commit."
     },
     {
-      "location": "overall",
-      "metric": "overall.removed_lines",
-      "value": 24,
-      "remediation": "Ensure large deletions are reviewed separately from additions."
+      "location": "src/validator.py @@ -15,4 +15,4 @@",
+      "metric": "hunk.churn_ratio",
+      "value": 0.5,
+      "remediation": "Balance additions with corresponding deletions, or split pure additions into a separate commit."
     },
     {
-      "location": "overall",
-      "metric": "overall.problematic_hunk_count",
-      "value": 0,
-      "remediation": "Simplify or split hunks with low reviewability scores."
-    },
-    {
-      "location": "overall",
-      "metric": "overall.problematic_file_count",
-      "value": 0,
-      "remediation": "Simplify or split files with low reviewability scores."
-    },
-    {
-      "location": "overall",
-      "metric": "overall.change_entropy",
-      "value": 1.5545851693377994,
-      "remediation": "Group related changes into fewer files, or split the diff by concern."
-    },
-    {
-      "location": "overall",
-      "metric": "overall.largest_file_ratio",
-      "value": 0.4166666666666667,
-      "remediation": "Split the diff so no single file dominates, or group scattered changes."
-    },
-    {
-      "location": "overall",
-      "metric": "overall.churn_complexity",
-      "value": 1.0,
-      "remediation": "Split mixed hunks into separate directional commits: one for deletions, one for additions."
+      "location": "src/formatter.py @@ -1,6 +1,6 @@",
+      "metric": "hunk.churn_ratio",
+      "value": 0.5,
+      "remediation": "Balance additions with corresponding deletions, or split pure additions into a separate commit."
     }
   ],
   "files_changed": 3,

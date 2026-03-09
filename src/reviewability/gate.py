@@ -3,7 +3,15 @@ from typing import Any
 
 from reviewability.config.models import ReviewabilityConfig
 from reviewability.domain.report import AnalysisReport, FileAnalysis, HunkAnalysis, MetricValue
+from reviewability.metrics.hunk.churn_ratio import HunkChurnRatio
+from reviewability.metrics.overall.churn_complexity import OverallChurnComplexity
 from reviewability.rules.engine import RuleViolation, Severity
+
+# Maps an overall metric to the single hunk/file metric that best explains its value.
+# When drilling into sub-causes for these metrics, only the focused metric is surfaced.
+_FOCUS_METRIC: dict[str, str] = {
+    OverallChurnComplexity.name: HunkChurnRatio.name,
+}
 
 
 @dataclass(frozen=True)
@@ -56,19 +64,21 @@ class QualityGate:
     def _build_recommendations(self, report: AnalysisReport) -> list[Recommendation]:
         recs = []
         for omr in report.overall.metric_results:
+            focus = _FOCUS_METRIC.get(omr.value.name)
             for cause in omr.causes:
                 if isinstance(cause.value, FileAnalysis):
                     location = cause.value.file.path
                     for inner in cause.value.causes:
                         if isinstance(inner.value, MetricValue):
-                            recs.append(
-                                Recommendation(
-                                    location=location,
-                                    metric=inner.value.name,
-                                    value=inner.value.value,
-                                    remediation=inner.remediation,
+                            if focus is None or inner.value.name == focus:
+                                recs.append(
+                                    Recommendation(
+                                        location=location,
+                                        metric=inner.value.name,
+                                        value=inner.value.value,
+                                        remediation=inner.remediation,
+                                    )
                                 )
-                            )
                 elif isinstance(cause.value, HunkAnalysis):
                     hunk = cause.value.hunk
                     location = (
@@ -78,17 +88,22 @@ class QualityGate:
                     )
                     for inner in cause.value.causes:
                         if isinstance(inner.value, MetricValue):
-                            recs.append(
-                                Recommendation(
-                                    location=location,
-                                    metric=inner.value.name,
-                                    value=inner.value.value,
-                                    remediation=inner.remediation,
+                            if focus is None or inner.value.name == focus:
+                                recs.append(
+                                    Recommendation(
+                                        location=location,
+                                        metric=inner.value.name,
+                                        value=inner.value.value,
+                                        remediation=inner.remediation,
+                                    )
                                 )
-                            )
+
         if not recs:
+            # Fallback: no sub-cause recommendations found; surface the overall-level
+            # metrics that actually drove the score (filtered by scorer.overall_score_inputs).
+            # Skip zero-valued metrics — a metric at 0 did not contribute to the failure.
             for cause in report.overall.causes:
-                if isinstance(cause.value, MetricValue):
+                if isinstance(cause.value, MetricValue) and cause.value.value:
                     recs.append(
                         Recommendation(
                             location="overall",
