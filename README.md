@@ -49,6 +49,12 @@ reviewability --detailed HEAD~1 HEAD
 
 Output is JSON. Exit code is `0` if the gate passes, `1` if it fails.
 
+## Claude Code Skill
+
+If you use [Claude Code](https://claude.ai/code), a `/reviewability` skill is included.
+It runs the tool on the current diff, summarizes the results, and attempts to address
+any recommendations directly.
+
 ## Overall Scoring
 
 The overall score is driven by two factors: **diff size** and **churn complexity**.
