@@ -26,8 +26,7 @@ class MetricEngine:
         file_analyses = [self._build_file_analysis(file) for file in diff.files]
 
         overall_results = [
-            m.calculate(hunk_analyses, file_analyses)
-            for m in self._registry.overall_metrics()
+            m.calculate(hunk_analyses, file_analyses) for m in self._registry.overall_metrics()
         ]
         overall_metric_values = MetricResults(overall_results)
         overall_score = self._scorer.overall_score(overall_metric_values)

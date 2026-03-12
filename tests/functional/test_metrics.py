@@ -45,8 +45,8 @@ def test_logic_change_report():
 
     # Check overall metric values (name and value only; remediation varies per metric)
     assert len(report.overall.metrics) == 2  # 2 overall metrics registered
-    assert report.overall.metrics.get("overall.files_changed").value == 1  # type: ignore[union-attr]
-    assert report.overall.metrics.get("overall.lines_changed").value == 2  # type: ignore[union-attr]
+    assert report.overall.metrics.metric("overall.files_changed").value == 1  # type: ignore[union-attr]
+    assert report.overall.metrics.metric("overall.lines_changed").value == 2  # type: ignore[union-attr]
 
     # Build a MetricResults without remediation for score calculation comparison
     overall_for_score = MetricResults(
@@ -60,8 +60,8 @@ def test_logic_change_report():
     # Check files
     assert len(report.files) == 1
     assert report.files[0].subject == diff.files[0]
-    assert report.files[0].metrics.get("file.hunk_count").value == 1  # type: ignore[union-attr]
-    assert report.files[0].metrics.get("file.lines_changed").value == 2  # type: ignore[union-attr]
+    assert report.files[0].metrics.metric("file.hunk_count").value == 1  # type: ignore[union-attr]
+    assert report.files[0].metrics.metric("file.lines_changed").value == 2  # type: ignore[union-attr]
     file_for_score = MetricResults(
         [
             MetricValue("file.hunk_count", 1, MetricValueType.INTEGER),
@@ -73,9 +73,9 @@ def test_logic_change_report():
     # Check hunks
     assert len(report.hunks) == 1
     assert report.hunks[0].subject == diff.files[0].hunks[0]
-    assert report.hunks[0].metrics.get("hunk.lines_changed").value == 2  # type: ignore[union-attr]
-    assert report.hunks[0].metrics.get("hunk.added_lines").value == 2  # type: ignore[union-attr]
-    assert report.hunks[0].metrics.get("hunk.removed_lines").value == 0  # type: ignore[union-attr]
+    assert report.hunks[0].metrics.metric("hunk.lines_changed").value == 2  # type: ignore[union-attr]
+    assert report.hunks[0].metrics.metric("hunk.added_lines").value == 2  # type: ignore[union-attr]
+    assert report.hunks[0].metrics.metric("hunk.removed_lines").value == 0  # type: ignore[union-attr]
     hunk_for_score = MetricResults(
         [
             MetricValue("hunk.lines_changed", 2, MetricValueType.INTEGER),

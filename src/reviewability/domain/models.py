@@ -2,8 +2,19 @@ import itertools
 from dataclasses import dataclass, field
 
 
+@dataclass(frozen=True, kw_only=True)
+class DiffNode:
+    """Common base for all addressable units within a diff (hunks and files).
+
+    Carries flags that are computed after parsing, during the enrichment phase.
+    """
+
+    is_likely_moved: bool = False
+    """True if this block appears to be a movement of code from another location."""
+
+
 @dataclass(frozen=True)
-class Hunk:
+class Hunk(DiffNode):
     """A contiguous block of changes within a single file."""
 
     file_path: str
@@ -34,7 +45,7 @@ class Hunk:
 
 
 @dataclass(frozen=True)
-class FileDiff:
+class FileDiff(DiffNode):
     """All changes to a single file within a diff."""
 
     path: str

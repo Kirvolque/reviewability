@@ -25,20 +25,20 @@ class DefaultScorer(ReviewabilityScorer):
 
     @override
     def hunk_score(self, metrics: MetricResults) -> float:
-        v = metrics.get(HunkLinesChanged.name)
+        v = metrics.metric(HunkLinesChanged.name)
         return max(0.0, 1.0 - v.value / self._max_hunk_lines) if v else 1.0
 
     @override
     def file_score(self, metrics: MetricResults) -> float:
-        v = metrics.get(FileLinesChanged.name)
+        v = metrics.metric(FileLinesChanged.name)
         return max(0.0, 1.0 - v.value / self._max_diff_lines) if v else 1.0
 
     @override
     def overall_score(self, metrics: MetricResults) -> float:
-        lines = metrics.get(OverallLinesChanged.name)
+        lines = metrics.metric(OverallLinesChanged.name)
         if lines is None:
             return 1.0
         size_ratio = min(lines.value / self._max_diff_lines, 1.0)
-        churn_mv = metrics.get(OverallChurnComplexity.name)
+        churn_mv = metrics.metric(OverallChurnComplexity.name)
         churn = churn_mv.value if churn_mv is not None else 0.0
         return max(0.0, 1.0 - size_ratio * (1.0 + churn))
