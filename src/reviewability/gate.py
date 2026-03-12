@@ -71,7 +71,7 @@ class QualityGate:
             for h in sorted(report.hunks, key=lambda h: h.score):
                 if not isinstance(h.subject, Hunk):
                     continue
-                focus_mv = h.metrics.get(focus)
+                focus_mv = h.metrics.metric(focus)
                 if focus_mv is None or not focus_mv.value:
                     continue
                 hunk = h.subject

@@ -20,7 +20,7 @@ class OverallChangeEntropy(OverallMetric):
         values = [
             m.value
             for f in files
-            if (m := f.metrics.get("file.lines_changed")) is not None and m.value > 0
+            if (m := f.metrics.metric("file.lines_changed")) is not None and m.value > 0
         ]
         total = sum(values)
         if total == 0:

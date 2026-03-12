@@ -16,7 +16,9 @@ class OverallLargestFileRatio(OverallMetric):
 
     @override
     def calculate(self, hunks: list[Analysis], files: list[Analysis]) -> MetricValue:
-        values = [m.value for f in files if (m := f.metrics.get("file.lines_changed")) is not None]
+        values = [
+            m.value for f in files if (m := f.metrics.metric("file.lines_changed")) is not None
+        ]
         total = sum(values)
         ratio = max(values) / total if total > 0 else 0.0
         return MetricValue(

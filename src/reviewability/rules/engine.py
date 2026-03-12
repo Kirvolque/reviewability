@@ -1,17 +1,8 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import Callable, Protocol
+from typing import Callable
 
-from reviewability.domain.metric import MetricValue
-
-
-class RuleContext(Protocol):
-    """Minimal interface required by rules for evaluation."""
-
-    @property
-    def score(self) -> float: ...
-
-    def get(self, name: str) -> MetricValue | None: ...
+from reviewability.domain.protocols import RuleContext
 
 
 class Severity(Enum):

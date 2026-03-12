@@ -14,7 +14,7 @@ class OverallRemovedLines(OverallMetric):
     @override
     def calculate(self, hunks: list[Analysis], files: list[Analysis]) -> MetricValue:
         value = sum(
-            m.value for h in hunks if (m := h.metrics.get("hunk.removed_lines")) is not None
+            m.value for h in hunks if (m := h.metrics.metric("hunk.removed_lines")) is not None
         )
         return MetricValue(
             name=self.name,

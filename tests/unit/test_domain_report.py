@@ -70,15 +70,15 @@ def test_metric_value_causes_set():
 # --- MetricResults tests ---
 
 
-def test_metric_results_get_existing():
+def test_metric_results_metric_existing():
     mv = make_metric_value("foo")
     mr = MetricResults([mv])
-    assert mr.get("foo") == mv
+    assert mr.metric("foo") == mv
 
 
-def test_metric_results_get_missing():
+def test_metric_results_metric_missing():
     mr = MetricResults([])
-    assert mr.get("nonexistent") is None
+    assert mr.metric("nonexistent") is None
 
 
 def test_metric_results_all():
@@ -120,7 +120,7 @@ def test_metric_results_deduplicates_by_name():
     mr = MetricResults([mv1, mv2])
     # Last one wins when same name
     assert len(mr) == 1
-    assert mr.get("a") == mv2
+    assert mr.metric("a") == mv2
 
 
 # --- Analysis (hunk) tests ---
@@ -144,15 +144,15 @@ def test_hunk_analysis_frozen():
         pass
 
 
-def test_analysis_get_metric():
+def test_analysis_metric():
     mv = make_metric_value("m")
     ha = Analysis(subject=make_hunk(), metrics=MetricResults([mv]), score=0.8)
-    assert ha.get("m") == mv
+    assert ha.metric("m") == mv
 
 
-def test_analysis_get_missing_returns_none():
+def test_analysis_metric_missing_returns_none():
     ha = Analysis(subject=make_hunk(), metrics=MetricResults([]), score=1.0)
-    assert ha.get("nonexistent") is None
+    assert ha.metric("nonexistent") is None
 
 
 # --- OverallAnalysis tests ---
@@ -174,15 +174,15 @@ def test_overall_analysis_frozen():
         pass
 
 
-def test_overall_analysis_get_metric():
+def test_overall_analysis_metric():
     mv = make_metric_value("overall.m")
     oa = OverallAnalysis(metrics=MetricResults([mv]), score=0.5)
-    assert oa.get("overall.m") == mv
+    assert oa.metric("overall.m") == mv
 
 
-def test_overall_analysis_get_missing_returns_none():
+def test_overall_analysis_metric_missing_returns_none():
     oa = OverallAnalysis(metrics=MetricResults([]), score=1.0)
-    assert oa.get("nonexistent") is None
+    assert oa.metric("nonexistent") is None
 
 
 # --- AnalysisReport tests ---

@@ -79,7 +79,7 @@ def test_rule_engine_rule_uses_metric_value():
     context = make_context([mv])
 
     def check_too_many(s: OverallAnalysis) -> str | None:
-        v = s.get("hunk.lines_changed")
+        v = s.metric("hunk.lines_changed")
         if v is not None and v.value > 50:
             return f"Too many: {v.value}"
         return None

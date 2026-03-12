@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from reviewability.domain.metric import MetricResults, MetricValue, MetricValueType
-from reviewability.domain.models import FileDiff, Hunk
+from reviewability.domain.metric import MetricResults, MetricValue
+from reviewability.domain.models import DiffNode
 
 
 @dataclass(frozen=True)
@@ -13,13 +13,13 @@ class Analysis:
     ``subject`` is the domain object being analysed (``Hunk`` or ``FileDiff``).
     """
 
-    subject: Hunk | FileDiff
+    subject: DiffNode
     metrics: MetricResults
     score: float
 
-    def get(self, name: str) -> MetricValue | None:
+    def metric(self, name: str) -> MetricValue | None:
         """Return the MetricValue for the given metric name, or None if not present."""
-        return self.metrics.get(name)
+        return self.metrics.metric(name)
 
 
 @dataclass(frozen=True)
@@ -29,9 +29,9 @@ class OverallAnalysis:
     metrics: MetricResults
     score: float
 
-    def get(self, name: str) -> MetricValue | None:
+    def metric(self, name: str) -> MetricValue | None:
         """Return the MetricValue for the given metric name, or None if not present."""
-        return self.metrics.get(name)
+        return self.metrics.metric(name)
 
 
 @dataclass(frozen=True)

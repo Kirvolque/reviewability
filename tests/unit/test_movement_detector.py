@@ -1,6 +1,6 @@
 import pytest
 
-from reviewability.analysis.movement import MovementDetector
+from reviewability.diff.movement import MovementDetector
 from reviewability.domain.models import FileDiff, Hunk
 
 

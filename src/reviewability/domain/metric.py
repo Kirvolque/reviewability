@@ -43,7 +43,7 @@ class MetricResults:
     def __init__(self, metrics: list[MetricValue]) -> None:
         self._by_name: dict[str, MetricValue] = {m.name: m for m in metrics}
 
-    def get(self, name: str) -> MetricValue | None:
+    def metric(self, name: str) -> MetricValue | None:
         """Return the MetricValue for the given metric name, or None if not present."""
         return self._by_name.get(name)
 
