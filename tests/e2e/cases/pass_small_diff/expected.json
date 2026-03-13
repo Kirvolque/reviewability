@@ -23,6 +23,10 @@
       "value": 0
     },
     {
+      "name": "overall.moved_lines",
+      "value": 0
+    },
+    {
       "name": "overall.problematic_hunk_count",
       "value": 0
     },
@@ -67,6 +71,10 @@
         {
           "name": "file.max_hunk_lines",
           "value": 2
+        },
+        {
+          "name": "file.is_likely_moved",
+          "value": 0
         }
       ]
     }
@@ -95,6 +103,10 @@
         {
           "name": "hunk.churn_ratio",
           "value": 1.0
+        },
+        {
+          "name": "hunk.is_likely_moved",
+          "value": 0
         }
       ]
     }

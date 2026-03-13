@@ -39,6 +39,10 @@
       "value": 4
     },
     {
+      "name": "overall.moved_lines",
+      "value": 0
+    },
+    {
       "name": "overall.problematic_hunk_count",
       "value": 0
     },
@@ -83,6 +87,10 @@
         {
           "name": "file.max_hunk_lines",
           "value": 6
+        },
+        {
+          "name": "file.is_likely_moved",
+          "value": 0
         }
       ]
     },
@@ -109,6 +117,10 @@
         {
           "name": "file.max_hunk_lines",
           "value": 6
+        },
+        {
+          "name": "file.is_likely_moved",
+          "value": 0
         }
       ]
     }
@@ -137,6 +149,10 @@
         {
           "name": "hunk.churn_ratio",
           "value": 0.67
+        },
+        {
+          "name": "hunk.is_likely_moved",
+          "value": 0
         }
       ]
     },
@@ -163,6 +179,10 @@
         {
           "name": "hunk.churn_ratio",
           "value": 0.67
+        },
+        {
+          "name": "hunk.is_likely_moved",
+          "value": 0
         }
       ]
     }
