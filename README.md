@@ -55,6 +55,15 @@ If you use [Claude Code](https://claude.ai/code), a `/reviewability` skill is in
 It runs the tool on the current diff, summarizes the results, and attempts to address
 any recommendations directly.
 
+## Movement Detection
+
+Moved code is easy to review — the logic hasn't changed, only the location. The tool detects
+when a block of code is deleted from one place and inserted elsewhere (accounting for
+reindentation and package/import changes), and treats those hunks and files as relocations.
+
+Relocations receive a perfect score and are excluded from the size and churn calculations
+that drive the overall score. A diff that is large only because of relocations is not penalized.
+
 ## Overall Scoring
 
 The overall score is driven by two factors: **diff size** and **churn complexity**.
