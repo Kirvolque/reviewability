@@ -1,0 +1,166 @@
+diff --git a/models/user.py b/models/user.py
+deleted file mode 100644
+--- a/models/user.py
++++ /dev/null
+@@ -1,23 +0,0 @@
+-from dataclasses import dataclass
+-
+-
+-@dataclass
+-class User:
+-    id: int
+-    name: str
+-    email: str
+-    is_active: bool = True
+-
+-    def deactivate(self) -> None:
+-        self.is_active = False
+-
+-    def display_name(self) -> str:
+-        return self.name.strip()
+-
+-    def to_dict(self) -> dict:
+-        return {
+-            "id": self.id,
+-            "name": self.name,
+-            "email": self.email,
+-            "is_active": self.is_active,
+-        }
+diff --git a/domain/user.py b/domain/user.py
+new file mode 100644
+--- /dev/null
++++ b/domain/user.py
+@@ -0,0 +1,25 @@
++from __future__ import annotations
++
++from dataclasses import dataclass
++
++
++@dataclass
++class User:
++    id: int
++    name: str
++    email: str
++    is_active: bool = True
++
++    def deactivate(self) -> None:
++        self.is_active = False
++
++    def display_name(self) -> str:
++        return self.name.strip()
++
++    def to_dict(self) -> dict:
++        return {
++            "id": self.id,
++            "name": self.name,
++            "email": self.email,
++            "is_active": self.is_active,
++        }
+diff --git a/models/order.py b/models/order.py
+deleted file mode 100644
+--- a/models/order.py
++++ /dev/null
+@@ -1,25 +0,0 @@
+-from dataclasses import dataclass
+-from decimal import Decimal
+-
+-
+-@dataclass
+-class Order:
+-    id: int
+-    user_id: int
+-    total: Decimal
+-    status: str = "pending"
+-
+-    def is_pending(self) -> bool:
+-        return self.status == "pending"
+-
+-    def complete(self) -> None:
+-        self.status = "completed"
+-
+-    def cancel(self) -> None:
+-        self.status = "cancelled"
+-
+-    def item_count(self) -> int:
+-        return 0
+-
+-    def __str__(self) -> str:
+-        return f"Order({self.id}, {self.total})"
+diff --git a/domain/order.py b/domain/order.py
+new file mode 100644
+--- /dev/null
++++ b/domain/order.py
+@@ -0,0 +1,27 @@
++from __future__ import annotations
++
++from dataclasses import dataclass
++from decimal import Decimal
++
++
++@dataclass
++class Order:
++    id: int
++    user_id: int
++    total: Decimal
++    status: str = "pending"
++
++    def is_pending(self) -> bool:
++        return self.status == "pending"
++
++    def complete(self) -> None:
++        self.status = "completed"
++
++    def cancel(self) -> None:
++        self.status = "cancelled"
++
++    def item_count(self) -> int:
++        return 0
++
++    def __str__(self) -> str:
++        return f"Order({self.id}, {self.total})"
+diff --git a/services/user_service.py b/services/user_service.py
+--- a/services/user_service.py
++++ b/services/user_service.py
+@@ -12,12 +12,1 @@
+-def _normalize_email(email: str) -> str:
+-    email = email.strip().lower()
+-    if "@" not in email:
+-        raise ValueError(f"Invalid email: {email!r}")
+-    local, domain = email.rsplit("@", 1)
+-    if not local or not domain:
+-        raise ValueError(f"Invalid email: {email!r}")
+-    if "." not in domain:
+-        raise ValueError(f"Invalid email: {email!r}")
+-    return f"{local}@{domain}"
+-
+ def create_user(name: str, email: str) -> User:
+diff --git a/utils/helpers.py b/utils/helpers.py
+--- a/utils/helpers.py
++++ b/utils/helpers.py
+@@ -8,1 +8,12 @@
+
++def _normalize_email(email: str) -> str:
++    email = email.strip().lower()
++    if "@" not in email:
++        raise ValueError(f"Invalid email: {email!r}")
++    local, domain = email.rsplit("@", 1)
++    if not local or not domain:
++        raise ValueError(f"Invalid email: {email!r}")
++    if "." not in domain:
++        raise ValueError(f"Invalid email: {email!r}")
++    return f"{local}@{domain}"
++
+diff --git a/app/main.py b/app/main.py
+--- a/app/main.py
++++ b/app/main.py
+@@ -1,5 +1,6 @@
+-from models.user import User
+-from models.order import Order
+-from services.user_service import get_user, create_user, _normalize_email
++from domain.user import User
++from domain.order import Order
++from services.user_service import get_user, create_user
++from utils.helpers import normalize_email
+
+-DATABASE_URL = "sqlite:///app.db"
++DATABASE_URL = "postgresql://localhost/app"
