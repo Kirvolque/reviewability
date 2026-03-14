@@ -106,8 +106,17 @@ def create_analyzer(config: ReviewabilityConfig) -> Analyzer:
         max_diff_lines=float(config.max_diff_lines),
     )
 
+    from reviewability.diff.movement import MovementDetector
+
+    detector = MovementDetector(
+        hunk_min_lines=config.movement_hunk_min_lines,
+        file_min_lines=config.movement_file_min_lines,
+        similarity_threshold=config.movement_similarity_threshold,
+    )
+
     return Analyzer(
         engine=MetricEngine(registry, scorer),
         hunk_rule_engine=RuleEngine(hunk_rules(config)),
         overall_rule_engine=RuleEngine(overall_rules(config)),
+        enricher=DiffEnricher(detector=detector),
     )

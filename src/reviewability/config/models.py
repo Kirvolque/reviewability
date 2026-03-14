@@ -30,3 +30,12 @@ class ReviewabilityConfig:
 
     min_overall_score: float = 0.5
     """Overall diff score below this causes the gate to fail. Range [0.0, 1.0]."""
+
+    movement_hunk_min_lines: int = 8
+    """Minimum content lines in a hunk to be considered for movement detection."""
+
+    movement_file_min_lines: int = 15
+    """Minimum content lines in a file to be considered for movement detection."""
+
+    movement_similarity_threshold: float = 0.95
+    """Fraction of lines that must match for two blocks to be classified as a movement."""
