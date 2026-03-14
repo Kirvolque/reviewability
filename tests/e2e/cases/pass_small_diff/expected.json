@@ -45,6 +45,10 @@
     {
       "name": "overall.churn_complexity",
       "value": 0.0
+    },
+    {
+      "name": "overall.scatter_factor",
+      "value": 0.0
     }
   ],
   "files": [

@@ -1,5 +1,5 @@
 {
-  "score": 0.61,
+  "score": 0.64,
   "passed": true,
   "violations": [],
   "recommendations": [],
@@ -45,6 +45,10 @@
     {
       "name": "overall.churn_complexity",
       "value": 0.18
+    },
+    {
+      "name": "overall.scatter_factor",
+      "value": 0.0
     }
   ],
   "files": [

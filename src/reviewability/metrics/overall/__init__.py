@@ -8,6 +8,7 @@ from reviewability.metrics.overall.moved_lines import OverallMovedLines
 from reviewability.metrics.overall.problematic_file_count import OverallProblematicFileCount
 from reviewability.metrics.overall.problematic_hunk_count import OverallProblematicHunkCount
 from reviewability.metrics.overall.removed_lines import OverallRemovedLines
+from reviewability.metrics.overall.scatter_factor import OverallScatterFactor
 
 __all__ = [
     "OverallFilesChanged",
@@ -20,4 +21,5 @@ __all__ = [
     "OverallLargestFileRatio",
     "OverallChurnComplexity",
     "OverallMovedLines",
+    "OverallScatterFactor",
 ]

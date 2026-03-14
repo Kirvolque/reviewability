@@ -30,6 +30,7 @@ from reviewability.metrics.overall import (
     OverallProblematicFileCount,
     OverallProblematicHunkCount,
     OverallRemovedLines,
+    OverallScatterFactor,
 )
 from reviewability.metrics.registry import MetricRegistry
 from reviewability.rules.definitions import hunk_rules, overall_rules
@@ -98,6 +99,7 @@ def create_analyzer(config: ReviewabilityConfig) -> Analyzer:
         OverallChangeEntropy(),
         OverallLargestFileRatio(),
         OverallChurnComplexity(),
+        OverallScatterFactor(),
     ]:
         registry.add(metric)
 
