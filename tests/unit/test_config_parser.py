@@ -13,9 +13,8 @@ def write_toml(content: str) -> Path:
     return Path(tmp.name)
 
 
-def test_parse_with_reviewability_section():
+def test_parse_top_level_keys():
     path = write_toml("""
-[reviewability]
 max_diff_lines = 300
 max_hunk_lines = 80
 hunk_score_threshold = 0.4
@@ -36,19 +35,35 @@ min_overall_score = 0.7
     )
 
 
-def test_parse_without_reviewability_section_uses_top_level():
+def test_parse_movement_detection_section():
+    path = write_toml("""
+[movement_detection]
+hunk_min_lines = 5
+file_min_lines = 10
+similarity_threshold = 0.9
+""")
+    config = parse_config(path)
+    assert config.movement_hunk_min_lines == 5
+    assert config.movement_file_min_lines == 10
+    assert config.movement_similarity_threshold == 0.9
+
+
+def test_parse_mixed_top_level_and_section():
     path = write_toml("""
 max_diff_lines = 200
-max_hunk_lines = 25
+min_overall_score = 0.6
+
+[movement_detection]
+similarity_threshold = 0.8
 """)
     config = parse_config(path)
     assert config.max_diff_lines == 200
-    assert config.max_hunk_lines == 25
-    # Remaining fields are defaults
-    assert config.hunk_score_threshold == 0.5
+    assert config.min_overall_score == 0.6
+    assert config.movement_similarity_threshold == 0.8
+    assert config.movement_hunk_min_lines == 8  # default
 
 
-def test_parse_missing_section_uses_defaults():
+def test_parse_empty_file_uses_defaults():
     path = write_toml("")
     config = parse_config(path)
     assert config == ReviewabilityConfig()
@@ -56,44 +71,36 @@ def test_parse_missing_section_uses_defaults():
 
 def test_parse_unknown_keys_are_ignored():
     path = write_toml("""
-[reviewability]
 max_diff_lines = 100
 unknown_key = "hello"
-another_unknown = 42
+
+[movement_detection]
+similarity_threshold = 0.9
+unknown_movement_key = 42
 """)
     config = parse_config(path)
     assert config.max_diff_lines == 100
-    # Should not raise, and defaults used for other known fields
-    assert config.hunk_score_threshold == 0.5
+    assert config.movement_similarity_threshold == 0.9
 
 
-def test_parse_partial_section():
+def test_parse_partial_config_uses_defaults_for_rest():
     path = write_toml("""
-[reviewability]
 min_overall_score = 0.8
 """)
     config = parse_config(path)
     assert config.min_overall_score == 0.8
-    # Everything else at defaults
     assert config.max_diff_lines == 500
     assert config.max_hunk_lines == 50
+    assert config.movement_hunk_min_lines == 8
 
 
-def test_parse_section_preferred_over_top_level():
-    # When [reviewability] section is present, it takes precedence over top-level keys
+def test_parse_unknown_section_is_ignored():
     path = write_toml("""
-max_diff_lines = 999
-
-[reviewability]
 max_diff_lines = 100
+
+[some_future_section]
+some_key = 42
 """)
     config = parse_config(path)
     assert config.max_diff_lines == 100
-
-
-def test_parse_all_defaults_when_empty_section():
-    path = write_toml("""
-[reviewability]
-""")
-    config = parse_config(path)
-    assert config == ReviewabilityConfig()
+    assert config == ReviewabilityConfig(max_diff_lines=100)
