@@ -1,15 +1,25 @@
 # reviewability
 
-A tool that scores the reviewability of code changes.
+**A CI/CD quality gate that scores pull requests by how hard they are to review.**
+
+Catch diffs that are too large, too tangled, or too scattered to review safely — before they merge.
 
 ![code review bottleneck](img/code-review-bottleneck.png)
 
 *It doesn't matter how fast AI generates code — the bottleneck is the human reviewer.*
 
+## Installation
+
+```bash
+pip install reviewability
+```
+
+Requires Python 3.12+.
+
 ## The Idea
 
-A diff can be hard to review not because the code is poorly written, but because of
-how the changes are combined. Mixing renames, movements, and logic changes in one diff
+A pull request can be hard to review not because the code is poorly written, but because of
+how the changes are combined. Mixing renames, movements, and logic changes in one PR
 makes each harder to verify. This is especially common with AI-generated code. Unlike
 linters, Reviewability does not analyze the code — only how the changes are structured.
 
