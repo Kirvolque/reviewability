@@ -1,0 +1,118 @@
+{
+  "score": 0.55,
+  "passed": true,
+  "violations": [],
+  "recommendations": [],
+  "files_changed": 1,
+  "hunks_changed": 1,
+  "overall": [
+    {
+      "name": "overall.files_changed",
+      "value": 1
+    },
+    {
+      "name": "overall.lines_changed",
+      "value": 30
+    },
+    {
+      "name": "overall.added_lines",
+      "value": 15
+    },
+    {
+      "name": "overall.removed_lines",
+      "value": 15
+    },
+    {
+      "name": "overall.moved_lines",
+      "value": 0
+    },
+    {
+      "name": "overall.problematic_hunk_count",
+      "value": 1
+    },
+    {
+      "name": "overall.problematic_file_count",
+      "value": 0
+    },
+    {
+      "name": "overall.change_entropy",
+      "value": 0.0
+    },
+    {
+      "name": "overall.largest_file_ratio",
+      "value": 1.0
+    },
+    {
+      "name": "overall.churn_complexity",
+      "value": 1.0
+    },
+    {
+      "name": "overall.scatter_factor",
+      "value": 0.0
+    }
+  ],
+  "files": [
+    {
+      "file": "src/config.py",
+      "score": 0.7,
+      "metrics": [
+        {
+          "name": "file.hunk_count",
+          "value": 1
+        },
+        {
+          "name": "file.lines_changed",
+          "value": 30
+        },
+        {
+          "name": "file.added_lines",
+          "value": 15
+        },
+        {
+          "name": "file.removed_lines",
+          "value": 15
+        },
+        {
+          "name": "file.max_hunk_lines",
+          "value": 30
+        },
+        {
+          "name": "file.is_likely_moved",
+          "value": 0
+        }
+      ]
+    }
+  ],
+  "hunks": [
+    {
+      "file": "src/config.py",
+      "score": 0.4,
+      "metrics": [
+        {
+          "name": "hunk.lines_changed",
+          "value": 30
+        },
+        {
+          "name": "hunk.added_lines",
+          "value": 15
+        },
+        {
+          "name": "hunk.removed_lines",
+          "value": 15
+        },
+        {
+          "name": "hunk.context_lines",
+          "value": 0
+        },
+        {
+          "name": "hunk.churn_ratio",
+          "value": 0.5
+        },
+        {
+          "name": "hunk.is_likely_moved",
+          "value": 0
+        }
+      ]
+    }
+  ]
+}

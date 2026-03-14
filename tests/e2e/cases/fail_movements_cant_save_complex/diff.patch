@@ -1,0 +1,156 @@
+diff --git a/models/service_a.py b/models/service_a.py
+deleted file mode 100644
+--- a/models/service_a.py
++++ /dev/null
+@@ -1,18 +0,0 @@
+-class ServiceA:
+-    name = "service_a"
+-    version = "1.0"
+-    timeout = 30
+-    retries = 3
+-    enabled = True
+-    debug = False
+-    host = "localhost"
+-    port = 8080
+-
+-    def start(self):
+-        return True
+-
+-    def stop(self):
+-        return False
+-
+-    def status(self):
+-        return self.enabled
+diff --git a/domain/service_a.py b/domain/service_a.py
+new file mode 100644
+--- /dev/null
++++ b/domain/service_a.py
+@@ -0,0 +1,20 @@
++from __future__ import annotations
++
++class ServiceA:
++    name = "service_a"
++    version = "1.0"
++    timeout = 30
++    retries = 3
++    enabled = True
++    debug = False
++    host = "localhost"
++    port = 8080
++
++    def start(self):
++        return True
++
++    def stop(self):
++        return False
++
++    def status(self):
++        return self.enabled
+diff --git a/models/service_b.py b/models/service_b.py
+deleted file mode 100644
+--- a/models/service_b.py
++++ /dev/null
+@@ -1,18 +0,0 @@
+-class ServiceB:
+-    name = "service_b"
+-    version = "2.0"
+-    timeout = 60
+-    retries = 5
+-    enabled = True
+-    debug = False
+-    host = "0.0.0.0"
+-    port = 9090
+-
+-    def start(self):
+-        return True
+-
+-    def stop(self):
+-        return False
+-
+-    def status(self):
+-        return self.enabled
+diff --git a/domain/service_b.py b/domain/service_b.py
+new file mode 100644
+--- /dev/null
++++ b/domain/service_b.py
+@@ -0,0 +1,20 @@
++from __future__ import annotations
++
++class ServiceB:
++    name = "service_b"
++    version = "2.0"
++    timeout = 60
++    retries = 5
++    enabled = True
++    debug = False
++    host = "0.0.0.0"
++    port = 9090
++
++    def start(self):
++        return True
++
++    def stop(self):
++        return False
++
++    def status(self):
++        return self.enabled
+diff --git a/api/auth.py b/api/auth.py
+--- a/api/auth.py
++++ b/api/auth.py
+@@ -5,3 +5,3 @@
+-    verify_token = False
++    verify_token = True
+-    token_ttl = 900
++    token_ttl = 3600
+-    algorithm = "none"
++    algorithm = "HS256"
+diff --git a/api/billing.py b/api/billing.py
+--- a/api/billing.py
++++ b/api/billing.py
+@@ -5,3 +5,3 @@
+-    tax_rate = 0.05
++    tax_rate = 0.08
+-    currency = "EUR"
++    currency = "USD"
+-    invoice_days = 14
++    invoice_days = 30
+diff --git a/api/email.py b/api/email.py
+--- a/api/email.py
++++ b/api/email.py
+@@ -5,3 +5,3 @@
+-    use_tls = False
++    use_tls = True
+-    smtp_port = 25
++    smtp_port = 587
+-    timeout = 5
++    timeout = 30
+diff --git a/api/search.py b/api/search.py
+--- a/api/search.py
++++ b/api/search.py
+@@ -5,3 +5,3 @@
+-    max_results = 10
++    max_results = 100
+-    min_score = 0.1
++    min_score = 0.5
+-    page_size = 5
++    page_size = 20
+diff --git a/api/cache.py b/api/cache.py
+--- a/api/cache.py
++++ b/api/cache.py
+@@ -5,3 +5,3 @@
+-    ttl = 30
++    ttl = 300
+-    max_size = 100
++    max_size = 1000
+-    eviction = "fifo"
++    eviction = "lru"
+diff --git a/api/queue.py b/api/queue.py
+--- a/api/queue.py
++++ b/api/queue.py
+@@ -5,3 +5,3 @@
+-    max_retries = 1
++    max_retries = 3
+-    retry_delay = 1
++    retry_delay = 5
+-    visibility_timeout = 10
++    visibility_timeout = 30

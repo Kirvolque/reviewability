@@ -1,0 +1,60 @@
+diff --git a/services/auth.py b/services/auth.py
+--- a/services/auth.py
++++ b/services/auth.py
+@@ -10,0 +11,2 @@
++    TIMEOUT = 30
++    MAX_SESSIONS = 100
+diff --git a/services/billing.py b/services/billing.py
+--- a/services/billing.py
++++ b/services/billing.py
+@@ -10,0 +11,2 @@
++    CURRENCY = "USD"
++    TAX_RATE = 0.08
+diff --git a/services/email.py b/services/email.py
+--- a/services/email.py
++++ b/services/email.py
+@@ -10,0 +11,2 @@
++    SMTP_PORT = 587
++    USE_TLS = True
+diff --git a/services/search.py b/services/search.py
+--- a/services/search.py
++++ b/services/search.py
+@@ -10,0 +11,2 @@
++    MAX_RESULTS = 100
++    MIN_SCORE = 0.5
+diff --git a/services/cache.py b/services/cache.py
+--- a/services/cache.py
++++ b/services/cache.py
+@@ -10,0 +11,2 @@
++    TTL = 300
++    MAX_SIZE = 1000
+diff --git a/services/queue.py b/services/queue.py
+--- a/services/queue.py
++++ b/services/queue.py
+@@ -10,0 +11,2 @@
++    MAX_RETRIES = 3
++    RETRY_DELAY = 5
+diff --git a/services/storage.py b/services/storage.py
+--- a/services/storage.py
++++ b/services/storage.py
+@@ -10,0 +11,2 @@
++    MAX_FILE_SIZE = 10485760
++    ALLOWED_TYPES = ("jpg", "png", "pdf")
+diff --git a/services/metrics.py b/services/metrics.py
+--- a/services/metrics.py
++++ b/services/metrics.py
+@@ -10,0 +11,2 @@
++    FLUSH_INTERVAL = 60
++    BUFFER_SIZE = 512
+diff --git a/services/events.py b/services/events.py
+--- a/services/events.py
++++ b/services/events.py
+@@ -10,0 +11,2 @@
++    MAX_LISTENERS = 50
++    QUEUE_CAPACITY = 200
+diff --git a/services/notify.py b/services/notify.py
+--- a/services/notify.py
++++ b/services/notify.py
+@@ -10,0 +11,2 @@
++    BATCH_SIZE = 100
++    SEND_TIMEOUT = 10
