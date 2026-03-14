@@ -86,7 +86,7 @@
   "hunks": [
     {
       "file": "src/greeter.py",
-      "score": 0.99,
+      "score": 0.96,
       "metrics": [
         {
           "name": "hunk.lines_changed",

@@ -6,10 +6,14 @@ def test_default_values():
     assert config.hunk_score_threshold == 0.5
     assert config.file_score_threshold == 0.5
     assert config.max_diff_lines == 500
-    assert config.max_problematic_hunks == 3
-    assert config.max_problematic_files == 2
     assert config.max_hunk_lines == 50
-    assert config.min_overall_score == 0.5
+    # Optional rule thresholds default to None (disabled)
+    assert config.min_overall_score is None
+    assert config.max_problematic_hunks is None
+    assert config.max_problematic_files is None
+    assert config.max_file_hunk_count is None
+    assert config.max_files_changed is None
+    assert config.max_added_lines is None
 
 
 def test_custom_values():
@@ -55,9 +59,8 @@ def test_inequality():
 def test_partial_override():
     config = ReviewabilityConfig(max_diff_lines=200)
     assert config.max_diff_lines == 200
-    # Other fields remain at defaults
     assert config.hunk_score_threshold == 0.5
-    assert config.min_overall_score == 0.5
+    assert config.min_overall_score is None
 
 
 def test_zero_thresholds():
