@@ -22,3 +22,12 @@ max_hunk_lines = 50
 # Overall diff score below this causes the gate to fail.
 # Scores range from 0.0 (hardest to review) to 1.0 (easiest to review).
 min_overall_score = 0.5
+
+# Movement detection: minimum content lines in a hunk to be considered for movement detection.
+movement_hunk_min_lines = 8
+
+# Movement detection: minimum content lines in a file to be considered for movement detection.
+movement_file_min_lines = 15
+
+# Movement detection: fraction of lines that must match to classify two blocks as a movement.
+movement_similarity_threshold = 0.95
