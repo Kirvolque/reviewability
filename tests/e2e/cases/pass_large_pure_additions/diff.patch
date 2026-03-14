@@ -1,0 +1,75 @@
+diff --git a/src/formatters.py b/src/formatters.py
+new file mode 100644
+--- /dev/null
++++ b/src/formatters.py
+@@ -0,0 +1,70 @@
++def format_currency(amount: float, symbol: str = "$") -> str:
++    formatted = f"{abs(amount):,.2f}"
++    sign = "-" if amount < 0 else ""
++    return f"{sign}{symbol}{formatted}"
++
++
++def format_percentage(value: float, decimals: int = 1) -> str:
++    return f"{value * 100:.{decimals}f}%"
++
++
++def format_file_size(bytes_: int) -> str:
++    for unit in ("B", "KB", "MB", "GB", "TB"):
++        if bytes_ < 1024:
++            return f"{bytes_:.1f} {unit}"
++        bytes_ //= 1024
++    return f"{bytes_:.1f} PB"
++
++
++def format_duration(seconds: int) -> str:
++    hours, remainder = divmod(seconds, 3600)
++    minutes, secs = divmod(remainder, 60)
++    if hours:
++        return f"{hours}h {minutes}m {secs}s"
++    if minutes:
++        return f"{minutes}m {secs}s"
++    return f"{secs}s"
++
++
++def format_phone(phone: str) -> str:
++    digits = "".join(c for c in phone if c.isdigit())
++    if len(digits) == 10:
++        return f"({digits[:3]}) {digits[3:6]}-{digits[6:]}"
++    return phone
++
++
++def format_name(first: str, last: str, middle: str = "") -> str:
++    parts = [first]
++    if middle:
++        parts.append(middle[0] + ".")
++    parts.append(last)
++    return " ".join(parts)
++
++
++def format_address(street: str, city: str, state: str, zip_code: str) -> str:
++    return f"{street}, {city}, {state} {zip_code}"
++
++
++def truncate(text: str, max_len: int, suffix: str = "...") -> str:
++    if len(text) <= max_len:
++        return text
++    return text[: max_len - len(suffix)] + suffix
++
++
++def to_snake_case(text: str) -> str:
++    result = []
++    for i, c in enumerate(text):
++        if c.isupper() and i > 0:
++            result.append("_")
++        result.append(c.lower())
++    return "".join(result)
++
++
++def to_camel_case(text: str) -> str:
++    words = text.split("_")
++    return words[0] + "".join(w.title() for w in words[1:])
++
++
++def to_title_case(text: str) -> str:
++    return " ".join(w.capitalize() for w in text.split())
++

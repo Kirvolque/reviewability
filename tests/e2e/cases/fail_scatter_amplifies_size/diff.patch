@@ -1,0 +1,100 @@
+diff --git a/services/auth.py b/services/auth.py
+new file mode 100644
+--- /dev/null
++++ b/services/auth.py
+@@ -0,0 +1,5 @@
++class AuthConfig:
++    TIMEOUT = 30
++    MAX_SESSIONS = 100
++    TOKEN_TTL = 3600
++    ALGORITHM = "HS256"
+diff --git a/services/billing.py b/services/billing.py
+new file mode 100644
+--- /dev/null
++++ b/services/billing.py
+@@ -0,0 +1,5 @@
++class BillingConfig:
++    CURRENCY = "USD"
++    TAX_RATE = 0.08
++    INVOICE_DAYS = 30
++    LATE_FEE = 0.015
+diff --git a/services/email.py b/services/email.py
+new file mode 100644
+--- /dev/null
++++ b/services/email.py
+@@ -0,0 +1,5 @@
++class EmailConfig:
++    SMTP_PORT = 587
++    USE_TLS = True
++    MAX_RETRIES = 3
++    TIMEOUT = 10
+diff --git a/services/search.py b/services/search.py
+new file mode 100644
+--- /dev/null
++++ b/services/search.py
+@@ -0,0 +1,5 @@
++class SearchConfig:
++    MAX_RESULTS = 100
++    MIN_SCORE = 0.5
++    PAGE_SIZE = 20
++    TIMEOUT = 5
+diff --git a/services/cache.py b/services/cache.py
+new file mode 100644
+--- /dev/null
++++ b/services/cache.py
+@@ -0,0 +1,5 @@
++class CacheConfig:
++    TTL = 300
++    MAX_SIZE = 1000
++    EVICTION = "lru"
++    COMPRESS = True
+diff --git a/services/queue.py b/services/queue.py
+new file mode 100644
+--- /dev/null
++++ b/services/queue.py
+@@ -0,0 +1,5 @@
++class QueueConfig:
++    MAX_RETRIES = 3
++    RETRY_DELAY = 5
++    VISIBILITY_TIMEOUT = 30
++    BATCH_SIZE = 10
+diff --git a/services/storage.py b/services/storage.py
+new file mode 100644
+--- /dev/null
++++ b/services/storage.py
+@@ -0,0 +1,5 @@
++class StorageConfig:
++    MAX_FILE_SIZE = 10485760
++    CHUNK_SIZE = 65536
++    COMPRESSION = True
++    ENCRYPTION = True
+diff --git a/services/metrics.py b/services/metrics.py
+new file mode 100644
+--- /dev/null
++++ b/services/metrics.py
+@@ -0,0 +1,5 @@
++class MetricsConfig:
++    FLUSH_INTERVAL = 60
++    BUFFER_SIZE = 512
++    SAMPLE_RATE = 0.1
++    RETENTION_DAYS = 30
+diff --git a/services/events.py b/services/events.py
+new file mode 100644
+--- /dev/null
++++ b/services/events.py
+@@ -0,0 +1,5 @@
++class EventsConfig:
++    MAX_LISTENERS = 50
++    QUEUE_CAPACITY = 200
++    REPLAY_WINDOW = 86400
++    DEDUP_TTL = 60
+diff --git a/services/notify.py b/services/notify.py
+new file mode 100644
+--- /dev/null
++++ b/services/notify.py
+@@ -0,0 +1,5 @@
++class NotifyConfig:
++    BATCH_SIZE = 100
++    SEND_TIMEOUT = 10
++    MAX_RECIPIENTS = 50
++    RETRY_COUNT = 2

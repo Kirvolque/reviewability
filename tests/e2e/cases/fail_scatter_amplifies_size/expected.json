@@ -1,0 +1,721 @@
+{
+  "score": 0.25,
+  "passed": false,
+  "violations": [
+    "[ERROR] Overall score 0.25 is below the minimum of 0.5"
+  ],
+  "recommendations": [
+    {
+      "location": "services/auth.py @@ -0,0 +1,5 @@",
+      "metric": "hunk.churn_ratio",
+      "value": 1.0,
+      "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
+    },
+    {
+      "location": "services/billing.py @@ -0,0 +1,5 @@",
+      "metric": "hunk.churn_ratio",
+      "value": 1.0,
+      "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
+    },
+    {
+      "location": "services/email.py @@ -0,0 +1,5 @@",
+      "metric": "hunk.churn_ratio",
+      "value": 1.0,
+      "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
+    },
+    {
+      "location": "services/search.py @@ -0,0 +1,5 @@",
+      "metric": "hunk.churn_ratio",
+      "value": 1.0,
+      "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
+    },
+    {
+      "location": "services/cache.py @@ -0,0 +1,5 @@",
+      "metric": "hunk.churn_ratio",
+      "value": 1.0,
+      "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
+    },
+    {
+      "location": "services/queue.py @@ -0,0 +1,5 @@",
+      "metric": "hunk.churn_ratio",
+      "value": 1.0,
+      "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
+    },
+    {
+      "location": "services/storage.py @@ -0,0 +1,5 @@",
+      "metric": "hunk.churn_ratio",
+      "value": 1.0,
+      "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
+    },
+    {
+      "location": "services/metrics.py @@ -0,0 +1,5 @@",
+      "metric": "hunk.churn_ratio",
+      "value": 1.0,
+      "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
+    },
+    {
+      "location": "services/events.py @@ -0,0 +1,5 @@",
+      "metric": "hunk.churn_ratio",
+      "value": 1.0,
+      "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
+    },
+    {
+      "location": "services/notify.py @@ -0,0 +1,5 @@",
+      "metric": "hunk.churn_ratio",
+      "value": 1.0,
+      "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
+    }
+  ],
+  "files_changed": 10,
+  "hunks_changed": 10,
+  "overall": [
+    {
+      "name": "overall.files_changed",
+      "value": 10
+    },
+    {
+      "name": "overall.lines_changed",
+      "value": 50
+    },
+    {
+      "name": "overall.added_lines",
+      "value": 50
+    },
+    {
+      "name": "overall.removed_lines",
+      "value": 0
+    },
+    {
+      "name": "overall.moved_lines",
+      "value": 0
+    },
+    {
+      "name": "overall.problematic_hunk_count",
+      "value": 0
+    },
+    {
+      "name": "overall.problematic_file_count",
+      "value": 0
+    },
+    {
+      "name": "overall.change_entropy",
+      "value": 3.32
+    },
+    {
+      "name": "overall.largest_file_ratio",
+      "value": 0.1
+    },
+    {
+      "name": "overall.churn_complexity",
+      "value": 0.0
+    },
+    {
+      "name": "overall.scatter_factor",
+      "value": 1.0
+    }
+  ],
+  "files": [
+    {
+      "file": "services/auth.py",
+      "score": 0.95,
+      "metrics": [
+        {
+          "name": "file.hunk_count",
+          "value": 1
+        },
+        {
+          "name": "file.lines_changed",
+          "value": 5
+        },
+        {
+          "name": "file.added_lines",
+          "value": 5
+        },
+        {
+          "name": "file.removed_lines",
+          "value": 0
+        },
+        {
+          "name": "file.max_hunk_lines",
+          "value": 5
+        },
+        {
+          "name": "file.is_likely_moved",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "file": "services/billing.py",
+      "score": 0.95,
+      "metrics": [
+        {
+          "name": "file.hunk_count",
+          "value": 1
+        },
+        {
+          "name": "file.lines_changed",
+          "value": 5
+        },
+        {
+          "name": "file.added_lines",
+          "value": 5
+        },
+        {
+          "name": "file.removed_lines",
+          "value": 0
+        },
+        {
+          "name": "file.max_hunk_lines",
+          "value": 5
+        },
+        {
+          "name": "file.is_likely_moved",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "file": "services/email.py",
+      "score": 0.95,
+      "metrics": [
+        {
+          "name": "file.hunk_count",
+          "value": 1
+        },
+        {
+          "name": "file.lines_changed",
+          "value": 5
+        },
+        {
+          "name": "file.added_lines",
+          "value": 5
+        },
+        {
+          "name": "file.removed_lines",
+          "value": 0
+        },
+        {
+          "name": "file.max_hunk_lines",
+          "value": 5
+        },
+        {
+          "name": "file.is_likely_moved",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "file": "services/search.py",
+      "score": 0.95,
+      "metrics": [
+        {
+          "name": "file.hunk_count",
+          "value": 1
+        },
+        {
+          "name": "file.lines_changed",
+          "value": 5
+        },
+        {
+          "name": "file.added_lines",
+          "value": 5
+        },
+        {
+          "name": "file.removed_lines",
+          "value": 0
+        },
+        {
+          "name": "file.max_hunk_lines",
+          "value": 5
+        },
+        {
+          "name": "file.is_likely_moved",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "file": "services/cache.py",
+      "score": 0.95,
+      "metrics": [
+        {
+          "name": "file.hunk_count",
+          "value": 1
+        },
+        {
+          "name": "file.lines_changed",
+          "value": 5
+        },
+        {
+          "name": "file.added_lines",
+          "value": 5
+        },
+        {
+          "name": "file.removed_lines",
+          "value": 0
+        },
+        {
+          "name": "file.max_hunk_lines",
+          "value": 5
+        },
+        {
+          "name": "file.is_likely_moved",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "file": "services/queue.py",
+      "score": 0.95,
+      "metrics": [
+        {
+          "name": "file.hunk_count",
+          "value": 1
+        },
+        {
+          "name": "file.lines_changed",
+          "value": 5
+        },
+        {
+          "name": "file.added_lines",
+          "value": 5
+        },
+        {
+          "name": "file.removed_lines",
+          "value": 0
+        },
+        {
+          "name": "file.max_hunk_lines",
+          "value": 5
+        },
+        {
+          "name": "file.is_likely_moved",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "file": "services/storage.py",
+      "score": 0.95,
+      "metrics": [
+        {
+          "name": "file.hunk_count",
+          "value": 1
+        },
+        {
+          "name": "file.lines_changed",
+          "value": 5
+        },
+        {
+          "name": "file.added_lines",
+          "value": 5
+        },
+        {
+          "name": "file.removed_lines",
+          "value": 0
+        },
+        {
+          "name": "file.max_hunk_lines",
+          "value": 5
+        },
+        {
+          "name": "file.is_likely_moved",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "file": "services/metrics.py",
+      "score": 0.95,
+      "metrics": [
+        {
+          "name": "file.hunk_count",
+          "value": 1
+        },
+        {
+          "name": "file.lines_changed",
+          "value": 5
+        },
+        {
+          "name": "file.added_lines",
+          "value": 5
+        },
+        {
+          "name": "file.removed_lines",
+          "value": 0
+        },
+        {
+          "name": "file.max_hunk_lines",
+          "value": 5
+        },
+        {
+          "name": "file.is_likely_moved",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "file": "services/events.py",
+      "score": 0.95,
+      "metrics": [
+        {
+          "name": "file.hunk_count",
+          "value": 1
+        },
+        {
+          "name": "file.lines_changed",
+          "value": 5
+        },
+        {
+          "name": "file.added_lines",
+          "value": 5
+        },
+        {
+          "name": "file.removed_lines",
+          "value": 0
+        },
+        {
+          "name": "file.max_hunk_lines",
+          "value": 5
+        },
+        {
+          "name": "file.is_likely_moved",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "file": "services/notify.py",
+      "score": 0.95,
+      "metrics": [
+        {
+          "name": "file.hunk_count",
+          "value": 1
+        },
+        {
+          "name": "file.lines_changed",
+          "value": 5
+        },
+        {
+          "name": "file.added_lines",
+          "value": 5
+        },
+        {
+          "name": "file.removed_lines",
+          "value": 0
+        },
+        {
+          "name": "file.max_hunk_lines",
+          "value": 5
+        },
+        {
+          "name": "file.is_likely_moved",
+          "value": 0
+        }
+      ]
+    }
+  ],
+  "hunks": [
+    {
+      "file": "services/auth.py",
+      "score": 0.9,
+      "metrics": [
+        {
+          "name": "hunk.lines_changed",
+          "value": 5
+        },
+        {
+          "name": "hunk.added_lines",
+          "value": 5
+        },
+        {
+          "name": "hunk.removed_lines",
+          "value": 0
+        },
+        {
+          "name": "hunk.context_lines",
+          "value": 0
+        },
+        {
+          "name": "hunk.churn_ratio",
+          "value": 1.0
+        },
+        {
+          "name": "hunk.is_likely_moved",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "file": "services/billing.py",
+      "score": 0.9,
+      "metrics": [
+        {
+          "name": "hunk.lines_changed",
+          "value": 5
+        },
+        {
+          "name": "hunk.added_lines",
+          "value": 5
+        },
+        {
+          "name": "hunk.removed_lines",
+          "value": 0
+        },
+        {
+          "name": "hunk.context_lines",
+          "value": 0
+        },
+        {
+          "name": "hunk.churn_ratio",
+          "value": 1.0
+        },
+        {
+          "name": "hunk.is_likely_moved",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "file": "services/email.py",
+      "score": 0.9,
+      "metrics": [
+        {
+          "name": "hunk.lines_changed",
+          "value": 5
+        },
+        {
+          "name": "hunk.added_lines",
+          "value": 5
+        },
+        {
+          "name": "hunk.removed_lines",
+          "value": 0
+        },
+        {
+          "name": "hunk.context_lines",
+          "value": 0
+        },
+        {
+          "name": "hunk.churn_ratio",
+          "value": 1.0
+        },
+        {
+          "name": "hunk.is_likely_moved",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "file": "services/search.py",
+      "score": 0.9,
+      "metrics": [
+        {
+          "name": "hunk.lines_changed",
+          "value": 5
+        },
+        {
+          "name": "hunk.added_lines",
+          "value": 5
+        },
+        {
+          "name": "hunk.removed_lines",
+          "value": 0
+        },
+        {
+          "name": "hunk.context_lines",
+          "value": 0
+        },
+        {
+          "name": "hunk.churn_ratio",
+          "value": 1.0
+        },
+        {
+          "name": "hunk.is_likely_moved",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "file": "services/cache.py",
+      "score": 0.9,
+      "metrics": [
+        {
+          "name": "hunk.lines_changed",
+          "value": 5
+        },
+        {
+          "name": "hunk.added_lines",
+          "value": 5
+        },
+        {
+          "name": "hunk.removed_lines",
+          "value": 0
+        },
+        {
+          "name": "hunk.context_lines",
+          "value": 0
+        },
+        {
+          "name": "hunk.churn_ratio",
+          "value": 1.0
+        },
+        {
+          "name": "hunk.is_likely_moved",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "file": "services/queue.py",
+      "score": 0.9,
+      "metrics": [
+        {
+          "name": "hunk.lines_changed",
+          "value": 5
+        },
+        {
+          "name": "hunk.added_lines",
+          "value": 5
+        },
+        {
+          "name": "hunk.removed_lines",
+          "value": 0
+        },
+        {
+          "name": "hunk.context_lines",
+          "value": 0
+        },
+        {
+          "name": "hunk.churn_ratio",
+          "value": 1.0
+        },
+        {
+          "name": "hunk.is_likely_moved",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "file": "services/storage.py",
+      "score": 0.9,
+      "metrics": [
+        {
+          "name": "hunk.lines_changed",
+          "value": 5
+        },
+        {
+          "name": "hunk.added_lines",
+          "value": 5
+        },
+        {
+          "name": "hunk.removed_lines",
+          "value": 0
+        },
+        {
+          "name": "hunk.context_lines",
+          "value": 0
+        },
+        {
+          "name": "hunk.churn_ratio",
+          "value": 1.0
+        },
+        {
+          "name": "hunk.is_likely_moved",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "file": "services/metrics.py",
+      "score": 0.9,
+      "metrics": [
+        {
+          "name": "hunk.lines_changed",
+          "value": 5
+        },
+        {
+          "name": "hunk.added_lines",
+          "value": 5
+        },
+        {
+          "name": "hunk.removed_lines",
+          "value": 0
+        },
+        {
+          "name": "hunk.context_lines",
+          "value": 0
+        },
+        {
+          "name": "hunk.churn_ratio",
+          "value": 1.0
+        },
+        {
+          "name": "hunk.is_likely_moved",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "file": "services/events.py",
+      "score": 0.9,
+      "metrics": [
+        {
+          "name": "hunk.lines_changed",
+          "value": 5
+        },
+        {
+          "name": "hunk.added_lines",
+          "value": 5
+        },
+        {
+          "name": "hunk.removed_lines",
+          "value": 0
+        },
+        {
+          "name": "hunk.context_lines",
+          "value": 0
+        },
+        {
+          "name": "hunk.churn_ratio",
+          "value": 1.0
+        },
+        {
+          "name": "hunk.is_likely_moved",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "file": "services/notify.py",
+      "score": 0.9,
+      "metrics": [
+        {
+          "name": "hunk.lines_changed",
+          "value": 5
+        },
+        {
+          "name": "hunk.added_lines",
+          "value": 5
+        },
+        {
+          "name": "hunk.removed_lines",
+          "value": 0
+        },
+        {
+          "name": "hunk.context_lines",
+          "value": 0
+        },
+        {
+          "name": "hunk.churn_ratio",
+          "value": 1.0
+        },
+        {
+          "name": "hunk.is_likely_moved",
+          "value": 0
+        }
+      ]
+    }
+  ]
+}

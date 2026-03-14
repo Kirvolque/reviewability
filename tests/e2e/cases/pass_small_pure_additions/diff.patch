@@ -1,0 +1,45 @@
+diff --git a/src/validators.py b/src/validators.py
+new file mode 100644
+--- /dev/null
++++ b/src/validators.py
+@@ -0,0 +1,40 @@
++def validate_email(email: str) -> bool:
++    if not email or "@" not in email:
++        return False
++    local, domain = email.rsplit("@", 1)
++    if not local or not domain:
++        return False
++    if "." not in domain:
++        return False
++    return len(email) <= 254
++
++
++def validate_username(username: str) -> bool:
++    if not username:
++        return False
++    if len(username) < 3 or len(username) > 32:
++        return False
++    allowed = set("abcdefghijklmnopqrstuvwxyz0123456789_-")
++    return all(c in allowed for c in username.lower())
++
++
++def validate_password(password: str) -> bool:
++    if len(password) < 8:
++        return False
++    has_upper = any(c.isupper() for c in password)
++    has_lower = any(c.islower() for c in password)
++    has_digit = any(c.isdigit() for c in password)
++    return has_upper and has_lower and has_digit
++
++
++def validate_phone(phone: str) -> bool:
++    digits = "".join(c for c in phone if c.isdigit())
++    return 7 <= len(digits) <= 15
++
++
++def validate_url(url: str) -> bool:
++    if not url.startswith(("http://", "https://")):
++        return False
++    rest = url.split("://", 1)[1]
++    return bool(rest and "." in rest)
++

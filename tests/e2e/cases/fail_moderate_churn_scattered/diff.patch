@@ -1,0 +1,70 @@
+diff --git a/services/auth.py b/services/auth.py
+--- a/services/auth.py
++++ b/services/auth.py
+@@ -1,4 +1,6 @@
+-    TIMEOUT = 10
++    CONNECT_TIMEOUT = 5
++    READ_TIMEOUT = 30
+-    MAX_SESSIONS = 5
++    MAX_SESSIONS = 100
+-    TOKEN_TTL = 900
++    TOKEN_TTL = 3600
+-    ALGORITHM = "MD5"
++    ALGORITHM = "HS256"
++    REFRESH_TTL = 86400
+diff --git a/services/billing.py b/services/billing.py
+--- a/services/billing.py
++++ b/services/billing.py
+@@ -1,4 +1,6 @@
+-    TAX_RATE = 0.05
++    TAX_RATE = 0.08
++    VAT_RATE = 0.20
+-    INVOICE_DAYS = 14
++    INVOICE_DAYS = 30
+-    LATE_FEE = 0.01
++    LATE_FEE = 0.015
+-    CURRENCY = "EUR"
++    CURRENCY = "USD"
++    PAYMENT_TIMEOUT = 300
+diff --git a/services/email.py b/services/email.py
+--- a/services/email.py
++++ b/services/email.py
+@@ -1,4 +1,6 @@
+-    SMTP_PORT = 25
++    SMTP_PORT = 587
++    IMAP_PORT = 993
+-    USE_TLS = False
++    USE_TLS = True
+-    MAX_RETRIES = 1
++    MAX_RETRIES = 3
+-    TIMEOUT = 5
++    TIMEOUT = 30
++    POOL_SIZE = 5
+diff --git a/services/search.py b/services/search.py
+--- a/services/search.py
++++ b/services/search.py
+@@ -1,4 +1,6 @@
+-    MAX_RESULTS = 10
++    MAX_RESULTS = 100
++    MAX_FACETS = 20
+-    MIN_SCORE = 0.1
++    MIN_SCORE = 0.5
+-    PAGE_SIZE = 5
++    PAGE_SIZE = 20
+-    TIMEOUT = 2
++    TIMEOUT = 10
++    CACHE_TTL = 60
+diff --git a/services/cache.py b/services/cache.py
+--- a/services/cache.py
++++ b/services/cache.py
+@@ -1,4 +1,6 @@
+-    TTL = 30
++    TTL = 300
++    NEGATIVE_TTL = 60
+-    MAX_SIZE = 100
++    MAX_SIZE = 1000
+-    EVICTION = "fifo"
++    EVICTION = "lru"
+-    COMPRESS = False
++    COMPRESS = True
++    SERIALIZER = "json"
