@@ -1,5 +1,3 @@
-[reviewability]
-
 # A hunk is considered problematic if its reviewability score drops below this.
 # Scores range from 0.0 (hardest to review) to 1.0 (easiest to review).
 hunk_score_threshold = 0.5
@@ -23,11 +21,13 @@ max_hunk_lines = 50
 # Scores range from 0.0 (hardest to review) to 1.0 (easiest to review).
 min_overall_score = 0.5
 
-# Movement detection: minimum content lines in a hunk to be considered for movement detection.
-movement_hunk_min_lines = 8
+[movement_detection]
 
-# Movement detection: minimum content lines in a file to be considered for movement detection.
-movement_file_min_lines = 15
+# Minimum content lines in a hunk to be considered for movement detection.
+hunk_min_lines = 8
 
-# Movement detection: fraction of lines that must match to classify two blocks as a movement.
-movement_similarity_threshold = 0.95
+# Minimum content lines in a file to be considered for movement detection.
+file_min_lines = 15
+
+# Fraction of lines that must match for two blocks to be classified as a movement.
+similarity_threshold = 0.95

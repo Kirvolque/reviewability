@@ -1,4 +1,3 @@
-[reviewability]
 min_overall_score = 0.0
 max_diff_lines = 1000
 max_hunk_lines = 200
