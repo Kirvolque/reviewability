@@ -1,0 +1,88 @@
+diff --git a/services/auth.py b/services/auth.py
+--- a/services/auth.py
++++ b/services/auth.py
+@@ -1,1 +1,6 @@
+ def authenticate(user):
++
++def logout(user):
++    pass
++
++def refresh_token(user):
++    pass
+diff --git a/services/billing.py b/services/billing.py
+--- a/services/billing.py
++++ b/services/billing.py
+@@ -1,1 +1,6 @@
+ def charge(amount):
++
++def refund(amount):
++    pass
++
++def get_invoice(user):
++    pass
+diff --git a/services/cache.py b/services/cache.py
+--- a/services/cache.py
++++ b/services/cache.py
+@@ -1,1 +1,6 @@
+ def get(key):
++
++def delete(key):
++    pass
++
++def flush():
++    pass
+diff --git a/services/email.py b/services/email.py
+--- a/services/email.py
++++ b/services/email.py
+@@ -1,1 +1,6 @@
+ def send(to, subject):
++
++def send_bulk(recipients):
++    pass
++
++def render_template(name):
++    pass
+diff --git a/services/logging.py b/services/logging.py
+--- a/services/logging.py
++++ b/services/logging.py
+@@ -1,1 +1,6 @@
+ def log(message):
++
++def log_error(message):
++    pass
++
++def log_warning(message):
++    pass
+diff --git a/services/metrics.py b/services/metrics.py
+--- a/services/metrics.py
++++ b/services/metrics.py
+@@ -1,1 +1,6 @@
+ def record(name, value):
++
++def increment(name):
++    pass
++
++def gauge(name, value):
++    pass
+diff --git a/services/queue.py b/services/queue.py
+--- a/services/queue.py
++++ b/services/queue.py
+@@ -1,1 +1,6 @@
+ def push(item):
++
++def pop():
++    pass
++
++def size():
++    pass
+diff --git a/services/search.py b/services/search.py
+--- a/services/search.py
++++ b/services/search.py
+@@ -1,1 +1,6 @@
+ def search(query):
++
++def index(document):
++    pass
++
++def delete_index(name):
++    pass
