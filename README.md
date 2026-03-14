@@ -64,6 +64,47 @@ reindentation and package/import changes), and treats those hunks and files as r
 Relocations receive a perfect score and are excluded from the size and churn calculations
 that drive the overall score. A diff that is large only because of relocations is not penalized.
 
+## Metrics
+
+Metrics are calculated at three levels: hunk, file, and overall diff.
+
+### Hunk-level
+
+| Metric | Description |
+|--------|-------------|
+| `hunk.lines_changed` | Total lines added and removed in a hunk |
+| `hunk.added_lines` | Lines added in a hunk |
+| `hunk.removed_lines` | Lines removed in a hunk |
+| `hunk.context_lines` | Unchanged context lines surrounding the change |
+| `hunk.churn_ratio` | Ratio of added lines to total changed lines (0.0 = pure deletion, 1.0 = pure addition) |
+| `hunk.is_likely_moved` | Whether this hunk is a movement of code from another location |
+
+### File-level
+
+| Metric | Description |
+|--------|-------------|
+| `file.lines_changed` | Total lines added and removed across all hunks in a file |
+| `file.added_lines` | Total lines added in a file |
+| `file.removed_lines` | Total lines removed in a file |
+| `file.hunk_count` | Number of separate change regions in a file |
+| `file.max_hunk_lines` | Lines changed in the largest single hunk within a file |
+| `file.is_likely_moved` | Whether this file is a movement from another path |
+
+### Overall-level
+
+| Metric | Description |
+|--------|-------------|
+| `overall.lines_changed` | Total lines changed across the entire diff |
+| `overall.added_lines` | Total lines added across the entire diff |
+| `overall.removed_lines` | Total lines removed across the entire diff |
+| `overall.files_changed` | Number of files changed |
+| `overall.moved_lines` | Total lines in hunks identified as code movements |
+| `overall.change_entropy` | Shannon entropy of the distribution of changes across files |
+| `overall.largest_file_ratio` | Fraction of total diff lines in the most-changed file |
+| `overall.churn_complexity` | Average interleaving of adds and removes across hunks |
+| `overall.problematic_hunk_count` | Hunks with a score below the configured threshold |
+| `overall.problematic_file_count` | Files with a score below the configured threshold |
+
 ## Overall Scoring
 
 The overall score is driven by two factors: **diff size** and **churn complexity**.
@@ -78,26 +119,31 @@ both large *and* internally mixed.
 
 Metrics are grounded in peer-reviewed research on code review effectiveness:
 
-- Jureczko et al. — *Code review effectiveness: an empirical study on selected factors influence* (IET Software, 2021)  
+- Jureczko et al. — *Code review effectiveness: an empirical study on selected factors influence* (IET Software, 2021)
   https://doi.org/10.1049/iet-sen.2020.0134
 
-- McIntosh et al. — *An Empirical Study of the Impact of Modern Code Review Practices on Software Quality* (EMSE, 2015)  
+- McIntosh et al. — *An Empirical Study of the Impact of Modern Code Review Practices on Software Quality* (EMSE, 2015)
   https://doi.org/10.1007/s10664-015-9381-9
 
-- McIntosh et al. — *The Impact of Code Review Coverage and Code Review Participation on Software Quality* (MSR, 2014)  
-  https://doi.org/10.1145/2597073.2597076
-
-- Fregnan et al. — First Come First Served: The Impact of File Position on Code Review (EMSE, 2022)
+- Fregnan et al. — *First Come First Served: The Impact of File Position on Code Review* (EMSE, 2022)
   https://doi.org/10.1007/s10664-021-10034-0
 
-- Uchôa et al. — *Predicting Design Impactful Changes in Modern Code Review* (MSR, 2020)  
+- Uchôa et al. — *Predicting Design Impactful Changes in Modern Code Review* (MSR, 2020)
   https://doi.org/10.1145/3379597.3387480
 
-- Baum et al. — *The Choice of Code Review Process: A Survey on the State of the Practice* (EMSE, 2019)  
+- Baum et al. — *The Choice of Code Review Process: A Survey on the State of the Practice* (EMSE, 2019)
   https://doi.org/10.1007/s10664-018-9657-6
 
-- Hijazi et al. — *Using Biometric Data to Measure Code Review Quality* (TSE, 2021)  
+- Hijazi et al. — *Using Biometric Data to Measure Code Review Quality* (TSE, 2021)
   https://doi.org/10.1109/TSE.2020.2992169
 
-- Olewicki et al. — *Towards Better Code Reviews: Using Mutation Testing to Prioritise Code Changes* (2024)  
+- Olewicki et al. — *Towards Better Code Reviews: Using Mutation Testing to Prioritise Code Changes* (2024)
   https://arxiv.org/abs/2402.01860
+
+- Barnett et al. — *Helping Developers Help Themselves: Automatic Decomposition of Code Review Changesets* (ICSE, 2015)
+  https://doi.org/10.1109/ICSE.2015.35
+
+- Brito & Valente — *RAID — Refactoring-Aware and Intelligent Diffs* (2021)
+  https://doi.org/10.1109/ICSME52107.2021.00037
+
+- Hu & Pradel — *CodeMapper: Mapping and Analyzing Code Changes across Commits* (ICSE, 2026)
