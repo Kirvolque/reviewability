@@ -1,33 +1,42 @@
-# A hunk is considered problematic if its reviewability score drops below this.
+# [mandatory] A hunk is considered problematic if its reviewability score drops below this.
 # Scores range from 0.0 (hardest to review) to 1.0 (easiest to review).
 hunk_score_threshold = 0.5
 
-# A file is considered problematic if its reviewability score drops below this.
+# [mandatory] A file is considered problematic if its reviewability score drops below this.
 file_score_threshold = 0.5
 
-# Maximum total lines changed across the entire diff.
+# [mandatory] Maximum total lines changed across the entire diff (used for score normalisation).
 max_diff_lines = 500
 
-# Maximum number of problematic hunks allowed before a violation is raised.
-max_problematic_hunks = 3
-
-# Maximum number of problematic files allowed before a violation is raised.
-max_problematic_files = 2
-
-# Maximum lines changed in a single hunk.
+# [mandatory] Maximum lines changed in a single hunk (used for score normalisation).
 max_hunk_lines = 50
 
-# Overall diff score below this causes the gate to fail.
+# [optional] Overall diff score below this causes the gate to fail.
 # Scores range from 0.0 (hardest to review) to 1.0 (easiest to review).
 min_overall_score = 0.5
 
+# [optional] Maximum number of problematic hunks allowed before a violation is raised.
+max_problematic_hunks = 3
+
+# [optional] Maximum number of problematic files allowed before a violation is raised.
+max_problematic_files = 2
+
+# [optional] Maximum number of hunks in a single file before a warning is raised.
+max_file_hunk_count = 5
+
+# [optional] Maximum number of files changed in the diff before an error is raised.
+max_files_changed = 10
+
+# [optional] Maximum total added lines across the diff before an error is raised.
+max_added_lines = 400
+
 [movement_detection]
 
-# Minimum content lines in a hunk to be considered for movement detection.
+# [mandatory] Minimum content lines in a hunk to be considered for movement detection.
 hunk_min_lines = 8
 
-# Minimum content lines in a file to be considered for movement detection.
+# [mandatory] Minimum content lines in a file to be considered for movement detection.
 file_min_lines = 15
 
-# Fraction of lines that must match for two blocks to be classified as a movement.
+# [mandatory] Fraction of lines that must match for two blocks to be classified as a movement.
 similarity_threshold = 0.95

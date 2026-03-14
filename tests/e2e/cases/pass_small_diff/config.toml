@@ -1,7 +1,2 @@
-min_overall_score = 0.0
 max_diff_lines = 1000
-max_hunk_lines = 200
-hunk_score_threshold = 0.1
-file_score_threshold = 0.1
-max_problematic_hunks = 100
-max_problematic_files = 100
+min_overall_score = 0.5
