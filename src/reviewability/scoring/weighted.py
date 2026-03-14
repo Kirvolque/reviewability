@@ -8,6 +8,7 @@ from reviewability.metrics.hunk.lines_changed import HunkLinesChanged
 from reviewability.metrics.overall.churn_complexity import OverallChurnComplexity
 from reviewability.metrics.overall.lines_changed import OverallLinesChanged
 from reviewability.metrics.overall.moved_lines import OverallMovedLines
+from reviewability.metrics.overall.scatter_factor import OverallScatterFactor
 from reviewability.scoring.base import ReviewabilityScorer
 
 
@@ -16,8 +17,9 @@ class DefaultScorer(ReviewabilityScorer):
 
     Hunk score:    1.0 if likely moved; otherwise max(0, 1 − lines_changed / max_hunk_lines)
     File score:    1.0 if likely moved; otherwise max(0, 1 − lines_changed / max_diff_lines)
-    Overall score: max(0, 1 − effective_size_ratio × (1 + churn_complexity))
-                   where effective_size_ratio excludes moved lines and churn excludes moved hunks.
+    Overall score: max(0, 1 − effective_size_ratio × (1 + complexity))
+                   where complexity = (churn_complexity + scatter_factor) / 2,
+                   effective_size_ratio excludes moved lines, and churn excludes moved hunks.
 
     Movements are easy to review and should not penalise the overall score.
     """
@@ -53,4 +55,7 @@ class DefaultScorer(ReviewabilityScorer):
         size_ratio = min(effective_lines / self._max_diff_lines, 1.0)
         churn_mv = metrics.metric(OverallChurnComplexity.name)
         churn = churn_mv.value if churn_mv is not None else 0.0
-        return max(0.0, 1.0 - size_ratio * (1.0 + churn))
+        scatter_mv = metrics.metric(OverallScatterFactor.name)
+        scatter = scatter_mv.value if scatter_mv is not None else 0.0
+        complexity = (churn + scatter) / 2
+        return max(0.0, 1.0 - size_ratio * (1.0 + complexity))
