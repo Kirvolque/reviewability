@@ -8,12 +8,15 @@ A tool that scores the reviewability of code changes.
 
 ## The Idea
 
-A diff can be hard to review not because the code is poorly written, but because the
-*intent* of the change is unclear from the diff itself. A block moved and
-reindented looks like a wall of red and green even if nothing changed logically.
-Unlike linters, it does not analyze the code — only the diff as a whole.
+A diff can be hard to review not because the code is poorly written, but because of
+how the changes are combined. Mixing renames, movements, and logic changes in one diff
+makes each harder to verify. This is especially common with AI-generated code. Unlike
+linters, Reviewability does not analyze the code — only how the changes are structured.
 
-It computes metrics at the level of individual hunks, files, and the whole diff,
+When a diff scores low, the typical remedies are splitting it into focused pull
+requests or deferring non-essential changes.
+
+Reviewability computes metrics at the level of individual hunks, files, and the whole diff,
 feeding into **Reviewability Scores** (0.0 = hardest, 1.0 = easiest) with
 configurable thresholds for what counts as problematic.
 
