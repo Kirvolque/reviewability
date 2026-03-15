@@ -13,7 +13,7 @@ class OverallChurnComplexity(OverallMetric):
     value_type: MetricValueType = MetricValueType.RATIO
     description: str = (
         "Average interleaving complexity across all hunks. "
-        "Computed as mean(1 − |2×churn_ratio − 1|) per hunk: "
+        "Computed as mean(1 − |2×change_balance − 1|) per hunk: "
         "0.0 means all hunks are directional (pure additions or deletions), "
         "1.0 means all hunks are maximally interleaved (equal adds and removes)."
     )

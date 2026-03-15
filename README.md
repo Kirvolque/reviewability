@@ -115,22 +115,33 @@ Metrics are calculated at three levels: hunk, file, and overall diff.
 | `overall.change_entropy` | Shannon entropy of the distribution of changes across files |
 | `overall.largest_file_ratio` | Fraction of total diff lines in the most-changed file |
 | `overall.churn_complexity` | Average interleaving of adds and removes across hunks |
+| `overall.scatter_factor` | Normalized entropy of how changes are distributed across files (0.0 = all in one file, 1.0 = evenly spread) |
 | `overall.problematic_hunk_count` | Hunks with a score below the configured threshold |
 | `overall.problematic_file_count` | Files with a score below the configured threshold |
 
 ## Overall Scoring
 
-The overall score is driven by two factors: **diff size** and **churn complexity**.
+```
+score = max(0, 1 − effective_size_ratio × (1 + complexity))
 
-A larger diff is harder to review. A diff where adds and removes are interleaved within the
-same hunks is harder to review than one where they are separated. The score penalizes both —
-but only when they occur together. A large but directional diff (e.g. a bulk rename) scores
-well. A small but tangled diff also scores well. The worst score comes from a diff that is
-both large *and* internally mixed.
+effective_size_ratio = (lines_changed − moved_lines) / max_diff_lines   [capped at 1.0]
+complexity           = (churn_complexity + scatter_factor) / 2
+```
+
+The score is driven by **effective diff size** and **complexity**. Moved lines are excluded
+from the size count — relocations are easy to review and should not penalize the score.
+
+`churn_complexity` measures how much adds and removes are interleaved within hunks.
+`scatter_factor` measures how evenly changes are spread across files (normalized entropy).
+Both range from 0.0 to 1.0; their average is the complexity term.
+
+The penalty compounds: a large diff with high complexity scores much worse than either
+factor alone. A large but directional diff (e.g. a bulk rename) or a complex but small
+diff each score better than a diff that is both large *and* tangled.
 
 ## Research
 
-Metrics are grounded in peer-reviewed research on code review effectiveness:
+Metrics are informed by peer-reviewed research on code review effectiveness. Most are heuristics derived from research concepts rather than direct paper-defined variables:
 
 - Jureczko et al. — *Code review effectiveness: an empirical study on selected factors influence* (IET Software, 2021)
   https://doi.org/10.1049/iet-sen.2020.0134

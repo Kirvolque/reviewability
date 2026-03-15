@@ -32,7 +32,7 @@ class OverallScatterFactor(OverallMetric):
 
         ps = [c / total for c in counts]
         entropy = -sum(p * math.log2(p) for p in ps)
-        max_entropy = math.log2(len(files))
+        max_entropy = math.log2(len(counts))
         scatter = entropy / max_entropy if max_entropy > 0 else 0.0
 
         return MetricValue(name=self.name, value=scatter, value_type=self.value_type)
