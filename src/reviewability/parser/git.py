@@ -11,7 +11,7 @@ def parse_diff_text(diff_text: str) -> Diff:
         files=[
             FileDiff(
                 path=patched_file.path,
-                old_path=patched_file.source_file if patched_file.is_rename else None,
+                old_path=patched_file.source_file.removeprefix("a/") if patched_file.is_rename else None,
                 is_new_file=patched_file.is_added_file,
                 is_deleted_file=patched_file.is_removed_file,
                 hunks=[

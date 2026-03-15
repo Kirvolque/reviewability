@@ -16,7 +16,7 @@ def test_rename_only():
         files=[
             FileDiff(
                 path="src/greeter.py",
-                old_path="a/src/old_name.py",
+                old_path="src/old_name.py",
                 is_new_file=False,
                 is_deleted_file=False,
                 hunks=[],
