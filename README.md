@@ -89,7 +89,7 @@ Metrics are calculated at three levels: hunk, file, and overall diff.
 | `hunk.added_lines` | Lines added in a hunk |
 | `hunk.removed_lines` | Lines removed in a hunk |
 | `hunk.context_lines` | Unchanged context lines surrounding the change |
-| `hunk.churn_ratio` | Ratio of added lines to total changed lines (0.0 = pure deletion, 1.0 = pure addition) |
+| `hunk.change_balance` | Ratio of added lines to total changed lines (0.0 = pure deletion, 1.0 = pure addition) |
 | `hunk.is_likely_moved` | Whether this hunk is a movement of code from another location |
 
 ### File-level

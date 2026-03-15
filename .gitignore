@@ -9,3 +9,4 @@ build/
 .idea/
 validation/
 release-notes-*.md
+.claude/

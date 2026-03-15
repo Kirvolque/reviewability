@@ -1,5 +1,5 @@
 from reviewability.metrics.hunk.added_lines import HunkAddedLines
-from reviewability.metrics.hunk.churn_ratio import HunkChurnRatio
+from reviewability.metrics.hunk.change_balance import HunkChangeBalance
 from reviewability.metrics.hunk.context_lines import HunkContextLines
 from reviewability.metrics.hunk.is_likely_moved import HunkIsLikelyMoved
 from reviewability.metrics.hunk.lines_changed import HunkLinesChanged
@@ -10,6 +10,6 @@ __all__ = [
     "HunkAddedLines",
     "HunkRemovedLines",
     "HunkContextLines",
-    "HunkChurnRatio",
+    "HunkChangeBalance",
     "HunkIsLikelyMoved",
 ]

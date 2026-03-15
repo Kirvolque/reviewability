@@ -5,12 +5,13 @@ from reviewability.domain.models import Hunk
 from reviewability.metrics.base import HunkMetric
 
 
-class HunkChurnRatio(HunkMetric):
-    name: str = "hunk.churn_ratio"
+class HunkChangeBalance(HunkMetric):
+    name: str = "hunk.change_balance"
     value_type: MetricValueType = MetricValueType.RATIO
     description: str = (
-        "Ratio of added lines to total changed lines in a hunk. "
-        "Values near 0.0 indicate a mostly-deletion hunk; near 1.0, a mostly-addition hunk."
+        "Directionality ratio of a hunk: added_lines / (added_lines + removed_lines). "
+        "0.0 = pure deletion, 1.0 = pure addition, 0.5 = equal mix of adds and removes. "
+        "Measures change direction, not raw churn volume."
     )
     remediation: str = (
         "This hunk mixes deletions and additions together, making it hard to follow. "

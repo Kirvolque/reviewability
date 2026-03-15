@@ -3,7 +3,7 @@ from typing import override
 from reviewability.domain.metric import MetricValue, MetricValueType
 from reviewability.domain.report import Analysis
 from reviewability.metrics.base import OverallMetric
-from reviewability.metrics.hunk.churn_ratio import HunkChurnRatio
+from reviewability.metrics.hunk.change_balance import HunkChangeBalance
 
 _INTERLEAVING_THRESHOLD = 0.5
 
@@ -27,7 +27,7 @@ class OverallChurnComplexity(OverallMetric):
         for h in hunks:
             if h.subject.is_likely_moved:
                 continue
-            mv = h.metrics.metric(HunkChurnRatio.name)
+            mv = h.metrics.metric(HunkChangeBalance.name)
             if mv is not None:
                 mix = 1.0 - abs(2.0 * mv.value - 1.0)
                 mix_per_hunk.append((mix, h))

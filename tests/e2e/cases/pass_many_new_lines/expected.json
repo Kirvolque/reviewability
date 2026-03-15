@@ -135,7 +135,7 @@
           "value": 0
         },
         {
-          "name": "hunk.churn_ratio",
+          "name": "hunk.change_balance",
           "value": 0.92
         },
         {
@@ -165,7 +165,7 @@
           "value": 0
         },
         {
-          "name": "hunk.churn_ratio",
+          "name": "hunk.change_balance",
           "value": 0.89
         },
         {
