@@ -7,49 +7,49 @@
   "recommendations": [
     {
       "location": "services/auth.py @@ -1,2 +1,2 @@",
-      "metric": "hunk.churn_ratio",
+      "metric": "hunk.change_balance",
       "value": 0.5,
       "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
     },
     {
       "location": "services/billing.py @@ -1,2 +1,2 @@",
-      "metric": "hunk.churn_ratio",
+      "metric": "hunk.change_balance",
       "value": 0.5,
       "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
     },
     {
       "location": "services/email.py @@ -1,2 +1,2 @@",
-      "metric": "hunk.churn_ratio",
+      "metric": "hunk.change_balance",
       "value": 0.5,
       "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
     },
     {
       "location": "services/search.py @@ -1,2 +1,2 @@",
-      "metric": "hunk.churn_ratio",
+      "metric": "hunk.change_balance",
       "value": 0.5,
       "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
     },
     {
       "location": "services/cache.py @@ -1,2 +1,2 @@",
-      "metric": "hunk.churn_ratio",
+      "metric": "hunk.change_balance",
       "value": 0.5,
       "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
     },
     {
       "location": "services/queue.py @@ -1,2 +1,2 @@",
-      "metric": "hunk.churn_ratio",
+      "metric": "hunk.change_balance",
       "value": 0.5,
       "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
     },
     {
       "location": "services/storage.py @@ -1,2 +1,2 @@",
-      "metric": "hunk.churn_ratio",
+      "metric": "hunk.change_balance",
       "value": 0.5,
       "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
     },
     {
       "location": "services/metrics.py @@ -1,2 +1,2 @@",
-      "metric": "hunk.churn_ratio",
+      "metric": "hunk.change_balance",
       "value": 0.5,
       "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
     }
@@ -366,7 +366,7 @@
           "value": 0
         },
         {
-          "name": "hunk.churn_ratio",
+          "name": "hunk.change_balance",
           "value": 0.5
         },
         {
@@ -396,7 +396,7 @@
           "value": 0
         },
         {
-          "name": "hunk.churn_ratio",
+          "name": "hunk.change_balance",
           "value": 0.5
         },
         {
@@ -426,7 +426,7 @@
           "value": 0
         },
         {
-          "name": "hunk.churn_ratio",
+          "name": "hunk.change_balance",
           "value": 0.5
         },
         {
@@ -456,7 +456,7 @@
           "value": 0
         },
         {
-          "name": "hunk.churn_ratio",
+          "name": "hunk.change_balance",
           "value": 0.5
         },
         {
@@ -486,7 +486,7 @@
           "value": 0
         },
         {
-          "name": "hunk.churn_ratio",
+          "name": "hunk.change_balance",
           "value": 0.5
         },
         {
@@ -516,7 +516,7 @@
           "value": 0
         },
         {
-          "name": "hunk.churn_ratio",
+          "name": "hunk.change_balance",
           "value": 0.5
         },
         {
@@ -546,7 +546,7 @@
           "value": 0
         },
         {
-          "name": "hunk.churn_ratio",
+          "name": "hunk.change_balance",
           "value": 0.5
         },
         {
@@ -576,7 +576,7 @@
           "value": 0
         },
         {
-          "name": "hunk.churn_ratio",
+          "name": "hunk.change_balance",
           "value": 0.5
         },
         {

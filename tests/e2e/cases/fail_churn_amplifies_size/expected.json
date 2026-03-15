@@ -7,7 +7,7 @@
   "recommendations": [
     {
       "location": "src/settings.py @@ -1,25 +1,25 @@",
-      "metric": "hunk.churn_ratio",
+      "metric": "hunk.change_balance",
       "value": 0.5,
       "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
     }
@@ -114,7 +114,7 @@
           "value": 0
         },
         {
-          "name": "hunk.churn_ratio",
+          "name": "hunk.change_balance",
           "value": 0.5
         },
         {

@@ -13,7 +13,7 @@ from reviewability.metrics.file import (
 )
 from reviewability.metrics.hunk import (
     HunkAddedLines,
-    HunkChurnRatio,
+    HunkChangeBalance,
     HunkContextLines,
     HunkIsLikelyMoved,
     HunkLinesChanged,
@@ -87,7 +87,7 @@ def create_analyzer(config: ReviewabilityConfig) -> Analyzer:
         HunkAddedLines(),
         HunkRemovedLines(),
         HunkContextLines(),
-        HunkChurnRatio(),
+        HunkChangeBalance(),
         HunkIsLikelyMoved(),
         FileHunkCount(),
         FileLinesChanged(),
