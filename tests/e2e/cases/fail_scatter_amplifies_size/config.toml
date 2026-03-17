@@ -1,2 +1,10 @@
 max_diff_lines = 100
 min_overall_score = 0.5
+hunk_score_threshold = 0.5
+file_score_threshold = 0.5
+max_hunk_lines = 50
+
+[movement_detection]
+hunk_min_lines = 8
+file_min_lines = 15
+similarity_threshold = 0.95

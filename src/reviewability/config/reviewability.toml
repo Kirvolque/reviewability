@@ -13,7 +13,8 @@ max_hunk_lines = 50
 
 # [optional] Overall diff score below this causes the gate to fail.
 # Scores range from 0.0 (hardest to review) to 1.0 (easiest to review).
-min_overall_score = 0.5
+# Provisional threshold based on calibration data — may be adjusted.
+min_overall_score = 0.7
 
 # [optional] Maximum number of problematic hunks allowed before a violation is raised.
 max_problematic_hunks = 3
