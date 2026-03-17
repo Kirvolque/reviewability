@@ -1,7 +1,8 @@
 package demo.readme;
 
-import java.util.ArrayList;
+import java.util.function.Function;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class DeliveryQuoteService {
     private final CapacityPlanner capacityPlanner;
@@ -48,30 +49,47 @@ public class DeliveryQuoteService {
         RoutePlan routePlan,
         PricingPolicy.QuoteBreakdown breakdown
     ) {
-        List<String> notes = new ArrayList<>();
+        boolean requiresDispatchReview =
+            routePlan.travelMinutes() > 150
+                || routePlan.isMultiStage()
+                || breakdown.total() > 120.0;
 
-        if (routePlan.hubHandoffRequired()) {
-            notes.add("Route requires hub handoff before final delivery.");
-        }
-        if (routePlan.scheduledStopRequired()) {
-            notes.add("Dispatch must confirm scheduled-stop handling before release.");
-        } else if (routePlan.directHandoverAllowed()) {
-            notes.add("Direct handover is allowed if driver identity checks pass.");
-        }
-        if (routePlan.remoteCoverageRequired()) {
-            notes.add("Remote coverage surcharge applies.");
-        }
-        if (request.needsSpecialHandling()) {
-            notes.add("Special handling workflow must be scheduled.");
-        }
-        if (breakdown.accountDiscount() > 0) {
-            notes.add("Account discount applied after operational surcharges.");
-        }
-        if (routePlan.travelMinutes() > 180) {
-            notes.add("Long route should be reviewed for dispatch batching.");
-        }
+        return Stream.of(
+                note(
+                    routePlan.hubHandoffRequired(),
+                    "Route requires hub handoff before final delivery."
+                ),
+                note(
+                    routePlan.scheduledStopRequired(),
+                    "Dispatch must confirm scheduled-stop handling before release."
+                ),
+                note(
+                    !routePlan.scheduledStopRequired() && routePlan.directHandoverAllowed(),
+                    "Direct handover is allowed if driver identity checks pass."
+                ),
+                note(
+                    routePlan.remoteCoverageRequired(),
+                    "Remote coverage surcharge applies."
+                ),
+                note(
+                    request.needsSpecialHandling(),
+                    "Special handling workflow must be scheduled."
+                ),
+                note(
+                    breakdown.accountDiscount() > 0,
+                    "Account discount applied after operational surcharges."
+                ),
+                note(
+                    requiresDispatchReview,
+                    "Dispatch plan should be reviewed for batching, timing, and pricing risk."
+                )
+            )
+            .flatMap(Function.identity())
+            .toList();
+    }
 
-        return notes;
+    private Stream<String> note(boolean include, String message) {
+        return include ? Stream.of(message) : Stream.empty();
     }
 
     public record QuoteResult(

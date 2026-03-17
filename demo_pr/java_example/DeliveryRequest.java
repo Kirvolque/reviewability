@@ -19,7 +19,26 @@ public record DeliveryRequest(
     }
 
     public boolean needsSpecialHandling() {
-        return fragile || refrigerated || returnPickup;
+        return fragile
+            || refrigerated
+            || returnPickup
+            || (timeWindow == TimeWindow.EXACT_SLOT && packageCount > 2);
+    }
+
+    public boolean requiresScheduledStop() {
+        return timeWindow == TimeWindow.EXACT_SLOT
+            || (timeWindow == TimeWindow.EVENING && !destination.urbanCore())
+            || (returnPickup && fragile)
+            || (refrigerated && destination.urbanCore())
+            || (priority == Priority.SAME_DAY && destination.requiresExtendedCoverage());
+    }
+
+    public boolean allowsDirectHandover() {
+        return !fragile
+            && !refrigerated
+            && destination.urbanCore()
+            && timeWindow != TimeWindow.EXACT_SLOT
+            && packageCount <= 3;
     }
 
     public boolean isShortHop() {
