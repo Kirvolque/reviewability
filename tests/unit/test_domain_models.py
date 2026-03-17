@@ -100,13 +100,10 @@ def test_hunk_char_count_only_context():
     assert hunk.char_count == 5
 
 
-def test_hunk_frozen():
+def test_hunk_enrichment_fields_are_mutable():
     hunk = make_hunk(added=["a"])
-    try:
-        hunk.file_path = "b.py"  # type: ignore[misc]
-        assert False, "Should have raised FrozenInstanceError"
-    except Exception:
-        pass
+    hunk.is_likely_moved = True
+    assert hunk.is_likely_moved is True
 
 
 def test_hunk_fields():
@@ -232,13 +229,15 @@ def test_file_diff_default_empty_hunks():
     assert f.hunks == []
 
 
-def test_file_diff_frozen():
+def test_file_diff_is_mutable():
     f = make_file()
-    try:
-        f.path = "b.py"  # type: ignore[misc]
-        assert False, "Should have raised FrozenInstanceError"
-    except Exception:
-        pass
+    f.path = "b.py"
+    assert f.path == "b.py"
+
+
+def test_hunk_is_likely_moved_defaults_false():
+    hunk = make_hunk()
+    assert hunk.is_likely_moved is False
 
 
 # --- Diff tests ---
@@ -277,10 +276,7 @@ def test_diff_default_empty_files():
     assert d.files == []
 
 
-def test_diff_frozen():
+def test_diff_is_mutable():
     d = Diff()
-    try:
-        d.files = []  # type: ignore[misc]
-        assert False, "Should have raised FrozenInstanceError"
-    except Exception:
-        pass
+    d.files = [make_file("a.py")]
+    assert len(d.files) == 1

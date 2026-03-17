@@ -22,6 +22,12 @@ class ReviewabilityConfig:
     max_hunk_lines: int
     """Maximum lines changed in a single hunk (used for score normalisation)."""
 
+    rewrite_in_place_line_cost: float
+    """Effective line cost for hunks classified as in-place complex rewrites."""
+
+    rewrite_moved_line_cost: float
+    """Effective line cost for hunks classified as moved complex rewrites."""
+
     movement_hunk_min_lines: int
     """Minimum content lines in a hunk to be considered for movement detection."""
 

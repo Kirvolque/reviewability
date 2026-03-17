@@ -12,6 +12,10 @@ max_diff_lines = 500
 max_hunk_lines = 50
 min_overall_score = 0.7
 
+[rewrite_scoring]
+in_place_line_cost = 3.0
+moved_line_cost = 4.0
+
 [movement_detection]
 hunk_min_lines = 8
 file_min_lines = 15
@@ -35,6 +39,8 @@ def test_parse_complete_config():
     assert config.max_diff_lines == 500
     assert config.max_hunk_lines == 50
     assert config.min_overall_score == 0.7
+    assert config.rewrite_in_place_line_cost == 3.0
+    assert config.rewrite_moved_line_cost == 4.0
     assert config.movement_hunk_min_lines == 8
     assert config.movement_file_min_lines == 15
     assert config.movement_similarity_threshold == 0.95
@@ -50,6 +56,10 @@ min_overall_score = 0.6
 max_problematic_hunks = 5
 max_problematic_files = 3
 
+[rewrite_scoring]
+in_place_line_cost = 2.5
+moved_line_cost = 3.5
+
 [movement_detection]
 hunk_min_lines = 5
 file_min_lines = 10
@@ -63,6 +73,8 @@ similarity_threshold = 0.9
     assert config.min_overall_score == 0.6
     assert config.max_problematic_hunks == 5
     assert config.max_problematic_files == 3
+    assert config.rewrite_in_place_line_cost == 2.5
+    assert config.rewrite_moved_line_cost == 3.5
     assert config.movement_hunk_min_lines == 5
     assert config.movement_file_min_lines == 10
     assert config.movement_similarity_threshold == 0.9
@@ -90,6 +102,11 @@ max_diff_lines = 100
 max_hunk_lines = 50
 unknown_key = "hello"
 
+[rewrite_scoring]
+in_place_line_cost = 3.0
+moved_line_cost = 4.0
+unknown_rewrite_key = 42
+
 [movement_detection]
 hunk_min_lines = 8
 file_min_lines = 15
@@ -98,6 +115,7 @@ unknown_movement_key = 42
 """)
     config = parse_config(path)
     assert config.max_diff_lines == 100
+    assert config.rewrite_in_place_line_cost == 3.0
     assert config.movement_similarity_threshold == 0.9
 
 
@@ -107,6 +125,10 @@ hunk_score_threshold = 0.5
 file_score_threshold = 0.5
 max_diff_lines = 100
 max_hunk_lines = 50
+
+[rewrite_scoring]
+in_place_line_cost = 3.0
+moved_line_cost = 4.0
 
 [movement_detection]
 hunk_min_lines = 8

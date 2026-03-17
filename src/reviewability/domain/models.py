@@ -1,19 +1,21 @@
 import itertools
+from enum import Enum
 from dataclasses import dataclass, field
 
 
-@dataclass(frozen=True, kw_only=True)
+class HunkRewriteKind(str, Enum):
+    """Classification for a heavy rewrite detected between deletion/addition hunks."""
+
+    IN_PLACE_REWRITE = "in_place_rewrite"
+    MOVED_REWRITE = "moved_rewrite"
+
+
+@dataclass(kw_only=True)
 class DiffNode:
-    """Common base for all addressable units within a diff (hunks and files).
-
-    Carries flags that are computed after parsing, during the enrichment phase.
-    """
-
-    is_likely_moved: bool = False
-    """True if this block appears to be a movement of code from another location."""
+    """Common base for all addressable units within a diff (hunks and files)."""
 
 
-@dataclass(frozen=True)
+@dataclass
 class Hunk(DiffNode):
     """A contiguous block of changes within a single file."""
 
@@ -25,6 +27,9 @@ class Hunk(DiffNode):
     added_lines: list[str] = field(default_factory=list)
     removed_lines: list[str] = field(default_factory=list)
     context_lines: list[str] = field(default_factory=list)
+    is_likely_moved: bool = False
+    # Optional enrichment output: detected heavy rewrite classification.
+    rewrite_kind: HunkRewriteKind | None = None
 
     @property
     def line_count(self) -> int:
@@ -44,7 +49,7 @@ class Hunk(DiffNode):
         return len(self.removed_lines)
 
 
-@dataclass(frozen=True)
+@dataclass
 class FileDiff(DiffNode):
     """All changes to a single file within a diff."""
 
@@ -63,7 +68,7 @@ class FileDiff(DiffNode):
         return sum(h.removed_count for h in self.hunks)
 
 
-@dataclass(frozen=True)
+@dataclass
 class Diff:
     """The complete diff (e.g. a pull request or branch comparison)."""
 

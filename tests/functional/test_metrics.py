@@ -35,6 +35,8 @@ def make_scorer() -> DefaultScorer:
     return DefaultScorer(
         max_hunk_lines=50.0,
         max_diff_lines=200.0,
+        rewrite_in_place_line_cost=3.0,
+        rewrite_moved_line_cost=4.0,
     )
 
 

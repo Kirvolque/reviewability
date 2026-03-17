@@ -31,6 +31,14 @@ max_files_changed = 10
 # [optional] Maximum total added lines across the diff before an error is raised.
 max_added_lines = 400
 
+[rewrite_scoring]
+
+# [mandatory] Effective line cost for a complex rewrite that stays in the same local area.
+in_place_line_cost = 3.0
+
+# [mandatory] Effective line cost for a complex rewrite that also changes location.
+moved_line_cost = 4.0
+
 [movement_detection]
 
 # [mandatory] Minimum content lines in a hunk to be considered for movement detection.

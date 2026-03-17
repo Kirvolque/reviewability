@@ -10,6 +10,7 @@ _BUNDLED_CONFIG: Path = Path(__file__).parent / "reviewability.toml"
 
 _SECTION_PREFIX_MAP: dict[str, str] = {
     "movement_detection": "movement_",
+    "rewrite_scoring": "rewrite_",
 }
 
 
