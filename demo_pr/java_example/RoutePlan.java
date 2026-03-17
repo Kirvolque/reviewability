@@ -4,12 +4,14 @@ public record RoutePlan(
     VehicleMode vehicleMode,
     int stopCount,
     int travelMinutes,
+    boolean scheduledStopRequired,
+    boolean directHandoverAllowed,
     boolean hubHandoffRequired,
     boolean temperatureControlRequired,
     boolean remoteCoverageRequired
 ) {
     public boolean isMultiStage() {
-        return hubHandoffRequired || stopCount >= 4;
+        return scheduledStopRequired || hubHandoffRequired || remoteCoverageRequired || stopCount >= 4;
     }
 
     public enum VehicleMode {

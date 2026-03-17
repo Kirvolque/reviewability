@@ -36,7 +36,9 @@ public class DeliveryQuoteService {
         if (request.distanceKm() <= 0) {
             throw new IllegalArgumentException("distanceKm must be positive");
         }
-        if (request.refrigerated() && request.priority() == DeliveryRequest.Priority.SAME_DAY) {
+        if (request.refrigerated()
+            && request.priority() == DeliveryRequest.Priority.SAME_DAY
+            && !request.destination().requiresExtendedCoverage()) {
             throw new IllegalArgumentException("same-day refrigerated routing is not supported");
         }
     }
@@ -50,6 +52,11 @@ public class DeliveryQuoteService {
 
         if (routePlan.hubHandoffRequired()) {
             notes.add("Route requires hub handoff before final delivery.");
+        }
+        if (routePlan.scheduledStopRequired()) {
+            notes.add("Dispatch must confirm scheduled-stop handling before release.");
+        } else if (routePlan.directHandoverAllowed()) {
+            notes.add("Direct handover is allowed if driver identity checks pass.");
         }
         if (routePlan.remoteCoverageRequired()) {
             notes.add("Remote coverage surcharge applies.");

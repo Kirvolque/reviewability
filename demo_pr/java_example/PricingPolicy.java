@@ -4,15 +4,20 @@ public class PricingPolicy {
     public QuoteBreakdown buildBreakdown(DeliveryRequest request, RoutePlan routePlan) {
         double baseCharge = computeBaseCharge(request, routePlan);
         double handlingSurcharge = computeHandlingSurcharge(request, routePlan);
-        double networkSurcharge = computeNetworkSurcharge(request, routePlan);
+        double routeSurcharge = computeNetworkSurcharge(request, routePlan);
         double timeWindowAdjustment = computeTimeWindowAdjustment(request);
-        double accountDiscount = computeAccountDiscount(request, baseCharge + handlingSurcharge);
+        double scheduledStopSurcharge = computeScheduledStopSurcharge(routePlan);
+        double handoverAdjustment = computeHandoverAdjustment(routePlan);
+        double discountableSubtotal = baseCharge + handlingSurcharge + handoverAdjustment;
+        double accountDiscount = computeAccountDiscount(request, discountableSubtotal);
 
         return new QuoteBreakdown(
             round(baseCharge),
             round(handlingSurcharge),
-            round(networkSurcharge),
+            round(routeSurcharge),
             round(timeWindowAdjustment),
+            round(scheduledStopSurcharge),
+            round(handoverAdjustment),
             round(accountDiscount)
         );
     }
@@ -43,7 +48,10 @@ public class PricingPolicy {
             surcharge += 4.0;
         }
         if (routePlan.temperatureControlRequired()) {
-            surcharge += 3.0;
+            surcharge += routePlan.directHandoverAllowed() ? 2.0 : 3.0;
+        }
+        if (routePlan.scheduledStopRequired()) {
+            surcharge += 1.5;
         }
         return surcharge;
     }
@@ -57,7 +65,7 @@ public class PricingPolicy {
             surcharge += 12.0;
         }
         if (request.priority() == DeliveryRequest.Priority.SAME_DAY) {
-            surcharge += 10.0;
+            surcharge += routePlan.directHandoverAllowed() ? 7.0 : 10.0;
         } else if (request.priority() == DeliveryRequest.Priority.EXPEDITED) {
             surcharge += 4.5;
         }
@@ -67,10 +75,23 @@ public class PricingPolicy {
     private double computeTimeWindowAdjustment(DeliveryRequest request) {
         return switch (request.timeWindow()) {
             case FLEX -> 0.0;
-            case BUSINESS_HOURS -> 2.5;
-            case EVENING -> 5.0;
+            case BUSINESS_HOURS -> request.returnPickup() ? 3.5 : 2.5;
+            case EVENING -> request.destination().urbanCore() && request.packageCount() <= 2 ? 4.0 : 5.0;
             case EXACT_SLOT -> 11.0;
         };
+    }
+
+    private double computeScheduledStopSurcharge(RoutePlan routePlan) {
+        if (!routePlan.scheduledStopRequired()) {
+            return 0.0;
+        }
+        return routePlan.hubHandoffRequired() ? 11.5 : 8.5;
+    }
+
+    private double computeHandoverAdjustment(RoutePlan routePlan) {
+        return routePlan.directHandoverAllowed()
+            ? (routePlan.scheduledStopRequired() ? -1.5 : -3.0)
+            : 2.5;
     }
 
     private double computeAccountDiscount(DeliveryRequest request, double subtotal) {
@@ -90,6 +111,8 @@ public class PricingPolicy {
         double handlingSurcharge,
         double networkSurcharge,
         double timeWindowAdjustment,
+        double scheduledStopSurcharge,
+        double handoverAdjustment,
         double accountDiscount
     ) {
         public double total() {
@@ -97,6 +120,8 @@ public class PricingPolicy {
                 + handlingSurcharge
                 + networkSurcharge
                 + timeWindowAdjustment
+                + scheduledStopSurcharge
+                + handoverAdjustment
                 - accountDiscount;
         }
     }

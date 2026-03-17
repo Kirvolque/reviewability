@@ -3,16 +3,34 @@ package demo.readme;
 public class CapacityPlanner {
     public RoutePlan plan(DeliveryRequest request) {
         RoutePlan.VehicleMode mode = chooseVehicleMode(request);
-        int stopCount = estimateStopCount(request, mode);
-        int travelMinutes = estimateTravelMinutes(request, mode, stopCount);
-        boolean hubHandoffRequired = needsHubHandoff(request, mode, stopCount);
-        boolean temperatureControlRequired = request.refrigerated();
-        boolean remoteCoverageRequired = request.destination().requiresExtendedCoverage();
+        boolean directHandoverAllowed = request.allowsDirectHandover();
+        boolean scheduledStopRequired = request.requiresScheduledStop() || !directHandoverAllowed;
+        int routeStops = estimateStopCount(request, mode, scheduledStopRequired, directHandoverAllowed);
+        int travelMinutes = estimateTravelMinutes(
+            request,
+            mode,
+            routeStops,
+            scheduledStopRequired,
+            directHandoverAllowed
+        );
+        boolean hubHandoffRequired = needsHubHandoff(
+            request,
+            mode,
+            routeStops,
+            scheduledStopRequired,
+            directHandoverAllowed
+        );
+        boolean remoteCoverageRequired =
+            request.destination().requiresExtendedCoverage() || request.priority() == DeliveryRequest.Priority.SAME_DAY;
+        boolean temperatureControlRequired =
+            request.refrigerated() || (scheduledStopRequired && request.destination().urbanCore());
 
         return new RoutePlan(
             mode,
-            stopCount,
+            routeStops,
             travelMinutes,
+            scheduledStopRequired,
+            directHandoverAllowed,
             hubHandoffRequired,
             temperatureControlRequired,
             remoteCoverageRequired
@@ -23,33 +41,43 @@ public class CapacityPlanner {
         if (request.refrigerated()) {
             return RoutePlan.VehicleMode.REFRIGERATED_VAN;
         }
-        if (request.destination().requiresExtendedCoverage() || request.distanceKm() > 80.0) {
+        if (request.destination().requiresExtendedCoverage()
+            || request.distanceKm() > 80.0
+            || (request.priority() == DeliveryRequest.Priority.SAME_DAY && request.packageCount() > 4)) {
             return RoutePlan.VehicleMode.LINE_HAUL;
         }
-        if (request.isShortHop() && !request.isHeavy()) {
+        if (request.isShortHop() && !request.isHeavy() && request.allowsDirectHandover()) {
             return RoutePlan.VehicleMode.BIKE;
         }
         return RoutePlan.VehicleMode.VAN;
     }
 
-    private int estimateStopCount(DeliveryRequest request, RoutePlan.VehicleMode mode) {
-        int baseStops = 1 + request.crossDockStops();
+    private int estimateStopCount(
+        DeliveryRequest request,
+        RoutePlan.VehicleMode mode,
+        boolean scheduledStopRequired,
+        boolean directHandoverAllowed
+    ) {
+        int baseStops = 1 + request.crossDockStops() + (request.returnPickup() ? 1 : 0);
         if (mode == RoutePlan.VehicleMode.LINE_HAUL) {
             baseStops += 2;
         }
-        if (request.returnPickup()) {
+        if (scheduledStopRequired) {
+            baseStops += mode == RoutePlan.VehicleMode.BIKE ? 0 : 1;
+        }
+        if (!directHandoverAllowed && request.destination().urbanCore()) {
             baseStops += 1;
         }
-        if (request.packageCount() >= 10) {
-            baseStops += 1;
-        }
+        baseStops += request.packageCount() >= 10 ? 1 : 0;
         return baseStops;
     }
 
     private int estimateTravelMinutes(
         DeliveryRequest request,
         RoutePlan.VehicleMode mode,
-        int stopCount
+        int stopCount,
+        boolean scheduledStopRequired,
+        boolean directHandoverAllowed
     ) {
         double speedKmh = switch (mode) {
             case BIKE -> 16.0;
@@ -58,33 +86,48 @@ public class CapacityPlanner {
             case LINE_HAUL -> 52.0;
         };
 
-        double travel = request.distanceKm() / speedKmh * 60.0;
-        double service = stopCount * 9.0;
+        double travelMinutes = request.distanceKm() / speedKmh * 60.0;
+        double serviceMinutes = stopCount * 9.0;
 
         if (request.fragile()) {
-            service += 8.0;
+            serviceMinutes += request.returnPickup() ? 10.0 : 8.0;
         }
         if (request.timeWindow() == DeliveryRequest.TimeWindow.EXACT_SLOT) {
-            service += 12.0;
+            serviceMinutes += directHandoverAllowed ? 8.0 : 12.0;
+        } else if (scheduledStopRequired) {
+            serviceMinutes += 10.0;
+        } else if (!directHandoverAllowed) {
+            serviceMinutes += 6.0;
+        }
+        if (request.accountTier() == DeliveryRequest.AccountTier.ENTERPRISE
+            && request.destination().urbanCore()) {
+            serviceMinutes += 4.0;
         }
         if (request.destination().urbanCore() && mode != RoutePlan.VehicleMode.BIKE) {
-            travel += 14.0;
+            travelMinutes += 14.0;
         }
 
-        return (int) Math.ceil(travel + service);
+        return (int) Math.ceil(travelMinutes + serviceMinutes);
     }
 
     private boolean needsHubHandoff(
         DeliveryRequest request,
         RoutePlan.VehicleMode mode,
-        int stopCount
+        int stopCount,
+        boolean scheduledStopRequired,
+        boolean directHandoverAllowed
     ) {
         if (mode == RoutePlan.VehicleMode.LINE_HAUL) {
             return true;
         }
-        if (request.refrigerated() && request.distanceKm() > 25.0) {
+        if (scheduledStopRequired && request.distanceKm() > (directHandoverAllowed ? 22.0 : 18.0)) {
             return true;
         }
-        return stopCount >= 5 && request.destination().urbanCore();
+        if ((request.refrigerated() || request.priority() == DeliveryRequest.Priority.SAME_DAY)
+            && request.distanceKm() > 25.0) {
+            return true;
+        }
+        return (stopCount >= 5 && request.destination().urbanCore())
+            || (!directHandoverAllowed && request.timeWindow() == DeliveryRequest.TimeWindow.EVENING);
     }
 }
