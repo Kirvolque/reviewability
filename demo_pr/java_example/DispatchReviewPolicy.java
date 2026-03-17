@@ -9,71 +9,86 @@ public class DispatchReviewPolicy {
         RoutePlan routePlan,
         PricingPolicy.QuoteBreakdown breakdown
     ) {
-        int riskPoints = 0;
-        List<String> reasons = new ArrayList<>();
-        List<String> checkpoints = new ArrayList<>();
+        int reviewLoad = 0;
+        List<String> reviewReasons = new ArrayList<>();
+        List<String> followUpActions = new ArrayList<>();
+        boolean sameDayPriority = request.priority() == DeliveryRequest.Priority.SAME_DAY;
+        boolean temperatureSensitive = request.refrigerated() || routePlan.temperatureControlRequired();
+        boolean remoteOrMultiStage = routePlan.remoteCoverageRequired() || routePlan.isMultiStage();
 
         if (routePlan.hubHandoffRequired()) {
-            riskPoints += 3;
-            reasons.add("Hub handoff introduces coordination risk.");
+            reviewLoad += 3;
+            reviewReasons.add("Hub handoff introduces coordination risk.");
         }
-        if (routePlan.remoteCoverageRequired()) {
-            riskPoints += 2;
-            reasons.add("Remote coverage requires manual dispatch confirmation.");
+        if (remoteOrMultiStage) {
+            reviewLoad += routePlan.remoteCoverageRequired() ? 2 : 1;
+            reviewReasons.add("Remote or multi-stage routing requires manual dispatch confirmation.");
         }
-        if (request.refrigerated()) {
-            riskPoints += 2;
-            reasons.add("Temperature-controlled delivery needs cold-chain verification.");
+        if (temperatureSensitive) {
+            reviewLoad += 2;
+            reviewReasons.add("Temperature-controlled delivery needs cold-chain verification.");
         }
         if (request.fragile()) {
-            riskPoints += 1;
-            reasons.add("Fragile handling must be reviewed for packing instructions.");
+            reviewLoad += request.returnPickup() ? 2 : 1;
+            reviewReasons.add("Fragile handling must be reviewed for packing instructions.");
         }
-        if (request.priority() == DeliveryRequest.Priority.SAME_DAY) {
-            riskPoints += 2;
-            reasons.add("Same-day priority compresses planning slack.");
+        if (sameDayPriority) {
+            reviewLoad += 2;
+            reviewReasons.add("Same-day priority compresses planning slack.");
         } else if (request.priority() == DeliveryRequest.Priority.EXPEDITED) {
-            riskPoints += 1;
+            reviewLoad += 1;
         }
 
-        if (routePlan.travelMinutes() > 180) {
-            riskPoints += 2;
-            reasons.add("Long travel duration increases timing variance.");
-        } else if (routePlan.travelMinutes() > 120) {
-            riskPoints += 1;
+        if (routePlan.travelMinutes() > 210) {
+            reviewLoad += 3;
+            reviewReasons.add("Very long travel duration increases timing variance.");
+        } else if (routePlan.travelMinutes() > 140) {
+            reviewLoad += 1;
+            reviewReasons.add("Long travel duration increases timing variance.");
         }
 
-        if (breakdown.total() > 150.0) {
-            riskPoints += 2;
-            reasons.add("High-value quote should be verified before release.");
+        if (breakdown.total() > 160.0) {
+            reviewLoad += 2;
+            reviewReasons.add("High-value quote should be verified before release.");
         } else if (breakdown.total() > 90.0) {
-            riskPoints += 1;
+            reviewLoad += 1;
         }
 
         if (request.accountTier() == DeliveryRequest.AccountTier.ENTERPRISE && request.returnPickup()) {
-            riskPoints += 1;
-            reasons.add("Enterprise return pickup requires account-side coordination.");
+            reviewLoad += 1;
+            reviewReasons.add("Enterprise return pickup requires account-side coordination.");
+        }
+        if (sameDayPriority && request.returnPickup()) {
+            reviewLoad += 1;
+            reviewReasons.add("Same-day return pickup needs dispatch confirmation.");
         }
 
-        for (String reason : reasons) {
+        for (int index = 0; index < reviewReasons.size(); index++) {
+            String reason = reviewReasons.get(index);
+            boolean firstPass = index < 2;
             if (reason.contains("temperature") || reason.contains("Remote")) {
-                checkpoints.add("Confirm operational owner: " + reason);
+                followUpActions.add("Confirm operational owner: " + reason);
             } else if (reason.contains("quote")) {
-                checkpoints.add("Verify pricing sign-off: " + reason);
+                followUpActions.add("Verify pricing sign-off: " + reason);
+            } else if (firstPass && reason.contains("Same-day")) {
+                followUpActions.add("Confirm dispatch window: " + reason);
             } else {
-                checkpoints.add("Review before dispatch: " + reason);
+                followUpActions.add("Review before dispatch: " + reason);
             }
         }
 
-        ReviewTier tier = classifyTier(riskPoints, routePlan, request);
-        boolean manualApprovalRequired = tier == ReviewTier.MANDATORY || request.priority() == DeliveryRequest.Priority.SAME_DAY;
+        ReviewTier tier = classifyTier(reviewLoad, routePlan, request);
+        boolean manualApprovalRequired =
+            tier == ReviewTier.MANDATORY
+                || sameDayPriority
+                || (temperatureSensitive && breakdown.total() > 120.0);
 
         return new ReviewDecision(
             tier,
-            riskPoints,
+            reviewLoad,
             manualApprovalRequired,
-            reasons,
-            checkpoints
+            reviewReasons,
+            followUpActions
         );
     }
 
