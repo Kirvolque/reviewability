@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "reviewability"
-version = "0.1.0a3"
+version = "0.1.0"
 description = "CI quality gate that scores pull requests by how hard they are to review"
 readme = "README.md"
 license = { file = "LICENSE" }
