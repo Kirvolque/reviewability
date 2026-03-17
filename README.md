@@ -23,6 +23,10 @@ how the changes are combined. Mixing renames, movements, and logic changes in on
 makes each harder to verify. This is especially common with AI-generated code. Unlike
 linters, Reviewability does not analyze the code — only how the changes are structured.
 
+![tangled diff example](img/tangled-diff-example.png)
+
+*A clean-code change can still turn into a reviewability disaster when refactors, renames, and behavior updates are mixed together.*
+
 When a diff scores low, the typical remedies are splitting it into focused pull
 requests or deferring non-essential changes.
 
