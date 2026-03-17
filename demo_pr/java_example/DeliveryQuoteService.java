@@ -1,6 +1,6 @@
 package demo.readme;
 
-import java.util.function.Function;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -54,42 +54,48 @@ public class DeliveryQuoteService {
                 || routePlan.isMultiStage()
                 || breakdown.total() > 120.0;
 
-        return Stream.of(
-                note(
+        List<String> notes = new ArrayList<>(Stream.of(
+                noteIf(
                     routePlan.hubHandoffRequired(),
                     "Route requires hub handoff before final delivery."
                 ),
-                note(
+                noteIf(
                     routePlan.scheduledStopRequired(),
                     "Dispatch must confirm scheduled-stop handling before release."
                 ),
-                note(
+                noteIf(
                     !routePlan.scheduledStopRequired() && routePlan.directHandoverAllowed(),
                     "Direct handover is allowed if driver identity checks pass."
                 ),
-                note(
-                    routePlan.remoteCoverageRequired(),
-                    "Remote coverage surcharge applies."
-                ),
-                note(
-                    request.needsSpecialHandling(),
-                    "Special handling workflow must be scheduled."
-                ),
-                note(
-                    breakdown.accountDiscount() > 0,
-                    "Account discount applied after operational surcharges."
-                ),
-                note(
-                    requiresDispatchReview,
-                    "Dispatch plan should be reviewed for batching, timing, and pricing risk."
+                noteIf(
+                    !routePlan.scheduledStopRequired() && routePlan.directHandoverAllowed(),
+                    "Direct handover is allowed if driver identity checks pass."
                 )
             )
-            .flatMap(Function.identity())
-            .toList();
+            .flatMap(stream -> stream)
+            .toList());
+
+        if (routePlan.remoteCoverageRequired()) {
+            notes.add("Remote coverage surcharge applies.");
+        }
+        if (request.needsSpecialHandling()) {
+            notes.add("Special handling workflow must be scheduled.");
+        }
+        if (breakdown.accountDiscount() > 0) {
+            notes.add("Account discount applied after operational surcharges.");
+        }
+        if (requiresDispatchReview) {
+            notes.add("Dispatch plan should be reviewed for batching, timing, and pricing risk.");
+        }
+
+        return notes;
     }
 
-    private Stream<String> note(boolean include, String message) {
-        return include ? Stream.of(message) : Stream.empty();
+    private Stream<String> noteIf(boolean include, String message) {
+        if (!include) {
+            return Stream.empty();
+        }
+        return Stream.of(message);
     }
 
     public record QuoteResult(
