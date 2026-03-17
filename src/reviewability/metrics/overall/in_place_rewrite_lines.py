@@ -9,7 +9,10 @@ class OverallInPlaceRewriteLines(OverallMetric):
     name: str = "overall.in_place_rewrite_lines"
     value_type: MetricValueType = MetricValueType.INTEGER
     description: str = "Target-side lines in hunks classified as in-place complex rewrites."
-    remediation: str | None = None
+    remediation: str = (
+        "Large in-place rewrites are hard to review."
+        " Split mechanical cleanup from logic changes."
+    )
 
     @override
     def calculate(self, hunks: list[Analysis], files: list[Analysis]) -> MetricValue:

@@ -3,16 +3,16 @@ from typing import Any
 
 from reviewability.domain.models import Hunk
 from reviewability.domain.report import AnalysisReport
+from reviewability.metrics.hunk.in_place_rewrite_lines import HunkInPlaceRewriteLines
+from reviewability.metrics.hunk.moved_rewrite_lines import HunkMovedRewriteLines
 from reviewability.metrics.overall.lines_changed import OverallLinesChanged
 from reviewability.metrics.overall.scatter_factor import OverallScatterFactor
 from reviewability.rules.engine import RuleViolation, Severity
 
-# Maps an overall metric to the hunk metric that best explains it.
-# When this overall metric contributes to failure, the gate surfaces the
-# worst hunks ranked by their score, annotated with the focus metric.
-_FOCUS_METRIC: dict[str, str] = {}
-
 _SCORER_INPUTS = {OverallLinesChanged.name, OverallScatterFactor.name}
+
+# Hunk metrics whose non-zero values produce actionable recommendations.
+_REWRITE_METRICS = [HunkInPlaceRewriteLines.name, HunkMovedRewriteLines.name]
 
 
 @dataclass(frozen=True)
@@ -58,18 +58,15 @@ class QualityGate:
         return GateResult(passed=passed, recommendations=recommendations)
 
     def _build_recommendations(self, report: AnalysisReport) -> list[Recommendation]:
-        recs = []
+        recs: list[Recommendation] = []
 
-        for mv in report.overall.metrics:
-            focus = _FOCUS_METRIC.get(mv.name)
-            if focus is None:
+        # Surface rewrite-specific recommendations from problematic hunks.
+        for h in sorted(report.hunks, key=lambda h: h.score):
+            if not isinstance(h.subject, Hunk):
                 continue
-
-            for h in sorted(report.hunks, key=lambda h: h.score):
-                if not isinstance(h.subject, Hunk):
-                    continue
-                focus_mv = h.metrics.metric(focus)
-                if focus_mv is None or not focus_mv.value:
+            for metric_name in _REWRITE_METRICS:
+                mv = h.metrics.metric(metric_name)
+                if mv is None or not mv.value:
                     continue
                 hunk = h.subject
                 recs.append(
@@ -79,12 +76,13 @@ class QualityGate:
                             f" @@ -{hunk.source_start},{hunk.source_length}"
                             f" +{hunk.target_start},{hunk.target_length} @@"
                         ),
-                        metric=focus_mv.name,
-                        value=focus_mv.value,
-                        remediation=focus_mv.remediation,
+                        metric=mv.name,
+                        value=mv.value,
+                        remediation=mv.remediation,
                     )
                 )
 
+        # Fall back to overall scorer inputs when no hunk-level detail applies.
         if not recs:
             for mv in report.overall.metrics:
                 if mv.name in _SCORER_INPUTS and mv.value:

@@ -1,0 +1,77 @@
+diff --git a/services/processor.py b/services/processor.py
+--- a/services/processor.py
++++ b/services/processor.py
+@@ -1,15 +0,0 @@
+-class DataProcessor:
+-    def __init__(self, source):
+-        self.source = source
+-        self.cache = {}
+-        self.timeout = 30
+-
+-    def process(self, items):
+-        result = []
+-        for item in items:
+-            if item.valid:
+-                result.append(item.value)
+-        return result
+-
+-    def flush(self):
+-        self.cache.clear()
+@@ -17,0 +2,17 @@
++class DataProcessor:
++    def __init__(self, source, config):
++        self.source = source
++        self.config = config
++        self.cache = LRUCache(maxsize=config.cache_size)
++        self.timeout = config.timeout
++
++    def process(self, items):
++        validated = [i for i in items if self._validate(i)]
++        return [self._transform(i) for i in validated]
++
++    def _validate(self, item):
++        return item.valid and item.value > 0
++
++    def _transform(self, item):
++        return item.value * self.config.multiplier
++
+diff --git a/models/handler.py b/models/handler.py
+deleted file mode 100644
+--- a/models/handler.py
++++ /dev/null
+@@ -1,14 +0,0 @@
+-class RequestHandler:
+-    def __init__(self, router):
+-        self.router = router
+-        self.middleware = []
+-        self.timeout = 60
+-
+-    def handle(self, request):
+-        for mw in self.middleware:
+-            request = mw.process(request)
+-        return self.router.dispatch(request)
+-
+-    def add_middleware(self, mw):
+-        self.middleware.append(mw)
+-        return self
+diff --git a/domain/handler.py b/domain/handler.py
+new file mode 100644
+--- /dev/null
++++ b/domain/handler.py
+@@ -0,0 +1,16 @@
++class RequestHandler:
++    def __init__(self, router, config):
++        self.router = router
++        self.config = config
++        self.middleware = MiddlewareChain()
++        self.timeout = config.handler_timeout
++
++    def handle(self, request):
++        ctx = self.middleware.execute(request)
++        response = self.router.dispatch(ctx)
++        return self._finalize(response)
++
++    def _finalize(self, response):
++        response.headers["X-Timeout"] = str(self.timeout)
++        return response
++

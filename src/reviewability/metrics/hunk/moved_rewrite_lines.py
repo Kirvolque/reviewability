@@ -14,4 +14,6 @@ class HunkMovedRewriteLines(HunkMetric):
     @override
     def calculate(self, hunk: Hunk) -> MetricValue:
         value = hunk.added_count if hunk.rewrite_kind is HunkRewriteKind.MOVED_REWRITE else 0
-        return MetricValue(name=self.name, value=value, value_type=self.value_type)
+        return MetricValue(
+            name=self.name, value=value, value_type=self.value_type, remediation=self.remediation
+        )

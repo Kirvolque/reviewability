@@ -20,9 +20,13 @@ def make_hunk(added: int, removed: int, rewrite_kind: HunkRewriteKind | None = N
 
 def test_returns_changed_lines_for_in_place_rewrite():
     result = metric.calculate(make_hunk(3, 2, HunkRewriteKind.IN_PLACE_REWRITE))
-    assert result == MetricValue("hunk.in_place_rewrite_lines", 3, MetricValueType.INTEGER)
+    assert result == MetricValue(
+        "hunk.in_place_rewrite_lines", 3, MetricValueType.INTEGER, remediation=metric.remediation
+    )
 
 
 def test_returns_zero_for_other_hunks():
     result = metric.calculate(make_hunk(3, 2, HunkRewriteKind.MOVED_REWRITE))
-    assert result == MetricValue("hunk.in_place_rewrite_lines", 0, MetricValueType.INTEGER)
+    assert result == MetricValue(
+        "hunk.in_place_rewrite_lines", 0, MetricValueType.INTEGER, remediation=metric.remediation
+    )

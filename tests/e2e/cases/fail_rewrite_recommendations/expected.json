@@ -1,0 +1,348 @@
+{
+  "score": 0.0,
+  "passed": false,
+  "violations": [
+    "[ERROR] Diff has 62 lines changed, exceeds limit of 50",
+    "[ERROR] Overall score 0.00 is below the minimum of 0.5"
+  ],
+  "recommendations": [
+    {
+      "location": "services/processor.py @@ -17,0 +2,17 @@",
+      "metric": "hunk.in_place_rewrite_lines",
+      "value": 17,
+      "remediation": "Split the rewrite into smaller, easier-to-follow steps."
+    },
+    {
+      "location": "domain/handler.py @@ -0,0 +1,16 @@",
+      "metric": "hunk.moved_rewrite_lines",
+      "value": 16,
+      "remediation": "Separate relocation from behavioural rewrites when possible."
+    }
+  ],
+  "files_changed": 3,
+  "hunks_changed": 4,
+  "overall": [
+    {
+      "name": "overall.files_changed",
+      "value": 3
+    },
+    {
+      "name": "overall.lines_changed",
+      "value": 62
+    },
+    {
+      "name": "overall.added_lines",
+      "value": 33
+    },
+    {
+      "name": "overall.removed_lines",
+      "value": 29
+    },
+    {
+      "name": "overall.moved_lines",
+      "value": 0
+    },
+    {
+      "name": "overall.in_place_rewrite_lines",
+      "value": 17
+    },
+    {
+      "name": "overall.moved_rewrite_lines",
+      "value": 16
+    },
+    {
+      "name": "overall.problematic_hunk_count",
+      "value": 2
+    },
+    {
+      "name": "overall.problematic_file_count",
+      "value": 2
+    },
+    {
+      "name": "overall.change_entropy",
+      "value": 1.48
+    },
+    {
+      "name": "overall.largest_file_ratio",
+      "value": 0.52
+    },
+    {
+      "name": "overall.churn_complexity",
+      "value": 0.0
+    },
+    {
+      "name": "overall.scatter_factor",
+      "value": 0.93
+    }
+  ],
+  "files": [
+    {
+      "file": "services/processor.py",
+      "score": 0.0,
+      "metrics": [
+        {
+          "name": "file.hunk_count",
+          "value": 2
+        },
+        {
+          "name": "file.lines_changed",
+          "value": 32
+        },
+        {
+          "name": "file.added_lines",
+          "value": 17
+        },
+        {
+          "name": "file.removed_lines",
+          "value": 15
+        },
+        {
+          "name": "file.max_hunk_lines",
+          "value": 17
+        },
+        {
+          "name": "file.moved_lines",
+          "value": 0
+        },
+        {
+          "name": "file.in_place_rewrite_lines",
+          "value": 17
+        },
+        {
+          "name": "file.moved_rewrite_lines",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "file": "models/handler.py",
+      "score": 0.72,
+      "metrics": [
+        {
+          "name": "file.hunk_count",
+          "value": 1
+        },
+        {
+          "name": "file.lines_changed",
+          "value": 14
+        },
+        {
+          "name": "file.added_lines",
+          "value": 0
+        },
+        {
+          "name": "file.removed_lines",
+          "value": 14
+        },
+        {
+          "name": "file.max_hunk_lines",
+          "value": 14
+        },
+        {
+          "name": "file.moved_lines",
+          "value": 0
+        },
+        {
+          "name": "file.in_place_rewrite_lines",
+          "value": 0
+        },
+        {
+          "name": "file.moved_rewrite_lines",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "file": "domain/handler.py",
+      "score": 0.0,
+      "metrics": [
+        {
+          "name": "file.hunk_count",
+          "value": 1
+        },
+        {
+          "name": "file.lines_changed",
+          "value": 16
+        },
+        {
+          "name": "file.added_lines",
+          "value": 16
+        },
+        {
+          "name": "file.removed_lines",
+          "value": 0
+        },
+        {
+          "name": "file.max_hunk_lines",
+          "value": 16
+        },
+        {
+          "name": "file.moved_lines",
+          "value": 0
+        },
+        {
+          "name": "file.in_place_rewrite_lines",
+          "value": 0
+        },
+        {
+          "name": "file.moved_rewrite_lines",
+          "value": 16
+        }
+      ]
+    }
+  ],
+  "hunks": [
+    {
+      "file": "services/processor.py",
+      "score": 0.7,
+      "metrics": [
+        {
+          "name": "hunk.lines_changed",
+          "value": 15
+        },
+        {
+          "name": "hunk.added_lines",
+          "value": 0
+        },
+        {
+          "name": "hunk.removed_lines",
+          "value": 15
+        },
+        {
+          "name": "hunk.context_lines",
+          "value": 0
+        },
+        {
+          "name": "hunk.change_balance",
+          "value": 0.0
+        },
+        {
+          "name": "hunk.is_likely_moved",
+          "value": 0
+        },
+        {
+          "name": "hunk.in_place_rewrite_lines",
+          "value": 0
+        },
+        {
+          "name": "hunk.moved_rewrite_lines",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "file": "services/processor.py",
+      "score": 0.0,
+      "metrics": [
+        {
+          "name": "hunk.lines_changed",
+          "value": 17
+        },
+        {
+          "name": "hunk.added_lines",
+          "value": 17
+        },
+        {
+          "name": "hunk.removed_lines",
+          "value": 0
+        },
+        {
+          "name": "hunk.context_lines",
+          "value": 0
+        },
+        {
+          "name": "hunk.change_balance",
+          "value": 1.0
+        },
+        {
+          "name": "hunk.is_likely_moved",
+          "value": 0
+        },
+        {
+          "name": "hunk.in_place_rewrite_lines",
+          "value": 17
+        },
+        {
+          "name": "hunk.moved_rewrite_lines",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "file": "models/handler.py",
+      "score": 0.72,
+      "metrics": [
+        {
+          "name": "hunk.lines_changed",
+          "value": 14
+        },
+        {
+          "name": "hunk.added_lines",
+          "value": 0
+        },
+        {
+          "name": "hunk.removed_lines",
+          "value": 14
+        },
+        {
+          "name": "hunk.context_lines",
+          "value": 0
+        },
+        {
+          "name": "hunk.change_balance",
+          "value": 0.0
+        },
+        {
+          "name": "hunk.is_likely_moved",
+          "value": 0
+        },
+        {
+          "name": "hunk.in_place_rewrite_lines",
+          "value": 0
+        },
+        {
+          "name": "hunk.moved_rewrite_lines",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "file": "domain/handler.py",
+      "score": 0.0,
+      "metrics": [
+        {
+          "name": "hunk.lines_changed",
+          "value": 16
+        },
+        {
+          "name": "hunk.added_lines",
+          "value": 16
+        },
+        {
+          "name": "hunk.removed_lines",
+          "value": 0
+        },
+        {
+          "name": "hunk.context_lines",
+          "value": 0
+        },
+        {
+          "name": "hunk.change_balance",
+          "value": 1.0
+        },
+        {
+          "name": "hunk.is_likely_moved",
+          "value": 0
+        },
+        {
+          "name": "hunk.in_place_rewrite_lines",
+          "value": 0
+        },
+        {
+          "name": "hunk.moved_rewrite_lines",
+          "value": 16
+        }
+      ]
+    }
+  ]
+}

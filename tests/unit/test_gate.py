@@ -1,6 +1,6 @@
 from reviewability.domain.metric import MetricResults
 from reviewability.domain.report import AnalysisReport, OverallAnalysis
-from reviewability.gate import GateResult, QualityGate
+from reviewability.gate import QualityGate
 from reviewability.rules.engine import Rule, RuleViolation, Severity
 
 

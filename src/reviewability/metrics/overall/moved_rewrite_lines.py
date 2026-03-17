@@ -9,7 +9,10 @@ class OverallMovedRewriteLines(OverallMetric):
     name: str = "overall.moved_rewrite_lines"
     value_type: MetricValueType = MetricValueType.INTEGER
     description: str = "Target-side lines in hunks classified as moved complex rewrites."
-    remediation: str | None = None
+    remediation: str = (
+        "Moved rewrites combine relocation with behavior changes."
+        " Separate the move from the modification into distinct commits."
+    )
 
     @override
     def calculate(self, hunks: list[Analysis], files: list[Analysis]) -> MetricValue:
