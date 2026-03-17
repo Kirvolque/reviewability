@@ -1,69 +1,21 @@
 {
-  "score": 0.25,
+  "score": 0.0,
   "passed": false,
   "violations": [
-    "[ERROR] Overall score 0.25 is below the minimum of 0.5"
+    "[ERROR] Overall score 0.00 is below the minimum of 0.5"
   ],
   "recommendations": [
     {
-      "location": "services/auth.py @@ -0,0 +1,5 @@",
-      "metric": "hunk.change_balance",
-      "value": 1.0,
-      "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
+      "location": "overall",
+      "metric": "overall.lines_changed",
+      "value": 50,
+      "remediation": "Reduce patch size by splitting unrelated changes into separate commits."
     },
     {
-      "location": "services/billing.py @@ -0,0 +1,5 @@",
-      "metric": "hunk.change_balance",
+      "location": "overall",
+      "metric": "overall.scatter_factor",
       "value": 1.0,
-      "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
-    },
-    {
-      "location": "services/email.py @@ -0,0 +1,5 @@",
-      "metric": "hunk.change_balance",
-      "value": 1.0,
-      "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
-    },
-    {
-      "location": "services/search.py @@ -0,0 +1,5 @@",
-      "metric": "hunk.change_balance",
-      "value": 1.0,
-      "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
-    },
-    {
-      "location": "services/cache.py @@ -0,0 +1,5 @@",
-      "metric": "hunk.change_balance",
-      "value": 1.0,
-      "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
-    },
-    {
-      "location": "services/queue.py @@ -0,0 +1,5 @@",
-      "metric": "hunk.change_balance",
-      "value": 1.0,
-      "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
-    },
-    {
-      "location": "services/storage.py @@ -0,0 +1,5 @@",
-      "metric": "hunk.change_balance",
-      "value": 1.0,
-      "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
-    },
-    {
-      "location": "services/metrics.py @@ -0,0 +1,5 @@",
-      "metric": "hunk.change_balance",
-      "value": 1.0,
-      "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
-    },
-    {
-      "location": "services/events.py @@ -0,0 +1,5 @@",
-      "metric": "hunk.change_balance",
-      "value": 1.0,
-      "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
-    },
-    {
-      "location": "services/notify.py @@ -0,0 +1,5 @@",
-      "metric": "hunk.change_balance",
-      "value": 1.0,
-      "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
+      "remediation": null
     }
   ],
   "files_changed": 10,

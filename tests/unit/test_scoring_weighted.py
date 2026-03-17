@@ -1,5 +1,3 @@
-import pytest
-
 from reviewability.domain.metric import MetricResults, MetricValue, MetricValueType
 from reviewability.scoring.weighted import DefaultScorer
 
@@ -40,35 +38,31 @@ def test_overall_score_no_lines_metric():
     assert make_scorer().overall_score(MetricResults([])) == 1.0
 
 
-def test_overall_score_full_size_no_churn():
-    # size_ratio=1.0, churn=0.0 → 1 - 1.0 * 1.0 = 0.0
-    mr = make_mr(**{"overall.lines_changed": 100, "overall.churn_complexity": 0})
+def test_overall_score_full_size_no_scatter():
+    # size_ratio=1.0, scatter=0.0 → 1 - 1.0 * 1.0 = 0.0
+    mr = make_mr(**{"overall.lines_changed": 100})
     assert make_scorer().overall_score(mr) == 0.0
 
 
-def test_overall_score_half_size_no_churn():
-    # size_ratio=0.5, churn=0.0 → 1 - 0.5 * 1.0 = 0.5
-    mr = make_mr(**{"overall.lines_changed": 50, "overall.churn_complexity": 0})
+def test_overall_score_half_size_no_scatter():
+    # size_ratio=0.5, scatter=0.0 → 1 - 0.5 * 1.0 = 0.5
+    mr = make_mr(**{"overall.lines_changed": 50})
     assert make_scorer().overall_score(mr) == 0.5
 
 
-def test_overall_score_half_size_full_churn_no_scatter():
-    # size_ratio=0.5, churn=1.0, scatter=0.0 → complexity=0.5 → 1 - 0.5 * 1.5 = 0.25
-    mr = make_mr(**{"overall.lines_changed": 50, "overall.churn_complexity": 1})
-    assert make_scorer().overall_score(mr) == 0.25
-
-
-def test_overall_score_half_size_full_churn_full_scatter():
-    # size_ratio=0.5, churn=1.0, scatter=1.0 → complexity=1.0 → 1 - 0.5 * 2.0 = 0.0
-    mr = make_mr(**{
-        "overall.lines_changed": 50,
-        "overall.churn_complexity": 1,
-        "overall.scatter_factor": 1,
-    })
+def test_overall_score_half_size_full_scatter():
+    # size_ratio=0.5, scatter=1.0 → 1 - 0.5 * 2.0 = 0.0
+    mr = make_mr(**{"overall.lines_changed": 50, "overall.scatter_factor": 1})
     assert make_scorer().overall_score(mr) == 0.0
 
 
-def test_overall_score_complexity_missing_treated_as_zero():
-    # churn and scatter both absent → complexity=0.0 → 1 - 0.5 * 1.0 = 0.5
+def test_overall_score_half_size_half_scatter():
+    # size_ratio=0.5, scatter=0.5 → 1 - 0.5 * 1.5 = 0.25
+    mr = make_mr(**{"overall.lines_changed": 50, "overall.scatter_factor": 0.5})
+    assert make_scorer().overall_score(mr) == 0.25
+
+
+def test_overall_score_scatter_missing_treated_as_zero():
+    # scatter absent → scatter=0.0 → 1 - 0.5 * 1.0 = 0.5
     mr = make_mr(**{"overall.lines_changed": 50})
     assert make_scorer().overall_score(mr) == 0.5

@@ -1,39 +1,21 @@
 {
-  "score": 0.05,
+  "score": 0.0,
   "passed": false,
   "violations": [
-    "[ERROR] Overall score 0.05 is below the minimum of 0.5"
+    "[ERROR] Overall score 0.00 is below the minimum of 0.5"
   ],
   "recommendations": [
     {
-      "location": "services/auth.py @@ -1,4 +1,6 @@",
-      "metric": "hunk.change_balance",
-      "value": 0.6,
-      "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
+      "location": "overall",
+      "metric": "overall.lines_changed",
+      "value": 50,
+      "remediation": "Reduce patch size by splitting unrelated changes into separate commits."
     },
     {
-      "location": "services/billing.py @@ -1,4 +1,6 @@",
-      "metric": "hunk.change_balance",
-      "value": 0.6,
-      "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
-    },
-    {
-      "location": "services/email.py @@ -1,4 +1,6 @@",
-      "metric": "hunk.change_balance",
-      "value": 0.6,
-      "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
-    },
-    {
-      "location": "services/search.py @@ -1,4 +1,6 @@",
-      "metric": "hunk.change_balance",
-      "value": 0.6,
-      "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
-    },
-    {
-      "location": "services/cache.py @@ -1,4 +1,6 @@",
-      "metric": "hunk.change_balance",
-      "value": 0.6,
-      "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
+      "location": "overall",
+      "metric": "overall.scatter_factor",
+      "value": 1.0,
+      "remediation": null
     }
   ],
   "files_changed": 5,

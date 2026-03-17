@@ -74,7 +74,7 @@ Moved code is easy to review — the logic hasn't changed, only the location. Th
 when a block of code is deleted from one place and inserted elsewhere (accounting for
 reindentation and package/import changes), and treats those hunks and files as relocations.
 
-Relocations receive a perfect score and are excluded from the size and churn calculations
+Relocations receive a perfect score and are excluded from the size calculations
 that drive the overall score. A diff that is large only because of relocations is not penalized.
 
 ## Metrics
@@ -114,7 +114,6 @@ Metrics are calculated at three levels: hunk, file, and overall diff.
 | `overall.moved_lines` | Total lines in hunks identified as code movements |
 | `overall.change_entropy` | Shannon entropy of the distribution of changes across files |
 | `overall.largest_file_ratio` | Fraction of total diff lines in the most-changed file |
-| `overall.churn_complexity` | Average interleaving of adds and removes across hunks |
 | `overall.scatter_factor` | Normalized entropy of how changes are distributed across files (0.0 = all in one file, 1.0 = evenly spread) |
 | `overall.problematic_hunk_count` | Hunks with a score below the configured threshold |
 | `overall.problematic_file_count` | Files with a score below the configured threshold |
@@ -122,22 +121,28 @@ Metrics are calculated at three levels: hunk, file, and overall diff.
 ## Overall Scoring
 
 ```
-score = max(0, 1 − effective_size_ratio × (1 + complexity))
+score = max(0, 1 − effective_size_ratio × (1 + scatter_factor))
 
 effective_size_ratio = (lines_changed − moved_lines) / max_diff_lines   [capped at 1.0]
-complexity           = (churn_complexity + scatter_factor) / 2
 ```
 
-The score is driven by **effective diff size** and **complexity**. Moved lines are excluded
+The score is driven by **effective diff size** and **scatter**. Moved lines are excluded
 from the size count — relocations are easy to review and should not penalize the score.
 
-`churn_complexity` measures how much adds and removes are interleaved within hunks.
-`scatter_factor` measures how evenly changes are spread across files (normalized entropy).
-Both range from 0.0 to 1.0; their average is the complexity term.
+`scatter_factor` measures how evenly changes are spread across files (normalized entropy,
+0.0 = all in one file, 1.0 = evenly spread). It amplifies the size penalty: a large diff
+that touches many files evenly scores worse than an equally large diff concentrated in
+a few files.
 
-The penalty compounds: a large diff with high complexity scores much worse than either
-factor alone. A large but directional diff (e.g. a bulk rename) or a complex but small
-diff each score better than a diff that is both large *and* tangled.
+A large but focused diff (e.g. a bulk rename in one file) or a scattered but small diff
+each score better than a diff that is both large *and* scattered.
+
+## Validation
+
+The scoring formula was calibrated against ~2,000 pull requests from 15 permissively
+licensed open-source repositories. Ground truth labels were derived from review outcomes
+(change requests, revision cycles, comment density). Metrics that did not improve
+prediction over a naive size baseline were removed from the formula.
 
 ## Research
 
