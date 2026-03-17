@@ -3,19 +3,16 @@ from typing import Any
 
 from reviewability.domain.models import Hunk
 from reviewability.domain.report import AnalysisReport
-from reviewability.metrics.hunk.change_balance import HunkChangeBalance
-from reviewability.metrics.overall.churn_complexity import OverallChurnComplexity
 from reviewability.metrics.overall.lines_changed import OverallLinesChanged
+from reviewability.metrics.overall.scatter_factor import OverallScatterFactor
 from reviewability.rules.engine import RuleViolation, Severity
 
 # Maps an overall metric to the hunk metric that best explains it.
 # When this overall metric contributes to failure, the gate surfaces the
 # worst hunks ranked by their score, annotated with the focus metric.
-_FOCUS_METRIC: dict[str, str] = {
-    OverallChurnComplexity.name: HunkChangeBalance.name,
-}
+_FOCUS_METRIC: dict[str, str] = {}
 
-_SCORER_INPUTS = {OverallLinesChanged.name, OverallChurnComplexity.name}
+_SCORER_INPUTS = {OverallLinesChanged.name, OverallScatterFactor.name}
 
 
 @dataclass(frozen=True)

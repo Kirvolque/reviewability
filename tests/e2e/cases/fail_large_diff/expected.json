@@ -7,16 +7,16 @@
   ],
   "recommendations": [
     {
-      "location": "src/farewell.py @@ -1,4 +1,6 @@",
-      "metric": "hunk.change_balance",
-      "value": 0.67,
-      "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
+      "location": "overall",
+      "metric": "overall.lines_changed",
+      "value": 12,
+      "remediation": "Reduce patch size by splitting unrelated changes into separate commits."
     },
     {
-      "location": "src/greeter.py @@ -1,4 +1,6 @@",
-      "metric": "hunk.change_balance",
-      "value": 0.67,
-      "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
+      "location": "overall",
+      "metric": "overall.scatter_factor",
+      "value": 1.0,
+      "remediation": null
     }
   ],
   "files_changed": 2,

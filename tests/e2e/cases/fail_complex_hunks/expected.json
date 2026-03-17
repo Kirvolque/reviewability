@@ -1,39 +1,21 @@
 {
-  "score": 0.04,
+  "score": 0.05,
   "passed": false,
   "violations": [
-    "[ERROR] Overall score 0.04 is below the minimum of 0.5"
+    "[ERROR] Overall score 0.05 is below the minimum of 0.5"
   ],
   "recommendations": [
     {
-      "location": "src/formatter.py @@ -1,6 +1,6 @@",
-      "metric": "hunk.change_balance",
-      "value": 0.5,
-      "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
+      "location": "overall",
+      "metric": "overall.lines_changed",
+      "value": 48,
+      "remediation": "Reduce patch size by splitting unrelated changes into separate commits."
     },
     {
-      "location": "src/processor.py @@ -1,5 +1,5 @@",
-      "metric": "hunk.change_balance",
-      "value": 0.5,
-      "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
-    },
-    {
-      "location": "src/processor.py @@ -15,5 +15,5 @@",
-      "metric": "hunk.change_balance",
-      "value": 0.5,
-      "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
-    },
-    {
-      "location": "src/validator.py @@ -1,4 +1,4 @@",
-      "metric": "hunk.change_balance",
-      "value": 0.5,
-      "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
-    },
-    {
-      "location": "src/validator.py @@ -15,4 +15,4 @@",
-      "metric": "hunk.change_balance",
-      "value": 0.5,
-      "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
+      "location": "overall",
+      "metric": "overall.scatter_factor",
+      "value": 0.98,
+      "remediation": null
     }
   ],
   "files_changed": 3,
