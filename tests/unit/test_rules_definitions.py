@@ -13,8 +13,13 @@ def make_context(score: float = 1.0, **kwargs: int) -> OverallAnalysis:
 
 
 config = ReviewabilityConfig(
-    max_hunk_lines=50,
+    hunk_score_threshold=0.5,
+    file_score_threshold=0.5,
     max_diff_lines=500,
+    max_hunk_lines=50,
+    movement_hunk_min_lines=8,
+    movement_file_min_lines=15,
+    movement_similarity_threshold=0.95,
     max_problematic_hunks=3,
     max_problematic_files=2,
     min_overall_score=0.5,
@@ -64,7 +69,15 @@ def test_hunk_rule_passes_when_metric_missing():
 
 
 def test_hunk_rule_uses_config_limit():
-    custom = ReviewabilityConfig(max_hunk_lines=10)
+    custom = ReviewabilityConfig(
+        hunk_score_threshold=0.5,
+        file_score_threshold=0.5,
+        max_diff_lines=500,
+        max_hunk_lines=10,
+        movement_hunk_min_lines=8,
+        movement_file_min_lines=15,
+        movement_similarity_threshold=0.95,
+    )
     engine = RuleEngine(hunk_rules(custom))
     violations = engine.evaluate(make_context(**{"hunk.lines_changed": 11}))
     assert len(violations) == 1

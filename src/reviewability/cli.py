@@ -4,18 +4,11 @@ import sys
 from pathlib import Path
 
 from reviewability.analyzer import create_analyzer
-from reviewability.config.models import ReviewabilityConfig
 from reviewability.config.parser import parse_config
 from reviewability.gate import QualityGate
 from reviewability.parser.git import parse_diff_text, parse_git_diff
 
 _DEFAULT_CONFIG = Path("reviewability.toml")
-
-
-def _load_config(path: Path) -> ReviewabilityConfig:
-    if path.exists():
-        return parse_config(path)
-    return ReviewabilityConfig()
 
 
 def main() -> None:
@@ -24,6 +17,7 @@ def main() -> None:
         description="Analyze code diffs and score their reviewability.",
     )
     parser.add_argument(
+        "-c",
         "--config",
         type=Path,
         default=_DEFAULT_CONFIG,
@@ -48,7 +42,7 @@ def main() -> None:
     args = parser.parse_args()
 
     diff = parse_diff_text(sys.stdin.read()) if args.from_stdin else parse_git_diff(*args.git_args)
-    config = _load_config(args.config)
+    config = parse_config(args.config)
     report, violations = create_analyzer(config).run(diff)
     gate_result = QualityGate().evaluate(report, violations)
 

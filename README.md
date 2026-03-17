@@ -42,7 +42,7 @@ The metric system is designed to be extended:
 
 - **Add a metric** — subclass `HunkMetric`, `FileMetric`, or `OverallMetric`, implement `calculate()`, register via `registry.add()`
 - **Adjust scoring** — provide a custom `ReviewabilityScorer` implementation
-- **Adjust thresholds** — edit `reviewability.toml` to change what score counts as problematic and what limits trigger violations
+- **Adjust thresholds** — edit the [default config](src/reviewability/config/reviewability.toml) or provide your own `reviewability.toml`
 
 ## Usage
 
@@ -67,6 +67,45 @@ Output is JSON. Exit code is `0` if the gate passes, `1` if it fails.
 If you use [Claude Code](https://claude.ai/code), a `/reviewability` skill is included.
 It runs the tool on the current diff, summarizes the results, and attempts to address
 any recommendations directly.
+
+## Configuration
+
+All thresholds and limits are configured via a single `reviewability.toml` file.
+The tool looks for it in the current directory, or you can specify a path explicitly:
+
+```bash
+reviewability -c path/to/reviewability.toml HEAD~1 HEAD
+```
+
+If no config file is found, the
+[built-in default](src/reviewability/config/reviewability.toml) is used. You can
+edit that file directly to change the defaults, or copy it into your project root.
+The config must contain all mandatory fields — there is no merging with defaults.
+
+```toml
+# Scores below these thresholds mark hunks/files as problematic
+hunk_score_threshold = 0.5
+file_score_threshold = 0.5
+
+# Size limits (used for score normalisation)
+max_diff_lines = 500
+max_hunk_lines = 50
+
+# Gate: fail if overall score drops below this (provisional, based on calibration)
+min_overall_score = 0.7
+
+# Optional limits (remove a line to disable that check)
+max_problematic_hunks = 3
+max_problematic_files = 2
+max_file_hunk_count = 5
+max_files_changed = 10
+max_added_lines = 400
+
+[movement_detection]
+hunk_min_lines = 8
+file_min_lines = 15
+similarity_threshold = 0.95
+```
 
 ## Movement Detection
 
