@@ -22,11 +22,11 @@ class ComplexRewriteDetector:
     in-place rewrite. Otherwise, it is treated as a moved rewrite.
     """
 
-    min_changed_lines: int = 5
+    min_changed_lines: int = 3
     min_similarity: float = 0.2
-    max_similarity: float = 0.8
-    min_token_overlap: float = 0.35
-    max_in_place_anchor_distance: int = 2
+    max_similarity: float = 0.9
+    min_token_overlap: float = 0.25
+    max_in_place_anchor_distance: int = 5
 
     def classify_rewrite(
         self,

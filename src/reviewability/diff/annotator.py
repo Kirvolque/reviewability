@@ -47,9 +47,17 @@ class DiffAnnotator:
         self,
         diff: Diff,
     ) -> tuple[set[int], dict[int, HunkRewriteKind]]:
-        """Detect moved hunk pairs first, then classify complex rewrites for unmatched hunks."""
+        """Detect moved hunk pairs first, then classify complex rewrites for unmatched hunks.
+
+        Movement detection operates only on pure-deletion / pure-insertion pairs.
+        Rewrite detection covers two cases:
+        - Cross-hunk: unmatched pure-deletion + pure-insertion pairs (same as before)
+        - Self: mixed hunks (both added and removed lines) compared against themselves
+        """
         deletion_hunks = [h for f in diff.files for h in f.hunks if _is_pure_deletion(h)]
         insertion_hunks = [h for f in diff.files for h in f.hunks if _is_pure_insertion(h)]
+        mixed_hunks = [h for f in diff.files for h in f.hunks if _is_mixed(h)]
+
         hunk_lines_by_id = {
             id(hunk): tuple(
                 self.similarity_calculator.content_lines(
@@ -70,13 +78,19 @@ class DiffAnnotator:
             ),
         )
 
-        rewrite_kinds_by_hunk_id = _find_rewrite_pairs(
+        cross_rewrite_kinds = _find_rewrite_pairs(
             [hunk for hunk in deletion_hunks if id(hunk) not in moved_hunk_ids],
             [hunk for hunk in insertion_hunks if id(hunk) not in moved_hunk_ids],
             lambda deletion, insertion: self._classify_rewrite_kind(deletion, insertion),
         )
 
-        return moved_hunk_ids, rewrite_kinds_by_hunk_id
+        self_rewrite_kinds = {
+            id(hunk): kind
+            for hunk in mixed_hunks
+            if (kind := self._classify_rewrite_kind(hunk, hunk)) is not None
+        }
+
+        return moved_hunk_ids, {**cross_rewrite_kinds, **self_rewrite_kinds}
 
     def _is_hunk_pair_likely_moved(
         self,
@@ -178,3 +192,7 @@ def _is_pure_deletion(hunk: Hunk) -> bool:
 
 def _is_pure_insertion(hunk: Hunk) -> bool:
     return hunk.added_count > 0 and hunk.removed_count == 0
+
+
+def _is_mixed(hunk: Hunk) -> bool:
+    return hunk.removed_count > 0 and hunk.added_count > 0
