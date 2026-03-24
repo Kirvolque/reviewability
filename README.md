@@ -134,6 +134,8 @@ Metrics are calculated at three levels: hunk, file, and overall diff.
 | `hunk.context_lines` | Unchanged context lines surrounding the change |
 | `hunk.change_balance` | Ratio of added lines to total changed lines (0.0 = pure deletion, 1.0 = pure addition) |
 | `hunk.is_likely_moved` | Whether this hunk is a movement of code from another location |
+| `hunk.moved_rewrite_lines` | Lines in a hunk that were both moved and rewritten |
+| `hunk.in_place_rewrite_lines` | Lines in a hunk that were rewritten in place (not moved) |
 
 ### File-level
 
@@ -144,7 +146,9 @@ Metrics are calculated at three levels: hunk, file, and overall diff.
 | `file.removed_lines` | Total lines removed in a file |
 | `file.hunk_count` | Number of separate change regions in a file |
 | `file.max_hunk_lines` | Lines changed in the largest single hunk within a file |
-| `file.is_likely_moved` | Whether this file is a movement from another path |
+| `file.moved_lines` | Total lines in hunks identified as code movements |
+| `file.moved_rewrite_lines` | Lines that were both moved and rewritten in this file |
+| `file.in_place_rewrite_lines` | Lines that were rewritten in place (not moved) in this file |
 
 ### Overall-level
 
@@ -155,9 +159,11 @@ Metrics are calculated at three levels: hunk, file, and overall diff.
 | `overall.removed_lines` | Total lines removed across the entire diff |
 | `overall.files_changed` | Number of files changed |
 | `overall.moved_lines` | Total lines in hunks identified as code movements |
+| `overall.moved_rewrite_lines` | Total lines that were both moved and rewritten |
+| `overall.in_place_rewrite_lines` | Total lines that were rewritten in place (not moved) |
 | `overall.change_entropy` | Shannon entropy of the distribution of changes across files |
-| `overall.largest_file_ratio` | Fraction of total diff lines in the most-changed file |
 | `overall.scatter_factor` | Normalized entropy of how changes are distributed across files (0.0 = all in one file, 1.0 = evenly spread) |
+| `overall.churn_complexity` | Average interleaving complexity across all hunks (0.0 = directional changes, 1.0 = fully interleaved) |
 | `overall.problematic_hunk_count` | Hunks with a score below the configured threshold |
 | `overall.problematic_file_count` | Files with a score below the configured threshold |
 
