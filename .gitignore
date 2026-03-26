@@ -10,3 +10,5 @@ build/
 validation/
 release-notes-*.md
 .claude/
+# Claude Code session continuation files
+[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]-*.txt

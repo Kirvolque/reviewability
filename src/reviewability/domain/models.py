@@ -30,6 +30,9 @@ class Hunk(DiffNode):
     is_likely_moved: bool = False
     # Optional enrichment output: detected heavy rewrite classification.
     rewrite_kind: HunkRewriteKind | None = None
+    # Assigned by HunkGrouper: groups hunks that are logically connected (moves, rewrites).
+    # None = singleton (unconnected); int = group index shared across connected hunks.
+    group_id: int | None = None
 
     @property
     def line_count(self) -> int:

@@ -1,6 +1,7 @@
 from reviewability.metrics.overall.added_lines import OverallAddedLines
 from reviewability.metrics.overall.change_entropy import OverallChangeEntropy
 from reviewability.metrics.overall.churn_complexity import OverallChurnComplexity
+from reviewability.metrics.overall.edit_complexity import OverallEditComplexity
 from reviewability.metrics.overall.files_changed import OverallFilesChanged
 from reviewability.metrics.overall.in_place_rewrite_lines import OverallInPlaceRewriteLines
 from reviewability.metrics.overall.largest_file_ratio import OverallLargestFileRatio
@@ -22,6 +23,7 @@ __all__ = [
     "OverallChangeEntropy",
     "OverallLargestFileRatio",
     "OverallChurnComplexity",
+    "OverallEditComplexity",
     "OverallMovedLines",
     "OverallInPlaceRewriteLines",
     "OverallMovedRewriteLines",

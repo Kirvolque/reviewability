@@ -35,8 +35,11 @@ src/reviewability/
                       MetricResults, MetricValue, MetricValueType
   metrics/
     base.py         — Metric, HunkMetric, FileMetric, OverallMetric (interfaces)
-    builtin.py      — Built-in metric implementations
     registry.py     — MetricRegistry (the only mutable structure)
+    engine.py       — MetricEngine (calculates metrics at all levels)
+    hunk/           — Hunk-level metric implementations
+    file/           — File-level metric implementations
+    overall/        — Overall-level metric implementations
   scoring/
     base.py         — ReviewabilityScorer (abstract: hunk_score, file_score, overall_score)
     weighted.py     — WeightedReviewabilityScorer, MetricWeight

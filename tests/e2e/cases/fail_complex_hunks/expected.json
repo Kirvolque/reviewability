@@ -64,6 +64,10 @@
       "value": 1.0
     },
     {
+      "name": "overall.edit_complexity",
+      "value": 0.24
+    },
+    {
       "name": "overall.scatter_factor",
       "value": 0.98
     }

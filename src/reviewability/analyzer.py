@@ -27,6 +27,7 @@ from reviewability.metrics.overall import (
     OverallAddedLines,
     OverallChangeEntropy,
     OverallChurnComplexity,
+    OverallEditComplexity,
     OverallFilesChanged,
     OverallInPlaceRewriteLines,
     OverallLargestFileRatio,
@@ -117,6 +118,7 @@ def create_analyzer(config: ReviewabilityConfig) -> Analyzer:
         OverallChangeEntropy(),
         OverallLargestFileRatio(),
         OverallChurnComplexity(),
+        OverallEditComplexity(),
         OverallScatterFactor(),
     ]:
         registry.add(metric)
