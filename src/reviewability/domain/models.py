@@ -1,6 +1,6 @@
 import itertools
-from enum import Enum
 from dataclasses import dataclass, field
+from enum import Enum
 
 
 class HunkRewriteKind(str, Enum):
@@ -50,6 +50,16 @@ class Hunk(DiffNode):
     @property
     def removed_count(self) -> int:
         return len(self.removed_lines)
+
+    @property
+    def is_pure_deletion(self) -> bool:
+        """Check if hunk is pure deletion (only removed lines, no added lines)."""
+        return self.removed_count > 0 and self.added_count == 0
+
+    @property
+    def is_pure_addition(self) -> bool:
+        """Check if hunk is pure addition (only added lines, no removed lines)."""
+        return self.added_count > 0 and self.removed_count == 0
 
 
 @dataclass
