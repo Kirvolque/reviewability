@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from reviewability.diff.similarity_calculator import DiffSimilarityCalculator
 from reviewability.domain.metric import MetricValue, MetricValueType
-from reviewability.domain.models import HunkRewriteKind
 from reviewability.domain.report import Analysis
 from reviewability.metrics.base import OverallMetric
 
@@ -82,78 +81,55 @@ class OverallEditComplexity(OverallMetric):
         """Compute complexity score for a single hunk group [0.0, 1.0].
 
         Higher = more complex (harder to review).
+
+        Scoring: complexity = size * (1 - similarity) * (1 + span * (1 - similarity))
+        - High similarity → low complexity (e.g., clean move)
+        - Low similarity → high complexity (significant rewrite)
+        - Far apart with low similarity → even higher complexity
         """
         if not group_hunks:
             return 0.0
 
-        # Singleton groups have low complexity
+        # Singleton groups: score based on hunk characteristics
         if len(group_hunks) == 1:
-            return 0.1  # Small penalty for being present at all
+            hunk = group_hunks[0]
+            total_size = hunk.added_count + hunk.removed_count
+            size_factor = min(total_size / 50.0, 1.0)
 
-        # Multi-hunk groups: compute size, type, similarity factors
-        total_size = sum(h.added_count + h.removed_count for h in group_hunks)
-        size_factor = min(total_size / 50.0, 1.0)  # Normalize by typical hunk size
-
-        # Type factor: what kind of changes in this group?
-        type_multiplier = self._compute_type_multiplier(group_hunks)
-
-        # Similarity factor: how different are removed vs added sides?
-        similarity_factor = self._compute_similarity_factor(group_hunks)
-
-        # Span factor: how spread out are the hunks?
-        span_factor = self._compute_span_factor(group_hunks)
-
-        # Combine factors: high complexity when size is large, changes are different, hunks are spread out
-        complexity = size_factor * (0.5 + 0.5 * similarity_factor) * (0.8 + 0.2 * span_factor) * type_multiplier
-
-        return min(complexity, 1.0)
-
-    def _compute_type_multiplier(self, group_hunks: list) -> float:
-        """Return type multiplier based on the kind of changes in the group.
-
-        Move = 1.2 (easy to verify, but still requires attention)
-        InPlaceRewrite = 1.0 (moderate difficulty)
-        Mixed = 1.1 (default, moderate)
-        """
-        types = set()
-        for hunk in group_hunks:
-            if hunk.is_likely_moved:
-                types.add("move")
-            if hunk.rewrite_kind == HunkRewriteKind.MOVED_REWRITE:
-                types.add("moved_rewrite")
-            elif hunk.rewrite_kind == HunkRewriteKind.IN_PLACE_REWRITE:
-                types.add("in_place_rewrite")
-
-        if "moved_rewrite" in types:
-            return 1.2  # Moved rewrites are slightly more complex
-        elif "in_place_rewrite" in types:
-            return 1.0
-        elif "move" in types:
-            return 0.9  # Pure moves are easy to review
-        else:
-            return 1.1  # Default: mixed or unknown
-
-    def _compute_similarity_factor(self, group_hunks: list) -> float:
-        """Compute how different removed vs added content is [0.0, 1.0].
-
-        High similarity (0.0) = easy to verify it's a clean move or rename
-        Low similarity (1.0) = hard to verify because content changed
-        """
-        similarity_calc = DiffSimilarityCalculator()
-        similarities = []
-
-        for hunk in group_hunks:
+            # For mixed hunks, compute self-similarity (removed vs added)
             if hunk.removed_lines and hunk.added_lines:
-                sim = similarity_calc.sequence_similarity(
+                similarity = DiffSimilarityCalculator().sequence_similarity(
                     hunk.removed_lines, hunk.added_lines
                 )
-                # Invert: high similarity = low complexity
-                similarities.append(1.0 - sim)
+                complexity = size_factor * (1.0 - similarity)
+            else:
+                # Pure addition or pure deletion alone: small penalty
+                complexity = 0.1
 
-        if not similarities:
-            return 0.0  # No content to compare; assume clean move
+            return min(complexity, 1.0)
 
-        return sum(similarities) / len(similarities)
+        # Multi-hunk groups: pair-based scoring
+        total_size = sum(h.added_count + h.removed_count for h in group_hunks)
+        size_factor = min(total_size / 50.0, 1.0)
+
+        # Compute overall similarity: all removed lines vs all added lines in the group
+        all_removed = [line for h in group_hunks for line in h.removed_lines]
+        all_added = [line for h in group_hunks for line in h.added_lines]
+
+        if all_removed and all_added:
+            similarity = DiffSimilarityCalculator().sequence_similarity(
+                all_removed, all_added
+            )
+        else:
+            similarity = 1.0  # Assume clean if no content to compare
+
+        # Compute span: how spread out are the hunks?
+        span = self._compute_span_factor(group_hunks)
+
+        # Formula: size * (1 - similarity) * (1 + span * (1 - similarity))
+        complexity = size_factor * (1.0 - similarity) * (1.0 + span * (1.0 - similarity))
+
+        return min(complexity, 1.0)
 
     def _compute_span_factor(self, group_hunks: list) -> float:
         """Compute how spread out hunks are within their files [0.0, 1.0].

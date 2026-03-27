@@ -3,73 +3,110 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import ClassVar
 
 from reviewability.diff.similarity_calculator import DiffSimilarityCalculator
-from reviewability.domain.models import Hunk, HunkRewriteKind
+from reviewability.domain.models import Hunk
 
 
 @dataclass(frozen=True)
 class HunkGrouper:
-    """Assigns group IDs to hunks that are likely connected.
+    """Assigns group IDs to hunks that are logically connected.
 
-    Groups hunks based on already-detected rewrite_kind and is_likely_moved flags,
-    using union-find to merge pairs into connected components.
+    Pairs deletion and insertion hunks by content similarity (threshold >= 0.3),
+    regardless of flags. Uses union-find to merge pairs into connected components.
     Returns a dict mapping group_id -> list[Hunk], where singletons have group_id=None.
     """
-
-    SIMILARITY_THRESHOLD: ClassVar[float] = 0.95
 
     similarity_calculator: DiffSimilarityCalculator
 
     def group(self, hunks: list[Hunk]) -> dict[int | None, list[Hunk]]:
-        """Group hunks by connectivity. Returns dict keyed by group_id.
+        """Group hunks by connectivity using removed-vs-added line similarity.
 
-        All hunks are processed; each gets an implicit group_id (None for singletons,
-        0..N-1 for groups of size > 1). Hunks with the same group_id form a logical unit.
+        For every pair of hunks, computes the similarity between one hunk's removed
+        lines and the other's added lines (and vice versa). Pairs with similarity >= 0.3
+        are candidates; greedy best-match selects the best non-overlapping pairs.
+
+        Returns dict[group_id, list[Hunk]] where singletons have group_id=None.
         """
         if not hunks:
             return {}
 
-        parent: dict[int, int] = self._initialize_union_find(len(hunks))
-        pairs = self._find_hunk_pairs(hunks)
+        scored_pairs = self._score_all_pairs(hunks)
+        pairs = self._greedy_match(scored_pairs)
+
+        parent = self._initialize_union_find(len(hunks))
         parent = self._union_pairs(parent, pairs)
+
         root_to_group = self._assign_group_ids(parent, len(hunks))
         return self._build_result(hunks, parent, root_to_group)
+
+    def _score_all_pairs(self, hunks: list[Hunk]) -> list[tuple[float, int, int]]:
+        """Score all hunk pairs by removed-vs-added line similarity.
+
+        For each pair (i, j) computes max(sim(i.removed, j.added), sim(j.removed, i.added)).
+        Empty line lists produce 0.0, so two pure additions or two pure deletions never pair.
+        Returns list of (similarity, i, j) with i < j, sorted descending by similarity.
+        """
+        scored: list[tuple[float, int, int]] = []
+
+        for i in range(len(hunks)):
+            for j in range(i + 1, len(hunks)):
+                sim = self._pair_similarity(hunks[i], hunks[j])
+                if sim >= 0.3:  # Low threshold: metric layer handles scoring nuance
+                    scored.append((sim, i, j))
+
+        scored.sort(reverse=True, key=lambda x: x[0])
+        return scored
+
+    def _pair_similarity(self, a: Hunk, b: Hunk) -> float:
+        """Return the highest cross-similarity between a and b's removed/added lines.
+
+        Checks both directions: a.removed vs b.added, and b.removed vs a.added.
+        Guards against empty lists (which would score 1.0 via SequenceMatcher).
+        """
+        sim_ab = (
+            self.similarity_calculator.pair_sequence_similarity(
+                id(a), id(b), a.removed_lines, b.added_lines
+            )
+            if a.removed_lines and b.added_lines
+            else 0.0
+        )
+        sim_ba = (
+            self.similarity_calculator.pair_sequence_similarity(
+                id(b), id(a), b.removed_lines, a.added_lines
+            )
+            if b.removed_lines and a.added_lines
+            else 0.0
+        )
+        return max(sim_ab, sim_ba)
+
+    def _greedy_match(
+        self,
+        scored_pairs: list[tuple[float, int, int]],
+    ) -> list[tuple[int, int]]:
+        """Greedily select best unmatched pairs.
+
+        Each hunk index appears in at most one accepted pair.
+        """
+        matched: set[int] = set()
+        pairs: list[tuple[int, int]] = []
+
+        for _sim, i, j in scored_pairs:
+            if i not in matched and j not in matched:
+                pairs.append((i, j))
+                matched.add(i)
+                matched.add(j)
+
+        return pairs
 
     def _initialize_union_find(self, size: int) -> dict[int, int]:
         """Initialize union-find parent map where each index is its own root."""
         return {i: i for i in range(size)}
 
-    def _find_hunk_pairs(self, hunks: list[Hunk]) -> list[tuple[int, int]]:
-        """Find pairs of hunks that should be grouped together.
-
-        Returns list of (i, j) tuples where i < j, based on rewrite/move annotations.
-        """
-        pairs: list[tuple[int, int]] = []
-
-        for i, hunk in enumerate(hunks):
-            if self._should_find_pair(hunk):
-                pair_idx = self._find_pair(hunks, i)
-                if pair_idx is not None and i < pair_idx:
-                    pairs.append((i, pair_idx))
-
-        return pairs
-
-    def _should_find_pair(self, hunk: Hunk) -> bool:
-        """Check if hunk should be examined for pairing with others."""
-        return (
-            hunk.rewrite_kind == HunkRewriteKind.MOVED_REWRITE
-            or hunk.is_likely_moved
-        )
-
     def _union_pairs(
         self, parent: dict[int, int], pairs: list[tuple[int, int]]
     ) -> dict[int, int]:
-        """Union all pairs of hunk indices using union-find.
-
-        Returns the modified parent dict with all pairs unioned.
-        """
+        """Union all pairs of hunk indices using union-find."""
         for i, j in pairs:
             parent = self._union(parent, i, j)
         return parent
@@ -81,10 +118,7 @@ class HunkGrouper:
         return parent[x]
 
     def _union(self, parent: dict[int, int], x: int, y: int) -> dict[int, int]:
-        """Union two elements by their root.
-
-        Returns the modified parent dict.
-        """
+        """Union two elements by their root. Returns the modified parent dict."""
         rx, ry = self._find(parent, x), self._find(parent, y)
         if rx != ry:
             parent[rx] = ry
@@ -93,10 +127,7 @@ class HunkGrouper:
     def _assign_group_ids(
         self, parent: dict[int, int], size: int
     ) -> dict[int, int]:
-        """Assign unique group_id to each root.
-
-        Each connected component (union-find root) gets a sequential group_id.
-        """
+        """Assign unique group_id to each root."""
         root_to_group: dict[int, int] = {}
         next_group_id = 0
 
@@ -135,68 +166,3 @@ class HunkGrouper:
     def _count_group_size(self, parent: dict[int, int], root: int, size: int) -> int:
         """Count the number of hunks in the group with the given root."""
         return sum(1 for j in range(size) if self._find(parent, j) == root)
-
-    def _find_pair(self, hunks: list[Hunk], hunk_idx: int) -> int | None:
-        """Find the paired hunk for hunks[hunk_idx] by similarity.
-
-        Returns the index of the pair, or None if no pair found.
-        """
-        hunk = hunks[hunk_idx]
-
-        if hunk.is_pure_deletion:
-            return self._find_addition_pair(hunks, hunk_idx, hunk)
-
-        if hunk.is_pure_addition:
-            return self._find_deletion_pair(hunks, hunk_idx, hunk)
-
-        return None
-
-    def _find_addition_pair(
-        self, hunks: list[Hunk], hunk_idx: int, deletion_hunk: Hunk
-    ) -> int | None:
-        """Find a pure addition hunk matching the deletion hunk.
-
-        Searches for an addition with similar content to the deletion.
-        Uses SIMILARITY_THRESHOLD (matching MovementDetector).
-        """
-        for j, candidate in enumerate(hunks):
-            if j == hunk_idx:
-                continue
-            if not candidate.is_pure_addition:
-                continue
-
-            sim = self.similarity_calculator.pair_sequence_similarity(
-                id(deletion_hunk),
-                id(candidate),
-                deletion_hunk.removed_lines,
-                candidate.added_lines,
-            )
-            if sim >= self.SIMILARITY_THRESHOLD:
-                return j
-
-        return None
-
-    def _find_deletion_pair(
-        self, hunks: list[Hunk], hunk_idx: int, addition_hunk: Hunk
-    ) -> int | None:
-        """Find a pure deletion hunk matching the addition hunk.
-
-        Searches for a deletion with similar content to the addition.
-        Uses SIMILARITY_THRESHOLD (matching MovementDetector).
-        """
-        for j, candidate in enumerate(hunks):
-            if j == hunk_idx:
-                continue
-            if not candidate.is_pure_deletion:
-                continue
-
-            sim = self.similarity_calculator.pair_sequence_similarity(
-                id(candidate),
-                id(addition_hunk),
-                candidate.removed_lines,
-                addition_hunk.added_lines,
-            )
-            if sim >= self.SIMILARITY_THRESHOLD:
-                return j
-
-        return None

@@ -24,7 +24,7 @@ class ComplexRewriteDetector:
 
     min_changed_lines: int = 3
     min_similarity: float = 0.2
-    max_similarity: float = 0.9
+    max_similarity: float = 0.75
     min_token_overlap: float = 0.25
     max_in_place_anchor_distance: int = 5
 
