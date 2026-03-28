@@ -77,11 +77,10 @@ class FileDiff(DiffNode):
 
 @dataclass
 class HunkGroup(DiffNode):
-    """A logical group of related hunks identified by the HunkGrouper.
+    """A logical group of two or more related hunks identified by the HunkGrouper.
 
     Hunks in the same group are likely connected (e.g. a code move or cross-hunk
-    rewrite). Singletons — hunks with no detected relationship — form groups of
-    size one with ``group_id=None``.
+    rewrite). Ungrouped hunks are not represented here; see ``Diff.singleton_hunks``.
     """
 
     group_id: int | None
@@ -96,6 +95,12 @@ class Diff:
 
     files: list[FileDiff] = field(default_factory=list)
     groups: list[HunkGroup] = field(default_factory=list)
+    singleton_hunks: list[Hunk] = field(default_factory=list)
+
+    @property
+    def all_hunks(self) -> list[Hunk]:
+        """All hunks across all files, in file order."""
+        return [hunk for file in self.files for hunk in file.hunks]
 
     @property
     def total_files_changed(self) -> int:
