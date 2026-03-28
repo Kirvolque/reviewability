@@ -56,17 +56,6 @@ def test_metric_value_remediation_set():
     assert mv.remediation == "Fix it"
 
 
-def test_metric_value_causes_defaults_empty():
-    mv = MetricValue("a", 1, MetricValueType.INTEGER)
-    assert mv.causes == []
-
-
-def test_metric_value_causes_set():
-    inner = MetricValue("b", 2, MetricValueType.INTEGER)
-    mv = MetricValue("a", 1, MetricValueType.INTEGER, causes=[inner])
-    assert mv.causes == [inner]
-
-
 # --- MetricResults tests ---
 
 
@@ -79,13 +68,6 @@ def test_metric_results_metric_existing():
 def test_metric_results_metric_missing():
     mr = MetricResults([])
     assert mr.metric("nonexistent") is None
-
-
-def test_metric_results_all():
-    mv1 = make_metric_value("a")
-    mv2 = make_metric_value("b")
-    mr = MetricResults([mv1, mv2])
-    assert mr.all() == [mv1, mv2]
 
 
 def test_metric_results_iter():
@@ -213,5 +195,3 @@ def test_analysis_report_frozen():
         assert False, "Should have raised FrozenInstanceError"
     except Exception:
         pass
-
-

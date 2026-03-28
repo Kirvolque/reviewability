@@ -49,6 +49,6 @@ def test_gate_recommendations_empty_when_passed():
 
 
 def test_gate_recommendations_empty_when_no_metric_results():
-    # Gate produces recommendations from metric_results causes; empty report = empty recs
+    # Gate produces recommendations from scorer inputs; empty report = empty recs
     result = gate.evaluate(make_report(), [make_violation(Severity.ERROR)])
     assert result.recommendations == []

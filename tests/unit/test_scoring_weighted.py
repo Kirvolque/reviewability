@@ -1,4 +1,3 @@
-
 from reviewability.domain.metric import MetricResults, MetricValue, MetricValueType
 from reviewability.scoring.weighted import DefaultScorer
 

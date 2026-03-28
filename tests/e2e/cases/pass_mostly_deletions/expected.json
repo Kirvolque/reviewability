@@ -1,5 +1,5 @@
 {
-  "score": 0.67,
+  "score": 0.81,
   "passed": true,
   "violations": [],
   "recommendations": [],
@@ -12,15 +12,15 @@
     },
     {
       "name": "overall.lines_changed",
-      "value": 33
+      "value": 19
     },
     {
       "name": "overall.added_lines",
-      "value": 3
+      "value": 1
     },
     {
       "name": "overall.problematic_hunk_count",
-      "value": 1
+      "value": 0
     },
     {
       "name": "overall.problematic_file_count",
@@ -34,11 +34,11 @@
   "files": [
     {
       "file": "src/legacy.py",
-      "score": 0.67,
+      "score": 0.81,
       "metrics": [
         {
           "name": "file.lines_changed",
-          "value": 33
+          "value": 19
         }
       ]
     }
@@ -47,19 +47,19 @@
   "hunks": [
     {
       "file": "src/legacy.py",
-      "score": 0.34,
+      "score": 0.62,
       "metrics": [
         {
           "name": "hunk.lines_changed",
-          "value": 33
+          "value": 19
         },
         {
           "name": "hunk.added_lines",
-          "value": 3
+          "value": 1
         },
         {
           "name": "hunk.removed_lines",
-          "value": 30
+          "value": 18
         },
         {
           "name": "hunk.context_lines",

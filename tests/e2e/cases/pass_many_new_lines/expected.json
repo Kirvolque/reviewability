@@ -1,5 +1,5 @@
 {
-  "score": 0.56,
+  "score": 0.59,
   "passed": true,
   "violations": [],
   "recommendations": [],
@@ -12,11 +12,11 @@
     },
     {
       "name": "overall.lines_changed",
-      "value": 22
+      "value": 21
     },
     {
       "name": "overall.added_lines",
-      "value": 20
+      "value": 19
     },
     {
       "name": "overall.problematic_hunk_count",
@@ -28,7 +28,7 @@
     },
     {
       "name": "overall.scatter_factor",
-      "value": 0.98
+      "value": 0.96
     }
   ],
   "files": [
@@ -44,11 +44,11 @@
     },
     {
       "file": "src/models.py",
-      "score": 0.91,
+      "score": 0.92,
       "metrics": [
         {
           "name": "file.lines_changed",
-          "value": 9
+          "value": 8
         }
       ]
     }
@@ -83,15 +83,15 @@
     },
     {
       "file": "src/models.py",
-      "score": 0.82,
+      "score": 0.84,
       "metrics": [
         {
           "name": "hunk.lines_changed",
-          "value": 9
+          "value": 8
         },
         {
           "name": "hunk.added_lines",
-          "value": 8
+          "value": 7
         },
         {
           "name": "hunk.removed_lines",

@@ -2,14 +2,14 @@
   "score": 0.0,
   "passed": false,
   "violations": [
-    "[ERROR] Diff has 12 lines changed, exceeds limit of 1",
+    "[ERROR] Diff has 10 lines changed, exceeds limit of 1",
     "[ERROR] Overall score 0.00 is below the minimum of 0.99"
   ],
   "recommendations": [
     {
       "location": "overall",
       "metric": "overall.lines_changed",
-      "value": 12,
+      "value": 10,
       "remediation": "Reduce patch size by splitting unrelated changes into separate commits."
     },
     {
@@ -28,11 +28,11 @@
     },
     {
       "name": "overall.lines_changed",
-      "value": 12
+      "value": 10
     },
     {
       "name": "overall.added_lines",
-      "value": 8
+      "value": 6
     },
     {
       "name": "overall.problematic_hunk_count",
@@ -54,7 +54,7 @@
       "metrics": [
         {
           "name": "file.lines_changed",
-          "value": 6
+          "value": 5
         }
       ]
     },
@@ -64,7 +64,7 @@
       "metrics": [
         {
           "name": "file.lines_changed",
-          "value": 6
+          "value": 5
         }
       ]
     }
@@ -85,15 +85,15 @@
   "hunks": [
     {
       "file": "src/farewell.py",
-      "score": 0.88,
+      "score": 0.9,
       "metrics": [
         {
           "name": "hunk.lines_changed",
-          "value": 6
+          "value": 5
         },
         {
           "name": "hunk.added_lines",
-          "value": 4
+          "value": 3
         },
         {
           "name": "hunk.removed_lines",
@@ -111,15 +111,15 @@
     },
     {
       "file": "src/greeter.py",
-      "score": 0.88,
+      "score": 0.9,
       "metrics": [
         {
           "name": "hunk.lines_changed",
-          "value": 6
+          "value": 5
         },
         {
           "name": "hunk.added_lines",
-          "value": 4
+          "value": 3
         },
         {
           "name": "hunk.removed_lines",

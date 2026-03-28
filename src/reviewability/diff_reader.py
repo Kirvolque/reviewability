@@ -47,12 +47,8 @@ def _assign_hunk_types(all_hunks: list[Hunk], groups: list[HunkGroup]) -> None:
     Grouped hunks with GroupType.MOVED get HunkType.MOVE; all others in groups
     get HunkType.MIXED. Singleton hunks are classified by their line content.
     """
-    move_hunk_ids = {
-        id(h) for g in groups if g.group_type == GroupType.MOVED for h in g.hunks
-    }
-    mixed_hunk_ids = {
-        id(h) for g in groups if g.group_type != GroupType.MOVED for h in g.hunks
-    }
+    move_hunk_ids = {id(h) for g in groups if g.group_type == GroupType.MOVED for h in g.hunks}
+    mixed_hunk_ids = {id(h) for g in groups if g.group_type != GroupType.MOVED for h in g.hunks}
 
     for hunk in all_hunks:
         if id(hunk) in move_hunk_ids:

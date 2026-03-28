@@ -60,9 +60,7 @@ def test_logic_change_report():
     assert len(report.files) == 1
     assert report.files[0].subject == diff.files[0]
     assert report.files[0].metrics.metric("file.lines_changed").value == 2  # type: ignore[union-attr]
-    file_for_score = MetricResults(
-        [MetricValue("file.lines_changed", 2, MetricValueType.INTEGER)]
-    )
+    file_for_score = MetricResults([MetricValue("file.lines_changed", 2, MetricValueType.INTEGER)])
     assert report.files[0].score == scorer.file_score(file_for_score)
 
     # Check hunks

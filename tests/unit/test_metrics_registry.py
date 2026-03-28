@@ -136,5 +136,3 @@ def test_hunk_metrics_returns_new_list():
     lst1 = registry.hunk_metrics()
     lst1.clear()
     assert len(registry.hunk_metrics()) == 1
-
-

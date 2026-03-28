@@ -20,7 +20,6 @@ def test_none_problematic():
     assert result.name == "overall.problematic_hunk_count"
     assert result.value == 0
     assert result.value_type == MetricValueType.INTEGER
-    assert result.causes == []
 
 
 def test_all_problematic():

@@ -103,5 +103,3 @@ def test_rule_engine_rule_uses_score():
     violations = RuleEngine([rule]).evaluate(context)
     assert len(violations) == 1
     assert "0.3" in violations[0].message
-
-

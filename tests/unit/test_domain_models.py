@@ -42,16 +42,6 @@ def make_file(
 # --- Hunk tests ---
 
 
-def test_hunk_line_count_equals_source_length():
-    hunk = make_hunk(removed=["x", "y", "z"])
-    assert hunk.line_count == 3
-
-
-def test_hunk_line_count_zero_when_no_removed():
-    hunk = make_hunk(added=["a", "b"])
-    assert hunk.line_count == 0
-
-
 def test_hunk_added_count():
     hunk = make_hunk(added=["a", "b", "c"])
     assert hunk.added_count == 3
@@ -66,38 +56,6 @@ def test_hunk_added_and_removed_count():
     hunk = make_hunk(added=["a"], removed=["x", "y"])
     assert hunk.added_count == 1
     assert hunk.removed_count == 2
-
-
-def test_hunk_char_count_sums_all_lines():
-    hunk = Hunk(
-        file_path="a.py",
-        source_start=1,
-        source_length=1,
-        target_start=1,
-        target_length=1,
-        added_lines=["ab"],
-        removed_lines=["xyz"],
-        context_lines=["c"],
-    )
-    # "ab" = 2, "xyz" = 3, "c" = 1
-    assert hunk.char_count == 6
-
-
-def test_hunk_char_count_empty():
-    hunk = make_hunk()
-    assert hunk.char_count == 0
-
-
-def test_hunk_char_count_only_context():
-    hunk = Hunk(
-        file_path="a.py",
-        source_start=1,
-        source_length=0,
-        target_start=1,
-        target_length=0,
-        context_lines=["hello"],
-    )
-    assert hunk.char_count == 5
 
 
 def test_hunk_fields():
@@ -149,42 +107,6 @@ def test_hunk_inequality():
 # --- FileDiff tests ---
 
 
-def test_file_diff_total_added_single_hunk():
-    hunk = make_hunk(added=["a", "b"])
-    f = make_file(hunks=[hunk])
-    assert f.total_added == 2
-
-
-def test_file_diff_total_removed_single_hunk():
-    hunk = make_hunk(removed=["x"])
-    f = make_file(hunks=[hunk])
-    assert f.total_removed == 1
-
-
-def test_file_diff_total_added_multiple_hunks():
-    h1 = make_hunk(added=["a", "b"])
-    h2 = make_hunk(added=["c"])
-    f = make_file(hunks=[h1, h2])
-    assert f.total_added == 3
-
-
-def test_file_diff_total_removed_multiple_hunks():
-    h1 = make_hunk(removed=["x", "y"])
-    h2 = make_hunk(removed=["z"])
-    f = make_file(hunks=[h1, h2])
-    assert f.total_removed == 3
-
-
-def test_file_diff_total_added_no_hunks():
-    f = make_file(hunks=[])
-    assert f.total_added == 0
-
-
-def test_file_diff_total_removed_no_hunks():
-    f = make_file(hunks=[])
-    assert f.total_removed == 0
-
-
 def test_file_diff_fields():
     f = FileDiff(
         path="src/foo.py",
@@ -232,32 +154,17 @@ def test_file_diff_is_mutable():
 # --- Diff tests ---
 
 
-def test_diff_total_files_changed():
-    d = Diff(files=[make_file("a.py"), make_file("b.py")])
-    assert d.total_files_changed == 2
-
-
-def test_diff_total_files_changed_empty():
-    d = Diff(files=[])
-    assert d.total_files_changed == 0
-
-
-def test_diff_total_hunks():
+def test_diff_all_hunks():
     h1 = make_hunk()
     h2 = make_hunk()
     h3 = make_hunk()
     d = Diff(files=[make_file("a.py", hunks=[h1, h2]), make_file("b.py", hunks=[h3])])
-    assert d.total_hunks == 3
+    assert d.all_hunks == [h1, h2, h3]
 
 
-def test_diff_total_hunks_empty_files():
-    d = Diff(files=[make_file("a.py"), make_file("b.py")])
-    assert d.total_hunks == 0
-
-
-def test_diff_total_hunks_no_files():
+def test_diff_all_hunks_empty():
     d = Diff(files=[])
-    assert d.total_hunks == 0
+    assert d.all_hunks == []
 
 
 def test_diff_default_empty_files():

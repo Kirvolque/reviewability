@@ -19,8 +19,7 @@ class OverallProblematicFileCount(OverallMetric):
         self, hunks: list[Analysis], files: list[Analysis], groups: list[Analysis]
     ) -> MetricValue:
         problematic = [
-            f for f in files
-            if f.score < self._score_threshold and len(f.subject.hunks) > 1
+            f for f in files if f.score < self._score_threshold and len(f.subject.hunks) > 1
         ]
         return MetricValue(
             name=self.name,

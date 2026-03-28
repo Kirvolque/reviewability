@@ -8,26 +8,6 @@ _KNOWN_FIELDS: frozenset[str] = frozenset(f.name for f in fields(ReviewabilityCo
 
 _BUNDLED_CONFIG: Path = Path(__file__).parent / "reviewability.toml"
 
-_SECTION_PREFIX_MAP: dict[str, str] = {
-    "movement_detection": "movement_",
-    "rewrite_scoring": "rewrite_",
-}
-
-
-def _flatten_toml(data: dict) -> dict[str, object]:
-    """Convert a TOML dict (with possible subsections) to flat config field names."""
-    flat: dict[str, object] = {}
-    for key, value in data.items():
-        if isinstance(value, dict):
-            prefix = _SECTION_PREFIX_MAP.get(key, f"{key}_")
-            for subkey, subvalue in value.items():
-                field_name = f"{prefix}{subkey}"
-                if field_name in _KNOWN_FIELDS:
-                    flat[field_name] = subvalue
-        elif key in _KNOWN_FIELDS:
-            flat[key] = value
-    return flat
-
 
 def parse_config(path: Path | None = None) -> ReviewabilityConfig:
     """Parse a TOML config file and return a ReviewabilityConfig.
@@ -41,6 +21,7 @@ def parse_config(path: Path | None = None) -> ReviewabilityConfig:
     config_path = path if path is not None and path.exists() else _BUNDLED_CONFIG
 
     with open(config_path, "rb") as f:
-        values = _flatten_toml(tomllib.load(f))
+        raw = tomllib.load(f)
 
+    values = {key: value for key, value in raw.items() if key in _KNOWN_FIELDS}
     return ReviewabilityConfig(**values)

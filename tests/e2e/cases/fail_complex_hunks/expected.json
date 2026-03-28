@@ -1,20 +1,20 @@
 {
-  "score": 0.05,
+  "score": 0.09,
   "passed": false,
   "violations": [
-    "[ERROR] Overall score 0.05 is below the minimum of 0.5"
+    "[ERROR] Overall score 0.09 is below the minimum of 0.5"
   ],
   "recommendations": [
     {
       "location": "overall",
       "metric": "overall.lines_changed",
-      "value": 48,
+      "value": 46,
       "remediation": "Reduce patch size by splitting unrelated changes into separate commits."
     },
     {
       "location": "overall",
       "metric": "overall.scatter_factor",
-      "value": 0.98,
+      "value": 0.97,
       "remediation": null
     }
   ],
@@ -27,11 +27,11 @@
     },
     {
       "name": "overall.lines_changed",
-      "value": 48
+      "value": 46
     },
     {
       "name": "overall.added_lines",
-      "value": 24
+      "value": 23
     },
     {
       "name": "overall.problematic_hunk_count",
@@ -43,7 +43,7 @@
     },
     {
       "name": "overall.scatter_factor",
-      "value": 0.98
+      "value": 0.97
     }
   ],
   "files": [
@@ -59,21 +59,21 @@
     },
     {
       "file": "src/validator.py",
-      "score": 0.84,
+      "score": 0.85,
       "metrics": [
         {
           "name": "file.lines_changed",
-          "value": 16
+          "value": 15
         }
       ]
     },
     {
       "file": "src/formatter.py",
-      "score": 0.88,
+      "score": 0.89,
       "metrics": [
         {
           "name": "file.lines_changed",
-          "value": 12
+          "value": 11
         }
       ]
     }
@@ -172,15 +172,15 @@
     },
     {
       "file": "src/validator.py",
-      "score": 0.84,
+      "score": 0.86,
       "metrics": [
         {
           "name": "hunk.lines_changed",
-          "value": 8
+          "value": 7
         },
         {
           "name": "hunk.added_lines",
-          "value": 4
+          "value": 3
         },
         {
           "name": "hunk.removed_lines",
@@ -198,11 +198,11 @@
     },
     {
       "file": "src/formatter.py",
-      "score": 0.76,
+      "score": 0.78,
       "metrics": [
         {
           "name": "hunk.lines_changed",
-          "value": 12
+          "value": 11
         },
         {
           "name": "hunk.added_lines",
@@ -210,7 +210,7 @@
         },
         {
           "name": "hunk.removed_lines",
-          "value": 6
+          "value": 5
         },
         {
           "name": "hunk.context_lines",

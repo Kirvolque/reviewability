@@ -2,20 +2,20 @@
   "score": 0.0,
   "passed": false,
   "violations": [
-    "[ERROR] Diff has 62 lines changed, exceeds limit of 50",
+    "[ERROR] Diff has 51 lines changed, exceeds limit of 50",
     "[ERROR] Overall score 0.00 is below the minimum of 0.5"
   ],
   "recommendations": [
     {
       "location": "overall",
       "metric": "overall.lines_changed",
-      "value": 62,
+      "value": 51,
       "remediation": "Reduce patch size by splitting unrelated changes into separate commits."
     },
     {
       "location": "overall",
       "metric": "overall.scatter_factor",
-      "value": 0.93,
+      "value": 0.94,
       "remediation": null
     }
   ],
@@ -28,11 +28,11 @@
     },
     {
       "name": "overall.lines_changed",
-      "value": 62
+      "value": 51
     },
     {
       "name": "overall.added_lines",
-      "value": 33
+      "value": 26
     },
     {
       "name": "overall.problematic_hunk_count",
@@ -44,37 +44,37 @@
     },
     {
       "name": "overall.scatter_factor",
-      "value": 0.93
+      "value": 0.94
     }
   ],
   "files": [
     {
       "file": "services/processor.py",
-      "score": 0.36,
+      "score": 0.48,
       "metrics": [
         {
           "name": "file.lines_changed",
-          "value": 32
+          "value": 26
         }
       ]
     },
     {
       "file": "models/handler.py",
-      "score": 0.72,
+      "score": 0.76,
       "metrics": [
         {
           "name": "file.lines_changed",
-          "value": 14
+          "value": 12
         }
       ]
     },
     {
       "file": "domain/handler.py",
-      "score": 0.68,
+      "score": 0.74,
       "metrics": [
         {
           "name": "file.lines_changed",
-          "value": 16
+          "value": 13
         }
       ]
     }
@@ -106,11 +106,11 @@
   "hunks": [
     {
       "file": "services/processor.py",
-      "score": 0.7,
+      "score": 0.74,
       "metrics": [
         {
           "name": "hunk.lines_changed",
-          "value": 15
+          "value": 13
         },
         {
           "name": "hunk.added_lines",
@@ -118,7 +118,7 @@
         },
         {
           "name": "hunk.removed_lines",
-          "value": 15
+          "value": 13
         },
         {
           "name": "hunk.context_lines",
@@ -132,15 +132,15 @@
     },
     {
       "file": "services/processor.py",
-      "score": 0.66,
+      "score": 0.74,
       "metrics": [
         {
           "name": "hunk.lines_changed",
-          "value": 17
+          "value": 13
         },
         {
           "name": "hunk.added_lines",
-          "value": 17
+          "value": 13
         },
         {
           "name": "hunk.removed_lines",
@@ -158,11 +158,11 @@
     },
     {
       "file": "models/handler.py",
-      "score": 0.72,
+      "score": 0.76,
       "metrics": [
         {
           "name": "hunk.lines_changed",
-          "value": 14
+          "value": 12
         },
         {
           "name": "hunk.added_lines",
@@ -170,7 +170,7 @@
         },
         {
           "name": "hunk.removed_lines",
-          "value": 14
+          "value": 12
         },
         {
           "name": "hunk.context_lines",
@@ -184,15 +184,15 @@
     },
     {
       "file": "domain/handler.py",
-      "score": 0.68,
+      "score": 0.74,
       "metrics": [
         {
           "name": "hunk.lines_changed",
-          "value": 16
+          "value": 13
         },
         {
           "name": "hunk.added_lines",
-          "value": 16
+          "value": 13
         },
         {
           "name": "hunk.removed_lines",

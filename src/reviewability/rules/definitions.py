@@ -27,11 +27,6 @@ def hunk_rules(config: ReviewabilityConfig) -> list[Rule]:
     ]
 
 
-def file_rules(config: ReviewabilityConfig) -> list[Rule]:
-    """Return the default set of file-level rules driven by the given config."""
-    return []
-
-
 def overall_rules(config: ReviewabilityConfig) -> list[Rule]:
     """Return the default set of overall-level rules driven by the given config."""
     return _compact(

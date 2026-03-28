@@ -7,8 +7,10 @@ from reviewability.metrics.overall.problematic_file_count import OverallProblema
 def make_hunk() -> Hunk:
     return Hunk(
         file_path="a.py",
-        source_start=1, source_length=1,
-        target_start=1, target_length=1,
+        source_start=1,
+        source_length=1,
+        target_start=1,
+        target_length=1,
     )
 
 
@@ -32,7 +34,6 @@ def test_none_problematic():
     assert result.name == "overall.problematic_file_count"
     assert result.value == 0
     assert result.value_type == MetricValueType.INTEGER
-    assert result.causes == []
 
 
 def test_some_problematic():

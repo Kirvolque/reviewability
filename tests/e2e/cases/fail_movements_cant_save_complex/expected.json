@@ -8,13 +8,13 @@
     {
       "location": "overall",
       "metric": "overall.lines_changed",
-      "value": 112,
+      "value": 96,
       "remediation": "Reduce patch size by splitting unrelated changes into separate commits."
     },
     {
       "location": "overall",
       "metric": "overall.scatter_factor",
-      "value": 0.93,
+      "value": 0.96,
       "remediation": null
     }
   ],
@@ -27,11 +27,11 @@
     },
     {
       "name": "overall.lines_changed",
-      "value": 112
+      "value": 96
     },
     {
       "name": "overall.added_lines",
-      "value": 58
+      "value": 48
     },
     {
       "name": "overall.problematic_hunk_count",
@@ -43,47 +43,47 @@
     },
     {
       "name": "overall.scatter_factor",
-      "value": 0.93
+      "value": 0.96
     }
   ],
   "files": [
     {
       "file": "models/service_a.py",
-      "score": 0.84,
+      "score": 0.87,
       "metrics": [
         {
           "name": "file.lines_changed",
-          "value": 18
+          "value": 15
         }
       ]
     },
     {
       "file": "domain/service_a.py",
-      "score": 0.83,
+      "score": 0.87,
       "metrics": [
         {
           "name": "file.lines_changed",
-          "value": 20
+          "value": 15
         }
       ]
     },
     {
       "file": "models/service_b.py",
-      "score": 0.84,
+      "score": 0.87,
       "metrics": [
         {
           "name": "file.lines_changed",
-          "value": 18
+          "value": 15
         }
       ]
     },
     {
       "file": "domain/service_b.py",
-      "score": 0.83,
+      "score": 0.87,
       "metrics": [
         {
           "name": "file.lines_changed",
-          "value": 20
+          "value": 15
         }
       ]
     },
@@ -208,11 +208,11 @@
   "hunks": [
     {
       "file": "models/service_a.py",
-      "score": 0.64,
+      "score": 0.7,
       "metrics": [
         {
           "name": "hunk.lines_changed",
-          "value": 18
+          "value": 15
         },
         {
           "name": "hunk.added_lines",
@@ -220,7 +220,7 @@
         },
         {
           "name": "hunk.removed_lines",
-          "value": 18
+          "value": 15
         },
         {
           "name": "hunk.context_lines",
@@ -234,15 +234,15 @@
     },
     {
       "file": "domain/service_a.py",
-      "score": 0.6,
+      "score": 0.7,
       "metrics": [
         {
           "name": "hunk.lines_changed",
-          "value": 20
+          "value": 15
         },
         {
           "name": "hunk.added_lines",
-          "value": 20
+          "value": 15
         },
         {
           "name": "hunk.removed_lines",
@@ -260,11 +260,11 @@
     },
     {
       "file": "models/service_b.py",
-      "score": 0.64,
+      "score": 0.7,
       "metrics": [
         {
           "name": "hunk.lines_changed",
-          "value": 18
+          "value": 15
         },
         {
           "name": "hunk.added_lines",
@@ -272,7 +272,7 @@
         },
         {
           "name": "hunk.removed_lines",
-          "value": 18
+          "value": 15
         },
         {
           "name": "hunk.context_lines",
@@ -286,15 +286,15 @@
     },
     {
       "file": "domain/service_b.py",
-      "score": 0.6,
+      "score": 0.7,
       "metrics": [
         {
           "name": "hunk.lines_changed",
-          "value": 20
+          "value": 15
         },
         {
           "name": "hunk.added_lines",
-          "value": 20
+          "value": 15
         },
         {
           "name": "hunk.removed_lines",

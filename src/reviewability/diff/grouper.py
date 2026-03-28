@@ -118,9 +118,7 @@ class HunkGrouper:
             parent[rx] = ry
         return parent
 
-    def _assign_group_ids(
-        self, parent: dict[int, int], size: int
-    ) -> dict[int, int]:
+    def _assign_group_ids(self, parent: dict[int, int], size: int) -> dict[int, int]:
         """Assign unique group_id to each root."""
         root_to_group: dict[int, int] = {}
         next_group_id = 0

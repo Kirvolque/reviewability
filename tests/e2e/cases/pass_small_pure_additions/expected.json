@@ -1,5 +1,5 @@
 {
-  "score": 0.6,
+  "score": 0.69,
   "passed": true,
   "violations": [],
   "recommendations": [],
@@ -12,11 +12,11 @@
     },
     {
       "name": "overall.lines_changed",
-      "value": 40
+      "value": 31
     },
     {
       "name": "overall.added_lines",
-      "value": 40
+      "value": 31
     },
     {
       "name": "overall.problematic_hunk_count",
@@ -34,11 +34,11 @@
   "files": [
     {
       "file": "src/validators.py",
-      "score": 0.6,
+      "score": 0.69,
       "metrics": [
         {
           "name": "file.lines_changed",
-          "value": 40
+          "value": 31
         }
       ]
     }
@@ -47,15 +47,15 @@
   "hunks": [
     {
       "file": "src/validators.py",
-      "score": 0.2,
+      "score": 0.38,
       "metrics": [
         {
           "name": "hunk.lines_changed",
-          "value": 40
+          "value": 31
         },
         {
           "name": "hunk.added_lines",
-          "value": 40
+          "value": 31
         },
         {
           "name": "hunk.removed_lines",

@@ -1,14 +1,14 @@
 {
-  "score": 0.2,
+  "score": 0.52,
   "passed": false,
   "violations": [
-    "[ERROR] Overall score 0.20 is below the minimum of 0.5"
+    "[ERROR] Overall score 0.52 is below the minimum of 0.6"
   ],
   "recommendations": [
     {
       "location": "overall",
       "metric": "overall.lines_changed",
-      "value": 40,
+      "value": 24,
       "remediation": "Reduce patch size by splitting unrelated changes into separate commits."
     },
     {
@@ -27,11 +27,11 @@
     },
     {
       "name": "overall.lines_changed",
-      "value": 40
+      "value": 24
     },
     {
       "name": "overall.added_lines",
-      "value": 40
+      "value": 24
     },
     {
       "name": "overall.problematic_hunk_count",
@@ -49,81 +49,81 @@
   "files": [
     {
       "file": "services/auth.py",
-      "score": 0.95,
+      "score": 0.97,
       "metrics": [
         {
           "name": "file.lines_changed",
-          "value": 5
+          "value": 3
         }
       ]
     },
     {
       "file": "services/billing.py",
-      "score": 0.95,
+      "score": 0.97,
       "metrics": [
         {
           "name": "file.lines_changed",
-          "value": 5
+          "value": 3
         }
       ]
     },
     {
       "file": "services/cache.py",
-      "score": 0.95,
+      "score": 0.97,
       "metrics": [
         {
           "name": "file.lines_changed",
-          "value": 5
+          "value": 3
         }
       ]
     },
     {
       "file": "services/email.py",
-      "score": 0.95,
+      "score": 0.97,
       "metrics": [
         {
           "name": "file.lines_changed",
-          "value": 5
+          "value": 3
         }
       ]
     },
     {
       "file": "services/logging.py",
-      "score": 0.95,
+      "score": 0.97,
       "metrics": [
         {
           "name": "file.lines_changed",
-          "value": 5
+          "value": 3
         }
       ]
     },
     {
       "file": "services/metrics.py",
-      "score": 0.95,
+      "score": 0.97,
       "metrics": [
         {
           "name": "file.lines_changed",
-          "value": 5
+          "value": 3
         }
       ]
     },
     {
       "file": "services/queue.py",
-      "score": 0.95,
+      "score": 0.97,
       "metrics": [
         {
           "name": "file.lines_changed",
-          "value": 5
+          "value": 3
         }
       ]
     },
     {
       "file": "services/search.py",
-      "score": 0.95,
+      "score": 0.97,
       "metrics": [
         {
           "name": "file.lines_changed",
-          "value": 5
+          "value": 3
         }
       ]
     }
@@ -132,15 +132,15 @@
   "hunks": [
     {
       "file": "services/auth.py",
-      "score": 0.9,
+      "score": 0.94,
       "metrics": [
         {
           "name": "hunk.lines_changed",
-          "value": 5
+          "value": 3
         },
         {
           "name": "hunk.added_lines",
-          "value": 5
+          "value": 3
         },
         {
           "name": "hunk.removed_lines",
@@ -158,15 +158,15 @@
     },
     {
       "file": "services/billing.py",
-      "score": 0.9,
+      "score": 0.94,
       "metrics": [
         {
           "name": "hunk.lines_changed",
-          "value": 5
+          "value": 3
         },
         {
           "name": "hunk.added_lines",
-          "value": 5
+          "value": 3
         },
         {
           "name": "hunk.removed_lines",
@@ -184,15 +184,15 @@
     },
     {
       "file": "services/cache.py",
-      "score": 0.9,
+      "score": 0.94,
       "metrics": [
         {
           "name": "hunk.lines_changed",
-          "value": 5
+          "value": 3
         },
         {
           "name": "hunk.added_lines",
-          "value": 5
+          "value": 3
         },
         {
           "name": "hunk.removed_lines",
@@ -210,15 +210,15 @@
     },
     {
       "file": "services/email.py",
-      "score": 0.9,
+      "score": 0.94,
       "metrics": [
         {
           "name": "hunk.lines_changed",
-          "value": 5
+          "value": 3
         },
         {
           "name": "hunk.added_lines",
-          "value": 5
+          "value": 3
         },
         {
           "name": "hunk.removed_lines",
@@ -236,15 +236,15 @@
     },
     {
       "file": "services/logging.py",
-      "score": 0.9,
+      "score": 0.94,
       "metrics": [
         {
           "name": "hunk.lines_changed",
-          "value": 5
+          "value": 3
         },
         {
           "name": "hunk.added_lines",
-          "value": 5
+          "value": 3
         },
         {
           "name": "hunk.removed_lines",
@@ -262,15 +262,15 @@
     },
     {
       "file": "services/metrics.py",
-      "score": 0.9,
+      "score": 0.94,
       "metrics": [
         {
           "name": "hunk.lines_changed",
-          "value": 5
+          "value": 3
         },
         {
           "name": "hunk.added_lines",
-          "value": 5
+          "value": 3
         },
         {
           "name": "hunk.removed_lines",
@@ -288,15 +288,15 @@
     },
     {
       "file": "services/queue.py",
-      "score": 0.9,
+      "score": 0.94,
       "metrics": [
         {
           "name": "hunk.lines_changed",
-          "value": 5
+          "value": 3
         },
         {
           "name": "hunk.added_lines",
-          "value": 5
+          "value": 3
         },
         {
           "name": "hunk.removed_lines",
@@ -314,15 +314,15 @@
     },
     {
       "file": "services/search.py",
-      "score": 0.9,
+      "score": 0.94,
       "metrics": [
         {
           "name": "hunk.lines_changed",
-          "value": 5
+          "value": 3
         },
         {
           "name": "hunk.added_lines",
-          "value": 5
+          "value": 3
         },
         {
           "name": "hunk.removed_lines",

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from enum import Enum
 from typing import Any, Iterator
 
@@ -11,21 +11,19 @@ class MetricValueType(Enum):
     INTEGER = "integer"
     FLOAT = "float"
     RATIO = "ratio"  # float in range [0.0, 1.0]
-    BOOLEAN = "boolean"
 
 
 @dataclass(frozen=True)
 class MetricValue:
-    """A single computed metric result: name, value, type, and optional causes.
+    """A single computed metric result: name, value, type, and optional remediation hint.
 
-    Float and ratio values are automatically rounded to 2 decimal places at construction.
+    Ratio values are automatically rounded to 2 decimal places at construction.
     """
 
     name: str
     value: Any
     value_type: MetricValueType
     remediation: str | None = None
-    causes: list[MetricValue] = field(default_factory=list)
 
     def __post_init__(self) -> None:
         if self.value_type in (MetricValueType.FLOAT, MetricValueType.RATIO) and isinstance(
@@ -46,10 +44,6 @@ class MetricResults:
     def metric(self, name: str) -> MetricValue | None:
         """Return the MetricValue for the given metric name, or None if not present."""
         return self._by_name.get(name)
-
-    def all(self) -> list[MetricValue]:
-        """Return all metric values as a list."""
-        return list(self._by_name.values())
 
     def __iter__(self) -> Iterator[MetricValue]:
         return iter(self._by_name.values())

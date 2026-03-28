@@ -1,9 +1,7 @@
 {
-  "score": 0.3,
+  "score": 0.51,
   "passed": true,
-  "violations": [
-    "[WARNING] Hunk has 70 lines, exceeds limit of 50"
-  ],
+  "violations": [],
   "recommendations": [],
   "files_changed": 1,
   "hunks_changed": 1,
@@ -14,11 +12,11 @@
     },
     {
       "name": "overall.lines_changed",
-      "value": 70
+      "value": 49
     },
     {
       "name": "overall.added_lines",
-      "value": 70
+      "value": 49
     },
     {
       "name": "overall.problematic_hunk_count",
@@ -36,11 +34,11 @@
   "files": [
     {
       "file": "src/formatters.py",
-      "score": 0.3,
+      "score": 0.51,
       "metrics": [
         {
           "name": "file.lines_changed",
-          "value": 70
+          "value": 49
         }
       ]
     }
@@ -49,15 +47,15 @@
   "hunks": [
     {
       "file": "src/formatters.py",
-      "score": 0.0,
+      "score": 0.02,
       "metrics": [
         {
           "name": "hunk.lines_changed",
-          "value": 70
+          "value": 49
         },
         {
           "name": "hunk.added_lines",
-          "value": 70
+          "value": 49
         },
         {
           "name": "hunk.removed_lines",
