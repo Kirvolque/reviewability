@@ -30,21 +30,24 @@ linters, Reviewability does not analyze the code — only how the changes are st
 When a diff scores low, the typical remedies are splitting it into focused pull
 requests or deferring non-essential changes.
 
-Reviewability computes metrics at the level of individual hunks, files, and the whole diff,
-feeding into **Reviewability Scores** (0.0 = hardest, 1.0 = easiest) with
-configurable thresholds for what counts as problematic.
+Reviewability computes metrics at the level of individual hunks, groups of related hunks,
+files, and the whole diff, feeding into **Reviewability Scores** (0.0 = hardest, 1.0 = easiest)
+with configurable thresholds for what counts as problematic.
 
 ## Key Concepts
 
 - **Hunk** — a contiguous block of changes within a single file (the smallest unit of analysis)
-- **Metric** — a calculated value attached to a hunk, a file, or the whole diff
-- **Score** — a float [0.0, 1.0] representing reviewability at hunk, file, or diff level
+- **HunkType** — classification of a hunk: `pure_addition`, `pure_deletion`, `move`, or `mixed`
+- **Group** — two or more hunks that are likely connected (e.g. a code move or cross-hunk rewrite), detected by move-aware similarity
+- **GroupType** — `moved` (high similarity, essentially relocated) or `moved_modified` (relocated and changed)
+- **Metric** — a calculated value attached to a hunk, a group, a file, or the whole diff
+- **Score** — a float [0.0, 1.0] representing reviewability at hunk, group, file, or diff level
 
 ## Extensibility
 
 The metric system is designed to be extended:
 
-- **Add a metric** — subclass `HunkMetric`, `FileMetric`, or `OverallMetric`, implement `calculate()`, register via `registry.add()`
+- **Add a metric** — subclass `HunkMetric`, `GroupMetric`, `FileMetric`, or `OverallMetric`, implement `calculate()`, register via `registry.add()`
 - **Adjust scoring** — provide a custom `ReviewabilityScorer` implementation
 - **Adjust thresholds** — edit the [default config](src/reviewability/config/reviewability.toml) or provide your own `reviewability.toml`
 
@@ -95,34 +98,35 @@ file_score_threshold = 0.5
 max_diff_lines = 500
 max_hunk_lines = 50
 
-# Gate: fail if overall score drops below this (provisional, based on calibration)
+# Gate: fail if overall score drops below this
 min_overall_score = 0.7
 
 # Optional limits (remove a line to disable that check)
 max_problematic_hunks = 3
 max_problematic_files = 2
-max_file_hunk_count = 5
 max_files_changed = 10
 max_added_lines = 400
-
-[movement_detection]
-hunk_min_lines = 8
-file_min_lines = 15
-similarity_threshold = 0.95
 ```
 
-## Movement Detection
+## Hunk Groups
 
-Moved code is easy to review — the logic hasn't changed, only the location. The tool detects
-when a block of code is deleted from one place and inserted elsewhere (accounting for
-reindentation and package/import changes), and treats those hunks and files as relocations.
+When two hunks are likely connected — for example, code deleted from one location and
+inserted elsewhere — they are paired into a **group**. Groups are detected using
+move-aware similarity: each deleted line is matched to the most similar added line across
+hunk pairs, normalized by the larger side.
 
-Relocations receive a perfect score and are excluded from the size calculations
-that drive the overall score. A diff that is large only because of relocations is not penalized.
+Groups are classified by their similarity score:
+
+- **`moved`** — similarity ≥ 0.9: content is essentially identical, just relocated
+- **`moved_modified`** — similarity 0.3–0.9: content was moved and changed
+
+Hunks that pair with no other hunk remain as singletons and are not included in any group.
+Import/package declarations and indentation differences are ignored during similarity
+comparison, so pure reindentation or import reordering does not suppress a move detection.
 
 ## Metrics
 
-Metrics are calculated at three levels: hunk, file, and overall diff.
+Metrics are calculated at four levels: hunk, group, file, and overall diff.
 
 ### Hunk-level
 
@@ -133,9 +137,12 @@ Metrics are calculated at three levels: hunk, file, and overall diff.
 | `hunk.removed_lines` | Lines removed in a hunk |
 | `hunk.context_lines` | Unchanged context lines surrounding the change |
 | `hunk.change_balance` | Ratio of added lines to total changed lines (0.0 = pure deletion, 1.0 = pure addition) |
-| `hunk.is_likely_moved` | Whether this hunk is a movement of code from another location |
-| `hunk.moved_rewrite_lines` | Lines in a hunk that were both moved and rewritten |
-| `hunk.in_place_rewrite_lines` | Lines in a hunk that were rewritten in place (not moved) |
+
+### Group-level
+
+| Metric | Description |
+|--------|-------------|
+| `group.edit_complexity` | Edit complexity score for a connected hunk group — combines size, content similarity, and intra-file span. Higher = easier to review. |
 
 ### File-level
 
@@ -146,9 +153,6 @@ Metrics are calculated at three levels: hunk, file, and overall diff.
 | `file.removed_lines` | Total lines removed in a file |
 | `file.hunk_count` | Number of separate change regions in a file |
 | `file.max_hunk_lines` | Lines changed in the largest single hunk within a file |
-| `file.moved_lines` | Total lines in hunks identified as code movements |
-| `file.moved_rewrite_lines` | Lines that were both moved and rewritten in this file |
-| `file.in_place_rewrite_lines` | Lines that were rewritten in place (not moved) in this file |
 
 ### Overall-level
 
@@ -158,30 +162,26 @@ Metrics are calculated at three levels: hunk, file, and overall diff.
 | `overall.added_lines` | Total lines added across the entire diff |
 | `overall.removed_lines` | Total lines removed across the entire diff |
 | `overall.files_changed` | Number of files changed |
-| `overall.moved_lines` | Total lines in hunks identified as code movements |
-| `overall.moved_rewrite_lines` | Total lines that were both moved and rewritten |
-| `overall.in_place_rewrite_lines` | Total lines that were rewritten in place (not moved) |
+| `overall.largest_file_ratio` | Fraction of total diff lines concentrated in the single most-changed file |
 | `overall.change_entropy` | Shannon entropy of the distribution of changes across files |
 | `overall.scatter_factor` | Normalized entropy of how changes are distributed across files (0.0 = all in one file, 1.0 = evenly spread) |
 | `overall.churn_complexity` | Average interleaving complexity across all hunks (0.0 = directional changes, 1.0 = fully interleaved) |
+| `overall.edit_complexity` | Weighted mean of group-level edit complexity scores |
 | `overall.problematic_hunk_count` | Hunks with a score below the configured threshold |
-| `overall.problematic_file_count` | Files with a score below the configured threshold |
+| `overall.problematic_file_count` | Files with more than one hunk and a score below the configured threshold |
 
 ## Overall Scoring
 
 ```
-score = max(0, 1 − effective_size_ratio × (1 + scatter_factor))
+score = max(0, 1 − size_ratio × (1 + scatter_factor))
 
-effective_size_ratio = (lines_changed − moved_lines) / max_diff_lines   [capped at 1.0]
+size_ratio = lines_changed / max_diff_lines   [capped at 1.0]
 ```
 
-The score is driven by **effective diff size** and **scatter**. Moved lines are excluded
-from the size count — relocations are easy to review and should not penalize the score.
-
-`scatter_factor` measures how evenly changes are spread across files (normalized entropy,
-0.0 = all in one file, 1.0 = evenly spread). It amplifies the size penalty: a large diff
-that touches many files evenly scores worse than an equally large diff concentrated in
-a few files.
+The score is driven by **diff size** and **scatter**. `scatter_factor` measures how evenly
+changes are spread across files (normalized entropy, 0.0 = all in one file, 1.0 = evenly
+spread). It amplifies the size penalty: a large diff that touches many files evenly scores
+worse than an equally large diff concentrated in a few files.
 
 A large but focused diff (e.g. a bulk rename in one file) or a scattered but small diff
 each score better than a diff that is both large *and* scattered.

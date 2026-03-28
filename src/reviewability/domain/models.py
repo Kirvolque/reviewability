@@ -3,6 +3,15 @@ from dataclasses import dataclass, field
 from enum import Enum
 
 
+class HunkType(str, Enum):
+    """Classification for an individual hunk based on its content and group membership."""
+
+    PURE_ADDITION = "pure_addition"
+    PURE_DELETION = "pure_deletion"
+    MOVE = "move"
+    MIXED = "mixed"
+
+
 class GroupType(str, Enum):
     """Classification for a hunk group based on move-aware diff similarity."""
 
@@ -27,6 +36,7 @@ class Hunk(DiffNode):
     added_lines: list[str] = field(default_factory=list)
     removed_lines: list[str] = field(default_factory=list)
     context_lines: list[str] = field(default_factory=list)
+    hunk_type: HunkType | None = None
 
     @property
     def line_count(self) -> int:
@@ -45,15 +55,6 @@ class Hunk(DiffNode):
     def removed_count(self) -> int:
         return len(self.removed_lines)
 
-    @property
-    def is_pure_deletion(self) -> bool:
-        """Check if hunk is pure deletion (only removed lines, no added lines)."""
-        return self.removed_count > 0 and self.added_count == 0
-
-    @property
-    def is_pure_addition(self) -> bool:
-        """Check if hunk is pure addition (only added lines, no removed lines)."""
-        return self.added_count > 0 and self.removed_count == 0
 
 
 @dataclass
@@ -80,7 +81,7 @@ class HunkGroup(DiffNode):
     """A logical group of two or more related hunks identified by the HunkGrouper.
 
     Hunks in the same group are likely connected (e.g. a code move or cross-hunk
-    rewrite). Ungrouped hunks are not represented here; see ``Diff.singleton_hunks``.
+    rewrite). Ungrouped hunks are not included in any group.
     """
 
     group_id: int | None
@@ -95,7 +96,6 @@ class Diff:
 
     files: list[FileDiff] = field(default_factory=list)
     groups: list[HunkGroup] = field(default_factory=list)
-    singleton_hunks: list[Hunk] = field(default_factory=list)
 
     @property
     def all_hunks(self) -> list[Hunk]:

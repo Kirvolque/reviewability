@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from reviewability.diff_reader import parse_diff_text
-from reviewability.domain.models import FileDiff, Hunk
+from reviewability.domain.models import FileDiff, Hunk, HunkType
 
 FIXTURES = Path(__file__).parent.parent / "fixtures"
 
@@ -47,6 +47,7 @@ def test_logic_change():
                             "def greet(name: str) -> str:\n",
                             '    return f"Hello, {name}!"\n',
                         ],
+                        hunk_type=HunkType.PURE_ADDITION,
                     )
                 ],
             )
@@ -76,6 +77,7 @@ def test_tangled_commit():
                         ],
                         removed_lines=[],
                         context_lines=[],
+                        hunk_type=HunkType.MIXED,
                     )
                 ],
             ),
@@ -97,6 +99,7 @@ def test_tangled_commit():
                             '    return f"Hi, {name}!"\n',
                         ],
                         context_lines=[],
+                        hunk_type=HunkType.MIXED,
                     )
                 ],
             ),
@@ -132,6 +135,7 @@ def test_multi_file_change():
                             "    if not name:\n",
                             '        raise ValueError("name required")\n',
                         ],
+                        hunk_type=HunkType.MIXED,
                     )
                 ],
             ),
@@ -161,6 +165,7 @@ def test_multi_file_change():
                             "    if not name:\n",
                             '        raise ValueError("name must not be empty")\n',
                         ],
+                        hunk_type=HunkType.MIXED,
                     )
                 ],
             ),
