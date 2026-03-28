@@ -2,13 +2,7 @@ from reviewability.config.models import ReviewabilityConfig
 from reviewability.domain.models import Diff
 from reviewability.domain.report import AnalysisReport
 from reviewability.metrics.engine import MetricEngine
-from reviewability.metrics.file import (
-    FileAddedLines,
-    FileHunkCount,
-    FileLinesChanged,
-    FileMaxHunkLines,
-    FileRemovedLines,
-)
+from reviewability.metrics.file import FileLinesChanged
 from reviewability.metrics.group import GroupEditComplexity
 from reviewability.metrics.hunk import (
     HunkAddedLines,
@@ -19,15 +13,10 @@ from reviewability.metrics.hunk import (
 )
 from reviewability.metrics.overall import (
     OverallAddedLines,
-    OverallChangeEntropy,
-    OverallChurnComplexity,
-    OverallEditComplexity,
     OverallFilesChanged,
-    OverallLargestFileRatio,
     OverallLinesChanged,
     OverallProblematicFileCount,
     OverallProblematicHunkCount,
-    OverallRemovedLines,
     OverallScatterFactor,
 )
 from reviewability.metrics.registry import MetricRegistry
@@ -84,21 +73,12 @@ def create_analyzer(config: ReviewabilityConfig) -> Analyzer:
         HunkRemovedLines(),
         HunkContextLines(),
         HunkChangeBalance(),
-        FileHunkCount(),
         FileLinesChanged(),
-        FileAddedLines(),
-        FileRemovedLines(),
-        FileMaxHunkLines(),
         OverallFilesChanged(),
         OverallLinesChanged(),
         OverallAddedLines(),
-        OverallRemovedLines(),
         OverallProblematicHunkCount(config.hunk_score_threshold),
         OverallProblematicFileCount(config.file_score_threshold),
-        OverallChangeEntropy(),
-        OverallLargestFileRatio(),
-        OverallChurnComplexity(),
-        OverallEditComplexity(),
         OverallScatterFactor(),
         GroupEditComplexity(),
     ]:

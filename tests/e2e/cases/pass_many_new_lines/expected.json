@@ -19,32 +19,12 @@
       "value": 20
     },
     {
-      "name": "overall.removed_lines",
-      "value": 2
-    },
-    {
       "name": "overall.problematic_hunk_count",
       "value": 0
     },
     {
       "name": "overall.problematic_file_count",
       "value": 0
-    },
-    {
-      "name": "overall.change_entropy",
-      "value": 0.98
-    },
-    {
-      "name": "overall.largest_file_ratio",
-      "value": 0.59
-    },
-    {
-      "name": "overall.churn_complexity",
-      "value": 0.19
-    },
-    {
-      "name": "overall.edit_complexity",
-      "value": 1.0
     },
     {
       "name": "overall.scatter_factor",
@@ -57,23 +37,7 @@
       "score": 0.87,
       "metrics": [
         {
-          "name": "file.hunk_count",
-          "value": 1
-        },
-        {
           "name": "file.lines_changed",
-          "value": 13
-        },
-        {
-          "name": "file.added_lines",
-          "value": 12
-        },
-        {
-          "name": "file.removed_lines",
-          "value": 1
-        },
-        {
-          "name": "file.max_hunk_lines",
           "value": 13
         }
       ]
@@ -83,23 +47,7 @@
       "score": 0.91,
       "metrics": [
         {
-          "name": "file.hunk_count",
-          "value": 1
-        },
-        {
           "name": "file.lines_changed",
-          "value": 9
-        },
-        {
-          "name": "file.added_lines",
-          "value": 8
-        },
-        {
-          "name": "file.removed_lines",
-          "value": 1
-        },
-        {
-          "name": "file.max_hunk_lines",
           "value": 9
         }
       ]

@@ -34,32 +34,12 @@
       "value": 58
     },
     {
-      "name": "overall.removed_lines",
-      "value": 54
-    },
-    {
       "name": "overall.problematic_hunk_count",
       "value": 0
     },
     {
       "name": "overall.problematic_file_count",
       "value": 0
-    },
-    {
-      "name": "overall.change_entropy",
-      "value": 3.09
-    },
-    {
-      "name": "overall.largest_file_ratio",
-      "value": 0.18
-    },
-    {
-      "name": "overall.churn_complexity",
-      "value": 0.6
-    },
-    {
-      "name": "overall.edit_complexity",
-      "value": 0.84
     },
     {
       "name": "overall.scatter_factor",
@@ -72,23 +52,7 @@
       "score": 0.84,
       "metrics": [
         {
-          "name": "file.hunk_count",
-          "value": 1
-        },
-        {
           "name": "file.lines_changed",
-          "value": 18
-        },
-        {
-          "name": "file.added_lines",
-          "value": 0
-        },
-        {
-          "name": "file.removed_lines",
-          "value": 18
-        },
-        {
-          "name": "file.max_hunk_lines",
           "value": 18
         }
       ]
@@ -98,23 +62,7 @@
       "score": 0.83,
       "metrics": [
         {
-          "name": "file.hunk_count",
-          "value": 1
-        },
-        {
           "name": "file.lines_changed",
-          "value": 20
-        },
-        {
-          "name": "file.added_lines",
-          "value": 20
-        },
-        {
-          "name": "file.removed_lines",
-          "value": 0
-        },
-        {
-          "name": "file.max_hunk_lines",
           "value": 20
         }
       ]
@@ -124,23 +72,7 @@
       "score": 0.84,
       "metrics": [
         {
-          "name": "file.hunk_count",
-          "value": 1
-        },
-        {
           "name": "file.lines_changed",
-          "value": 18
-        },
-        {
-          "name": "file.added_lines",
-          "value": 0
-        },
-        {
-          "name": "file.removed_lines",
-          "value": 18
-        },
-        {
-          "name": "file.max_hunk_lines",
           "value": 18
         }
       ]
@@ -150,23 +82,7 @@
       "score": 0.83,
       "metrics": [
         {
-          "name": "file.hunk_count",
-          "value": 1
-        },
-        {
           "name": "file.lines_changed",
-          "value": 20
-        },
-        {
-          "name": "file.added_lines",
-          "value": 20
-        },
-        {
-          "name": "file.removed_lines",
-          "value": 0
-        },
-        {
-          "name": "file.max_hunk_lines",
           "value": 20
         }
       ]
@@ -176,23 +92,7 @@
       "score": 0.95,
       "metrics": [
         {
-          "name": "file.hunk_count",
-          "value": 1
-        },
-        {
           "name": "file.lines_changed",
-          "value": 6
-        },
-        {
-          "name": "file.added_lines",
-          "value": 3
-        },
-        {
-          "name": "file.removed_lines",
-          "value": 3
-        },
-        {
-          "name": "file.max_hunk_lines",
           "value": 6
         }
       ]
@@ -202,23 +102,7 @@
       "score": 0.95,
       "metrics": [
         {
-          "name": "file.hunk_count",
-          "value": 1
-        },
-        {
           "name": "file.lines_changed",
-          "value": 6
-        },
-        {
-          "name": "file.added_lines",
-          "value": 3
-        },
-        {
-          "name": "file.removed_lines",
-          "value": 3
-        },
-        {
-          "name": "file.max_hunk_lines",
           "value": 6
         }
       ]
@@ -228,23 +112,7 @@
       "score": 0.95,
       "metrics": [
         {
-          "name": "file.hunk_count",
-          "value": 1
-        },
-        {
           "name": "file.lines_changed",
-          "value": 6
-        },
-        {
-          "name": "file.added_lines",
-          "value": 3
-        },
-        {
-          "name": "file.removed_lines",
-          "value": 3
-        },
-        {
-          "name": "file.max_hunk_lines",
           "value": 6
         }
       ]
@@ -254,23 +122,7 @@
       "score": 0.95,
       "metrics": [
         {
-          "name": "file.hunk_count",
-          "value": 1
-        },
-        {
           "name": "file.lines_changed",
-          "value": 6
-        },
-        {
-          "name": "file.added_lines",
-          "value": 3
-        },
-        {
-          "name": "file.removed_lines",
-          "value": 3
-        },
-        {
-          "name": "file.max_hunk_lines",
           "value": 6
         }
       ]
@@ -280,23 +132,7 @@
       "score": 0.95,
       "metrics": [
         {
-          "name": "file.hunk_count",
-          "value": 1
-        },
-        {
           "name": "file.lines_changed",
-          "value": 6
-        },
-        {
-          "name": "file.added_lines",
-          "value": 3
-        },
-        {
-          "name": "file.removed_lines",
-          "value": 3
-        },
-        {
-          "name": "file.max_hunk_lines",
           "value": 6
         }
       ]
@@ -306,23 +142,7 @@
       "score": 0.95,
       "metrics": [
         {
-          "name": "file.hunk_count",
-          "value": 1
-        },
-        {
           "name": "file.lines_changed",
-          "value": 6
-        },
-        {
-          "name": "file.added_lines",
-          "value": 3
-        },
-        {
-          "name": "file.removed_lines",
-          "value": 3
-        },
-        {
-          "name": "file.max_hunk_lines",
           "value": 6
         }
       ]

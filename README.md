@@ -149,10 +149,6 @@ Metrics are calculated at four levels: hunk, group, file, and overall diff.
 | Metric | Description |
 |--------|-------------|
 | `file.lines_changed` | Total lines added and removed across all hunks in a file |
-| `file.added_lines` | Total lines added in a file |
-| `file.removed_lines` | Total lines removed in a file |
-| `file.hunk_count` | Number of separate change regions in a file |
-| `file.max_hunk_lines` | Lines changed in the largest single hunk within a file |
 
 ### Overall-level
 
@@ -160,13 +156,8 @@ Metrics are calculated at four levels: hunk, group, file, and overall diff.
 |--------|-------------|
 | `overall.lines_changed` | Total lines changed across the entire diff |
 | `overall.added_lines` | Total lines added across the entire diff |
-| `overall.removed_lines` | Total lines removed across the entire diff |
 | `overall.files_changed` | Number of files changed |
-| `overall.largest_file_ratio` | Fraction of total diff lines concentrated in the single most-changed file |
-| `overall.change_entropy` | Shannon entropy of the distribution of changes across files |
 | `overall.scatter_factor` | Normalized entropy of how changes are distributed across files (0.0 = all in one file, 1.0 = evenly spread) |
-| `overall.churn_complexity` | Average interleaving complexity across all hunks (0.0 = directional changes, 1.0 = fully interleaved) |
-| `overall.edit_complexity` | Weighted mean of group-level edit complexity scores |
 | `overall.problematic_hunk_count` | Hunks with a score below the configured threshold |
 | `overall.problematic_file_count` | Files with more than one hunk and a score below the configured threshold |
 

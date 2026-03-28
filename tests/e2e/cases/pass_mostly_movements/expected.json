@@ -19,32 +19,12 @@
       "value": 68
     },
     {
-      "name": "overall.removed_lines",
-      "value": 63
-    },
-    {
       "name": "overall.problematic_hunk_count",
       "value": 1
     },
     {
       "name": "overall.problematic_file_count",
       "value": 0
-    },
-    {
-      "name": "overall.change_entropy",
-      "value": 2.69
-    },
-    {
-      "name": "overall.largest_file_ratio",
-      "value": 0.21
-    },
-    {
-      "name": "overall.churn_complexity",
-      "value": 0.13
-    },
-    {
-      "name": "overall.edit_complexity",
-      "value": 0.97
     },
     {
       "name": "overall.scatter_factor",
@@ -57,23 +37,7 @@
       "score": 0.96,
       "metrics": [
         {
-          "name": "file.hunk_count",
-          "value": 1
-        },
-        {
           "name": "file.lines_changed",
-          "value": 23
-        },
-        {
-          "name": "file.added_lines",
-          "value": 0
-        },
-        {
-          "name": "file.removed_lines",
-          "value": 23
-        },
-        {
-          "name": "file.max_hunk_lines",
           "value": 23
         }
       ]
@@ -83,23 +47,7 @@
       "score": 0.96,
       "metrics": [
         {
-          "name": "file.hunk_count",
-          "value": 1
-        },
-        {
           "name": "file.lines_changed",
-          "value": 25
-        },
-        {
-          "name": "file.added_lines",
-          "value": 25
-        },
-        {
-          "name": "file.removed_lines",
-          "value": 0
-        },
-        {
-          "name": "file.max_hunk_lines",
           "value": 25
         }
       ]
@@ -109,23 +57,7 @@
       "score": 0.96,
       "metrics": [
         {
-          "name": "file.hunk_count",
-          "value": 1
-        },
-        {
           "name": "file.lines_changed",
-          "value": 25
-        },
-        {
-          "name": "file.added_lines",
-          "value": 0
-        },
-        {
-          "name": "file.removed_lines",
-          "value": 25
-        },
-        {
-          "name": "file.max_hunk_lines",
           "value": 25
         }
       ]
@@ -135,23 +67,7 @@
       "score": 0.95,
       "metrics": [
         {
-          "name": "file.hunk_count",
-          "value": 1
-        },
-        {
           "name": "file.lines_changed",
-          "value": 27
-        },
-        {
-          "name": "file.added_lines",
-          "value": 27
-        },
-        {
-          "name": "file.removed_lines",
-          "value": 0
-        },
-        {
-          "name": "file.max_hunk_lines",
           "value": 27
         }
       ]
@@ -161,23 +77,7 @@
       "score": 0.98,
       "metrics": [
         {
-          "name": "file.hunk_count",
-          "value": 1
-        },
-        {
           "name": "file.lines_changed",
-          "value": 11
-        },
-        {
-          "name": "file.added_lines",
-          "value": 0
-        },
-        {
-          "name": "file.removed_lines",
-          "value": 11
-        },
-        {
-          "name": "file.max_hunk_lines",
           "value": 11
         }
       ]
@@ -187,23 +87,7 @@
       "score": 0.98,
       "metrics": [
         {
-          "name": "file.hunk_count",
-          "value": 1
-        },
-        {
           "name": "file.lines_changed",
-          "value": 11
-        },
-        {
-          "name": "file.added_lines",
-          "value": 11
-        },
-        {
-          "name": "file.removed_lines",
-          "value": 0
-        },
-        {
-          "name": "file.max_hunk_lines",
           "value": 11
         }
       ]
@@ -213,23 +97,7 @@
       "score": 0.98,
       "metrics": [
         {
-          "name": "file.hunk_count",
-          "value": 1
-        },
-        {
           "name": "file.lines_changed",
-          "value": 9
-        },
-        {
-          "name": "file.added_lines",
-          "value": 5
-        },
-        {
-          "name": "file.removed_lines",
-          "value": 4
-        },
-        {
-          "name": "file.max_hunk_lines",
           "value": 9
         }
       ]

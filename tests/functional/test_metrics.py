@@ -3,7 +3,7 @@ from pathlib import Path
 from reviewability.diff_reader import parse_diff_text
 from reviewability.domain.metric import MetricResults, MetricValue, MetricValueType
 from reviewability.metrics.engine import MetricEngine
-from reviewability.metrics.file import FileHunkCount, FileLinesChanged
+from reviewability.metrics.file import FileLinesChanged
 from reviewability.metrics.hunk import HunkAddedLines, HunkLinesChanged, HunkRemovedLines
 from reviewability.metrics.overall import OverallFilesChanged, OverallLinesChanged
 from reviewability.metrics.registry import MetricRegistry
@@ -22,7 +22,6 @@ def make_registry() -> MetricRegistry:
         HunkLinesChanged(),
         HunkAddedLines(),
         HunkRemovedLines(),
-        FileHunkCount(),
         FileLinesChanged(),
         OverallFilesChanged(),
         OverallLinesChanged(),
@@ -60,13 +59,9 @@ def test_logic_change_report():
     # Check files
     assert len(report.files) == 1
     assert report.files[0].subject == diff.files[0]
-    assert report.files[0].metrics.metric("file.hunk_count").value == 1  # type: ignore[union-attr]
     assert report.files[0].metrics.metric("file.lines_changed").value == 2  # type: ignore[union-attr]
     file_for_score = MetricResults(
-        [
-            MetricValue("file.hunk_count", 1, MetricValueType.INTEGER),
-            MetricValue("file.lines_changed", 2, MetricValueType.INTEGER),
-        ]
+        [MetricValue("file.lines_changed", 2, MetricValueType.INTEGER)]
     )
     assert report.files[0].score == scorer.file_score(file_for_score)
 
