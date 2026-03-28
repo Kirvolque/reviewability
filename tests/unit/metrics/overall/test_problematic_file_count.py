@@ -14,7 +14,7 @@ def make_file_analysis(score: float) -> Analysis:
 
 def test_none_problematic():
     metric = OverallProblematicFileCount(score_threshold=0.5)
-    result = metric.calculate([], [make_file_analysis(0.6), make_file_analysis(1.0)])
+    result = metric.calculate([], [make_file_analysis(0.6), make_file_analysis(1.0)], [])
     assert result.name == "overall.problematic_file_count"
     assert result.value == 0
     assert result.value_type == MetricValueType.INTEGER
@@ -23,14 +23,12 @@ def test_none_problematic():
 
 def test_some_problematic():
     metric = OverallProblematicFileCount(score_threshold=0.5)
-    result = metric.calculate([], [make_file_analysis(0.2), make_file_analysis(0.8)])
+    result = metric.calculate([], [make_file_analysis(0.2), make_file_analysis(0.8)], [])
     assert result.value == 1
 
 
 def test_threshold_boundary_is_exclusive():
     metric = OverallProblematicFileCount(score_threshold=0.5)
     # score == threshold is NOT problematic
-    result = metric.calculate([], [make_file_analysis(0.5)])
+    result = metric.calculate([], [make_file_analysis(0.5)], [])
     assert result.value == 0
-
-

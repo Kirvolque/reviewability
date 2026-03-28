@@ -2,7 +2,6 @@ from reviewability.diff.annotator import DiffAnnotator
 from reviewability.diff.similarity_calculator import DiffSimilarityCalculator
 from reviewability.domain.models import Diff, FileDiff, Hunk, HunkRewriteKind
 
-
 # --- Spy detector ---
 
 

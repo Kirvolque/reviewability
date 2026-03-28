@@ -15,19 +15,19 @@ def make_file_analysis(score: float = 1.0) -> Analysis:
 
 
 def test_no_files():
-    result = metric.calculate([], [])
+    result = metric.calculate([], [], [])
     assert result.name == "overall.files_changed"
     assert result.value == 0
     assert result.value_type == MetricValueType.INTEGER
 
 
 def test_single_file():
-    result = metric.calculate([], [make_file_analysis()])
+    result = metric.calculate([], [make_file_analysis()], [])
     assert result.value == 1
 
 
 def test_multiple_files():
     result = metric.calculate(
-        [], [make_file_analysis(), make_file_analysis(), make_file_analysis()]
+        [], [make_file_analysis(), make_file_analysis(), make_file_analysis()], []
     )
     assert result.value == 3

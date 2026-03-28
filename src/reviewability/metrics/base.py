@@ -51,4 +51,6 @@ class OverallMetric(Metric, ABC):
     """
 
     @abstractmethod
-    def calculate(self, hunks: list[Analysis], files: list[Analysis]) -> MetricValue: ...
+    def calculate(
+        self, hunks: list[Analysis], files: list[Analysis], groups: list[Analysis]
+    ) -> MetricValue: ...

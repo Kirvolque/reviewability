@@ -12,7 +12,9 @@ class OverallLinesChanged(OverallMetric):
     remediation: str = "Reduce patch size by splitting unrelated changes into separate commits."
 
     @override
-    def calculate(self, hunks: list[Analysis], files: list[Analysis]) -> MetricValue:
+    def calculate(
+        self, hunks: list[Analysis], files: list[Analysis], groups: list[Analysis]
+    ) -> MetricValue:
         value = sum(
             m.value for h in hunks if (m := h.metrics.metric("hunk.lines_changed")) is not None
         )

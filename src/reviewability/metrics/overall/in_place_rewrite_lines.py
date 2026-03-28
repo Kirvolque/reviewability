@@ -15,7 +15,9 @@ class OverallInPlaceRewriteLines(OverallMetric):
     )
 
     @override
-    def calculate(self, hunks: list[Analysis], files: list[Analysis]) -> MetricValue:
+    def calculate(
+        self, hunks: list[Analysis], files: list[Analysis], groups: list[Analysis]
+    ) -> MetricValue:
         del files
         value = sum(
             metric.value

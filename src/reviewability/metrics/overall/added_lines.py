@@ -12,7 +12,9 @@ class OverallAddedLines(OverallMetric):
     remediation: str = "Keep additions under 400 lines per review session."
 
     @override
-    def calculate(self, hunks: list[Analysis], files: list[Analysis]) -> MetricValue:
+    def calculate(
+        self, hunks: list[Analysis], files: list[Analysis], groups: list[Analysis]
+    ) -> MetricValue:
         value = sum(
             m.value for h in hunks if (m := h.metrics.metric("hunk.added_lines")) is not None
         )

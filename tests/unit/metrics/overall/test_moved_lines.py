@@ -29,5 +29,6 @@ def test_counts_only_target_side_lines_for_moved_hunks():
             make_hunk_analysis(7, is_likely_moved=False),
         ],
         [],
+        [],
     )
     assert result == MetricValue("overall.moved_lines", 5, MetricValueType.INTEGER)

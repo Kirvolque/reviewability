@@ -23,5 +23,5 @@ def make_hunk_analysis(value: int) -> Analysis:
 
 
 def test_sums_hunk_rewrite_lines():
-    result = metric.calculate([make_hunk_analysis(3), make_hunk_analysis(5)], [])
+    result = metric.calculate([make_hunk_analysis(3), make_hunk_analysis(5)], [], [])
     assert result == MetricValue("overall.in_place_rewrite_lines", 8, MetricValueType.INTEGER)

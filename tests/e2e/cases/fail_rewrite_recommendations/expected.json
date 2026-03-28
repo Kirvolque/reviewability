@@ -72,7 +72,7 @@
     },
     {
       "name": "overall.edit_complexity",
-      "value": 0.32
+      "value": 0.57
     },
     {
       "name": "overall.scatter_factor",
@@ -197,46 +197,24 @@
   ],
   "groups": [
     {
-      "group_id": null,
-      "hunk_count": 1,
-      "score": 0.9,
+      "group_id": 0,
+      "hunk_count": 2,
+      "score": 0.55,
       "metrics": [
         {
           "name": "group.edit_complexity",
-          "value": 0.9
+          "value": 0.55
         }
       ]
     },
     {
-      "group_id": null,
-      "hunk_count": 1,
-      "score": 0.9,
+      "group_id": 1,
+      "hunk_count": 2,
+      "score": 0.6,
       "metrics": [
         {
           "name": "group.edit_complexity",
-          "value": 0.9
-        }
-      ]
-    },
-    {
-      "group_id": null,
-      "hunk_count": 1,
-      "score": 0.9,
-      "metrics": [
-        {
-          "name": "group.edit_complexity",
-          "value": 0.9
-        }
-      ]
-    },
-    {
-      "group_id": null,
-      "hunk_count": 1,
-      "score": 0.9,
-      "metrics": [
-        {
-          "name": "group.edit_complexity",
-          "value": 0.9
+          "value": 0.6
         }
       ]
     }

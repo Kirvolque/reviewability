@@ -1,9 +1,7 @@
-import pytest
 
 from reviewability.diff.movement import MovementDetector
 from reviewability.diff.similarity_calculator import DiffSimilarityCalculator
 from reviewability.domain.models import Hunk
-
 
 # --- Helpers ---
 

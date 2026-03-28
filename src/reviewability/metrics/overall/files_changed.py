@@ -12,7 +12,9 @@ class OverallFilesChanged(OverallMetric):
     remediation: str = "Split the change into smaller pull requests by concern."
 
     @override
-    def calculate(self, hunks: list[Analysis], files: list[Analysis]) -> MetricValue:
+    def calculate(
+        self, hunks: list[Analysis], files: list[Analysis], groups: list[Analysis]
+    ) -> MetricValue:
         return MetricValue(
             name=self.name,
             value=len(files),

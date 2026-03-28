@@ -24,13 +24,11 @@ class MetricEngine:
             self._build_hunk_analysis(hunk) for file in diff.files for hunk in file.hunks
         ]
         file_analyses = [self._build_file_analysis(file) for file in diff.files]
-
-        all_hunks = [hunk for file in diff.files for hunk in file.hunks]
-        groups = self._extract_groups(all_hunks)
-        group_analyses = [self._build_group_analysis(g, hunk_analyses) for g in groups]
+        group_analyses = [self._build_group_analysis(g, hunk_analyses) for g in diff.groups]
 
         overall_results = [
-            m.calculate(hunk_analyses, file_analyses) for m in self._registry.overall_metrics()
+            m.calculate(hunk_analyses, file_analyses, group_analyses)
+            for m in self._registry.overall_metrics()
         ]
         overall_metric_values = MetricResults(overall_results)
         overall_score = self._scorer.overall_score(overall_metric_values)
@@ -46,28 +44,6 @@ class MetricEngine:
             groups=group_analyses,
             hunks=hunk_analyses,
         )
-
-    def _extract_groups(self, hunks: list[Hunk]) -> list[HunkGroup]:
-        """Build ``HunkGroup`` objects from annotated hunks.
-
-        Hunks with the same non-None ``group_id`` are collected into one group.
-        Each singleton (``group_id=None``) becomes its own single-hunk group.
-        """
-        multi: dict[int, list[Hunk]] = {}
-        singletons: list[Hunk] = []
-
-        for hunk in hunks:
-            if hunk.group_id is not None:
-                multi.setdefault(hunk.group_id, []).append(hunk)
-            else:
-                singletons.append(hunk)
-
-        groups: list[HunkGroup] = [
-            HunkGroup(group_id=gid, hunks=tuple(members))
-            for gid, members in multi.items()
-        ]
-        groups += [HunkGroup(group_id=None, hunks=(hunk,)) for hunk in singletons]
-        return groups
 
     def _build_group_analysis(self, group: HunkGroup, hunk_analyses: list[Analysis]) -> Analysis:
         """Compute group metrics and score for a single ``HunkGroup``."""

@@ -16,7 +16,9 @@ class OverallChangeEntropy(OverallMetric):
     remediation: str = "Group related changes into fewer files, or split the diff by concern."
 
     @override
-    def calculate(self, hunks: list[Analysis], files: list[Analysis]) -> MetricValue:
+    def calculate(
+        self, hunks: list[Analysis], files: list[Analysis], groups: list[Analysis]
+    ) -> MetricValue:
         values = [
             m.value
             for f in files

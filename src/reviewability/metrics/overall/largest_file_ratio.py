@@ -15,7 +15,9 @@ class OverallLargestFileRatio(OverallMetric):
     remediation: str = "Split the diff so no single file dominates, or group scattered changes."
 
     @override
-    def calculate(self, hunks: list[Analysis], files: list[Analysis]) -> MetricValue:
+    def calculate(
+        self, hunks: list[Analysis], files: list[Analysis], groups: list[Analysis]
+    ) -> MetricValue:
         values = [
             m.value for f in files if (m := f.metrics.metric("file.lines_changed")) is not None
         ]

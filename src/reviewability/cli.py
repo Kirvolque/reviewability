@@ -5,8 +5,8 @@ from pathlib import Path
 
 from reviewability.analyzer import create_analyzer
 from reviewability.config.parser import parse_config
+from reviewability.diff_reader import parse_diff_text, parse_git_diff
 from reviewability.gate import QualityGate
-from reviewability.parser.git import parse_diff_text, parse_git_diff
 
 _DEFAULT_CONFIG = Path("reviewability.toml")
 

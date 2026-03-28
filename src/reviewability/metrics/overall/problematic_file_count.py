@@ -15,7 +15,9 @@ class OverallProblematicFileCount(OverallMetric):
         self._score_threshold = score_threshold
 
     @override
-    def calculate(self, hunks: list[Analysis], files: list[Analysis]) -> MetricValue:
+    def calculate(
+        self, hunks: list[Analysis], files: list[Analysis], groups: list[Analysis]
+    ) -> MetricValue:
         problematic = [f for f in files if f.score < self._score_threshold]
         return MetricValue(
             name=self.name,

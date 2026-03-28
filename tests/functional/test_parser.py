@@ -1,7 +1,7 @@
 from pathlib import Path
 
-from reviewability.domain.models import Diff, FileDiff, Hunk
-from reviewability.parser.git import parse_diff_text
+from reviewability.diff_reader import parse_diff_text
+from reviewability.domain.models import FileDiff, Hunk
 
 FIXTURES = Path(__file__).parent.parent / "fixtures"
 
@@ -12,23 +12,20 @@ def load(name: str) -> str:
 
 def test_rename_only():
     diff = parse_diff_text(load("rename_only.diff"))
-    assert diff == Diff(
-        files=[
-            FileDiff(
-                path="src/greeter.py",
-                old_path="src/old_name.py",
-                is_new_file=False,
-                is_deleted_file=False,
-                hunks=[],
-            )
-        ]
-    )
+    assert diff.files == [
+        FileDiff(
+            path="src/greeter.py",
+            old_path="src/old_name.py",
+            is_new_file=False,
+            is_deleted_file=False,
+            hunks=[],
+        )
+    ]
 
 
 def test_logic_change():
     diff = parse_diff_text(load("logic_change.diff"))
-    assert diff == Diff(
-        files=[
+    assert diff.files == [
             FileDiff(
                 path="src/greeter.py",
                 old_path=None,
@@ -54,13 +51,11 @@ def test_logic_change():
                 ],
             )
         ]
-    )
 
 
 def test_tangled_commit():
     diff = parse_diff_text(load("tangled_commit.diff"))
-    assert diff == Diff(
-        files=[
+    assert diff.files == [
             FileDiff(
                 path="src/farewell.py",
                 old_path=None,
@@ -106,13 +101,11 @@ def test_tangled_commit():
                 ],
             ),
         ]
-    )
 
 
 def test_multi_file_change():
     diff = parse_diff_text(load("multi_file_change.diff"))
-    assert diff == Diff(
-        files=[
+    assert diff.files == [
             FileDiff(
                 path="src/farewell.py",
                 old_path=None,
@@ -172,4 +165,3 @@ def test_multi_file_change():
                 ],
             ),
         ]
-    )

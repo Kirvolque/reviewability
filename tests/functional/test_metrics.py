@@ -1,12 +1,12 @@
 from pathlib import Path
 
+from reviewability.diff_reader import parse_diff_text
 from reviewability.domain.metric import MetricResults, MetricValue, MetricValueType
 from reviewability.metrics.engine import MetricEngine
 from reviewability.metrics.file import FileHunkCount, FileLinesChanged
 from reviewability.metrics.hunk import HunkAddedLines, HunkLinesChanged, HunkRemovedLines
 from reviewability.metrics.overall import OverallFilesChanged, OverallLinesChanged
 from reviewability.metrics.registry import MetricRegistry
-from reviewability.parser.git import parse_diff_text
 from reviewability.scoring.weighted import DefaultScorer
 
 FIXTURES = Path(__file__).parent.parent / "fixtures"

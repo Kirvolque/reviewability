@@ -30,9 +30,6 @@ class Hunk(DiffNode):
     is_likely_moved: bool = False
     # Optional enrichment output: detected heavy rewrite classification.
     rewrite_kind: HunkRewriteKind | None = None
-    # Assigned by HunkGrouper: groups hunks that are logically connected (moves, rewrites).
-    # None = singleton (unconnected); int = group index shared across connected hunks.
-    group_id: int | None = None
 
     @property
     def line_count(self) -> int:
@@ -99,6 +96,7 @@ class Diff:
     """The complete diff (e.g. a pull request or branch comparison)."""
 
     files: list[FileDiff] = field(default_factory=list)
+    groups: list[HunkGroup] = field(default_factory=list)
 
     @property
     def total_files_changed(self) -> int:

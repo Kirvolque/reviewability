@@ -17,7 +17,9 @@ class OverallScatterFactor(OverallMetric):
     remediation: str | None = None
 
     @override
-    def calculate(self, hunks: list[Analysis], files: list[Analysis]) -> MetricValue:
+    def calculate(
+        self, hunks: list[Analysis], files: list[Analysis], groups: list[Analysis]
+    ) -> MetricValue:
         if len(files) <= 1:
             return MetricValue(name=self.name, value=0.0, value_type=self.value_type)
 

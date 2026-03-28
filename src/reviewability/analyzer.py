@@ -13,6 +13,7 @@ from reviewability.metrics.file import (
     FileMovedRewriteLines,
     FileRemovedLines,
 )
+from reviewability.metrics.group import GroupEditComplexity
 from reviewability.metrics.hunk import (
     HunkAddedLines,
     HunkChangeBalance,
@@ -23,7 +24,6 @@ from reviewability.metrics.hunk import (
     HunkMovedRewriteLines,
     HunkRemovedLines,
 )
-from reviewability.metrics.group import GroupEditComplexity
 from reviewability.metrics.overall import (
     OverallAddedLines,
     OverallChangeEntropy,

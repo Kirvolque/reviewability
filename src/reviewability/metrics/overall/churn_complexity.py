@@ -22,7 +22,9 @@ class OverallChurnComplexity(OverallMetric):
     )
 
     @override
-    def calculate(self, hunks: list[Analysis], files: list[Analysis]) -> MetricValue:
+    def calculate(
+        self, hunks: list[Analysis], files: list[Analysis], groups: list[Analysis]
+    ) -> MetricValue:
         mix_per_hunk: list[tuple[float, Analysis]] = []
         for h in hunks:
             if h.subject.is_likely_moved:

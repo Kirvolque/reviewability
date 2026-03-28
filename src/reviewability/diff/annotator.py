@@ -1,10 +1,10 @@
 from __future__ import annotations
+
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from typing import TypeVar
 
 from reviewability.diff.complex_rewrite import ComplexRewriteDetector
-from reviewability.diff.grouper import HunkGrouper
 from reviewability.diff.movement import MovementDetector
 from reviewability.diff.similarity_calculator import DiffSimilarityCalculator
 from reviewability.domain.models import Diff, FileDiff, Hunk, HunkRewriteKind
@@ -42,9 +42,6 @@ class DiffAnnotator:
 
         for file in diff.files:
             self._annotate_hunks(file, moved_hunk_ids, rewrite_kinds_by_hunk_id)
-
-        # Third pass: group hunks that are logically connected (moves, rewrites)
-        self._assign_group_ids(diff)
 
         return diff
 
@@ -138,20 +135,6 @@ class DiffAnnotator:
                 hunk.is_likely_moved = True
             if id(hunk) in rewrite_kinds_by_hunk_id:
                 hunk.rewrite_kind = rewrite_kinds_by_hunk_id[id(hunk)]
-
-    def _assign_group_ids(self, diff: Diff) -> None:
-        """Assign group_id to hunks that are logically connected."""
-        all_hunks = [hunk for file in diff.files for hunk in file.hunks]
-        if not all_hunks:
-            return
-
-        grouper = HunkGrouper(self.similarity_calculator)
-        groups = grouper.group(all_hunks)
-
-        # Assign group_id to each hunk based on its group membership
-        for group_id, hunks_in_group in groups.items():
-            for hunk in hunks_in_group:
-                hunk.group_id = group_id
 
 
 def _find_moved_pairs(
