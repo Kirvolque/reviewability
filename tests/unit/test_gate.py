@@ -6,7 +6,7 @@ from reviewability.rules.engine import Rule, RuleViolation, Severity
 
 def make_report(overall_score: float = 1.0) -> AnalysisReport:
     oa = OverallAnalysis(metrics=MetricResults([]), score=overall_score)
-    return AnalysisReport(overall=oa, files=[], hunks=[])
+    return AnalysisReport(overall=oa, files=[], groups=[], hunks=[])
 
 
 def make_violation(severity: Severity, message: str = "msg") -> RuleViolation:

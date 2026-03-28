@@ -103,6 +103,19 @@
       ]
     }
   ],
+  "groups": [
+    {
+      "group_id": null,
+      "hunk_count": 1,
+      "score": 0.9,
+      "metrics": [
+        {
+          "name": "group.edit_complexity",
+          "value": 0.9
+        }
+      ]
+    }
+  ],
   "hunks": [
     {
       "file": "src/greeter.py",

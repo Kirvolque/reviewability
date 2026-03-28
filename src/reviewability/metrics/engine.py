@@ -1,5 +1,5 @@
 from reviewability.domain.metric import MetricResults
-from reviewability.domain.models import Diff, FileDiff, Hunk
+from reviewability.domain.models import Diff, FileDiff, Hunk, HunkGroup
 from reviewability.domain.report import Analysis, AnalysisReport, OverallAnalysis
 from reviewability.metrics.registry import MetricRegistry
 from reviewability.scoring.base import ReviewabilityScorer
@@ -9,8 +9,8 @@ class MetricEngine:
     """Runs metric calculation against a diff in the correct order.
 
     Construction is strictly bottom-up: hunk metrics are computed first,
-    then file metrics, then overall metrics. Scores are computed before
-    each analysis object is constructed.
+    then file metrics, then group metrics, then overall metrics. Scores are
+    computed before each analysis object is constructed.
 
     """
 
@@ -25,6 +25,10 @@ class MetricEngine:
         ]
         file_analyses = [self._build_file_analysis(file) for file in diff.files]
 
+        all_hunks = [hunk for file in diff.files for hunk in file.hunks]
+        groups = self._extract_groups(all_hunks)
+        group_analyses = [self._build_group_analysis(g, hunk_analyses) for g in groups]
+
         overall_results = [
             m.calculate(hunk_analyses, file_analyses) for m in self._registry.overall_metrics()
         ]
@@ -36,7 +40,45 @@ class MetricEngine:
             score=overall_score,
         )
 
-        return AnalysisReport(overall=overall, files=file_analyses, hunks=hunk_analyses)
+        return AnalysisReport(
+            overall=overall,
+            files=file_analyses,
+            groups=group_analyses,
+            hunks=hunk_analyses,
+        )
+
+    def _extract_groups(self, hunks: list[Hunk]) -> list[HunkGroup]:
+        """Build ``HunkGroup`` objects from annotated hunks.
+
+        Hunks with the same non-None ``group_id`` are collected into one group.
+        Each singleton (``group_id=None``) becomes its own single-hunk group.
+        """
+        multi: dict[int, list[Hunk]] = {}
+        singletons: list[Hunk] = []
+
+        for hunk in hunks:
+            if hunk.group_id is not None:
+                multi.setdefault(hunk.group_id, []).append(hunk)
+            else:
+                singletons.append(hunk)
+
+        groups: list[HunkGroup] = [
+            HunkGroup(group_id=gid, hunks=tuple(members))
+            for gid, members in multi.items()
+        ]
+        groups += [HunkGroup(group_id=None, hunks=(hunk,)) for hunk in singletons]
+        return groups
+
+    def _build_group_analysis(self, group: HunkGroup, hunk_analyses: list[Analysis]) -> Analysis:
+        """Compute group metrics and score for a single ``HunkGroup``."""
+        hunk_id_set = {id(h) for h in group.hunks}
+        relevant = [a for a in hunk_analyses if id(a.subject) in hunk_id_set]
+
+        results = MetricResults(
+            [m.calculate(group, relevant) for m in self._registry.group_metrics()]
+        )
+        score = self._scorer.group_score(results)
+        return Analysis(subject=group, metrics=results, score=score)
 
     def _build_hunk_analysis(self, hunk: Hunk) -> Analysis:
         results = MetricResults([m.calculate(hunk) for m in self._registry.hunk_metrics()])

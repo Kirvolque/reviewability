@@ -23,6 +23,7 @@ from reviewability.metrics.hunk import (
     HunkMovedRewriteLines,
     HunkRemovedLines,
 )
+from reviewability.metrics.group import GroupEditComplexity
 from reviewability.metrics.overall import (
     OverallAddedLines,
     OverallChangeEntropy,
@@ -120,6 +121,7 @@ def create_analyzer(config: ReviewabilityConfig) -> Analyzer:
         OverallChurnComplexity(),
         OverallEditComplexity(),
         OverallScatterFactor(),
+        GroupEditComplexity(),
     ]:
         registry.add(metric)
 

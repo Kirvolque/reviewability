@@ -141,6 +141,30 @@
       ]
     }
   ],
+  "groups": [
+    {
+      "group_id": null,
+      "hunk_count": 1,
+      "score": 0.74,
+      "metrics": [
+        {
+          "name": "group.edit_complexity",
+          "value": 0.74
+        }
+      ]
+    },
+    {
+      "group_id": null,
+      "hunk_count": 1,
+      "score": 0.86,
+      "metrics": [
+        {
+          "name": "group.edit_complexity",
+          "value": 0.86
+        }
+      ]
+    }
+  ],
   "hunks": [
     {
       "file": "src/api.py",

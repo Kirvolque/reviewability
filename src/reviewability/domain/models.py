@@ -82,6 +82,19 @@ class FileDiff(DiffNode):
 
 
 @dataclass
+class HunkGroup(DiffNode):
+    """A logical group of related hunks identified by the HunkGrouper.
+
+    Hunks in the same group are likely connected (e.g. a code move or cross-hunk
+    rewrite). Singletons — hunks with no detected relationship — form groups of
+    size one with ``group_id=None``.
+    """
+
+    group_id: int | None
+    hunks: tuple[Hunk, ...]
+
+
+@dataclass
 class Diff:
     """The complete diff (e.g. a pull request or branch comparison)."""
 

@@ -188,6 +188,63 @@
       ]
     }
   ],
+  "groups": [
+    {
+      "group_id": null,
+      "hunk_count": 1,
+      "score": 0.8,
+      "metrics": [
+        {
+          "name": "group.edit_complexity",
+          "value": 0.8
+        }
+      ]
+    },
+    {
+      "group_id": null,
+      "hunk_count": 1,
+      "score": 0.84,
+      "metrics": [
+        {
+          "name": "group.edit_complexity",
+          "value": 0.84
+        }
+      ]
+    },
+    {
+      "group_id": null,
+      "hunk_count": 1,
+      "score": 0.84,
+      "metrics": [
+        {
+          "name": "group.edit_complexity",
+          "value": 0.84
+        }
+      ]
+    },
+    {
+      "group_id": null,
+      "hunk_count": 1,
+      "score": 0.84,
+      "metrics": [
+        {
+          "name": "group.edit_complexity",
+          "value": 0.84
+        }
+      ]
+    },
+    {
+      "group_id": null,
+      "hunk_count": 1,
+      "score": 0.76,
+      "metrics": [
+        {
+          "name": "group.edit_complexity",
+          "value": 0.76
+        }
+      ]
+    }
+  ],
   "hunks": [
     {
       "file": "src/processor.py",

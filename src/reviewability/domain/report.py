@@ -38,10 +38,11 @@ class OverallAnalysis:
 class AnalysisReport:
     """The complete analysis result for a diff.
 
-    Contains per-hunk and per-file analyses plus an overall analysis.
+    Contains per-hunk, per-file, per-group, and overall analyses.
     All scores range from 0.0 (hardest to review) to 1.0 (easiest to review).
     """
 
     overall: OverallAnalysis
     files: list[Analysis]
+    groups: list[Analysis]
     hunks: list[Analysis]

@@ -460,6 +460,96 @@
       ]
     }
   ],
+  "groups": [
+    {
+      "group_id": 0,
+      "hunk_count": 2,
+      "score": 0.96,
+      "metrics": [
+        {
+          "name": "group.edit_complexity",
+          "value": 0.96
+        }
+      ]
+    },
+    {
+      "group_id": 1,
+      "hunk_count": 2,
+      "score": 0.96,
+      "metrics": [
+        {
+          "name": "group.edit_complexity",
+          "value": 0.96
+        }
+      ]
+    },
+    {
+      "group_id": null,
+      "hunk_count": 1,
+      "score": 0.88,
+      "metrics": [
+        {
+          "name": "group.edit_complexity",
+          "value": 0.88
+        }
+      ]
+    },
+    {
+      "group_id": null,
+      "hunk_count": 1,
+      "score": 0.88,
+      "metrics": [
+        {
+          "name": "group.edit_complexity",
+          "value": 0.88
+        }
+      ]
+    },
+    {
+      "group_id": null,
+      "hunk_count": 1,
+      "score": 0.88,
+      "metrics": [
+        {
+          "name": "group.edit_complexity",
+          "value": 0.88
+        }
+      ]
+    },
+    {
+      "group_id": null,
+      "hunk_count": 1,
+      "score": 0.88,
+      "metrics": [
+        {
+          "name": "group.edit_complexity",
+          "value": 0.88
+        }
+      ]
+    },
+    {
+      "group_id": null,
+      "hunk_count": 1,
+      "score": 0.88,
+      "metrics": [
+        {
+          "name": "group.edit_complexity",
+          "value": 0.88
+        }
+      ]
+    },
+    {
+      "group_id": null,
+      "hunk_count": 1,
+      "score": 0.88,
+      "metrics": [
+        {
+          "name": "group.edit_complexity",
+          "value": 0.88
+        }
+      ]
+    }
+  ],
   "hunks": [
     {
       "file": "models/service_a.py",

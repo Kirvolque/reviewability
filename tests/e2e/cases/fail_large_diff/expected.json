@@ -157,6 +157,30 @@
       ]
     }
   ],
+  "groups": [
+    {
+      "group_id": null,
+      "hunk_count": 1,
+      "score": 0.88,
+      "metrics": [
+        {
+          "name": "group.edit_complexity",
+          "value": 0.88
+        }
+      ]
+    },
+    {
+      "group_id": null,
+      "hunk_count": 1,
+      "score": 0.88,
+      "metrics": [
+        {
+          "name": "group.edit_complexity",
+          "value": 0.88
+        }
+      ]
+    }
+  ],
   "hunks": [
     {
       "file": "src/farewell.py",

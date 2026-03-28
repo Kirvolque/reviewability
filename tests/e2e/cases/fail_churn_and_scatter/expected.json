@@ -384,6 +384,96 @@
       ]
     }
   ],
+  "groups": [
+    {
+      "group_id": null,
+      "hunk_count": 1,
+      "score": 0.92,
+      "metrics": [
+        {
+          "name": "group.edit_complexity",
+          "value": 0.92
+        }
+      ]
+    },
+    {
+      "group_id": null,
+      "hunk_count": 1,
+      "score": 0.92,
+      "metrics": [
+        {
+          "name": "group.edit_complexity",
+          "value": 0.92
+        }
+      ]
+    },
+    {
+      "group_id": null,
+      "hunk_count": 1,
+      "score": 0.92,
+      "metrics": [
+        {
+          "name": "group.edit_complexity",
+          "value": 0.92
+        }
+      ]
+    },
+    {
+      "group_id": null,
+      "hunk_count": 1,
+      "score": 0.92,
+      "metrics": [
+        {
+          "name": "group.edit_complexity",
+          "value": 0.92
+        }
+      ]
+    },
+    {
+      "group_id": null,
+      "hunk_count": 1,
+      "score": 0.92,
+      "metrics": [
+        {
+          "name": "group.edit_complexity",
+          "value": 0.92
+        }
+      ]
+    },
+    {
+      "group_id": null,
+      "hunk_count": 1,
+      "score": 0.92,
+      "metrics": [
+        {
+          "name": "group.edit_complexity",
+          "value": 0.92
+        }
+      ]
+    },
+    {
+      "group_id": null,
+      "hunk_count": 1,
+      "score": 0.92,
+      "metrics": [
+        {
+          "name": "group.edit_complexity",
+          "value": 0.92
+        }
+      ]
+    },
+    {
+      "group_id": null,
+      "hunk_count": 1,
+      "score": 0.92,
+      "metrics": [
+        {
+          "name": "group.edit_complexity",
+          "value": 0.92
+        }
+      ]
+    }
+  ],
   "hunks": [
     {
       "file": "services/auth.py",

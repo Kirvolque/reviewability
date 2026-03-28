@@ -270,6 +270,63 @@
       ]
     }
   ],
+  "groups": [
+    {
+      "group_id": null,
+      "hunk_count": 1,
+      "score": 0.8,
+      "metrics": [
+        {
+          "name": "group.edit_complexity",
+          "value": 0.8
+        }
+      ]
+    },
+    {
+      "group_id": null,
+      "hunk_count": 1,
+      "score": 0.8,
+      "metrics": [
+        {
+          "name": "group.edit_complexity",
+          "value": 0.8
+        }
+      ]
+    },
+    {
+      "group_id": null,
+      "hunk_count": 1,
+      "score": 0.8,
+      "metrics": [
+        {
+          "name": "group.edit_complexity",
+          "value": 0.8
+        }
+      ]
+    },
+    {
+      "group_id": null,
+      "hunk_count": 1,
+      "score": 0.8,
+      "metrics": [
+        {
+          "name": "group.edit_complexity",
+          "value": 0.8
+        }
+      ]
+    },
+    {
+      "group_id": null,
+      "hunk_count": 1,
+      "score": 0.8,
+      "metrics": [
+        {
+          "name": "group.edit_complexity",
+          "value": 0.8
+        }
+      ]
+    }
+  ],
   "hunks": [
     {
       "file": "services/auth.py",

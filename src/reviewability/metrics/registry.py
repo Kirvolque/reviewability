@@ -1,4 +1,4 @@
-from reviewability.metrics.base import FileMetric, HunkMetric, OverallMetric
+from reviewability.metrics.base import FileMetric, GroupMetric, HunkMetric, OverallMetric
 
 
 class MetricRegistry:
@@ -11,14 +11,17 @@ class MetricRegistry:
     def __init__(self) -> None:
         self._hunk_metrics: dict[str, HunkMetric] = {}
         self._file_metrics: dict[str, FileMetric] = {}
+        self._group_metrics: dict[str, GroupMetric] = {}
         self._overall_metrics: dict[str, OverallMetric] = {}
 
-    def add(self, metric: HunkMetric | FileMetric | OverallMetric) -> None:
+    def add(self, metric: HunkMetric | FileMetric | GroupMetric | OverallMetric) -> None:
         """Register a metric. Silently replaces if a metric with the same name exists."""
         if isinstance(metric, HunkMetric):
             self._hunk_metrics[metric.name] = metric
         elif isinstance(metric, FileMetric):
             self._file_metrics[metric.name] = metric
+        elif isinstance(metric, GroupMetric):
+            self._group_metrics[metric.name] = metric
         elif isinstance(metric, OverallMetric):
             self._overall_metrics[metric.name] = metric
 
@@ -29,6 +32,10 @@ class MetricRegistry:
     def file_metrics(self) -> list[FileMetric]:
         """Return all registered file-level metrics."""
         return list(self._file_metrics.values())
+
+    def group_metrics(self) -> list[GroupMetric]:
+        """Return all registered group-level metrics."""
+        return list(self._group_metrics.values())
 
     def overall_metrics(self) -> list[OverallMetric]:
         """Return all registered overall-level metrics."""
