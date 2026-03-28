@@ -17,7 +17,6 @@ def test_defaults_match_defaults_toml():
         min_overall_score=0.7,
         max_problematic_hunks=3,
         max_problematic_files=2,
-        max_file_hunk_count=5,
         max_files_changed=10,
         max_added_lines=400,
     )
@@ -69,7 +68,6 @@ def test_optional_fields_default_to_none():
     assert config.min_overall_score is None
     assert config.max_problematic_hunks is None
     assert config.max_problematic_files is None
-    assert config.max_file_hunk_count is None
     assert config.max_files_changed is None
     assert config.max_added_lines is None
 

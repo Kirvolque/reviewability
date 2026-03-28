@@ -21,9 +21,6 @@ max_problematic_hunks = 3
 # [optional] Maximum number of problematic files allowed before a violation is raised.
 max_problematic_files = 2
 
-# [optional] Maximum number of hunks in a single file before a warning is raised.
-max_file_hunk_count = 5
-
 # [optional] Maximum number of files changed in the diff before an error is raised.
 max_files_changed = 10
 

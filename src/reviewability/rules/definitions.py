@@ -1,5 +1,4 @@
 from reviewability.config.models import ReviewabilityConfig
-from reviewability.metrics.file.hunk_count import FileHunkCount
 from reviewability.metrics.hunk.lines_changed import HunkLinesChanged
 from reviewability.metrics.overall.added_lines import OverallAddedLines
 from reviewability.metrics.overall.files_changed import OverallFilesChanged
@@ -30,21 +29,7 @@ def hunk_rules(config: ReviewabilityConfig) -> list[Rule]:
 
 def file_rules(config: ReviewabilityConfig) -> list[Rule]:
     """Return the default set of file-level rules driven by the given config."""
-    return _compact(
-        [
-            Rule(
-                severity=Severity.WARNING,
-                check=lambda s: (
-                    f"File has {v.value} hunks, exceeds limit of {config.max_file_hunk_count}"
-                    if (v := s.metric(FileHunkCount.name)) is not None
-                    and v.value > config.max_file_hunk_count
-                    else None
-                ),
-            )
-            if config.max_file_hunk_count is not None
-            else None,
-        ]
-    )
+    return []
 
 
 def overall_rules(config: ReviewabilityConfig) -> list[Rule]:

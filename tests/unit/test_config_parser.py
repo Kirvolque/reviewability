@@ -105,6 +105,5 @@ def test_optional_fields_can_be_omitted():
     config = parse_config(path)
     assert config.max_problematic_hunks is None
     assert config.max_problematic_files is None
-    assert config.max_file_hunk_count is None
     assert config.max_files_changed is None
     assert config.max_added_lines is None

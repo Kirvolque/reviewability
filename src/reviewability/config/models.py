@@ -31,9 +31,6 @@ class ReviewabilityConfig:
     max_problematic_files: int | None = None
     """Maximum number of problematic files allowed."""
 
-    max_file_hunk_count: int | None = None
-    """Maximum number of hunks in a single file."""
-
     max_files_changed: int | None = None
     """Maximum number of files changed in the diff."""
 
