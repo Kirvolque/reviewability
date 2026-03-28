@@ -7,6 +7,8 @@ _REQUIRED = {
     "file_score_threshold": 0.5,
     "max_diff_lines": 500,
     "max_hunk_lines": 50,
+    "max_move_lines": 100,
+    "move_similarity_penalty": 2.0,
 }
 
 
@@ -29,6 +31,8 @@ def test_custom_values():
         file_score_threshold=0.7,
         max_diff_lines=1000,
         max_hunk_lines=100,
+        max_move_lines=200,
+        move_similarity_penalty=3.0,
         max_problematic_hunks=5,
         max_problematic_files=4,
         min_overall_score=0.6,
@@ -40,6 +44,8 @@ def test_custom_values():
     assert config.max_problematic_files == 4
     assert config.max_hunk_lines == 100
     assert config.min_overall_score == 0.6
+    assert config.max_move_lines == 200
+    assert config.move_similarity_penalty == 3.0
 
 
 def test_frozen():

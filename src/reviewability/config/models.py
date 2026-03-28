@@ -22,11 +22,11 @@ class ReviewabilityConfig:
     max_hunk_lines: int
     """Maximum lines changed in a single hunk (used for score normalisation)."""
 
-    max_group_lines: int
-    """Maximum meaningful lines in the largest hunk of a group (for group score normalisation)."""
+    max_move_lines: int
+    """Maximum meaningful lines in the largest hunk of a move (for move score normalisation)."""
 
-    group_similarity_penalty: float
-    """Multiplier controlling how much low similarity raises the per-line penalty for groups."""
+    move_similarity_penalty: float
+    """Multiplier controlling how much low similarity raises the per-line penalty for moves."""
 
     min_overall_score: float | None = None
     """Overall diff score below this causes the gate to fail. Range [0.0, 1.0]."""

@@ -1,17 +1,10 @@
 {
-  "score": 0.0,
+  "score": 1.0,
   "passed": false,
   "violations": [
-    "[ERROR] Diff has 10 lines changed, exceeds limit of 1",
-    "[ERROR] Overall score 0.00 is below the minimum of 0.99"
+    "[ERROR] Diff touches 2 files, exceeds limit of 1"
   ],
   "recommendations": [
-    {
-      "location": "overall",
-      "metric": "overall.lines_changed",
-      "value": 10,
-      "remediation": "Reduce patch size by splitting unrelated changes into separate commits."
-    },
     {
       "location": "overall",
       "metric": "overall.scatter_factor",
@@ -20,7 +13,7 @@
     }
   ],
   "files_changed": 2,
-  "hunks_changed": 2,
+  "hunks_changed": 0,
   "overall": [
     {
       "name": "overall.files_changed",
@@ -28,11 +21,11 @@
     },
     {
       "name": "overall.lines_changed",
-      "value": 10
+      "value": 0
     },
     {
       "name": "overall.added_lines",
-      "value": 6
+      "value": 0
     },
     {
       "name": "overall.problematic_hunk_count",
@@ -69,71 +62,18 @@
       ]
     }
   ],
-  "groups": [
+  "moves": [
     {
-      "group_id": 0,
+      "move_id": 0,
       "hunk_count": 2,
-      "score": 0.76,
+      "score": 0.9,
       "metrics": [
         {
-          "name": "group.edit_complexity",
-          "value": 0.76
+          "name": "move.edit_complexity",
+          "value": 0.9
         }
       ]
     }
   ],
-  "hunks": [
-    {
-      "file": "src/farewell.py",
-      "score": 0.9,
-      "metrics": [
-        {
-          "name": "hunk.lines_changed",
-          "value": 5
-        },
-        {
-          "name": "hunk.added_lines",
-          "value": 3
-        },
-        {
-          "name": "hunk.removed_lines",
-          "value": 2
-        },
-        {
-          "name": "hunk.context_lines",
-          "value": 2
-        },
-        {
-          "name": "hunk.change_balance",
-          "value": 0.67
-        }
-      ]
-    },
-    {
-      "file": "src/greeter.py",
-      "score": 0.9,
-      "metrics": [
-        {
-          "name": "hunk.lines_changed",
-          "value": 5
-        },
-        {
-          "name": "hunk.added_lines",
-          "value": 3
-        },
-        {
-          "name": "hunk.removed_lines",
-          "value": 2
-        },
-        {
-          "name": "hunk.context_lines",
-          "value": 2
-        },
-        {
-          "name": "hunk.change_balance",
-          "value": 0.67
-        }
-      ]
-    }
-  ]
+  "hunks": []
 }

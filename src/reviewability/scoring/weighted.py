@@ -39,9 +39,9 @@ class DefaultScorer(ReviewabilityScorer):
         return max(0.0, 1.0 - mv.value / self._max_diff_lines)
 
     @override
-    def group_score(self, metrics: MetricResults) -> float:
-        """Group score is the group.edit_complexity metric value if present, else 1.0."""
-        mv = metrics.metric("group.edit_complexity")
+    def move_score(self, metrics: MetricResults) -> float:
+        """Move score is the move.edit_complexity metric value if present, else 1.0."""
+        mv = metrics.metric("move.edit_complexity")
         return float(mv.value) if mv is not None else 1.0
 
     @override

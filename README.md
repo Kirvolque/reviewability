@@ -30,24 +30,24 @@ linters, Reviewability does not analyze the code — only how the changes are st
 When a diff scores low, the typical remedies are splitting it into focused pull
 requests or deferring non-essential changes.
 
-Reviewability computes metrics at the level of individual hunks, groups of related hunks,
-files, and the whole diff, feeding into **Reviewability Scores** (0.0 = hardest, 1.0 = easiest)
-with configurable thresholds for what counts as problematic.
+Reviewability computes metrics at the level of individual hunks, code moves, files, and the
+whole diff, feeding into **Reviewability Scores** (0.0 = hardest, 1.0 = easiest) with
+configurable thresholds for what counts as problematic.
 
 ## Key Concepts
 
 - **Hunk** — a contiguous block of changes within a single file (the smallest unit of analysis)
 - **HunkType** — classification of a hunk: `pure_addition`, `pure_deletion`, `move`, or `mixed`
-- **Group** — two or more hunks that are likely connected (e.g. a code move or cross-hunk rewrite), detected by move-aware similarity
-- **GroupType** — `moved` (high similarity, essentially relocated) or `moved_modified` (relocated and changed)
-- **Metric** — a calculated value attached to a hunk, a group, a file, or the whole diff
-- **Score** — a float [0.0, 1.0] representing reviewability at hunk, group, file, or diff level
+- **Move** — two or more hunks that are likely connected (e.g. a code move or cross-hunk rewrite), detected by move-aware similarity
+- **MoveType** — `pure` (high similarity, essentially relocated) or `modified` (relocated and changed)
+- **Metric** — a calculated value attached to a hunk, a move, a file, or the whole diff
+- **Score** — a float [0.0, 1.0] representing reviewability at hunk, move, file, or diff level
 
 ## Extensibility
 
 The metric system is designed to be extended:
 
-- **Add a metric** — subclass `HunkMetric`, `GroupMetric`, `FileMetric`, or `OverallMetric`, implement `calculate()`, register via `registry.add()`
+- **Add a metric** — subclass `HunkMetric`, `MoveMetric`, `FileMetric`, or `OverallMetric`, implement `calculate()`, register via `registry.add()`
 - **Adjust scoring** — provide a custom `ReviewabilityScorer` implementation
 - **Adjust thresholds** — edit the [default config](src/reviewability/config/reviewability.toml) or provide your own `reviewability.toml`
 
@@ -98,10 +98,10 @@ file_score_threshold = 0.5
 max_diff_lines = 500
 max_hunk_lines = 50
 
-# Group scoring: size limit and similarity penalty
-# penalty_per_line = (1 + group_similarity_penalty × (1 − similarity)) / max_group_lines
-max_group_lines = 100
-group_similarity_penalty = 2.0
+# Move scoring: size limit and similarity penalty
+# penalty_per_line = (1 + move_similarity_penalty × (1 − similarity)) / max_move_lines
+max_move_lines = 100
+move_similarity_penalty = 2.0
 
 # Gate: fail if overall score drops below this
 min_overall_score = 0.7
@@ -113,35 +113,35 @@ max_files_changed = 10
 max_added_lines = 400
 ```
 
-## Hunk Groups
+## Code Moves
 
 When two hunks are likely connected — for example, code deleted from one location and
-inserted elsewhere — they are paired into a **group**. Groups are detected using
+inserted elsewhere — they are paired into a **move**. Moves are detected using
 move-aware similarity: each deleted line is matched to the most similar added line across
 hunk pairs, normalized by the larger side.
 
-Groups are classified by their similarity score:
+Moves are classified by their similarity score:
 
-- **`moved`** — similarity ≥ 0.9: content is essentially identical, just relocated
-- **`moved_modified`** — similarity 0.3–0.9: content was moved and changed
+- **`pure`** — similarity ≥ 0.9: content is essentially identical, just relocated
+- **`modified`** — similarity 0.3–0.9: content was moved and changed
 
-Hunks that pair with no other hunk remain as **singletons** and are not included in any group.
+Hunks that pair with no other hunk remain as **singletons** and are not included in any move.
 Import/package declarations and indentation differences are ignored during similarity
 comparison, so pure reindentation or import reordering does not suppress a move detection.
 
-Hunk-level scoring and the problematic hunk count only apply to singletons. Grouped hunks
-are evaluated at the group level instead.
+Hunk-level scoring and the problematic hunk count only apply to singletons. Hunks in moves
+are evaluated at the move level instead.
 
 ## Metrics
 
-Metrics are calculated at four levels: hunk, group, file, and overall diff.
+Metrics are calculated at four levels: hunk, move, file, and overall diff.
 
 All size metrics exclude blank lines and import/package declarations, so import-only
 or formatting-only changes do not inflate scores.
 
 ### Hunk-level
 
-Computed only for **singleton hunks** (not part of any group).
+Computed only for **singleton hunks** (not part of any move).
 
 | Metric | Description |
 |--------|-------------|
@@ -151,11 +151,11 @@ Computed only for **singleton hunks** (not part of any group).
 | `hunk.context_lines` | Unchanged context lines surrounding the change |
 | `hunk.change_balance` | Ratio of added lines to total changed lines (0.0 = pure deletion, 1.0 = pure addition) |
 
-### Group-level
+### Move-level
 
 | Metric | Description |
 |--------|-------------|
-| `group.edit_complexity` | Reviewability score for a connected hunk group. Pure moves score high; rewrites score low. Higher = easier to review. |
+| `move.edit_complexity` | Edit complexity score for a detected code move. Pure moves score high; rewrites score low. Higher = easier to review. |
 
 ### File-level
 
@@ -182,15 +182,15 @@ Computed only for **singleton hunks** (not part of any group).
 score = max(0, 1 − lines_changed / max_hunk_lines)
 ```
 
-### Group score
+### Move score
 
 ```
-penalty_per_line = (1 + group_similarity_penalty × (1 − similarity)) / max_group_lines
+penalty_per_line = (1 + move_similarity_penalty × (1 − similarity)) / max_move_lines
 score = max(0, 1 − length × penalty_per_line)
 ```
 
-`length` is the meaningful-line size of the largest hunk in the group. When similarity
-is high (pure move), the per-line penalty is close to `1/max_group_lines` — equivalent
+`length` is the meaningful-line size of the largest hunk in the move. When similarity
+is high (pure move), the per-line penalty is close to `1/max_move_lines` — equivalent
 to hunk scoring. When similarity is low (rewrite), the penalty grows proportionally,
 so the same number of lines scores worse.
 

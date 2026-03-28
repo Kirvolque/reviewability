@@ -2,9 +2,9 @@ import subprocess
 
 from unidiff import PatchSet
 
-from reviewability.diff.grouper import HunkGrouper
+from reviewability.diff.move_detector import MoveDetector
 from reviewability.diff.similarity_calculator import DiffSimilarityCalculator
-from reviewability.domain.models import Diff, FileDiff, GroupType, Hunk, HunkGroup, HunkType
+from reviewability.domain.models import Diff, FileDiff, Hunk, HunkType, Move, MoveType
 
 
 def parse_diff_text(diff_text: str) -> Diff:
@@ -35,22 +35,22 @@ def parse_diff_text(diff_text: str) -> Diff:
     ]
 
     all_hunks = [hunk for file in files for hunk in file.hunks]
-    groups = HunkGrouper(DiffSimilarityCalculator()).group(all_hunks)
-    _assign_hunk_types(all_hunks, groups)
-    grouped_ids = {id(h) for g in groups for h in g.hunks}
-    singleton_hunks = [h for h in all_hunks if id(h) not in grouped_ids]
-    return Diff(files=files, groups=groups, singleton_hunks=singleton_hunks)
+    moves = MoveDetector(DiffSimilarityCalculator()).detect(all_hunks)
+    _assign_hunk_types(all_hunks, moves)
+    move_ids = {id(h) for m in moves for h in m.hunks}
+    singleton_hunks = [h for h in all_hunks if id(h) not in move_ids]
+    return Diff(files=files, moves=moves, singleton_hunks=singleton_hunks)
 
 
-def _assign_hunk_types(all_hunks: list[Hunk], groups: list[HunkGroup]) -> None:
+def _assign_hunk_types(all_hunks: list[Hunk], moves: list[Move]) -> None:
     """Assign HunkType to every hunk in-place.
 
-    Called once in the reader after grouping, before the Diff is constructed.
-    Grouped hunks with GroupType.MOVED get HunkType.MOVE; all others in groups
+    Called once in the reader after move detection, before the Diff is constructed.
+    Hunks in moves with MoveType.PURE get HunkType.MOVE; all others in moves
     get HunkType.MIXED. Singleton hunks are classified by their line content.
     """
-    move_hunk_ids = {id(h) for g in groups if g.group_type == GroupType.MOVED for h in g.hunks}
-    mixed_hunk_ids = {id(h) for g in groups if g.group_type != GroupType.MOVED for h in g.hunks}
+    move_hunk_ids = {id(h) for m in moves if m.move_type == MoveType.PURE for h in m.hunks}
+    mixed_hunk_ids = {id(h) for m in moves if m.move_type != MoveType.PURE for h in m.hunks}
 
     for hunk in all_hunks:
         if id(hunk) in move_hunk_ids:

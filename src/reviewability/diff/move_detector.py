@@ -1,38 +1,38 @@
-"""Groups hunks that are logically connected (moves, rewrites, splits/merges)."""
+"""Detects hunks that are logically connected (moves, rewrites, splits/merges)."""
 
 from __future__ import annotations
 
 from dataclasses import dataclass
 
 from reviewability.diff.similarity_calculator import DiffSimilarityCalculator
-from reviewability.domain.models import GroupType, Hunk, HunkGroup
+from reviewability.domain.models import Hunk, Move, MoveType
 
-_MOVED_SIMILARITY_THRESHOLD = 0.9
+_PURE_SIMILARITY_THRESHOLD = 0.9
 
 # Filtered lines for a single hunk: (removed, added) after blank/import stripping.
 _HunkContent = tuple[list[str], list[str]]
 
 
 @dataclass(frozen=True)
-class HunkGrouper:
-    """Groups hunks that are logically connected by move-aware diff similarity.
+class MoveDetector:
+    """Detects hunks that are logically connected by move-aware diff similarity.
 
     Pairs deletion and insertion hunks using move_aware_similarity (threshold >= 0.3).
     Uses union-find to merge pairs into connected components.
-    Returns only multi-hunk groups; ungrouped (singleton) hunks are omitted.
+    Returns only multi-hunk moves; ungrouped (singleton) hunks are omitted.
     """
 
     similarity_calculator: DiffSimilarityCalculator
 
-    def group(self, hunks: list[Hunk]) -> list[HunkGroup]:
-        """Group hunks by move-aware diff similarity.
+    def detect(self, hunks: list[Hunk]) -> list[Move]:
+        """Detect moves by move-aware diff similarity.
 
         For every pair of hunks, computes move_aware_similarity between one hunk's
         removed lines and the other's added lines (and vice versa). Pairs with
         similarity >= 0.3 are candidates; greedy best-match selects the best
         non-overlapping pairs.
 
-        Returns list[HunkGroup] containing only multi-hunk groups; singletons are omitted.
+        Returns list[Move] containing only multi-hunk moves; singletons are omitted.
         """
         if not hunks:
             return []
@@ -50,8 +50,8 @@ class HunkGrouper:
             root = self._find(parent, i)
             similarity_by_root[root] = sim
 
-        root_to_group = self._assign_group_ids(parent, len(hunks))
-        return self._build_result(hunks, filtered, parent, root_to_group, similarity_by_root)
+        root_to_move = self._assign_move_ids(parent, len(hunks))
+        return self._build_result(hunks, filtered, parent, root_to_move, similarity_by_root)
 
     def _precompute_content(self, hunks: list[Hunk]) -> list[_HunkContent]:
         """Filter each hunk's lines once: strip blanks and import/package declarations."""
@@ -124,32 +124,32 @@ class HunkGrouper:
             parent[rx] = ry
         return parent
 
-    def _assign_group_ids(self, parent: dict[int, int], size: int) -> dict[int, int]:
-        """Assign unique group_id to each root."""
-        root_to_group: dict[int, int] = {}
-        next_group_id = 0
+    def _assign_move_ids(self, parent: dict[int, int], size: int) -> dict[int, int]:
+        """Assign unique move_id to each root."""
+        root_to_move: dict[int, int] = {}
+        next_move_id = 0
 
         for i in range(size):
             root = self._find(parent, i)
-            if root not in root_to_group:
-                root_to_group[root] = next_group_id
-                next_group_id += 1
+            if root not in root_to_move:
+                root_to_move[root] = next_move_id
+                next_move_id += 1
 
-        return root_to_group
+        return root_to_move
 
     def _build_result(
         self,
         hunks: list[Hunk],
         filtered: list[_HunkContent],
         parent: dict[int, int],
-        root_to_group: dict[int, int],
+        root_to_move: dict[int, int],
         similarity_by_root: dict[int, float],
-    ) -> list[HunkGroup]:
-        """Build HunkGroup list from union-find result.
+    ) -> list[Move]:
+        """Build Move list from union-find result.
 
-        Only multi-hunk groups are returned; singletons (ungrouped hunks) are omitted.
-        Multi-hunk groups get their group_id, stored similarity score, and length
-        (max meaningful-line size across the group's hunks).
+        Only multi-hunk moves are returned; singletons (ungrouped hunks) are omitted.
+        Multi-hunk moves get their move_id, stored similarity score, and length
+        (max meaningful-line size across the move's hunks).
         """
         buckets: dict[int, list[int]] = {}
         for i in range(len(hunks)):
@@ -157,14 +157,12 @@ class HunkGrouper:
             buckets.setdefault(root, []).append(i)
 
         return [
-            HunkGroup(
-                group_id=root_to_group[root],
+            Move(
+                move_id=root_to_move[root],
                 hunks=tuple(hunks[i] for i in indices),
                 similarity=(sim := similarity_by_root.get(root, 0.0)),
-                group_type=(
-                    GroupType.MOVED
-                    if sim >= _MOVED_SIMILARITY_THRESHOLD
-                    else GroupType.MOVED_MODIFIED
+                move_type=(
+                    MoveType.PURE if sim >= _PURE_SIMILARITY_THRESHOLD else MoveType.MODIFIED
                 ),
                 length=max(len(filtered[i][0]) + len(filtered[i][1]) for i in indices),
             )

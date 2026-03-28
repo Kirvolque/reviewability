@@ -13,7 +13,7 @@ class OverallAddedLines(OverallMetric):
 
     @override
     def calculate(
-        self, hunks: list[Analysis], files: list[Analysis], groups: list[Analysis]
+        self, hunks: list[Analysis], files: list[Analysis], moves: list[Analysis]
     ) -> MetricValue:
         value = sum(
             m.value for h in hunks if (m := h.metrics.metric("hunk.added_lines")) is not None

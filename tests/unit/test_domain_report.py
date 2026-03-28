@@ -174,7 +174,7 @@ def test_analysis_report_fields():
     oa = OverallAnalysis(metrics=MetricResults([]), score=1.0)
     ha = Analysis(subject=make_hunk(), metrics=MetricResults([]), score=0.8)
     fa = Analysis(subject=make_file(), metrics=MetricResults([]), score=0.9)
-    report = AnalysisReport(overall=oa, files=[fa], groups=[], hunks=[ha])
+    report = AnalysisReport(overall=oa, files=[fa], moves=[], hunks=[ha])
     assert report.overall == oa
     assert report.files == [fa]
     assert report.hunks == [ha]
@@ -182,14 +182,14 @@ def test_analysis_report_fields():
 
 def test_analysis_report_empty_files_and_hunks():
     oa = OverallAnalysis(metrics=MetricResults([]), score=1.0)
-    report = AnalysisReport(overall=oa, files=[], groups=[], hunks=[])
+    report = AnalysisReport(overall=oa, files=[], moves=[], hunks=[])
     assert report.files == []
     assert report.hunks == []
 
 
 def test_analysis_report_frozen():
     oa = OverallAnalysis(metrics=MetricResults([]), score=1.0)
-    report = AnalysisReport(overall=oa, files=[], groups=[], hunks=[])
+    report = AnalysisReport(overall=oa, files=[], moves=[], hunks=[])
     try:
         report.files = []  # type: ignore[misc]
         assert False, "Should have raised FrozenInstanceError"

@@ -43,7 +43,7 @@
       ]
     }
   ],
-  "groups": [],
+  "moves": [],
   "hunks": [
     {
       "file": "src/greeter.py",

@@ -1,14 +1,14 @@
 {
-  "score": 0.09,
+  "score": 0.45,
   "passed": false,
   "violations": [
-    "[ERROR] Overall score 0.09 is below the minimum of 0.5"
+    "[ERROR] Overall score 0.45 is below the minimum of 0.5"
   ],
   "recommendations": [
     {
       "location": "overall",
       "metric": "overall.lines_changed",
-      "value": 46,
+      "value": 28,
       "remediation": "Reduce patch size by splitting unrelated changes into separate commits."
     },
     {
@@ -19,7 +19,7 @@
     }
   ],
   "files_changed": 3,
-  "hunks_changed": 5,
+  "hunks_changed": 3,
   "overall": [
     {
       "name": "overall.files_changed",
@@ -27,11 +27,11 @@
     },
     {
       "name": "overall.lines_changed",
-      "value": 46
+      "value": 28
     },
     {
       "name": "overall.added_lines",
-      "value": 23
+      "value": 14
     },
     {
       "name": "overall.problematic_hunk_count",
@@ -78,15 +78,15 @@
       ]
     }
   ],
-  "groups": [
+  "moves": [
     {
-      "group_id": 0,
+      "move_id": 0,
       "hunk_count": 2,
-      "score": 0.64,
+      "score": 0.79,
       "metrics": [
         {
-          "name": "group.edit_complexity",
-          "value": 0.64
+          "name": "move.edit_complexity",
+          "value": 0.79
         }
       ]
     }
@@ -107,58 +107,6 @@
         {
           "name": "hunk.removed_lines",
           "value": 5
-        },
-        {
-          "name": "hunk.context_lines",
-          "value": 0
-        },
-        {
-          "name": "hunk.change_balance",
-          "value": 0.5
-        }
-      ]
-    },
-    {
-      "file": "src/processor.py",
-      "score": 0.8,
-      "metrics": [
-        {
-          "name": "hunk.lines_changed",
-          "value": 10
-        },
-        {
-          "name": "hunk.added_lines",
-          "value": 5
-        },
-        {
-          "name": "hunk.removed_lines",
-          "value": 5
-        },
-        {
-          "name": "hunk.context_lines",
-          "value": 0
-        },
-        {
-          "name": "hunk.change_balance",
-          "value": 0.5
-        }
-      ]
-    },
-    {
-      "file": "src/validator.py",
-      "score": 0.84,
-      "metrics": [
-        {
-          "name": "hunk.lines_changed",
-          "value": 8
-        },
-        {
-          "name": "hunk.added_lines",
-          "value": 4
-        },
-        {
-          "name": "hunk.removed_lines",
-          "value": 4
         },
         {
           "name": "hunk.context_lines",

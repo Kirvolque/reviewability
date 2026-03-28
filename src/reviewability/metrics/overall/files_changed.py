@@ -13,7 +13,7 @@ class OverallFilesChanged(OverallMetric):
 
     @override
     def calculate(
-        self, hunks: list[Analysis], files: list[Analysis], groups: list[Analysis]
+        self, hunks: list[Analysis], files: list[Analysis], moves: list[Analysis]
     ) -> MetricValue:
         return MetricValue(
             name=self.name,

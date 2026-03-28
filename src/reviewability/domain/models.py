@@ -3,7 +3,7 @@ from enum import Enum
 
 
 class HunkType(str, Enum):
-    """Classification for an individual hunk based on its content and group membership."""
+    """Classification for an individual hunk based on its content and move membership."""
 
     PURE_ADDITION = "pure_addition"
     PURE_DELETION = "pure_deletion"
@@ -11,11 +11,11 @@ class HunkType(str, Enum):
     MIXED = "mixed"
 
 
-class GroupType(str, Enum):
-    """Classification for a hunk group based on move-aware diff similarity."""
+class MoveType(str, Enum):
+    """Classification for a code move based on move-aware diff similarity."""
 
-    MOVED = "moved"
-    MOVED_MODIFIED = "moved_modified"
+    PURE = "pure"
+    MODIFIED = "modified"
 
 
 @dataclass(kw_only=True)
@@ -58,20 +58,20 @@ class FileDiff(DiffNode):
 
 
 @dataclass
-class HunkGroup(DiffNode):
-    """A logical group of two or more related hunks identified by the HunkGrouper.
+class Move(DiffNode):
+    """A logical group of two or more related hunks identified by the MoveDetector.
 
-    Hunks in the same group are likely connected (e.g. a code move or cross-hunk
-    rewrite). Ungrouped hunks are not included in any group.
+    Hunks in the same move are likely connected (e.g. a code move or cross-hunk
+    rewrite). Ungrouped hunks are not included in any move.
 
-    ``length`` is the meaningful-line size of the largest hunk in the group
+    ``length`` is the meaningful-line size of the largest hunk in the move
     (blank lines and import/package declarations excluded), computed at parse time.
     """
 
-    group_id: int | None
+    move_id: int | None
     hunks: tuple[Hunk, ...]
     similarity: float
-    group_type: GroupType
+    move_type: MoveType
     length: int
 
 
@@ -80,7 +80,7 @@ class Diff:
     """The complete diff (e.g. a pull request or branch comparison)."""
 
     files: list[FileDiff] = field(default_factory=list)
-    groups: list[HunkGroup] = field(default_factory=list)
+    moves: list[Move] = field(default_factory=list)
     singleton_hunks: list[Hunk] = field(default_factory=list)
 
     @property

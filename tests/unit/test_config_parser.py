@@ -10,6 +10,8 @@ hunk_score_threshold = 0.5
 file_score_threshold = 0.5
 max_diff_lines = 500
 max_hunk_lines = 50
+max_move_lines = 100
+move_similarity_penalty = 2.0
 min_overall_score = 0.7
 """
 
@@ -29,6 +31,8 @@ def test_parse_complete_config():
     assert config.file_score_threshold == 0.5
     assert config.max_diff_lines == 500
     assert config.max_hunk_lines == 50
+    assert config.max_move_lines == 100
+    assert config.move_similarity_penalty == 2.0
     assert config.min_overall_score == 0.7
 
 
@@ -38,6 +42,8 @@ hunk_score_threshold = 0.3
 file_score_threshold = 0.7
 max_diff_lines = 300
 max_hunk_lines = 80
+max_move_lines = 150
+move_similarity_penalty = 3.0
 min_overall_score = 0.6
 max_problematic_hunks = 5
 max_problematic_files = 3
@@ -47,6 +53,8 @@ max_problematic_files = 3
     assert config.file_score_threshold == 0.7
     assert config.max_diff_lines == 300
     assert config.max_hunk_lines == 80
+    assert config.max_move_lines == 150
+    assert config.move_similarity_penalty == 3.0
     assert config.min_overall_score == 0.6
     assert config.max_problematic_hunks == 5
     assert config.max_problematic_files == 3
@@ -58,6 +66,8 @@ def test_parse_no_path_returns_bundled_defaults():
     assert config.max_hunk_lines == 50
     assert config.hunk_score_threshold == 0.5
     assert config.min_overall_score == 0.7
+    assert config.max_move_lines == 100
+    assert config.move_similarity_penalty == 2.0
 
 
 def test_parse_nonexistent_path_returns_bundled_defaults():
@@ -72,6 +82,8 @@ hunk_score_threshold = 0.5
 file_score_threshold = 0.5
 max_diff_lines = 100
 max_hunk_lines = 50
+max_move_lines = 100
+move_similarity_penalty = 2.0
 unknown_key = "hello"
 """)
     config = parse_config(path)
@@ -84,6 +96,8 @@ hunk_score_threshold = 0.5
 file_score_threshold = 0.5
 max_diff_lines = 100
 max_hunk_lines = 50
+max_move_lines = 100
+move_similarity_penalty = 2.0
 
 [some_future_section]
 some_key = 42

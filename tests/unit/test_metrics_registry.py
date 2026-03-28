@@ -51,7 +51,9 @@ class _SimpleOverallMetric(OverallMetric):
     description = "A test overall metric"
     remediation = ""
 
-    def calculate(self, hunks: list[Analysis], files: list[Analysis]) -> MetricValue:
+    def calculate(
+        self, hunks: list[Analysis], files: list[Analysis], moves: list[Analysis]
+    ) -> MetricValue:
         return MetricValue(self.name, 0, self.value_type)
 
 
@@ -61,7 +63,9 @@ class _AnotherOverallMetric(OverallMetric):
     description = "Another overall metric"
     remediation = ""
 
-    def calculate(self, hunks: list[Analysis], files: list[Analysis]) -> MetricValue:
+    def calculate(
+        self, hunks: list[Analysis], files: list[Analysis], moves: list[Analysis]
+    ) -> MetricValue:
         return MetricValue(self.name, 0, self.value_type)
 
 

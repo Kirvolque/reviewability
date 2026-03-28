@@ -75,14 +75,14 @@ def main() -> None:
             }
             for f in report.files
         ]
-        output["groups"] = [
+        output["moves"] = [
             {
-                "group_id": g.subject.group_id,
-                "hunk_count": len(g.subject.hunks),
-                "score": round(g.score, 2),
-                "metrics": [{"name": m.name, "value": m.value} for m in g.metrics],
+                "move_id": m.subject.move_id,
+                "hunk_count": len(m.subject.hunks),
+                "score": round(m.score, 2),
+                "metrics": [{"name": mt.name, "value": mt.value} for mt in m.metrics],
             }
-            for g in report.groups
+            for m in report.moves
         ]
         output["hunks"] = [
             {

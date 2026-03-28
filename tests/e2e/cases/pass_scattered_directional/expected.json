@@ -133,7 +133,7 @@
       ]
     }
   ],
-  "groups": [],
+  "moves": [],
   "hunks": [
     {
       "file": "services/auth.py",

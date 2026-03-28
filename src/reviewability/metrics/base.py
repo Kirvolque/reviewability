@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 from reviewability.domain.metric import MetricValue, MetricValueType
-from reviewability.domain.models import FileDiff, Hunk, HunkGroup
+from reviewability.domain.models import FileDiff, Hunk, Move
 from reviewability.domain.report import Analysis
 
 
@@ -32,15 +32,15 @@ class FileMetric(Metric, ABC):
     def calculate(self, file: FileDiff) -> MetricValue: ...
 
 
-class GroupMetric(Metric, ABC):
-    """Calculates a metric for a single hunk group.
+class MoveMetric(Metric, ABC):
+    """Calculates a metric for a single code move.
 
-    Group metrics are second-order: they receive the pre-built ``HunkGroup``
+    Move metrics are second-order: they receive the pre-built ``Move``
     domain object and the hunk analyses that belong to it.
     """
 
     @abstractmethod
-    def calculate(self, group: HunkGroup, hunk_analyses: list[Analysis]) -> MetricValue: ...
+    def calculate(self, move: Move, hunk_analyses: list[Analysis]) -> MetricValue: ...
 
 
 class OverallMetric(Metric, ABC):
@@ -52,5 +52,5 @@ class OverallMetric(Metric, ABC):
 
     @abstractmethod
     def calculate(
-        self, hunks: list[Analysis], files: list[Analysis], groups: list[Analysis]
+        self, hunks: list[Analysis], files: list[Analysis], moves: list[Analysis]
     ) -> MetricValue: ...

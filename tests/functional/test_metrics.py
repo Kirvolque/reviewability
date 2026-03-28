@@ -85,11 +85,8 @@ def test_multi_file_change_report():
 
     assert len(report.overall.metrics) == 2
     assert len(report.files) == 2
-    assert len(report.hunks) == 2
+    # The two hunks are similar enough to be detected as a move; singletons are empty.
+    assert len(report.moves) == 1
+    assert len(report.moves[0].subject.hunks) == 2
+    assert len(report.hunks) == 0
     assert 0.0 <= report.overall.score <= 1.0
-
-    for hunk_analysis in report.hunks:
-        assert len(hunk_analysis.metrics) == 3
-        assert 0.0 <= hunk_analysis.score <= 1.0
-        metric_names = {m.name for m in hunk_analysis.metrics}
-        assert metric_names == {"hunk.lines_changed", "hunk.added_lines", "hunk.removed_lines"}

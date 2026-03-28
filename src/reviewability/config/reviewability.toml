@@ -11,12 +11,12 @@ max_diff_lines = 500
 # [mandatory] Maximum lines changed in a single hunk (used for score normalisation).
 max_hunk_lines = 50
 
-# [mandatory] Maximum meaningful lines in the largest hunk of a group (used for group score normalisation).
-max_group_lines = 100
+# [mandatory] Maximum meaningful lines in the largest hunk of a move (used for move score normalisation).
+max_move_lines = 100
 
-# [mandatory] How much low similarity amplifies the per-line penalty for group scoring.
-# penalty_per_line = (1 + group_similarity_penalty × (1 − similarity)) / max_group_lines
-group_similarity_penalty = 2.0
+# [mandatory] How much low similarity amplifies the per-line penalty for move scoring.
+# penalty_per_line = (1 + move_similarity_penalty × (1 − similarity)) / max_move_lines
+move_similarity_penalty = 2.0
 
 # [optional] Overall diff score below this causes the gate to fail.
 # Scores range from 0.0 (hardest to review) to 1.0 (easiest to review).

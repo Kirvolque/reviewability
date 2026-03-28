@@ -1,16 +1,10 @@
 {
-  "score": 0.36,
+  "score": 1.0,
   "passed": false,
   "violations": [
-    "[ERROR] Overall score 0.36 is below the minimum of 0.5"
+    "[ERROR] Diff touches 8 files, exceeds limit of 6"
   ],
   "recommendations": [
-    {
-      "location": "overall",
-      "metric": "overall.lines_changed",
-      "value": 32,
-      "remediation": "Reduce patch size by splitting unrelated changes into separate commits."
-    },
     {
       "location": "overall",
       "metric": "overall.scatter_factor",
@@ -19,7 +13,7 @@
     }
   ],
   "files_changed": 8,
-  "hunks_changed": 8,
+  "hunks_changed": 0,
   "overall": [
     {
       "name": "overall.files_changed",
@@ -27,11 +21,11 @@
     },
     {
       "name": "overall.lines_changed",
-      "value": 32
+      "value": 0
     },
     {
       "name": "overall.added_lines",
-      "value": 16
+      "value": 0
     },
     {
       "name": "overall.problematic_hunk_count",
@@ -128,260 +122,51 @@
       ]
     }
   ],
-  "groups": [
+  "moves": [
     {
-      "group_id": 0,
+      "move_id": 0,
       "hunk_count": 2,
-      "score": 0.84,
+      "score": 0.94,
       "metrics": [
         {
-          "name": "group.edit_complexity",
-          "value": 0.84
+          "name": "move.edit_complexity",
+          "value": 0.94
         }
       ]
     },
     {
-      "group_id": 1,
+      "move_id": 1,
       "hunk_count": 2,
-      "score": 0.84,
+      "score": 0.92,
       "metrics": [
         {
-          "name": "group.edit_complexity",
-          "value": 0.84
+          "name": "move.edit_complexity",
+          "value": 0.92
         }
       ]
     },
     {
-      "group_id": 2,
+      "move_id": 2,
       "hunk_count": 2,
-      "score": 0.84,
+      "score": 0.91,
       "metrics": [
         {
-          "name": "group.edit_complexity",
-          "value": 0.84
+          "name": "move.edit_complexity",
+          "value": 0.91
         }
       ]
     },
     {
-      "group_id": 3,
+      "move_id": 3,
       "hunk_count": 2,
-      "score": 0.84,
+      "score": 0.92,
       "metrics": [
         {
-          "name": "group.edit_complexity",
-          "value": 0.84
+          "name": "move.edit_complexity",
+          "value": 0.92
         }
       ]
     }
   ],
-  "hunks": [
-    {
-      "file": "services/auth.py",
-      "score": 0.92,
-      "metrics": [
-        {
-          "name": "hunk.lines_changed",
-          "value": 4
-        },
-        {
-          "name": "hunk.added_lines",
-          "value": 2
-        },
-        {
-          "name": "hunk.removed_lines",
-          "value": 2
-        },
-        {
-          "name": "hunk.context_lines",
-          "value": 0
-        },
-        {
-          "name": "hunk.change_balance",
-          "value": 0.5
-        }
-      ]
-    },
-    {
-      "file": "services/billing.py",
-      "score": 0.92,
-      "metrics": [
-        {
-          "name": "hunk.lines_changed",
-          "value": 4
-        },
-        {
-          "name": "hunk.added_lines",
-          "value": 2
-        },
-        {
-          "name": "hunk.removed_lines",
-          "value": 2
-        },
-        {
-          "name": "hunk.context_lines",
-          "value": 0
-        },
-        {
-          "name": "hunk.change_balance",
-          "value": 0.5
-        }
-      ]
-    },
-    {
-      "file": "services/email.py",
-      "score": 0.92,
-      "metrics": [
-        {
-          "name": "hunk.lines_changed",
-          "value": 4
-        },
-        {
-          "name": "hunk.added_lines",
-          "value": 2
-        },
-        {
-          "name": "hunk.removed_lines",
-          "value": 2
-        },
-        {
-          "name": "hunk.context_lines",
-          "value": 0
-        },
-        {
-          "name": "hunk.change_balance",
-          "value": 0.5
-        }
-      ]
-    },
-    {
-      "file": "services/search.py",
-      "score": 0.92,
-      "metrics": [
-        {
-          "name": "hunk.lines_changed",
-          "value": 4
-        },
-        {
-          "name": "hunk.added_lines",
-          "value": 2
-        },
-        {
-          "name": "hunk.removed_lines",
-          "value": 2
-        },
-        {
-          "name": "hunk.context_lines",
-          "value": 0
-        },
-        {
-          "name": "hunk.change_balance",
-          "value": 0.5
-        }
-      ]
-    },
-    {
-      "file": "services/cache.py",
-      "score": 0.92,
-      "metrics": [
-        {
-          "name": "hunk.lines_changed",
-          "value": 4
-        },
-        {
-          "name": "hunk.added_lines",
-          "value": 2
-        },
-        {
-          "name": "hunk.removed_lines",
-          "value": 2
-        },
-        {
-          "name": "hunk.context_lines",
-          "value": 0
-        },
-        {
-          "name": "hunk.change_balance",
-          "value": 0.5
-        }
-      ]
-    },
-    {
-      "file": "services/queue.py",
-      "score": 0.92,
-      "metrics": [
-        {
-          "name": "hunk.lines_changed",
-          "value": 4
-        },
-        {
-          "name": "hunk.added_lines",
-          "value": 2
-        },
-        {
-          "name": "hunk.removed_lines",
-          "value": 2
-        },
-        {
-          "name": "hunk.context_lines",
-          "value": 0
-        },
-        {
-          "name": "hunk.change_balance",
-          "value": 0.5
-        }
-      ]
-    },
-    {
-      "file": "services/storage.py",
-      "score": 0.92,
-      "metrics": [
-        {
-          "name": "hunk.lines_changed",
-          "value": 4
-        },
-        {
-          "name": "hunk.added_lines",
-          "value": 2
-        },
-        {
-          "name": "hunk.removed_lines",
-          "value": 2
-        },
-        {
-          "name": "hunk.context_lines",
-          "value": 0
-        },
-        {
-          "name": "hunk.change_balance",
-          "value": 0.5
-        }
-      ]
-    },
-    {
-      "file": "services/metrics.py",
-      "score": 0.92,
-      "metrics": [
-        {
-          "name": "hunk.lines_changed",
-          "value": 4
-        },
-        {
-          "name": "hunk.added_lines",
-          "value": 2
-        },
-        {
-          "name": "hunk.removed_lines",
-          "value": 2
-        },
-        {
-          "name": "hunk.context_lines",
-          "value": 0
-        },
-        {
-          "name": "hunk.change_balance",
-          "value": 0.5
-        }
-      ]
-    }
-  ]
+  "hunks": []
 }
