@@ -2,7 +2,7 @@
 
 import pytest
 
-from reviewability.domain.models import Hunk, HunkGroup
+from reviewability.domain.models import GroupType, Hunk, HunkGroup
 from reviewability.metrics.group.edit_complexity import GroupEditComplexity
 
 
@@ -12,7 +12,9 @@ def metric():
 
 
 def _make_group(hunks: list[Hunk], group_id: int | None = 0) -> HunkGroup:
-    return HunkGroup(group_id=group_id, hunks=tuple(hunks))
+    return HunkGroup(
+        group_id=group_id, hunks=tuple(hunks), similarity=0.0, group_type=GroupType.MOVED_MODIFIED
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -32,7 +34,7 @@ def test_metric_attributes(metric):
 
 def test_empty_group_returns_max_score(metric):
     """Empty group (no hunks) → score 1.0 (no complexity)."""
-    group = HunkGroup(group_id=None, hunks=())
+    group = HunkGroup(group_id=None, hunks=(), similarity=0.0, group_type=GroupType.MOVED_MODIFIED)
     result = metric.calculate(group, [])
     assert result.value == 1.0
 

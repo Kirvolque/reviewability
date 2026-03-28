@@ -7,11 +7,6 @@ _REQUIRED = {
     "file_score_threshold": 0.5,
     "max_diff_lines": 500,
     "max_hunk_lines": 50,
-    "rewrite_in_place_line_cost": 3.0,
-    "rewrite_moved_line_cost": 4.0,
-    "movement_hunk_min_lines": 8,
-    "movement_file_min_lines": 15,
-    "movement_similarity_threshold": 0.95,
 }
 
 
@@ -35,11 +30,6 @@ def test_custom_values():
         file_score_threshold=0.7,
         max_diff_lines=1000,
         max_hunk_lines=100,
-        rewrite_in_place_line_cost=2.5,
-        rewrite_moved_line_cost=3.5,
-        movement_hunk_min_lines=5,
-        movement_file_min_lines=10,
-        movement_similarity_threshold=0.9,
         max_problematic_hunks=5,
         max_problematic_files=4,
         min_overall_score=0.6,
@@ -50,8 +40,6 @@ def test_custom_values():
     assert config.max_problematic_hunks == 5
     assert config.max_problematic_files == 4
     assert config.max_hunk_lines == 100
-    assert config.rewrite_in_place_line_cost == 2.5
-    assert config.rewrite_moved_line_cost == 3.5
     assert config.min_overall_score == 0.6
 
 

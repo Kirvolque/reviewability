@@ -27,8 +27,6 @@ class OverallChurnComplexity(OverallMetric):
     ) -> MetricValue:
         mix_per_hunk: list[tuple[float, Analysis]] = []
         for h in hunks:
-            if h.subject.is_likely_moved:
-                continue
             mv = h.metrics.metric(HunkChangeBalance.name)
             if mv is not None:
                 mix = 1.0 - abs(2.0 * mv.value - 1.0)

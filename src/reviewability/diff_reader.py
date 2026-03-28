@@ -4,7 +4,7 @@ from unidiff import PatchSet
 
 from reviewability.diff.grouper import HunkGrouper
 from reviewability.diff.similarity_calculator import DiffSimilarityCalculator
-from reviewability.domain.models import Diff, FileDiff, Hunk, HunkGroup
+from reviewability.domain.models import Diff, FileDiff, Hunk
 
 
 def parse_diff_text(diff_text: str) -> Diff:
@@ -35,14 +35,7 @@ def parse_diff_text(diff_text: str) -> Diff:
     ]
 
     all_hunks = [hunk for file in files for hunk in file.hunks]
-    grouper_result = HunkGrouper(DiffSimilarityCalculator()).group(all_hunks)
-    groups: list[HunkGroup] = []
-    for gid, members in grouper_result.items():
-        if gid is None:
-            groups += [HunkGroup(group_id=None, hunks=(hunk,)) for hunk in members]
-        else:
-            groups.append(HunkGroup(group_id=gid, hunks=tuple(members)))
-
+    groups = HunkGrouper(DiffSimilarityCalculator()).group(all_hunks)
     return Diff(files=files, groups=groups)
 
 

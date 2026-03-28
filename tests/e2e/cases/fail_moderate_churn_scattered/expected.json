@@ -38,18 +38,6 @@
       "value": 20
     },
     {
-      "name": "overall.moved_lines",
-      "value": 0
-    },
-    {
-      "name": "overall.in_place_rewrite_lines",
-      "value": 0
-    },
-    {
-      "name": "overall.moved_rewrite_lines",
-      "value": 0
-    },
-    {
       "name": "overall.problematic_hunk_count",
       "value": 0
     },
@@ -71,7 +59,7 @@
     },
     {
       "name": "overall.edit_complexity",
-      "value": 0.8
+      "value": 0.67
     },
     {
       "name": "overall.scatter_factor",
@@ -102,18 +90,6 @@
         {
           "name": "file.max_hunk_lines",
           "value": 10
-        },
-        {
-          "name": "file.moved_lines",
-          "value": 0
-        },
-        {
-          "name": "file.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "file.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
@@ -140,18 +116,6 @@
         {
           "name": "file.max_hunk_lines",
           "value": 10
-        },
-        {
-          "name": "file.moved_lines",
-          "value": 0
-        },
-        {
-          "name": "file.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "file.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
@@ -178,18 +142,6 @@
         {
           "name": "file.max_hunk_lines",
           "value": 10
-        },
-        {
-          "name": "file.moved_lines",
-          "value": 0
-        },
-        {
-          "name": "file.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "file.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
@@ -216,18 +168,6 @@
         {
           "name": "file.max_hunk_lines",
           "value": 10
-        },
-        {
-          "name": "file.moved_lines",
-          "value": 0
-        },
-        {
-          "name": "file.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "file.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
@@ -254,31 +194,19 @@
         {
           "name": "file.max_hunk_lines",
           "value": 10
-        },
-        {
-          "name": "file.moved_lines",
-          "value": 0
-        },
-        {
-          "name": "file.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "file.moved_rewrite_lines",
-          "value": 0
         }
       ]
     }
   ],
   "groups": [
     {
-      "group_id": null,
-      "hunk_count": 1,
-      "score": 0.8,
+      "group_id": 0,
+      "hunk_count": 2,
+      "score": 0.6,
       "metrics": [
         {
           "name": "group.edit_complexity",
-          "value": 0.8
+          "value": 0.6
         }
       ]
     },
@@ -294,35 +222,13 @@
       ]
     },
     {
-      "group_id": null,
-      "hunk_count": 1,
-      "score": 0.8,
+      "group_id": 2,
+      "hunk_count": 2,
+      "score": 0.6,
       "metrics": [
         {
           "name": "group.edit_complexity",
-          "value": 0.8
-        }
-      ]
-    },
-    {
-      "group_id": null,
-      "hunk_count": 1,
-      "score": 0.8,
-      "metrics": [
-        {
-          "name": "group.edit_complexity",
-          "value": 0.8
-        }
-      ]
-    },
-    {
-      "group_id": null,
-      "hunk_count": 1,
-      "score": 0.8,
-      "metrics": [
-        {
-          "name": "group.edit_complexity",
-          "value": 0.8
+          "value": 0.6
         }
       ]
     }
@@ -351,18 +257,6 @@
         {
           "name": "hunk.change_balance",
           "value": 0.6
-        },
-        {
-          "name": "hunk.is_likely_moved",
-          "value": 0
-        },
-        {
-          "name": "hunk.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "hunk.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
@@ -389,18 +283,6 @@
         {
           "name": "hunk.change_balance",
           "value": 0.6
-        },
-        {
-          "name": "hunk.is_likely_moved",
-          "value": 0
-        },
-        {
-          "name": "hunk.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "hunk.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
@@ -427,18 +309,6 @@
         {
           "name": "hunk.change_balance",
           "value": 0.6
-        },
-        {
-          "name": "hunk.is_likely_moved",
-          "value": 0
-        },
-        {
-          "name": "hunk.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "hunk.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
@@ -465,18 +335,6 @@
         {
           "name": "hunk.change_balance",
           "value": 0.6
-        },
-        {
-          "name": "hunk.is_likely_moved",
-          "value": 0
-        },
-        {
-          "name": "hunk.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "hunk.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
@@ -503,18 +361,6 @@
         {
           "name": "hunk.change_balance",
           "value": 0.6
-        },
-        {
-          "name": "hunk.is_likely_moved",
-          "value": 0
-        },
-        {
-          "name": "hunk.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "hunk.moved_rewrite_lines",
-          "value": 0
         }
       ]
     }

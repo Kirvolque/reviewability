@@ -3,11 +3,11 @@ from dataclasses import dataclass, field
 from enum import Enum
 
 
-class HunkRewriteKind(str, Enum):
-    """Classification for a heavy rewrite detected between deletion/addition hunks."""
+class GroupType(str, Enum):
+    """Classification for a hunk group based on move-aware diff similarity."""
 
-    IN_PLACE_REWRITE = "in_place_rewrite"
-    MOVED_REWRITE = "moved_rewrite"
+    MOVED = "moved"
+    MOVED_MODIFIED = "moved_modified"
 
 
 @dataclass(kw_only=True)
@@ -27,9 +27,6 @@ class Hunk(DiffNode):
     added_lines: list[str] = field(default_factory=list)
     removed_lines: list[str] = field(default_factory=list)
     context_lines: list[str] = field(default_factory=list)
-    is_likely_moved: bool = False
-    # Optional enrichment output: detected heavy rewrite classification.
-    rewrite_kind: HunkRewriteKind | None = None
 
     @property
     def line_count(self) -> int:
@@ -89,6 +86,8 @@ class HunkGroup(DiffNode):
 
     group_id: int | None
     hunks: tuple[Hunk, ...]
+    similarity: float
+    group_type: GroupType
 
 
 @dataclass

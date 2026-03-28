@@ -22,21 +22,6 @@ class ReviewabilityConfig:
     max_hunk_lines: int
     """Maximum lines changed in a single hunk (used for score normalisation)."""
 
-    rewrite_in_place_line_cost: float
-    """Effective line cost for hunks classified as in-place complex rewrites."""
-
-    rewrite_moved_line_cost: float
-    """Effective line cost for hunks classified as moved complex rewrites."""
-
-    movement_hunk_min_lines: int
-    """Minimum content lines in a hunk to be considered for movement detection."""
-
-    movement_file_min_lines: int
-    """Minimum content lines in a file to be considered for movement detection."""
-
-    movement_similarity_threshold: float
-    """Fraction of lines that must match for two blocks to be classified as a movement."""
-
     min_overall_score: float | None = None
     """Overall diff score below this causes the gate to fail. Range [0.0, 1.0]."""
 

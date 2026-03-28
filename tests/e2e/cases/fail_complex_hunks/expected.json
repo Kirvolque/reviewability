@@ -1,15 +1,21 @@
 {
-  "score": 0.0,
+  "score": 0.05,
   "passed": false,
   "violations": [
-    "[ERROR] Overall score 0.00 is below the minimum of 0.5"
+    "[ERROR] Overall score 0.05 is below the minimum of 0.5"
   ],
   "recommendations": [
     {
-      "location": "src/processor.py @@ -15,5 +15,5 @@",
-      "metric": "hunk.in_place_rewrite_lines",
-      "value": 5,
-      "remediation": "Split the rewrite into smaller, easier-to-follow steps."
+      "location": "overall",
+      "metric": "overall.lines_changed",
+      "value": 48,
+      "remediation": "Reduce patch size by splitting unrelated changes into separate commits."
+    },
+    {
+      "location": "overall",
+      "metric": "overall.scatter_factor",
+      "value": 0.98,
+      "remediation": null
     }
   ],
   "files_changed": 3,
@@ -30,18 +36,6 @@
     {
       "name": "overall.removed_lines",
       "value": 24
-    },
-    {
-      "name": "overall.moved_lines",
-      "value": 0
-    },
-    {
-      "name": "overall.in_place_rewrite_lines",
-      "value": 5
-    },
-    {
-      "name": "overall.moved_rewrite_lines",
-      "value": 0
     },
     {
       "name": "overall.problematic_hunk_count",
@@ -65,7 +59,7 @@
     },
     {
       "name": "overall.edit_complexity",
-      "value": 0.82
+      "value": 0.77
     },
     {
       "name": "overall.scatter_factor",
@@ -75,7 +69,7 @@
   "files": [
     {
       "file": "src/processor.py",
-      "score": 0.7,
+      "score": 0.8,
       "metrics": [
         {
           "name": "file.hunk_count",
@@ -96,18 +90,6 @@
         {
           "name": "file.max_hunk_lines",
           "value": 10
-        },
-        {
-          "name": "file.moved_lines",
-          "value": 0
-        },
-        {
-          "name": "file.in_place_rewrite_lines",
-          "value": 5
-        },
-        {
-          "name": "file.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
@@ -134,18 +116,6 @@
         {
           "name": "file.max_hunk_lines",
           "value": 8
-        },
-        {
-          "name": "file.moved_lines",
-          "value": 0
-        },
-        {
-          "name": "file.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "file.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
@@ -172,42 +142,19 @@
         {
           "name": "file.max_hunk_lines",
           "value": 12
-        },
-        {
-          "name": "file.moved_lines",
-          "value": 0
-        },
-        {
-          "name": "file.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "file.moved_rewrite_lines",
-          "value": 0
         }
       ]
     }
   ],
   "groups": [
     {
-      "group_id": null,
-      "hunk_count": 1,
-      "score": 0.8,
+      "group_id": 0,
+      "hunk_count": 2,
+      "score": 0.64,
       "metrics": [
         {
           "name": "group.edit_complexity",
-          "value": 0.8
-        }
-      ]
-    },
-    {
-      "group_id": null,
-      "hunk_count": 1,
-      "score": 0.84,
-      "metrics": [
-        {
-          "name": "group.edit_complexity",
-          "value": 0.84
+          "value": 0.64
         }
       ]
     },
@@ -269,24 +216,12 @@
         {
           "name": "hunk.change_balance",
           "value": 0.5
-        },
-        {
-          "name": "hunk.is_likely_moved",
-          "value": 0
-        },
-        {
-          "name": "hunk.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "hunk.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
     {
       "file": "src/processor.py",
-      "score": 0.6,
+      "score": 0.8,
       "metrics": [
         {
           "name": "hunk.lines_changed",
@@ -307,18 +242,6 @@
         {
           "name": "hunk.change_balance",
           "value": 0.5
-        },
-        {
-          "name": "hunk.is_likely_moved",
-          "value": 0
-        },
-        {
-          "name": "hunk.in_place_rewrite_lines",
-          "value": 5
-        },
-        {
-          "name": "hunk.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
@@ -345,18 +268,6 @@
         {
           "name": "hunk.change_balance",
           "value": 0.5
-        },
-        {
-          "name": "hunk.is_likely_moved",
-          "value": 0
-        },
-        {
-          "name": "hunk.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "hunk.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
@@ -383,18 +294,6 @@
         {
           "name": "hunk.change_balance",
           "value": 0.5
-        },
-        {
-          "name": "hunk.is_likely_moved",
-          "value": 0
-        },
-        {
-          "name": "hunk.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "hunk.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
@@ -421,18 +320,6 @@
         {
           "name": "hunk.change_balance",
           "value": 0.5
-        },
-        {
-          "name": "hunk.is_likely_moved",
-          "value": 0
-        },
-        {
-          "name": "hunk.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "hunk.moved_rewrite_lines",
-          "value": 0
         }
       ]
     }

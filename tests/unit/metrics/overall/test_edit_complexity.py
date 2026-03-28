@@ -13,7 +13,14 @@ def metric():
 
 
 def _make_group_analysis(score: float) -> Analysis:
-    return Analysis(subject=HunkGroup(group_id=None, hunks=()), metrics=None, score=score)
+    from reviewability.domain.models import GroupType
+    return Analysis(
+        subject=HunkGroup(
+            group_id=None, hunks=(), similarity=0.0, group_type=GroupType.MOVED_MODIFIED
+        ),
+        metrics=None,
+        score=score,
+    )
 
 
 def test_metric_attributes(metric):

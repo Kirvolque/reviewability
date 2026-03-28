@@ -39,18 +39,6 @@
       "value": 4
     },
     {
-      "name": "overall.moved_lines",
-      "value": 0
-    },
-    {
-      "name": "overall.in_place_rewrite_lines",
-      "value": 0
-    },
-    {
-      "name": "overall.moved_rewrite_lines",
-      "value": 0
-    },
-    {
       "name": "overall.problematic_hunk_count",
       "value": 0
     },
@@ -72,7 +60,7 @@
     },
     {
       "name": "overall.edit_complexity",
-      "value": 0.88
+      "value": 0.76
     },
     {
       "name": "overall.scatter_factor",
@@ -103,18 +91,6 @@
         {
           "name": "file.max_hunk_lines",
           "value": 6
-        },
-        {
-          "name": "file.moved_lines",
-          "value": 0
-        },
-        {
-          "name": "file.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "file.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
@@ -141,42 +117,19 @@
         {
           "name": "file.max_hunk_lines",
           "value": 6
-        },
-        {
-          "name": "file.moved_lines",
-          "value": 0
-        },
-        {
-          "name": "file.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "file.moved_rewrite_lines",
-          "value": 0
         }
       ]
     }
   ],
   "groups": [
     {
-      "group_id": null,
-      "hunk_count": 1,
-      "score": 0.88,
+      "group_id": 0,
+      "hunk_count": 2,
+      "score": 0.76,
       "metrics": [
         {
           "name": "group.edit_complexity",
-          "value": 0.88
-        }
-      ]
-    },
-    {
-      "group_id": null,
-      "hunk_count": 1,
-      "score": 0.88,
-      "metrics": [
-        {
-          "name": "group.edit_complexity",
-          "value": 0.88
+          "value": 0.76
         }
       ]
     }
@@ -205,18 +158,6 @@
         {
           "name": "hunk.change_balance",
           "value": 0.67
-        },
-        {
-          "name": "hunk.is_likely_moved",
-          "value": 0
-        },
-        {
-          "name": "hunk.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "hunk.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
@@ -243,18 +184,6 @@
         {
           "name": "hunk.change_balance",
           "value": 0.67
-        },
-        {
-          "name": "hunk.is_likely_moved",
-          "value": 0
-        },
-        {
-          "name": "hunk.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "hunk.moved_rewrite_lines",
-          "value": 0
         }
       ]
     }

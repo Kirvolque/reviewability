@@ -100,12 +100,6 @@ def test_hunk_char_count_only_context():
     assert hunk.char_count == 5
 
 
-def test_hunk_enrichment_fields_are_mutable():
-    hunk = make_hunk(added=["a"])
-    hunk.is_likely_moved = True
-    assert hunk.is_likely_moved is True
-
-
 def test_hunk_fields():
     hunk = Hunk(
         file_path="foo.py",
@@ -233,11 +227,6 @@ def test_file_diff_is_mutable():
     f = make_file()
     f.path = "b.py"
     assert f.path == "b.py"
-
-
-def test_hunk_is_likely_moved_defaults_false():
-    hunk = make_hunk()
-    assert hunk.is_likely_moved is False
 
 
 # --- Diff tests ---

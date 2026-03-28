@@ -1,5 +1,5 @@
 {
-  "score": 0.95,
+  "score": 0.57,
   "passed": true,
   "violations": [],
   "recommendations": [],
@@ -23,20 +23,8 @@
       "value": 63
     },
     {
-      "name": "overall.moved_lines",
-      "value": 63
-    },
-    {
-      "name": "overall.in_place_rewrite_lines",
-      "value": 0
-    },
-    {
-      "name": "overall.moved_rewrite_lines",
-      "value": 0
-    },
-    {
       "name": "overall.problematic_hunk_count",
-      "value": 0
+      "value": 1
     },
     {
       "name": "overall.problematic_file_count",
@@ -52,7 +40,7 @@
     },
     {
       "name": "overall.churn_complexity",
-      "value": 0.88
+      "value": 0.13
     },
     {
       "name": "overall.edit_complexity",
@@ -66,7 +54,7 @@
   "files": [
     {
       "file": "models/user.py",
-      "score": 0.89,
+      "score": 0.96,
       "metrics": [
         {
           "name": "file.hunk_count",
@@ -87,24 +75,12 @@
         {
           "name": "file.max_hunk_lines",
           "value": 23
-        },
-        {
-          "name": "file.moved_lines",
-          "value": 0
-        },
-        {
-          "name": "file.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "file.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
     {
       "file": "domain/user.py",
-      "score": 1.0,
+      "score": 0.96,
       "metrics": [
         {
           "name": "file.hunk_count",
@@ -125,24 +101,12 @@
         {
           "name": "file.max_hunk_lines",
           "value": 25
-        },
-        {
-          "name": "file.moved_lines",
-          "value": 25
-        },
-        {
-          "name": "file.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "file.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
     {
       "file": "models/order.py",
-      "score": 0.88,
+      "score": 0.96,
       "metrics": [
         {
           "name": "file.hunk_count",
@@ -163,24 +127,12 @@
         {
           "name": "file.max_hunk_lines",
           "value": 25
-        },
-        {
-          "name": "file.moved_lines",
-          "value": 0
-        },
-        {
-          "name": "file.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "file.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
     {
       "file": "domain/order.py",
-      "score": 1.0,
+      "score": 0.95,
       "metrics": [
         {
           "name": "file.hunk_count",
@@ -201,24 +153,12 @@
         {
           "name": "file.max_hunk_lines",
           "value": 27
-        },
-        {
-          "name": "file.moved_lines",
-          "value": 27
-        },
-        {
-          "name": "file.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "file.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
     {
       "file": "services/user_service.py",
-      "score": 0.94,
+      "score": 0.98,
       "metrics": [
         {
           "name": "file.hunk_count",
@@ -239,24 +179,12 @@
         {
           "name": "file.max_hunk_lines",
           "value": 11
-        },
-        {
-          "name": "file.moved_lines",
-          "value": 0
-        },
-        {
-          "name": "file.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "file.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
     {
       "file": "utils/helpers.py",
-      "score": 1.0,
+      "score": 0.98,
       "metrics": [
         {
           "name": "file.hunk_count",
@@ -277,24 +205,12 @@
         {
           "name": "file.max_hunk_lines",
           "value": 11
-        },
-        {
-          "name": "file.moved_lines",
-          "value": 11
-        },
-        {
-          "name": "file.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "file.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
     {
       "file": "app/main.py",
-      "score": 0.95,
+      "score": 0.98,
       "metrics": [
         {
           "name": "file.hunk_count",
@@ -315,18 +231,6 @@
         {
           "name": "file.max_hunk_lines",
           "value": 9
-        },
-        {
-          "name": "file.moved_lines",
-          "value": 0
-        },
-        {
-          "name": "file.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "file.moved_rewrite_lines",
-          "value": 0
         }
       ]
     }
@@ -380,7 +284,7 @@
   "hunks": [
     {
       "file": "models/user.py",
-      "score": 1.0,
+      "score": 0.54,
       "metrics": [
         {
           "name": "hunk.lines_changed",
@@ -401,24 +305,12 @@
         {
           "name": "hunk.change_balance",
           "value": 0.0
-        },
-        {
-          "name": "hunk.is_likely_moved",
-          "value": 1
-        },
-        {
-          "name": "hunk.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "hunk.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
     {
       "file": "domain/user.py",
-      "score": 1.0,
+      "score": 0.5,
       "metrics": [
         {
           "name": "hunk.lines_changed",
@@ -439,24 +331,12 @@
         {
           "name": "hunk.change_balance",
           "value": 1.0
-        },
-        {
-          "name": "hunk.is_likely_moved",
-          "value": 1
-        },
-        {
-          "name": "hunk.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "hunk.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
     {
       "file": "models/order.py",
-      "score": 1.0,
+      "score": 0.5,
       "metrics": [
         {
           "name": "hunk.lines_changed",
@@ -477,24 +357,12 @@
         {
           "name": "hunk.change_balance",
           "value": 0.0
-        },
-        {
-          "name": "hunk.is_likely_moved",
-          "value": 1
-        },
-        {
-          "name": "hunk.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "hunk.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
     {
       "file": "domain/order.py",
-      "score": 1.0,
+      "score": 0.46,
       "metrics": [
         {
           "name": "hunk.lines_changed",
@@ -515,24 +383,12 @@
         {
           "name": "hunk.change_balance",
           "value": 1.0
-        },
-        {
-          "name": "hunk.is_likely_moved",
-          "value": 1
-        },
-        {
-          "name": "hunk.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "hunk.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
     {
       "file": "services/user_service.py",
-      "score": 1.0,
+      "score": 0.78,
       "metrics": [
         {
           "name": "hunk.lines_changed",
@@ -553,24 +409,12 @@
         {
           "name": "hunk.change_balance",
           "value": 0.0
-        },
-        {
-          "name": "hunk.is_likely_moved",
-          "value": 1
-        },
-        {
-          "name": "hunk.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "hunk.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
     {
       "file": "utils/helpers.py",
-      "score": 1.0,
+      "score": 0.78,
       "metrics": [
         {
           "name": "hunk.lines_changed",
@@ -591,18 +435,6 @@
         {
           "name": "hunk.change_balance",
           "value": 1.0
-        },
-        {
-          "name": "hunk.is_likely_moved",
-          "value": 1
-        },
-        {
-          "name": "hunk.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "hunk.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
@@ -629,18 +461,6 @@
         {
           "name": "hunk.change_balance",
           "value": 0.56
-        },
-        {
-          "name": "hunk.is_likely_moved",
-          "value": 0
-        },
-        {
-          "name": "hunk.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "hunk.moved_rewrite_lines",
-          "value": 0
         }
       ]
     }

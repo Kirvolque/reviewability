@@ -7,16 +7,16 @@
   ],
   "recommendations": [
     {
-      "location": "services/processor.py @@ -17,0 +2,17 @@",
-      "metric": "hunk.in_place_rewrite_lines",
-      "value": 17,
-      "remediation": "Split the rewrite into smaller, easier-to-follow steps."
+      "location": "overall",
+      "metric": "overall.lines_changed",
+      "value": 62,
+      "remediation": "Reduce patch size by splitting unrelated changes into separate commits."
     },
     {
-      "location": "domain/handler.py @@ -0,0 +1,16 @@",
-      "metric": "hunk.moved_rewrite_lines",
-      "value": 16,
-      "remediation": "Separate relocation from behavioural rewrites when possible."
+      "location": "overall",
+      "metric": "overall.scatter_factor",
+      "value": 0.93,
+      "remediation": null
     }
   ],
   "files_changed": 3,
@@ -39,24 +39,12 @@
       "value": 29
     },
     {
-      "name": "overall.moved_lines",
+      "name": "overall.problematic_hunk_count",
       "value": 0
     },
     {
-      "name": "overall.in_place_rewrite_lines",
-      "value": 17
-    },
-    {
-      "name": "overall.moved_rewrite_lines",
-      "value": 16
-    },
-    {
-      "name": "overall.problematic_hunk_count",
-      "value": 2
-    },
-    {
       "name": "overall.problematic_file_count",
-      "value": 2
+      "value": 1
     },
     {
       "name": "overall.change_entropy",
@@ -82,7 +70,7 @@
   "files": [
     {
       "file": "services/processor.py",
-      "score": 0.0,
+      "score": 0.36,
       "metrics": [
         {
           "name": "file.hunk_count",
@@ -103,18 +91,6 @@
         {
           "name": "file.max_hunk_lines",
           "value": 17
-        },
-        {
-          "name": "file.moved_lines",
-          "value": 0
-        },
-        {
-          "name": "file.in_place_rewrite_lines",
-          "value": 17
-        },
-        {
-          "name": "file.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
@@ -141,24 +117,12 @@
         {
           "name": "file.max_hunk_lines",
           "value": 14
-        },
-        {
-          "name": "file.moved_lines",
-          "value": 0
-        },
-        {
-          "name": "file.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "file.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
     {
       "file": "domain/handler.py",
-      "score": 0.0,
+      "score": 0.68,
       "metrics": [
         {
           "name": "file.hunk_count",
@@ -178,18 +142,6 @@
         },
         {
           "name": "file.max_hunk_lines",
-          "value": 16
-        },
-        {
-          "name": "file.moved_lines",
-          "value": 0
-        },
-        {
-          "name": "file.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "file.moved_rewrite_lines",
           "value": 16
         }
       ]
@@ -243,24 +195,12 @@
         {
           "name": "hunk.change_balance",
           "value": 0.0
-        },
-        {
-          "name": "hunk.is_likely_moved",
-          "value": 0
-        },
-        {
-          "name": "hunk.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "hunk.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
     {
       "file": "services/processor.py",
-      "score": 0.0,
+      "score": 0.66,
       "metrics": [
         {
           "name": "hunk.lines_changed",
@@ -281,18 +221,6 @@
         {
           "name": "hunk.change_balance",
           "value": 1.0
-        },
-        {
-          "name": "hunk.is_likely_moved",
-          "value": 0
-        },
-        {
-          "name": "hunk.in_place_rewrite_lines",
-          "value": 17
-        },
-        {
-          "name": "hunk.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
@@ -319,24 +247,12 @@
         {
           "name": "hunk.change_balance",
           "value": 0.0
-        },
-        {
-          "name": "hunk.is_likely_moved",
-          "value": 0
-        },
-        {
-          "name": "hunk.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "hunk.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
     {
       "file": "domain/handler.py",
-      "score": 0.0,
+      "score": 0.68,
       "metrics": [
         {
           "name": "hunk.lines_changed",
@@ -357,18 +273,6 @@
         {
           "name": "hunk.change_balance",
           "value": 1.0
-        },
-        {
-          "name": "hunk.is_likely_moved",
-          "value": 0
-        },
-        {
-          "name": "hunk.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "hunk.moved_rewrite_lines",
-          "value": 16
         }
       ]
     }

@@ -5,40 +5,47 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from reviewability.diff.similarity_calculator import DiffSimilarityCalculator
-from reviewability.domain.models import Hunk
+from reviewability.domain.models import GroupType, Hunk, HunkGroup
+
+_MOVED_SIMILARITY_THRESHOLD = 0.9
 
 
 @dataclass(frozen=True)
 class HunkGrouper:
-    """Assigns group IDs to hunks that are logically connected.
+    """Groups hunks that are logically connected by move-aware diff similarity.
 
-    Pairs deletion and insertion hunks by content similarity (threshold >= 0.3),
-    regardless of flags. Uses union-find to merge pairs into connected components.
-    Returns a dict mapping group_id -> list[Hunk], where singletons have group_id=None.
+    Pairs deletion and insertion hunks using move_aware_similarity (threshold >= 0.3).
+    Uses union-find to merge pairs into connected components.
+    Returns a list of HunkGroup objects; singletons have group_id=None and similarity=0.0.
     """
 
     similarity_calculator: DiffSimilarityCalculator
 
-    def group(self, hunks: list[Hunk]) -> dict[int | None, list[Hunk]]:
-        """Group hunks by connectivity using removed-vs-added line similarity.
+    def group(self, hunks: list[Hunk]) -> list[HunkGroup]:
+        """Group hunks by move-aware diff similarity.
 
-        For every pair of hunks, computes the similarity between one hunk's removed
-        lines and the other's added lines (and vice versa). Pairs with similarity >= 0.3
-        are candidates; greedy best-match selects the best non-overlapping pairs.
+        For every pair of hunks, computes move_aware_similarity between one hunk's
+        removed lines and the other's added lines (and vice versa). Pairs with
+        similarity >= 0.3 are candidates; greedy best-match selects the best
+        non-overlapping pairs.
 
-        Returns dict[group_id, list[Hunk]] where singletons have group_id=None.
+        Returns list[HunkGroup] where singletons have group_id=None and similarity=0.0.
         """
         if not hunks:
-            return {}
+            return []
 
         scored_pairs = self._score_all_pairs(hunks)
-        pairs = self._greedy_match(scored_pairs)
+        accepted_pairs = self._greedy_match(scored_pairs)
 
         parent = self._initialize_union_find(len(hunks))
-        parent = self._union_pairs(parent, pairs)
+        similarity_by_root: dict[int, float] = {}
+        for i, j, sim in accepted_pairs:
+            parent = self._union(parent, i, j)
+            root = self._find(parent, i)
+            similarity_by_root[root] = sim
 
         root_to_group = self._assign_group_ids(parent, len(hunks))
-        return self._build_result(hunks, parent, root_to_group)
+        return self._build_result(hunks, parent, root_to_group, similarity_by_root)
 
     def _score_all_pairs(self, hunks: list[Hunk]) -> list[tuple[float, int, int]]:
         """Score all hunk pairs by removed-vs-added line similarity.
@@ -59,41 +66,36 @@ class HunkGrouper:
         return scored
 
     def _pair_similarity(self, a: Hunk, b: Hunk) -> float:
-        """Return the highest cross-similarity between a and b's removed/added lines.
+        """Return the highest move-aware similarity between a and b's removed/added lines.
 
+        Lines are filtered through content_lines before comparison: blank lines and
+        import/package declarations are dropped, and indentation is stripped.
         Checks both directions: a.removed vs b.added, and b.removed vs a.added.
-        Guards against empty lists (which would score 1.0 via SequenceMatcher).
         """
-        sim_ab = (
-            self.similarity_calculator.pair_sequence_similarity(
-                id(a), id(b), a.removed_lines, b.added_lines
-            )
-            if a.removed_lines and b.added_lines
-            else 0.0
-        )
-        sim_ba = (
-            self.similarity_calculator.pair_sequence_similarity(
-                id(b), id(a), b.removed_lines, a.added_lines
-            )
-            if b.removed_lines and a.added_lines
-            else 0.0
-        )
+        calc = self.similarity_calculator
+        a_removed = calc.content_lines(a.removed_lines, a.file_path)
+        a_added = calc.content_lines(a.added_lines, a.file_path)
+        b_removed = calc.content_lines(b.removed_lines, b.file_path)
+        b_added = calc.content_lines(b.added_lines, b.file_path)
+        sim_ab = calc.move_aware_similarity(a_removed, b_added)
+        sim_ba = calc.move_aware_similarity(b_removed, a_added)
         return max(sim_ab, sim_ba)
 
     def _greedy_match(
         self,
         scored_pairs: list[tuple[float, int, int]],
-    ) -> list[tuple[int, int]]:
-        """Greedily select best unmatched pairs.
+    ) -> list[tuple[int, int, float]]:
+        """Greedily select best unmatched pairs, preserving the similarity score.
 
         Each hunk index appears in at most one accepted pair.
+        Returns list of (i, j, similarity).
         """
         matched: set[int] = set()
-        pairs: list[tuple[int, int]] = []
+        pairs: list[tuple[int, int, float]] = []
 
-        for _sim, i, j in scored_pairs:
+        for sim, i, j in scored_pairs:
             if i not in matched and j not in matched:
-                pairs.append((i, j))
+                pairs.append((i, j, sim))
                 matched.add(i)
                 matched.add(j)
 
@@ -102,14 +104,6 @@ class HunkGrouper:
     def _initialize_union_find(self, size: int) -> dict[int, int]:
         """Initialize union-find parent map where each index is its own root."""
         return {i: i for i in range(size)}
-
-    def _union_pairs(
-        self, parent: dict[int, int], pairs: list[tuple[int, int]]
-    ) -> dict[int, int]:
-        """Union all pairs of hunk indices using union-find."""
-        for i, j in pairs:
-            parent = self._union(parent, i, j)
-        return parent
 
     def _find(self, parent: dict[int, int], x: int) -> int:
         """Find root of x with path compression."""
@@ -144,25 +138,36 @@ class HunkGrouper:
         hunks: list[Hunk],
         parent: dict[int, int],
         root_to_group: dict[int, int],
-    ) -> dict[int | None, list[Hunk]]:
-        """Build final result dict grouping hunks by their root.
+        similarity_by_root: dict[int, float],
+    ) -> list[HunkGroup]:
+        """Build HunkGroup list from union-find result.
 
-        Singletons (group_size=1) map to None; multi-hunk groups get their group_id.
+        Singletons (group_size=1) get group_id=None and similarity=0.0.
+        Multi-hunk groups get their group_id and the stored similarity score.
         """
-        result: dict[int | None, list[Hunk]] = {}
-
+        buckets: dict[int, list[Hunk]] = {}
         for i, hunk in enumerate(hunks):
             root = self._find(parent, i)
-            group_id = root_to_group[root]
-            group_size = self._count_group_size(parent, root, len(hunks))
+            buckets.setdefault(root, []).append(hunk)
 
-            if group_size == 1:
-                result.setdefault(None, []).append(hunk)
+        groups: list[HunkGroup] = []
+        for root, members in buckets.items():
+            if len(members) == 1:
+                groups.append(
+                    HunkGroup(
+                        group_id=None,
+                        hunks=(members[0],),
+                        similarity=0.0,
+                        group_type=GroupType.MOVED_MODIFIED,
+                    )
+                )
             else:
-                result.setdefault(group_id, []).append(hunk)
+                gid = root_to_group[root]
+                sim = similarity_by_root.get(root, 0.0)
+                is_moved = sim >= _MOVED_SIMILARITY_THRESHOLD
+                gtype = GroupType.MOVED if is_moved else GroupType.MOVED_MODIFIED
+                groups.append(
+                    HunkGroup(group_id=gid, hunks=tuple(members), similarity=sim, group_type=gtype)
+                )
 
-        return result
-
-    def _count_group_size(self, parent: dict[int, int], root: int, size: int) -> int:
-        """Count the number of hunks in the group with the given root."""
-        return sum(1 for j in range(size) if self._find(parent, j) == root)
+        return groups

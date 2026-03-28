@@ -17,11 +17,6 @@ config = ReviewabilityConfig(
     file_score_threshold=0.5,
     max_diff_lines=500,
     max_hunk_lines=50,
-    rewrite_in_place_line_cost=3.0,
-    rewrite_moved_line_cost=4.0,
-    movement_hunk_min_lines=8,
-    movement_file_min_lines=15,
-    movement_similarity_threshold=0.95,
     max_problematic_hunks=3,
     max_problematic_files=2,
     min_overall_score=0.5,
@@ -76,11 +71,6 @@ def test_hunk_rule_uses_config_limit():
         file_score_threshold=0.5,
         max_diff_lines=500,
         max_hunk_lines=10,
-        rewrite_in_place_line_cost=3.0,
-        rewrite_moved_line_cost=4.0,
-        movement_hunk_min_lines=8,
-        movement_file_min_lines=15,
-        movement_similarity_threshold=0.95,
     )
     engine = RuleEngine(hunk_rules(custom))
     violations = engine.evaluate(make_context(**{"hunk.lines_changed": 11}))

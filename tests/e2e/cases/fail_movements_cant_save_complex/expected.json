@@ -1,8 +1,8 @@
 {
-  "score": 0.46,
+  "score": 0.0,
   "passed": false,
   "violations": [
-    "[ERROR] Overall score 0.46 is below the minimum of 0.5"
+    "[ERROR] Overall score 0.00 is below the minimum of 0.5"
   ],
   "recommendations": [
     {
@@ -38,18 +38,6 @@
       "value": 54
     },
     {
-      "name": "overall.moved_lines",
-      "value": 40
-    },
-    {
-      "name": "overall.in_place_rewrite_lines",
-      "value": 0
-    },
-    {
-      "name": "overall.moved_rewrite_lines",
-      "value": 0
-    },
-    {
       "name": "overall.problematic_hunk_count",
       "value": 0
     },
@@ -67,11 +55,11 @@
     },
     {
       "name": "overall.churn_complexity",
-      "value": 1.0
+      "value": 0.6
     },
     {
       "name": "overall.edit_complexity",
-      "value": 0.9
+      "value": 0.84
     },
     {
       "name": "overall.scatter_factor",
@@ -102,24 +90,12 @@
         {
           "name": "file.max_hunk_lines",
           "value": 18
-        },
-        {
-          "name": "file.moved_lines",
-          "value": 0
-        },
-        {
-          "name": "file.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "file.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
     {
       "file": "domain/service_a.py",
-      "score": 1.0,
+      "score": 0.83,
       "metrics": [
         {
           "name": "file.hunk_count",
@@ -140,18 +116,6 @@
         {
           "name": "file.max_hunk_lines",
           "value": 20
-        },
-        {
-          "name": "file.moved_lines",
-          "value": 20
-        },
-        {
-          "name": "file.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "file.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
@@ -178,24 +142,12 @@
         {
           "name": "file.max_hunk_lines",
           "value": 18
-        },
-        {
-          "name": "file.moved_lines",
-          "value": 0
-        },
-        {
-          "name": "file.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "file.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
     {
       "file": "domain/service_b.py",
-      "score": 1.0,
+      "score": 0.83,
       "metrics": [
         {
           "name": "file.hunk_count",
@@ -216,18 +168,6 @@
         {
           "name": "file.max_hunk_lines",
           "value": 20
-        },
-        {
-          "name": "file.moved_lines",
-          "value": 20
-        },
-        {
-          "name": "file.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "file.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
@@ -254,18 +194,6 @@
         {
           "name": "file.max_hunk_lines",
           "value": 6
-        },
-        {
-          "name": "file.moved_lines",
-          "value": 0
-        },
-        {
-          "name": "file.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "file.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
@@ -292,18 +220,6 @@
         {
           "name": "file.max_hunk_lines",
           "value": 6
-        },
-        {
-          "name": "file.moved_lines",
-          "value": 0
-        },
-        {
-          "name": "file.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "file.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
@@ -330,18 +246,6 @@
         {
           "name": "file.max_hunk_lines",
           "value": 6
-        },
-        {
-          "name": "file.moved_lines",
-          "value": 0
-        },
-        {
-          "name": "file.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "file.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
@@ -368,18 +272,6 @@
         {
           "name": "file.max_hunk_lines",
           "value": 6
-        },
-        {
-          "name": "file.moved_lines",
-          "value": 0
-        },
-        {
-          "name": "file.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "file.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
@@ -406,18 +298,6 @@
         {
           "name": "file.max_hunk_lines",
           "value": 6
-        },
-        {
-          "name": "file.moved_lines",
-          "value": 0
-        },
-        {
-          "name": "file.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "file.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
@@ -444,18 +324,6 @@
         {
           "name": "file.max_hunk_lines",
           "value": 6
-        },
-        {
-          "name": "file.moved_lines",
-          "value": 0
-        },
-        {
-          "name": "file.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "file.moved_rewrite_lines",
-          "value": 0
         }
       ]
     }
@@ -484,68 +352,35 @@
       ]
     },
     {
-      "group_id": null,
-      "hunk_count": 1,
-      "score": 0.88,
+      "group_id": 2,
+      "hunk_count": 2,
+      "score": 0.76,
       "metrics": [
         {
           "name": "group.edit_complexity",
-          "value": 0.88
+          "value": 0.76
         }
       ]
     },
     {
-      "group_id": null,
-      "hunk_count": 1,
-      "score": 0.88,
+      "group_id": 3,
+      "hunk_count": 2,
+      "score": 0.76,
       "metrics": [
         {
           "name": "group.edit_complexity",
-          "value": 0.88
+          "value": 0.76
         }
       ]
     },
     {
-      "group_id": null,
-      "hunk_count": 1,
-      "score": 0.88,
+      "group_id": 4,
+      "hunk_count": 2,
+      "score": 0.76,
       "metrics": [
         {
           "name": "group.edit_complexity",
-          "value": 0.88
-        }
-      ]
-    },
-    {
-      "group_id": null,
-      "hunk_count": 1,
-      "score": 0.88,
-      "metrics": [
-        {
-          "name": "group.edit_complexity",
-          "value": 0.88
-        }
-      ]
-    },
-    {
-      "group_id": null,
-      "hunk_count": 1,
-      "score": 0.88,
-      "metrics": [
-        {
-          "name": "group.edit_complexity",
-          "value": 0.88
-        }
-      ]
-    },
-    {
-      "group_id": null,
-      "hunk_count": 1,
-      "score": 0.88,
-      "metrics": [
-        {
-          "name": "group.edit_complexity",
-          "value": 0.88
+          "value": 0.76
         }
       ]
     }
@@ -553,7 +388,7 @@
   "hunks": [
     {
       "file": "models/service_a.py",
-      "score": 1.0,
+      "score": 0.64,
       "metrics": [
         {
           "name": "hunk.lines_changed",
@@ -574,24 +409,12 @@
         {
           "name": "hunk.change_balance",
           "value": 0.0
-        },
-        {
-          "name": "hunk.is_likely_moved",
-          "value": 1
-        },
-        {
-          "name": "hunk.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "hunk.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
     {
       "file": "domain/service_a.py",
-      "score": 1.0,
+      "score": 0.6,
       "metrics": [
         {
           "name": "hunk.lines_changed",
@@ -612,24 +435,12 @@
         {
           "name": "hunk.change_balance",
           "value": 1.0
-        },
-        {
-          "name": "hunk.is_likely_moved",
-          "value": 1
-        },
-        {
-          "name": "hunk.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "hunk.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
     {
       "file": "models/service_b.py",
-      "score": 1.0,
+      "score": 0.64,
       "metrics": [
         {
           "name": "hunk.lines_changed",
@@ -650,24 +461,12 @@
         {
           "name": "hunk.change_balance",
           "value": 0.0
-        },
-        {
-          "name": "hunk.is_likely_moved",
-          "value": 1
-        },
-        {
-          "name": "hunk.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "hunk.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
     {
       "file": "domain/service_b.py",
-      "score": 1.0,
+      "score": 0.6,
       "metrics": [
         {
           "name": "hunk.lines_changed",
@@ -688,18 +487,6 @@
         {
           "name": "hunk.change_balance",
           "value": 1.0
-        },
-        {
-          "name": "hunk.is_likely_moved",
-          "value": 1
-        },
-        {
-          "name": "hunk.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "hunk.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
@@ -726,18 +513,6 @@
         {
           "name": "hunk.change_balance",
           "value": 0.5
-        },
-        {
-          "name": "hunk.is_likely_moved",
-          "value": 0
-        },
-        {
-          "name": "hunk.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "hunk.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
@@ -764,18 +539,6 @@
         {
           "name": "hunk.change_balance",
           "value": 0.5
-        },
-        {
-          "name": "hunk.is_likely_moved",
-          "value": 0
-        },
-        {
-          "name": "hunk.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "hunk.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
@@ -802,18 +565,6 @@
         {
           "name": "hunk.change_balance",
           "value": 0.5
-        },
-        {
-          "name": "hunk.is_likely_moved",
-          "value": 0
-        },
-        {
-          "name": "hunk.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "hunk.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
@@ -840,18 +591,6 @@
         {
           "name": "hunk.change_balance",
           "value": 0.5
-        },
-        {
-          "name": "hunk.is_likely_moved",
-          "value": 0
-        },
-        {
-          "name": "hunk.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "hunk.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
@@ -878,18 +617,6 @@
         {
           "name": "hunk.change_balance",
           "value": 0.5
-        },
-        {
-          "name": "hunk.is_likely_moved",
-          "value": 0
-        },
-        {
-          "name": "hunk.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "hunk.moved_rewrite_lines",
-          "value": 0
         }
       ]
     },
@@ -916,18 +643,6 @@
         {
           "name": "hunk.change_balance",
           "value": 0.5
-        },
-        {
-          "name": "hunk.is_likely_moved",
-          "value": 0
-        },
-        {
-          "name": "hunk.in_place_rewrite_lines",
-          "value": 0
-        },
-        {
-          "name": "hunk.moved_rewrite_lines",
-          "value": 0
         }
       ]
     }

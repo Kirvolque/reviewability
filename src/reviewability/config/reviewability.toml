@@ -13,7 +13,6 @@ max_hunk_lines = 50
 
 # [optional] Overall diff score below this causes the gate to fail.
 # Scores range from 0.0 (hardest to review) to 1.0 (easiest to review).
-# Provisional threshold based on calibration data — may be adjusted.
 min_overall_score = 0.7
 
 # [optional] Maximum number of problematic hunks allowed before a violation is raised.
@@ -30,22 +29,3 @@ max_files_changed = 10
 
 # [optional] Maximum total added lines across the diff before an error is raised.
 max_added_lines = 400
-
-[rewrite_scoring]
-
-# [mandatory] Effective line cost for a complex rewrite that stays in the same local area.
-in_place_line_cost = 3.0
-
-# [mandatory] Effective line cost for a complex rewrite that also changes location.
-moved_line_cost = 4.0
-
-[movement_detection]
-
-# [mandatory] Minimum content lines in a hunk to be considered for movement detection.
-hunk_min_lines = 8
-
-# [mandatory] Minimum content lines in a file to be considered for movement detection.
-file_min_lines = 15
-
-# [mandatory] Fraction of lines that must match for two blocks to be classified as a movement.
-similarity_threshold = 0.95
