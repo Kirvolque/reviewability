@@ -16,7 +16,7 @@ class HunkGrouper:
 
     Pairs deletion and insertion hunks using move_aware_similarity (threshold >= 0.3).
     Uses union-find to merge pairs into connected components.
-    Returns a list of HunkGroup objects; singletons have group_id=None and similarity=0.0.
+    Returns only multi-hunk groups; ungrouped (singleton) hunks are omitted.
     """
 
     similarity_calculator: DiffSimilarityCalculator
@@ -29,7 +29,7 @@ class HunkGrouper:
         similarity >= 0.3 are candidates; greedy best-match selects the best
         non-overlapping pairs.
 
-        Returns list[HunkGroup] where singletons have group_id=None and similarity=0.0.
+        Returns list[HunkGroup] containing only multi-hunk groups; singletons are omitted.
         """
         if not hunks:
             return []
@@ -142,7 +142,7 @@ class HunkGrouper:
     ) -> list[HunkGroup]:
         """Build HunkGroup list from union-find result.
 
-        Singletons (group_size=1) get group_id=None and similarity=0.0.
+        Only multi-hunk groups are returned; singletons (ungrouped hunks) are omitted.
         Multi-hunk groups get their group_id and the stored similarity score.
         """
         buckets: dict[int, list[Hunk]] = {}
@@ -150,24 +150,17 @@ class HunkGrouper:
             root = self._find(parent, i)
             buckets.setdefault(root, []).append(hunk)
 
-        groups: list[HunkGroup] = []
-        for root, members in buckets.items():
-            if len(members) == 1:
-                groups.append(
-                    HunkGroup(
-                        group_id=None,
-                        hunks=(members[0],),
-                        similarity=0.0,
-                        group_type=GroupType.MOVED_MODIFIED,
-                    )
-                )
-            else:
-                gid = root_to_group[root]
-                sim = similarity_by_root.get(root, 0.0)
-                is_moved = sim >= _MOVED_SIMILARITY_THRESHOLD
-                gtype = GroupType.MOVED if is_moved else GroupType.MOVED_MODIFIED
-                groups.append(
-                    HunkGroup(group_id=gid, hunks=tuple(members), similarity=sim, group_type=gtype)
-                )
-
-        return groups
+        return [
+            HunkGroup(
+                group_id=root_to_group[root],
+                hunks=tuple(members),
+                similarity=(sim := similarity_by_root.get(root, 0.0)),
+                group_type=(
+                    GroupType.MOVED
+                    if sim >= _MOVED_SIMILARITY_THRESHOLD
+                    else GroupType.MOVED_MODIFIED
+                ),
+            )
+            for root, members in buckets.items()
+            if len(members) > 1
+        ]

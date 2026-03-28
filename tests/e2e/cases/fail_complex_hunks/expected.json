@@ -59,7 +59,7 @@
     },
     {
       "name": "overall.edit_complexity",
-      "value": 0.77
+      "value": 0.64
     },
     {
       "name": "overall.scatter_factor",
@@ -155,39 +155,6 @@
         {
           "name": "group.edit_complexity",
           "value": 0.64
-        }
-      ]
-    },
-    {
-      "group_id": null,
-      "hunk_count": 1,
-      "score": 0.84,
-      "metrics": [
-        {
-          "name": "group.edit_complexity",
-          "value": 0.84
-        }
-      ]
-    },
-    {
-      "group_id": null,
-      "hunk_count": 1,
-      "score": 0.84,
-      "metrics": [
-        {
-          "name": "group.edit_complexity",
-          "value": 0.84
-        }
-      ]
-    },
-    {
-      "group_id": null,
-      "hunk_count": 1,
-      "score": 0.76,
-      "metrics": [
-        {
-          "name": "group.edit_complexity",
-          "value": 0.76
         }
       ]
     }

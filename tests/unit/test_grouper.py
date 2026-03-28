@@ -12,10 +12,6 @@ def grouper():
     return HunkGrouper(DiffSimilarityCalculator())
 
 
-def singletons(groups: list[HunkGroup]) -> list[HunkGroup]:
-    return [g for g in groups if g.group_id is None]
-
-
 def paired(groups: list[HunkGroup]) -> list[HunkGroup]:
     return [g for g in groups if g.group_id is not None]
 
@@ -31,8 +27,8 @@ def test_empty_hunks(grouper):
     assert result == []
 
 
-def test_single_hunk_is_singleton(grouper):
-    """Single isolated hunk produces a singleton group."""
+def test_single_hunk_produces_no_groups(grouper):
+    """Single isolated hunk produces no groups (singletons are omitted)."""
     hunk = Hunk(
         file_path="test.py",
         source_start=1, source_length=5,
@@ -41,9 +37,7 @@ def test_single_hunk_is_singleton(grouper):
         removed_lines=["c"],
     )
     result = grouper.group([hunk])
-    assert len(result) == 1
-    assert result[0].group_id is None
-    assert result[0].hunks == (hunk,)
+    assert result == []
 
 
 # ---------------------------------------------------------------------------
@@ -74,11 +68,7 @@ def test_identical_additions_are_not_grouped(grouper):
 
     result = grouper.group([add1, add2])
 
-    assert len(singletons(result)) == 2
-    assert len(paired(result)) == 0
-    all_hunk_members = [g.hunks[0] for g in singletons(result)]
-    assert add1 in all_hunk_members
-    assert add2 in all_hunk_members
+    assert result == []
 
 
 def test_identical_deletions_are_not_grouped(grouper):
@@ -104,8 +94,7 @@ def test_identical_deletions_are_not_grouped(grouper):
 
     result = grouper.group([del1, del2])
 
-    assert len(singletons(result)) == 2
-    assert len(paired(result)) == 0
+    assert result == []
 
 
 def test_deletion_identical_to_addition_is_grouped(grouper):
@@ -197,7 +186,7 @@ def test_mixed_hunk_groups_with_similar_counterpart(grouper):
 
 
 def test_mixed_hunks_and_singletons(grouper):
-    """Mix of grouped and singleton hunks."""
+    """Mix of grouped and singleton hunks — only the group is returned."""
     content = ["a" * 10, "b" * 10, "c" * 10, "d" * 10, "e" * 10, "f" * 10, "g" * 10, "h" * 10]
 
     del_hunk = Hunk(
@@ -222,17 +211,14 @@ def test_mixed_hunks_and_singletons(grouper):
 
     result = grouper.group([del_hunk, add_hunk, isolated_hunk])
 
-    assert len(singletons(result)) == 1
-    assert singletons(result)[0].hunks == (isolated_hunk,)
-
-    assert len(paired(result)) == 1
-    group = paired(result)[0]
+    assert len(result) == 1
+    group = result[0]
     assert len(group.hunks) == 2
     assert del_hunk in group.hunks
     assert add_hunk in group.hunks
 
 
-def test_unrelated_hunks_are_singletons(grouper):
+def test_unrelated_hunks_produce_no_groups(grouper):
     """Hunks with completely different content on both sides are never grouped."""
     hunk1 = Hunk(
         file_path="test.py",
@@ -251,8 +237,7 @@ def test_unrelated_hunks_are_singletons(grouper):
 
     result = grouper.group([hunk1, hunk2])
 
-    assert len(singletons(result)) == 2
-    assert len(paired(result)) == 0
+    assert result == []
 
 
 # ---------------------------------------------------------------------------
@@ -288,21 +273,7 @@ def test_paired_group_has_high_similarity_for_identical_content(grouper):
     assert group.group_type == GroupType.MOVED
 
 
-def test_singleton_has_zero_similarity_and_edit_type(grouper):
-    """Singleton groups always have similarity=0.0 and GroupType.MOVED_MODIFIED."""
-    hunk = Hunk(
-        file_path="test.py",
-        source_start=1, source_length=3,
-        target_start=1, target_length=3,
-        added_lines=["something new\n"],
-        removed_lines=["something old\n"],
-    )
-    result = grouper.group([hunk])
-    assert result[0].similarity == 0.0
-    assert result[0].group_type == GroupType.MOVED_MODIFIED
-
-
-def test_low_similarity_pair_has_edit_type(grouper):
+def test_low_similarity_pair_has_moved_modified_type(grouper):
     """A grouped pair with similarity below MOVED threshold gets GroupType.MOVED_MODIFIED."""
     content_del = ["def compute(x):\n", "    return x * 2\n", "    pass\n"]
     content_add = ["def transform(z):\n", "    result = z + 99\n", "    return result\n"]

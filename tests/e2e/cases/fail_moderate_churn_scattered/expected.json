@@ -59,7 +59,7 @@
     },
     {
       "name": "overall.edit_complexity",
-      "value": 0.67
+      "value": 0.6
     },
     {
       "name": "overall.scatter_factor",
@@ -207,17 +207,6 @@
         {
           "name": "group.edit_complexity",
           "value": 0.6
-        }
-      ]
-    },
-    {
-      "group_id": null,
-      "hunk_count": 1,
-      "score": 0.8,
-      "metrics": [
-        {
-          "name": "group.edit_complexity",
-          "value": 0.8
         }
       ]
     },

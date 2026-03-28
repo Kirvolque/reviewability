@@ -59,7 +59,7 @@
     },
     {
       "name": "overall.edit_complexity",
-      "value": 0.9
+      "value": 1.0
     },
     {
       "name": "overall.scatter_factor",
@@ -328,118 +328,7 @@
       ]
     }
   ],
-  "groups": [
-    {
-      "group_id": null,
-      "hunk_count": 1,
-      "score": 0.9,
-      "metrics": [
-        {
-          "name": "group.edit_complexity",
-          "value": 0.9
-        }
-      ]
-    },
-    {
-      "group_id": null,
-      "hunk_count": 1,
-      "score": 0.9,
-      "metrics": [
-        {
-          "name": "group.edit_complexity",
-          "value": 0.9
-        }
-      ]
-    },
-    {
-      "group_id": null,
-      "hunk_count": 1,
-      "score": 0.9,
-      "metrics": [
-        {
-          "name": "group.edit_complexity",
-          "value": 0.9
-        }
-      ]
-    },
-    {
-      "group_id": null,
-      "hunk_count": 1,
-      "score": 0.9,
-      "metrics": [
-        {
-          "name": "group.edit_complexity",
-          "value": 0.9
-        }
-      ]
-    },
-    {
-      "group_id": null,
-      "hunk_count": 1,
-      "score": 0.9,
-      "metrics": [
-        {
-          "name": "group.edit_complexity",
-          "value": 0.9
-        }
-      ]
-    },
-    {
-      "group_id": null,
-      "hunk_count": 1,
-      "score": 0.9,
-      "metrics": [
-        {
-          "name": "group.edit_complexity",
-          "value": 0.9
-        }
-      ]
-    },
-    {
-      "group_id": null,
-      "hunk_count": 1,
-      "score": 0.9,
-      "metrics": [
-        {
-          "name": "group.edit_complexity",
-          "value": 0.9
-        }
-      ]
-    },
-    {
-      "group_id": null,
-      "hunk_count": 1,
-      "score": 0.9,
-      "metrics": [
-        {
-          "name": "group.edit_complexity",
-          "value": 0.9
-        }
-      ]
-    },
-    {
-      "group_id": null,
-      "hunk_count": 1,
-      "score": 0.9,
-      "metrics": [
-        {
-          "name": "group.edit_complexity",
-          "value": 0.9
-        }
-      ]
-    },
-    {
-      "group_id": null,
-      "hunk_count": 1,
-      "score": 0.9,
-      "metrics": [
-        {
-          "name": "group.edit_complexity",
-          "value": 0.9
-        }
-      ]
-    }
-  ],
+  "groups": [],
   "hunks": [
     {
       "file": "services/auth.py",
