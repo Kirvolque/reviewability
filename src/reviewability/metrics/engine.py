@@ -20,9 +20,7 @@ class MetricEngine:
 
     def run(self, diff: Diff) -> AnalysisReport:
         """Run all registered metrics against the diff and return a fully computed report."""
-        hunk_analyses = [
-            self._build_hunk_analysis(hunk) for file in diff.files for hunk in file.hunks
-        ]
+        hunk_analyses = [self._build_hunk_analysis(hunk) for hunk in diff.singleton_hunks]
         file_analyses = [self._build_file_analysis(file) for file in diff.files]
         group_analyses = [self._build_group_analysis(g, hunk_analyses) for g in diff.groups]
 

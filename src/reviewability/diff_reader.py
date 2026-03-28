@@ -37,7 +37,9 @@ def parse_diff_text(diff_text: str) -> Diff:
     all_hunks = [hunk for file in files for hunk in file.hunks]
     groups = HunkGrouper(DiffSimilarityCalculator()).group(all_hunks)
     _assign_hunk_types(all_hunks, groups)
-    return Diff(files=files, groups=groups)
+    grouped_ids = {id(h) for g in groups for h in g.hunks}
+    singleton_hunks = [h for h in all_hunks if id(h) not in grouped_ids]
+    return Diff(files=files, groups=groups, singleton_hunks=singleton_hunks)
 
 
 def _assign_hunk_types(all_hunks: list[Hunk], groups: list[HunkGroup]) -> None:

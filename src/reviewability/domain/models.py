@@ -63,12 +63,16 @@ class HunkGroup(DiffNode):
 
     Hunks in the same group are likely connected (e.g. a code move or cross-hunk
     rewrite). Ungrouped hunks are not included in any group.
+
+    ``length`` is the meaningful-line size of the largest hunk in the group
+    (blank lines and import/package declarations excluded), computed at parse time.
     """
 
     group_id: int | None
     hunks: tuple[Hunk, ...]
     similarity: float
     group_type: GroupType
+    length: int
 
 
 @dataclass
@@ -77,6 +81,7 @@ class Diff:
 
     files: list[FileDiff] = field(default_factory=list)
     groups: list[HunkGroup] = field(default_factory=list)
+    singleton_hunks: list[Hunk] = field(default_factory=list)
 
     @property
     def all_hunks(self) -> list[Hunk]:

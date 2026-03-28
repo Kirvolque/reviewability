@@ -74,7 +74,7 @@ def create_analyzer(config: ReviewabilityConfig) -> Analyzer:
         OverallProblematicHunkCount(config.hunk_score_threshold),
         OverallProblematicFileCount(config.file_score_threshold),
         OverallScatterFactor(),
-        GroupEditComplexity(),
+        GroupEditComplexity(config.max_group_lines, config.group_similarity_penalty),
     ]:
         registry.add(metric)
 

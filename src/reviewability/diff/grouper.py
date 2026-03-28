@@ -9,6 +9,9 @@ from reviewability.domain.models import GroupType, Hunk, HunkGroup
 
 _MOVED_SIMILARITY_THRESHOLD = 0.9
 
+# Filtered lines for a single hunk: (removed, added) after blank/import stripping.
+_HunkContent = tuple[list[str], list[str]]
+
 
 @dataclass(frozen=True)
 class HunkGrouper:
@@ -34,7 +37,10 @@ class HunkGrouper:
         if not hunks:
             return []
 
-        scored_pairs = self._score_all_pairs(hunks)
+        # Pre-compute filtered lines once per hunk — meaningful_lines is not cheap.
+        filtered = self._precompute_content(hunks)
+
+        scored_pairs = self._score_all_pairs(filtered)
         accepted_pairs = self._greedy_match(scored_pairs)
 
         parent = self._initialize_union_find(len(hunks))
@@ -45,41 +51,41 @@ class HunkGrouper:
             similarity_by_root[root] = sim
 
         root_to_group = self._assign_group_ids(parent, len(hunks))
-        return self._build_result(hunks, parent, root_to_group, similarity_by_root)
+        return self._build_result(hunks, filtered, parent, root_to_group, similarity_by_root)
 
-    def _score_all_pairs(self, hunks: list[Hunk]) -> list[tuple[float, int, int]]:
-        """Score all hunk pairs by removed-vs-added line similarity.
+    def _precompute_content(self, hunks: list[Hunk]) -> list[_HunkContent]:
+        """Filter each hunk's lines once: strip blanks and import/package declarations."""
+        calc = self.similarity_calculator
+        return [
+            (
+                calc.content_lines(h.removed_lines, h.file_path),
+                calc.content_lines(h.added_lines, h.file_path),
+            )
+            for h in hunks
+        ]
+
+    def _score_all_pairs(self, filtered: list[_HunkContent]) -> list[tuple[float, int, int]]:
+        """Score all hunk pairs using pre-filtered lines.
 
         For each pair (i, j) computes max(sim(i.removed, j.added), sim(j.removed, i.added)).
         Empty line lists produce 0.0, so two pure additions or two pure deletions never pair.
         Returns list of (similarity, i, j) with i < j, sorted descending by similarity.
         """
+        calc = self.similarity_calculator
         scored: list[tuple[float, int, int]] = []
 
-        for i in range(len(hunks)):
-            for j in range(i + 1, len(hunks)):
-                sim = self._pair_similarity(hunks[i], hunks[j])
+        for i in range(len(filtered)):
+            i_removed, i_added = filtered[i]
+            for j in range(i + 1, len(filtered)):
+                j_removed, j_added = filtered[j]
+                sim_ij = calc.move_aware_similarity(i_removed, j_added)
+                sim_ji = calc.move_aware_similarity(j_removed, i_added)
+                sim = max(sim_ij, sim_ji)
                 if sim >= 0.3:  # Low threshold: metric layer handles scoring nuance
                     scored.append((sim, i, j))
 
         scored.sort(reverse=True, key=lambda x: x[0])
         return scored
-
-    def _pair_similarity(self, a: Hunk, b: Hunk) -> float:
-        """Return the highest move-aware similarity between a and b's removed/added lines.
-
-        Lines are filtered through content_lines before comparison: blank lines and
-        import/package declarations are dropped, and indentation is stripped.
-        Checks both directions: a.removed vs b.added, and b.removed vs a.added.
-        """
-        calc = self.similarity_calculator
-        a_removed = calc.content_lines(a.removed_lines, a.file_path)
-        a_added = calc.content_lines(a.added_lines, a.file_path)
-        b_removed = calc.content_lines(b.removed_lines, b.file_path)
-        b_added = calc.content_lines(b.added_lines, b.file_path)
-        sim_ab = calc.move_aware_similarity(a_removed, b_added)
-        sim_ba = calc.move_aware_similarity(b_removed, a_added)
-        return max(sim_ab, sim_ba)
 
     def _greedy_match(
         self,
@@ -134,6 +140,7 @@ class HunkGrouper:
     def _build_result(
         self,
         hunks: list[Hunk],
+        filtered: list[_HunkContent],
         parent: dict[int, int],
         root_to_group: dict[int, int],
         similarity_by_root: dict[int, float],
@@ -141,24 +148,26 @@ class HunkGrouper:
         """Build HunkGroup list from union-find result.
 
         Only multi-hunk groups are returned; singletons (ungrouped hunks) are omitted.
-        Multi-hunk groups get their group_id and the stored similarity score.
+        Multi-hunk groups get their group_id, stored similarity score, and length
+        (max meaningful-line size across the group's hunks).
         """
-        buckets: dict[int, list[Hunk]] = {}
-        for i, hunk in enumerate(hunks):
+        buckets: dict[int, list[int]] = {}
+        for i in range(len(hunks)):
             root = self._find(parent, i)
-            buckets.setdefault(root, []).append(hunk)
+            buckets.setdefault(root, []).append(i)
 
         return [
             HunkGroup(
                 group_id=root_to_group[root],
-                hunks=tuple(members),
+                hunks=tuple(hunks[i] for i in indices),
                 similarity=(sim := similarity_by_root.get(root, 0.0)),
                 group_type=(
                     GroupType.MOVED
                     if sim >= _MOVED_SIMILARITY_THRESHOLD
                     else GroupType.MOVED_MODIFIED
                 ),
+                length=max(len(filtered[i][0]) + len(filtered[i][1]) for i in indices),
             )
-            for root, members in buckets.items()
-            if len(members) > 1
+            for root, indices in buckets.items()
+            if len(indices) > 1
         ]

@@ -98,6 +98,11 @@ file_score_threshold = 0.5
 max_diff_lines = 500
 max_hunk_lines = 50
 
+# Group scoring: size limit and similarity penalty
+# penalty_per_line = (1 + group_similarity_penalty × (1 − similarity)) / max_group_lines
+max_group_lines = 100
+group_similarity_penalty = 2.0
+
 # Gate: fail if overall score drops below this
 min_overall_score = 0.7
 
@@ -120,21 +125,29 @@ Groups are classified by their similarity score:
 - **`moved`** — similarity ≥ 0.9: content is essentially identical, just relocated
 - **`moved_modified`** — similarity 0.3–0.9: content was moved and changed
 
-Hunks that pair with no other hunk remain as singletons and are not included in any group.
+Hunks that pair with no other hunk remain as **singletons** and are not included in any group.
 Import/package declarations and indentation differences are ignored during similarity
 comparison, so pure reindentation or import reordering does not suppress a move detection.
+
+Hunk-level scoring and the problematic hunk count only apply to singletons. Grouped hunks
+are evaluated at the group level instead.
 
 ## Metrics
 
 Metrics are calculated at four levels: hunk, group, file, and overall diff.
 
+All size metrics exclude blank lines and import/package declarations, so import-only
+or formatting-only changes do not inflate scores.
+
 ### Hunk-level
+
+Computed only for **singleton hunks** (not part of any group).
 
 | Metric | Description |
 |--------|-------------|
-| `hunk.lines_changed` | Total lines added and removed in a hunk |
-| `hunk.added_lines` | Lines added in a hunk |
-| `hunk.removed_lines` | Lines removed in a hunk |
+| `hunk.lines_changed` | Meaningful lines added and removed in a hunk |
+| `hunk.added_lines` | Meaningful lines added in a hunk |
+| `hunk.removed_lines` | Meaningful lines removed in a hunk |
 | `hunk.context_lines` | Unchanged context lines surrounding the change |
 | `hunk.change_balance` | Ratio of added lines to total changed lines (0.0 = pure deletion, 1.0 = pure addition) |
 
@@ -142,26 +155,46 @@ Metrics are calculated at four levels: hunk, group, file, and overall diff.
 
 | Metric | Description |
 |--------|-------------|
-| `group.edit_complexity` | Edit complexity score for a connected hunk group — combines size, content similarity, and intra-file span. Higher = easier to review. |
+| `group.edit_complexity` | Reviewability score for a connected hunk group. Pure moves score high; rewrites score low. Higher = easier to review. |
 
 ### File-level
 
 | Metric | Description |
 |--------|-------------|
-| `file.lines_changed` | Total lines added and removed across all hunks in a file |
+| `file.lines_changed` | Meaningful lines added and removed across all hunks in a file |
 
 ### Overall-level
 
 | Metric | Description |
 |--------|-------------|
-| `overall.lines_changed` | Total lines changed across the entire diff |
-| `overall.added_lines` | Total lines added across the entire diff |
+| `overall.lines_changed` | Total meaningful lines changed across the entire diff |
+| `overall.added_lines` | Total meaningful lines added across the entire diff |
 | `overall.files_changed` | Number of files changed |
 | `overall.scatter_factor` | Normalized entropy of how changes are distributed across files (0.0 = all in one file, 1.0 = evenly spread) |
-| `overall.problematic_hunk_count` | Hunks with a score below the configured threshold |
+| `overall.problematic_hunk_count` | Singleton hunks with a score below the configured threshold |
 | `overall.problematic_file_count` | Files with more than one hunk and a score below the configured threshold |
 
-## Overall Scoring
+## Scoring
+
+### Hunk score (singletons only)
+
+```
+score = max(0, 1 − lines_changed / max_hunk_lines)
+```
+
+### Group score
+
+```
+penalty_per_line = (1 + group_similarity_penalty × (1 − similarity)) / max_group_lines
+score = max(0, 1 − length × penalty_per_line)
+```
+
+`length` is the meaningful-line size of the largest hunk in the group. When similarity
+is high (pure move), the per-line penalty is close to `1/max_group_lines` — equivalent
+to hunk scoring. When similarity is low (rewrite), the penalty grows proportionally,
+so the same number of lines scores worse.
+
+### Overall score
 
 ```
 score = max(0, 1 − size_ratio × (1 + scatter_factor))
