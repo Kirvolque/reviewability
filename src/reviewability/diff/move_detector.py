@@ -37,7 +37,7 @@ class MoveDetector:
         if not hunks:
             return []
 
-        # Pre-compute filtered lines once per hunk — meaningful_lines is not cheap.
+        # Pre-compute content tuples for all hunk pairs.
         filtered = self._precompute_content(hunks)
 
         scored_pairs = self._score_all_pairs(filtered)
@@ -54,15 +54,8 @@ class MoveDetector:
         return self._build_result(hunks, filtered, parent, root_to_move, similarity_by_root)
 
     def _precompute_content(self, hunks: list[Hunk]) -> list[_HunkContent]:
-        """Filter each hunk's lines once: strip blanks and import/package declarations."""
-        calc = self.similarity_calculator
-        return [
-            (
-                calc.content_lines(h.removed_lines, h.file_path),
-                calc.content_lines(h.added_lines, h.file_path),
-            )
-            for h in hunks
-        ]
+        """Return pre-filtered lines for each hunk (filtering already done at parse time)."""
+        return [(h.removed_lines, h.added_lines) for h in hunks]
 
     def _score_all_pairs(self, filtered: list[_HunkContent]) -> list[tuple[float, int, int]]:
         """Score all hunk pairs using pre-filtered lines.

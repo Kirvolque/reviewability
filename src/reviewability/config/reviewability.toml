@@ -33,3 +33,35 @@ max_files_changed = 10
 
 # [optional] Maximum total added lines across the diff before an error is raised.
 max_added_lines = 400
+
+# [optional] Per-extension prefixes for lines to exclude from analysis (imports, package declarations).
+# Use "*" as the fallback for file types not listed below.
+# Remove this section entirely to use the built-in defaults.
+[import_prefixes]
+"*" = ["import ", "#include ", "extern crate ", "package "]
+".py" = ["import ", "from "]
+".go" = ["import ", "package "]
+".rs" = ["use ", "extern crate ", "mod "]
+".java" = ["import ", "package "]
+".kt" = ["import ", "package "]
+".scala" = ["import ", "package "]
+".cs" = ["using ", "namespace "]
+".js" = ["import ", "from ", "require(", "require "]
+".ts" = ["import ", "from ", "require(", "require "]
+".jsx" = ["import ", "from ", "require(", "require "]
+".tsx" = ["import ", "from ", "require(", "require "]
+".c" = ["#include "]
+".h" = ["#include "]
+".cpp" = ["#include ", "using ", "namespace "]
+".cc" = ["#include ", "using ", "namespace "]
+".hpp" = ["#include ", "using ", "namespace "]
+".rb" = ["require ", "require_relative ", "load ", "include ", "prepend "]
+".php" = ["use ", "namespace ", "require ", "require_once ", "include ", "include_once "]
+".fs" = ["open ", "module ", "namespace "]
+".fsx" = ["open ", "module "]
+".ml" = ["open ", "module "]
+".mli" = ["open ", "module "]
+".swift" = ["import "]
+".hs" = ["import ", "module "]
+".ex" = ["import ", "alias ", "use ", "require "]
+".exs" = ["import ", "alias ", "use ", "require "]

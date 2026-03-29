@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from reviewability.config.parser import parse_config
 from reviewability.diff_reader import parse_diff_text
 from reviewability.domain.metric import MetricResults, MetricValue, MetricValueType
 from reviewability.metrics.engine import MetricEngine
@@ -10,6 +11,8 @@ from reviewability.metrics.registry import MetricRegistry
 from reviewability.scoring.weighted import DefaultScorer
 
 FIXTURES = Path(__file__).parent.parent / "fixtures"
+
+_DEFAULT_CONFIG = parse_config()
 
 
 def load(name: str) -> str:
@@ -38,7 +41,7 @@ def make_scorer() -> DefaultScorer:
 
 
 def test_logic_change_report():
-    diff = parse_diff_text(load("logic_change.diff"))
+    diff = parse_diff_text(load("logic_change.diff"), _DEFAULT_CONFIG)
     scorer = make_scorer()
     report = MetricEngine(make_registry(), scorer).run(diff)
 
@@ -80,7 +83,7 @@ def test_logic_change_report():
 
 
 def test_multi_file_change_report():
-    diff = parse_diff_text(load("multi_file_change.diff"))
+    diff = parse_diff_text(load("multi_file_change.diff"), _DEFAULT_CONFIG)
     report = MetricEngine(make_registry(), make_scorer()).run(diff)
 
     assert len(report.overall.metrics) == 2

@@ -42,3 +42,8 @@ class ReviewabilityConfig:
 
     max_added_lines: int | None = None
     """Maximum total added lines across the diff."""
+
+    import_prefixes: dict[str, list[str]] | None = None
+    """Per-extension import/package prefixes to strip from lines before analysis.
+    Use ``"*"`` as the key for a fallback applied to unknown extensions.
+    If None, built-in defaults are used."""

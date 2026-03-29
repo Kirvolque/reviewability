@@ -1,6 +1,5 @@
 from typing import override
 
-from reviewability.diff.line_filter import meaningful_lines
 from reviewability.domain.metric import MetricValue, MetricValueType
 from reviewability.domain.models import ChangeType, Hunk
 from reviewability.metrics.base import HunkMetric
@@ -9,10 +8,10 @@ from reviewability.metrics.base import HunkMetric
 class HunkInterleaving(HunkMetric):
     """Normalized measure of how much additions and deletions alternate within a hunk [0.0, 1.0].
 
-    Counts alternating runs of added/removed lines after filtering out blank lines and
-    import/package declarations, then normalizes by the maximum possible run count::
+    Counts alternating runs of added/removed lines, then normalizes by the maximum possible
+    run count::
 
-        interleaving = (segments − 1) / max(meaningful_changed − 1, 1)
+        interleaving = (segments − 1) / max(changed − 1, 1)
 
     - 0.0 — all additions then all deletions (or vice versa): clean block substitution
     - 1.0 — every line alternates type: maximum interleaving, hardest to review
@@ -37,8 +36,7 @@ class HunkInterleaving(HunkMetric):
 
     @override
     def calculate(self, hunk: Hunk) -> MetricValue:
-        sequence = self._meaningful_change_sequence(hunk)
-        value = self._interleaving(sequence)
+        value = self._interleaving(hunk.change_order)
         return MetricValue(
             name=self.name,
             value=value,
@@ -46,22 +44,7 @@ class HunkInterleaving(HunkMetric):
             remediation=self.remediation if value > 0.0 else None,
         )
 
-    def _meaningful_change_sequence(self, hunk: Hunk) -> list[ChangeType]:
-        """Reconstruct the ordered change sequence, keeping only meaningful lines."""
-        add_idx = rem_idx = 0
-        result = []
-        for change_type in hunk.change_order:
-            if change_type == ChangeType.ADDED:
-                line = hunk.added_lines[add_idx]
-                add_idx += 1
-            else:
-                line = hunk.removed_lines[rem_idx]
-                rem_idx += 1
-            if meaningful_lines([line], hunk.file_path):
-                result.append(change_type)
-        return result
-
-    def _interleaving(self, sequence: list[str]) -> float:
+    def _interleaving(self, sequence: tuple[ChangeType, ...]) -> float:
         """Compute normalized interleaving score from an ordered change-type sequence."""
         n = len(sequence)
         if n <= 1:

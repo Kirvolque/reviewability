@@ -1,6 +1,5 @@
 from typing import override
 
-from reviewability.diff.line_filter import meaningful_lines
 from reviewability.domain.metric import MetricValue, MetricValueType
 from reviewability.domain.models import Hunk
 from reviewability.metrics.base import HunkMetric
@@ -14,10 +13,8 @@ class HunkLinesChanged(HunkMetric):
 
     @override
     def calculate(self, hunk: Hunk) -> MetricValue:
-        added = len(meaningful_lines(hunk.added_lines, hunk.file_path))
-        removed = len(meaningful_lines(hunk.removed_lines, hunk.file_path))
         return MetricValue(
             name=self.name,
-            value=added + removed,
+            value=len(hunk.added_lines) + len(hunk.removed_lines),
             value_type=self.value_type,
         )

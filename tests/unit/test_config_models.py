@@ -21,6 +21,7 @@ def test_defaults_match_defaults_toml():
         max_problematic_files=2,
         max_files_changed=10,
         max_added_lines=400,
+        import_prefixes=from_toml.import_prefixes,
     )
     assert from_toml == from_constructor
 

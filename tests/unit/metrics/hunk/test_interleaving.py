@@ -58,26 +58,6 @@ def test_single_add_single_remove():
     assert metric.calculate(hunk) == result(1.0, has_remediation=True)
 
 
-def test_imports_filtered_out():
-    # change_order has 4 entries but both imports are filtered → only 2 meaningful lines
-    # remaining sequence: [ADDED, REMOVED] → 2 segments, 2 lines → 1.0
-    hunk = make_hunk(
-        added=["import foo", "real addition"],
-        removed=["import bar", "real removal"],
-        change_order=(A, R, A, R),
-    )
-    assert metric.calculate(hunk) == result(1.0, has_remediation=True)
-
-
-def test_all_lines_filtered_out():
-    hunk = make_hunk(
-        added=["import foo"],
-        removed=["import bar"],
-        change_order=(A, R),
-    )
-    assert metric.calculate(hunk) == result(0.0)
-
-
 @pytest.mark.parametrize(
     "change_order, expected",
     [

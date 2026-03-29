@@ -1,6 +1,5 @@
 from typing import override
 
-from reviewability.diff.line_filter import meaningful_lines
 from reviewability.domain.metric import MetricValue, MetricValueType
 from reviewability.domain.models import FileDiff
 from reviewability.metrics.base import FileMetric
@@ -17,11 +16,7 @@ class FileLinesChanged(FileMetric):
 
     @override
     def calculate(self, file: FileDiff) -> MetricValue:
-        total = sum(
-            len(meaningful_lines(hunk.added_lines, file.path))
-            + len(meaningful_lines(hunk.removed_lines, file.path))
-            for hunk in file.hunks
-        )
+        total = sum(len(hunk.added_lines) + len(hunk.removed_lines) for hunk in file.hunks)
         return MetricValue(
             name=self.name,
             value=total,

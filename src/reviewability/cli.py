@@ -41,8 +41,11 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    diff = parse_diff_text(sys.stdin.read()) if args.from_stdin else parse_git_diff(*args.git_args)
     config = parse_config(args.config)
+    if args.from_stdin:
+        diff = parse_diff_text(sys.stdin.read(), config)
+    else:
+        diff = parse_git_diff(config, *args.git_args)
     report, violations = create_analyzer(config).run(diff)
     gate_result = QualityGate().evaluate(report, violations)
 

@@ -3,17 +3,10 @@ from __future__ import annotations
 import difflib
 from dataclasses import dataclass, field
 
-from reviewability.diff.line_filter import meaningful_lines
-
 
 @dataclass(frozen=True)
 class DiffSimilarityCalculator:
-    """Shared normalization and similarity helpers for diff-structure detectors.
-
-    This class exists to keep movement detection and deep-edit detection aligned:
-    both should normalize whitespace consistently, ignore import/package noise,
-    and use the same notion of sequence similarity.
-    """
+    """Shared similarity helpers for diff-structure detectors."""
 
     pair_similarity_cache: dict[tuple[int, int], float] = field(
         default_factory=dict,
@@ -21,10 +14,6 @@ class DiffSimilarityCalculator:
         repr=False,
         compare=False,
     )
-
-    def content_lines(self, lines: list[str], file_path: str) -> list[str]:
-        """Return lines with blank lines and import/package declarations removed."""
-        return meaningful_lines(lines, file_path)
 
     def sequence_similarity(
         self, a: list[str] | tuple[str, ...], b: list[str] | tuple[str, ...]
