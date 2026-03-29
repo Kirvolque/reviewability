@@ -3,10 +3,12 @@ import json
 import sys
 from pathlib import Path
 
-from reviewability.analyzer import create_analyzer
 from reviewability.config.parser import parse_config
-from reviewability.diff_reader import parse_diff_text, parse_git_diff
+from reviewability.diff_reader import parse_diff_text
+from reviewability.factory import create_analyzer
+from reviewability.formatter import build_output
 from reviewability.gate import QualityGate
+from reviewability.git import parse_git_diff
 
 _DEFAULT_CONFIG = Path("reviewability.toml")
 
@@ -49,54 +51,7 @@ def main() -> None:
     report, violations = create_analyzer(config).run(diff)
     gate_result = QualityGate().evaluate(report, violations, config)
 
-    recommendations = [
-        {
-            "location": r.location,
-            "metric": r.metric,
-            "value": r.value,
-            "remediation": r.remediation,
-        }
-        for r in gate_result.recommendations
-    ]
-
-    output: dict = {
-        "score": round(report.overall.score, 2),
-        "passed": gate_result.passed,
-        "violations": [str(v) for v in violations],
-        "recommendations": recommendations,
-    }
-
-    if args.detailed:
-        output["files_changed"] = len(report.files)
-        output["hunks_changed"] = len(report.hunks)
-        output["overall"] = [{"name": m.name, "value": m.value} for m in report.overall.metrics]
-        output["files"] = [
-            {
-                "file": f.subject.path,
-                "score": round(f.score, 2),
-                "metrics": [{"name": m.name, "value": m.value} for m in f.metrics],
-            }
-            for f in report.files
-        ]
-        output["moves"] = [
-            {
-                "move_id": m.subject.move_id,
-                "hunk_count": len(m.subject.hunks),
-                "score": round(m.score, 2),
-                "metrics": [{"name": mt.name, "value": mt.value} for mt in m.metrics],
-            }
-            for m in report.moves
-        ]
-        output["hunks"] = [
-            {
-                "file": h.subject.file_path,
-                "score": round(h.score, 2),
-                "metrics": [{"name": m.name, "value": m.value} for m in h.metrics],
-            }
-            for h in report.hunks
-        ]
-
-    print(json.dumps(output, indent=2))
+    print(json.dumps(build_output(report, violations, gate_result, args.detailed), indent=2))
 
     if not gate_result.passed:
         sys.exit(1)
