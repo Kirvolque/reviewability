@@ -2,6 +2,7 @@ from typing import override
 
 from reviewability.domain.metric import MetricResults
 from reviewability.metrics.file.lines_changed import FileLinesChanged
+from reviewability.metrics.hunk.interleaving import HunkInterleaving
 from reviewability.metrics.hunk.lines_changed import HunkLinesChanged
 from reviewability.metrics.overall.lines_changed import OverallLinesChanged
 from reviewability.metrics.overall.scatter_factor import OverallScatterFactor
@@ -11,7 +12,7 @@ from reviewability.scoring.base import ReviewabilityScorer
 class DefaultScorer(ReviewabilityScorer):
     """Concrete reviewability scorer used by the default analysis pipeline.
 
-    Hunk score:    max(0, 1 − lines / max_hunk_lines)
+    Hunk score:    max(0, 1 − (lines / max_hunk_lines) × (1 + interleaving))
     File score:    max(0, 1 − lines / max_diff_lines)
     Overall score: max(0, 1 − size_ratio × (1 + scatter_factor))
     """
@@ -29,7 +30,10 @@ class DefaultScorer(ReviewabilityScorer):
         mv = metrics.metric(HunkLinesChanged.name)
         if mv is None:
             return 1.0
-        return max(0.0, 1.0 - mv.value / self._max_hunk_lines)
+        size_ratio = mv.value / self._max_hunk_lines
+        interleaving_mv = metrics.metric(HunkInterleaving.name)
+        interleaving = interleaving_mv.value if interleaving_mv is not None else 0.0
+        return max(0.0, 1.0 - size_ratio * (1.0 + interleaving))
 
     @override
     def file_score(self, metrics: MetricResults) -> float:

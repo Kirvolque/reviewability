@@ -47,7 +47,7 @@
   "hunks": [
     {
       "file": "src/legacy.py",
-      "score": 0.62,
+      "score": 0.6,
       "metrics": [
         {
           "name": "hunk.lines_changed",

@@ -47,7 +47,7 @@
   "hunks": [
     {
       "file": "src/config.py",
-      "score": 0.4,
+      "score": 0.0,
       "metrics": [
         {
           "name": "hunk.lines_changed",

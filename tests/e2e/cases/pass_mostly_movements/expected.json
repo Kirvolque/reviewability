@@ -141,7 +141,7 @@
   "hunks": [
     {
       "file": "app/main.py",
-      "score": 0.96,
+      "score": 0.92,
       "metrics": [
         {
           "name": "hunk.lines_changed",

@@ -94,7 +94,7 @@
   "hunks": [
     {
       "file": "src/processor.py",
-      "score": 0.8,
+      "score": 0.78,
       "metrics": [
         {
           "name": "hunk.lines_changed",
@@ -124,7 +124,7 @@
     },
     {
       "file": "src/validator.py",
-      "score": 0.86,
+      "score": 0.84,
       "metrics": [
         {
           "name": "hunk.lines_changed",
@@ -154,7 +154,7 @@
     },
     {
       "file": "src/formatter.py",
-      "score": 0.78,
+      "score": 0.76,
       "metrics": [
         {
           "name": "hunk.lines_changed",
