@@ -1,7 +1,10 @@
 from pathlib import Path
 
 from reviewability.diff_reader import parse_diff_text
-from reviewability.domain.models import FileDiff, Hunk, HunkType
+from reviewability.domain.models import ChangeType, FileDiff, Hunk, HunkType
+
+A = ChangeType.ADDED
+R = ChangeType.REMOVED
 
 FIXTURES = Path(__file__).parent.parent / "fixtures"
 
@@ -34,10 +37,6 @@ def test_logic_change():
             hunks=[
                 Hunk(
                     file_path="src/greeter.py",
-                    source_start=1,
-                    source_length=2,
-                    target_start=1,
-                    target_length=4,
                     added_lines=[
                         "    if not name:\n",
                         '        raise ValueError("name must not be empty")\n',
@@ -47,6 +46,7 @@ def test_logic_change():
                         "def greet(name: str) -> str:\n",
                         '    return f"Hello, {name}!"\n',
                     ],
+                    change_order=(A, A),
                     hunk_type=HunkType.PURE_ADDITION,
                 )
             ],
@@ -65,10 +65,6 @@ def test_tangled_commit():
             hunks=[
                 Hunk(
                     file_path="src/farewell.py",
-                    source_start=0,
-                    source_length=0,
-                    target_start=1,
-                    target_length=4,
                     added_lines=[
                         "def say_goodbye(name: str) -> str:\n",
                         "    if not name:\n",
@@ -77,6 +73,7 @@ def test_tangled_commit():
                     ],
                     removed_lines=[],
                     context_lines=[],
+                    change_order=(A, A, A, A),
                     hunk_type=HunkType.MIXED,
                 )
             ],
@@ -89,16 +86,13 @@ def test_tangled_commit():
             hunks=[
                 Hunk(
                     file_path="src/hello.py",
-                    source_start=1,
-                    source_length=2,
-                    target_start=0,
-                    target_length=0,
                     added_lines=[],
                     removed_lines=[
                         "def say_hello(name: str) -> str:\n",
                         '    return f"Hi, {name}!"\n',
                     ],
                     context_lines=[],
+                    change_order=(R, R),
                     hunk_type=HunkType.MIXED,
                 )
             ],
@@ -117,10 +111,6 @@ def test_multi_file_change():
             hunks=[
                 Hunk(
                     file_path="src/farewell.py",
-                    source_start=1,
-                    source_length=4,
-                    target_start=1,
-                    target_length=6,
                     added_lines=[
                         'DEFAULT_FAREWELL = "Goodbye"\n',
                         "\n",
@@ -135,6 +125,7 @@ def test_multi_file_change():
                         "    if not name:\n",
                         '        raise ValueError("name required")\n',
                     ],
+                    change_order=(R, A, A, A, R, A),
                     hunk_type=HunkType.MIXED,
                 )
             ],
@@ -147,10 +138,6 @@ def test_multi_file_change():
             hunks=[
                 Hunk(
                     file_path="src/greeter.py",
-                    source_start=1,
-                    source_length=4,
-                    target_start=1,
-                    target_length=6,
                     added_lines=[
                         'DEFAULT_GREETING = "Hello"\n',
                         "\n",
@@ -165,6 +152,7 @@ def test_multi_file_change():
                         "    if not name:\n",
                         '        raise ValueError("name must not be empty")\n',
                     ],
+                    change_order=(R, A, A, A, R, A),
                     hunk_type=HunkType.MIXED,
                 )
             ],

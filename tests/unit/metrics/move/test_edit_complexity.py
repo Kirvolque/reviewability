@@ -54,10 +54,6 @@ def test_singleton_pure_addition(metric):
     """Pure addition alone has a small fixed penalty."""
     hunk = Hunk(
         file_path="a.py",
-        source_start=1,
-        source_length=0,
-        target_start=1,
-        target_length=5,
         added_lines=["a", "b", "c", "d", "e"],
     )
     move = Move(move_id=None, hunks=(hunk,), similarity=0.0, move_type=MoveType.MODIFIED, length=5)
@@ -71,10 +67,6 @@ def test_singleton_pure_deletion(metric):
     """Pure deletion alone has the same small fixed penalty as pure addition."""
     hunk = Hunk(
         file_path="a.py",
-        source_start=1,
-        source_length=5,
-        target_start=1,
-        target_length=0,
         removed_lines=["a", "b", "c", "d", "e"],
     )
     move = Move(move_id=None, hunks=(hunk,), similarity=0.0, move_type=MoveType.MODIFIED, length=5)
@@ -86,10 +78,6 @@ def test_high_similarity_scores_higher_than_low(metric):
     """A move with high similarity scores higher than one with low similarity."""
     hunk = Hunk(
         file_path="a.py",
-        source_start=1,
-        source_length=5,
-        target_start=1,
-        target_length=5,
         removed_lines=["a", "b", "c", "d", "e"],
         added_lines=["a", "b", "c", "d", "e"],
     )
@@ -114,18 +102,10 @@ def test_identical_move_scores_near_max(metric):
     content = ["def foo():", "    return 1", "    x = 2", "    y = 3", "    z = 5"]
     del_hunk = Hunk(
         file_path="a.py",
-        source_start=10,
-        source_length=len(content),
-        target_start=10,
-        target_length=0,
         removed_lines=list(content),
     )
     add_hunk = Hunk(
         file_path="a.py",
-        source_start=80,
-        source_length=0,
-        target_start=80,
-        target_length=len(content),
         added_lines=list(content),
     )
     move = Move(
@@ -145,18 +125,10 @@ def test_rewrite_move_scores_lower_than_pure_move(metric):
     content = ["def foo():", "    return 1", "    x = 2", "    y = 3", "    z = 5"]
     moved_del = Hunk(
         file_path="a.py",
-        source_start=10,
-        source_length=len(content),
-        target_start=10,
-        target_length=0,
         removed_lines=list(content),
     )
     moved_add = Hunk(
         file_path="a.py",
-        source_start=80,
-        source_length=0,
-        target_start=80,
-        target_length=len(content),
         added_lines=list(content),
     )
     pure_move = Move(
@@ -170,18 +142,10 @@ def test_rewrite_move_scores_lower_than_pure_move(metric):
 
     rewrite_del = Hunk(
         file_path="a.py",
-        source_start=10,
-        source_length=len(content),
-        target_start=10,
-        target_length=0,
         removed_lines=["old_a", "old_b", "old_c", "old_d", "old_e"],
     )
     rewrite_add = Hunk(
         file_path="a.py",
-        source_start=80,
-        source_length=0,
-        target_start=80,
-        target_length=len(content),
         added_lines=["new_x", "new_y", "new_z", "new_w", "new_v"],
     )
     rewrite_move = Move(

@@ -6,9 +6,7 @@ from reviewability.metrics.overall.problematic_hunk_count import OverallProblema
 
 def make_hunk_analysis(score: float) -> Analysis:
     return Analysis(
-        subject=Hunk(
-            file_path="a.py", source_start=1, source_length=1, target_start=1, target_length=1
-        ),
+        subject=Hunk(file_path="a.py"),
         metrics=MetricResults([]),
         score=score,
     )

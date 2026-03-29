@@ -2,6 +2,13 @@ from dataclasses import dataclass, field
 from enum import Enum
 
 
+class ChangeType(str, Enum):
+    """Direction of a single changed line within a hunk."""
+
+    ADDED = "added"
+    REMOVED = "removed"
+
+
 class HunkType(str, Enum):
     """Classification for an individual hunk based on its content and move membership."""
 
@@ -28,13 +35,10 @@ class Hunk(DiffNode):
     """A contiguous block of changes within a single file."""
 
     file_path: str
-    source_start: int
-    source_length: int
-    target_start: int
-    target_length: int
     added_lines: list[str] = field(default_factory=list)
     removed_lines: list[str] = field(default_factory=list)
     context_lines: list[str] = field(default_factory=list)
+    change_order: tuple[ChangeType, ...] = field(default_factory=tuple)
     hunk_type: HunkType | None = None
 
     @property

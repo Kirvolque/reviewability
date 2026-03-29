@@ -78,6 +78,10 @@
         {
           "name": "hunk.change_balance",
           "value": 0.92
+        },
+        {
+          "name": "hunk.interleaving",
+          "value": 0.08
         }
       ]
     },
@@ -104,6 +108,10 @@
         {
           "name": "hunk.change_balance",
           "value": 0.89
+        },
+        {
+          "name": "hunk.interleaving",
+          "value": 0.14
         }
       ]
     }

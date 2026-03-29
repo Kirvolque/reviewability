@@ -9,7 +9,7 @@ metric = OverallLinesChanged()
 def make_hunk_analysis(lines_changed: int) -> Analysis:
     return Analysis(
         subject=Hunk(
-            file_path="a.py", source_start=1, source_length=1, target_start=1, target_length=1
+            file_path="a.py"
         ),
         metrics=MetricResults(
             [MetricValue("hunk.lines_changed", lines_changed, MetricValueType.INTEGER)]
@@ -39,7 +39,7 @@ def test_hunk_missing_metric_is_skipped():
     # An Analysis without hunk.lines_changed must not crash — it is simply ignored.
     hunk_without_metric = Analysis(
         subject=Hunk(
-            file_path="a.py", source_start=1, source_length=1, target_start=1, target_length=1
+            file_path="a.py"
         ),
         metrics=MetricResults([]),
         score=1.0,

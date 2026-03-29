@@ -31,10 +31,6 @@ def test_single_hunk_produces_no_moves(detector):
     """Single isolated hunk produces no moves (singletons are omitted)."""
     hunk = Hunk(
         file_path="test.py",
-        source_start=1,
-        source_length=5,
-        target_start=1,
-        target_length=5,
         added_lines=["a", "b"],
         removed_lines=["c"],
     )
@@ -57,18 +53,10 @@ def test_identical_additions_are_not_detected(detector):
 
     add1 = Hunk(
         file_path="a.py",
-        source_start=1,
-        source_length=0,
-        target_start=1,
-        target_length=len(content),
         added_lines=list(content),
     )
     add2 = Hunk(
         file_path="b.py",
-        source_start=50,
-        source_length=0,
-        target_start=50,
-        target_length=len(content),
         added_lines=list(content),
     )
 
@@ -87,18 +75,10 @@ def test_identical_deletions_are_not_detected(detector):
 
     del1 = Hunk(
         file_path="a.py",
-        source_start=1,
-        source_length=len(content),
-        target_start=1,
-        target_length=0,
         removed_lines=list(content),
     )
     del2 = Hunk(
         file_path="b.py",
-        source_start=50,
-        source_length=len(content),
-        target_start=50,
-        target_length=0,
         removed_lines=list(content),
     )
 
@@ -122,18 +102,10 @@ def test_deletion_identical_to_addition_is_detected(detector):
 
     del_hunk = Hunk(
         file_path="risk.py",
-        source_start=10,
-        source_length=len(content),
-        target_start=10,
-        target_length=0,
         removed_lines=list(content),
     )
     add_hunk = Hunk(
         file_path="risk.py",
-        source_start=80,
-        source_length=0,
-        target_start=80,
-        target_length=len(content),
         added_lines=list(content),
     )
 
@@ -171,10 +143,6 @@ def test_mixed_hunk_detected_with_similar_counterpart(detector):
     # Mixed hunk: removes old_body, adds new_body
     mixed_hunk = Hunk(
         file_path="risk.py",
-        source_start=10,
-        source_length=len(old_body),
-        target_start=10,
-        target_length=len(new_body),
         removed_lines=list(old_body),
         added_lines=list(new_body),
     )
@@ -182,10 +150,6 @@ def test_mixed_hunk_detected_with_similar_counterpart(detector):
     # Pure insertion elsewhere that duplicates the old body
     add_hunk = Hunk(
         file_path="risk.py",
-        source_start=80,
-        source_length=0,
-        target_start=80,
-        target_length=len(old_body),
         added_lines=list(old_body),
     )
 
@@ -209,26 +173,14 @@ def test_mixed_hunks_and_singletons(detector):
 
     del_hunk = Hunk(
         file_path="file1.py",
-        source_start=1,
-        source_length=len(content),
-        target_start=1,
-        target_length=0,
         removed_lines=content,
     )
     add_hunk = Hunk(
         file_path="file1.py",
-        source_start=20,
-        source_length=0,
-        target_start=20,
-        target_length=len(content),
         added_lines=content,
     )
     isolated_hunk = Hunk(
         file_path="file2.py",
-        source_start=1,
-        source_length=3,
-        target_start=1,
-        target_length=3,
         added_lines=["x"],
         removed_lines=["y"],
     )
@@ -246,19 +198,11 @@ def test_unrelated_hunks_produce_no_moves(detector):
     """Hunks with completely different content on both sides are never detected as moves."""
     hunk1 = Hunk(
         file_path="test.py",
-        source_start=1,
-        source_length=3,
-        target_start=1,
-        target_length=3,
         added_lines=["x" * 20],
         removed_lines=["x" * 20],
     )
     hunk2 = Hunk(
         file_path="test.py",
-        source_start=10,
-        source_length=3,
-        target_start=10,
-        target_length=3,
         added_lines=["y" * 20],
         removed_lines=["y" * 20],
     )
@@ -282,18 +226,10 @@ def test_detected_move_has_high_similarity_for_identical_content(detector):
     ]
     del_hunk = Hunk(
         file_path="a.py",
-        source_start=1,
-        source_length=len(content),
-        target_start=1,
-        target_length=0,
         removed_lines=list(content),
     )
     add_hunk = Hunk(
         file_path="b.py",
-        source_start=50,
-        source_length=0,
-        target_start=50,
-        target_length=len(content),
         added_lines=list(content),
     )
 
@@ -311,18 +247,10 @@ def test_low_similarity_pair_has_modified_type(detector):
     content_add = ["def transform(z):\n", "    result = z + 99\n", "    return result\n"]
     del_hunk = Hunk(
         file_path="a.py",
-        source_start=1,
-        source_length=len(content_del),
-        target_start=1,
-        target_length=0,
         removed_lines=content_del,
     )
     add_hunk = Hunk(
         file_path="b.py",
-        source_start=50,
-        source_length=0,
-        target_start=50,
-        target_length=len(content_add),
         added_lines=content_add,
     )
 

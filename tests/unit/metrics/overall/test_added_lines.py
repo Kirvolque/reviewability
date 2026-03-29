@@ -9,7 +9,7 @@ metric = OverallAddedLines()
 def make_hunk_analysis(added: int) -> Analysis:
     return Analysis(
         subject=Hunk(
-            file_path="a.py", source_start=1, source_length=1, target_start=1, target_length=1
+            file_path="a.py"
         ),
         metrics=MetricResults([MetricValue("hunk.added_lines", added, MetricValueType.INTEGER)]),
         score=1.0,
@@ -37,7 +37,7 @@ def test_multiple_hunks():
 def test_hunk_missing_metric_is_skipped():
     hunk_without_metric = Analysis(
         subject=Hunk(
-            file_path="a.py", source_start=1, source_length=1, target_start=1, target_length=1
+            file_path="a.py"
         ),
         metrics=MetricResults([]),
         score=1.0,

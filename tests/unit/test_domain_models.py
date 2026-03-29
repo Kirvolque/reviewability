@@ -6,17 +6,12 @@ def make_hunk(
     added: list[str] | None = None,
     removed: list[str] | None = None,
     context: list[str] | None = None,
-    source_start: int = 1,
 ) -> Hunk:
     added = added or []
     removed = removed or []
     context = context or []
     return Hunk(
         file_path=file_path,
-        source_start=source_start,
-        source_length=len(removed),
-        target_start=source_start,
-        target_length=len(added),
         added_lines=added,
         removed_lines=removed,
         context_lines=context,
@@ -61,19 +56,11 @@ def test_hunk_added_and_removed_count():
 def test_hunk_fields():
     hunk = Hunk(
         file_path="foo.py",
-        source_start=10,
-        source_length=3,
-        target_start=12,
-        target_length=2,
         added_lines=["x"],
         removed_lines=["y", "z"],
         context_lines=["ctx"],
     )
     assert hunk.file_path == "foo.py"
-    assert hunk.source_start == 10
-    assert hunk.source_length == 3
-    assert hunk.target_start == 12
-    assert hunk.target_length == 2
     assert hunk.added_lines == ["x"]
     assert hunk.removed_lines == ["y", "z"]
     assert hunk.context_lines == ["ctx"]
@@ -82,10 +69,6 @@ def test_hunk_fields():
 def test_hunk_default_empty_lists():
     hunk = Hunk(
         file_path="a.py",
-        source_start=1,
-        source_length=0,
-        target_start=1,
-        target_length=0,
     )
     assert hunk.added_lines == []
     assert hunk.removed_lines == []

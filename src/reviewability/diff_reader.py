@@ -4,7 +4,7 @@ from unidiff import PatchSet
 
 from reviewability.diff.move_detector import MoveDetector
 from reviewability.diff.similarity_calculator import DiffSimilarityCalculator
-from reviewability.domain.models import Diff, FileDiff, Hunk, HunkType, Move, MoveType
+from reviewability.domain.models import ChangeType, Diff, FileDiff, Hunk, HunkType, Move, MoveType
 
 
 def parse_diff_text(diff_text: str) -> Diff:
@@ -20,13 +20,14 @@ def parse_diff_text(diff_text: str) -> Diff:
             hunks=[
                 Hunk(
                     file_path=patched_file.path,
-                    source_start=hunk.source_start,
-                    source_length=hunk.source_length,
-                    target_start=hunk.target_start,
-                    target_length=hunk.target_length,
                     added_lines=[str(line.value) for line in hunk if line.is_added],
                     removed_lines=[str(line.value) for line in hunk if line.is_removed],
                     context_lines=[str(line.value) for line in hunk if line.is_context],
+                    change_order=tuple(
+                        ChangeType.ADDED if line.is_added else ChangeType.REMOVED
+                        for line in hunk
+                        if not line.is_context
+                    ),
                 )
                 for hunk in patched_file
             ],

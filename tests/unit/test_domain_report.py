@@ -10,10 +10,6 @@ def make_metric_value(name: str = "m", value: int = 1) -> MetricValue:
 def make_hunk() -> Hunk:
     return Hunk(
         file_path="a.py",
-        source_start=1,
-        source_length=1,
-        target_start=1,
-        target_length=1,
     )
 
 

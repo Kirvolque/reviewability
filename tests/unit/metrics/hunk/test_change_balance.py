@@ -10,10 +10,6 @@ _REMEDIATION = metric.remediation
 def make_hunk(added: list[str], removed: list[str]) -> Hunk:
     return Hunk(
         file_path="a.py",
-        source_start=1,
-        source_length=len(removed),
-        target_start=1,
-        target_length=len(added),
         added_lines=added,
         removed_lines=removed,
     )

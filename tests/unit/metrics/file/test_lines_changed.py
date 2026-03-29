@@ -14,10 +14,6 @@ def make_file(hunks: list[Hunk]) -> FileDiff:
 def make_hunk(added: int, removed: int) -> Hunk:
     return Hunk(
         file_path="a.py",
-        source_start=1,
-        source_length=removed,
-        target_start=1,
-        target_length=added,
         added_lines=["x"] * added,
         removed_lines=["y"] * removed,
     )
