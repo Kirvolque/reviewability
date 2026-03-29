@@ -31,6 +31,12 @@
     },
     {
       "location": "overall",
+      "metric": "overall.problematic_move_count",
+      "value": 0,
+      "remediation": "Simplify or split moves with low reviewability scores."
+    },
+    {
+      "location": "overall",
       "metric": "overall.problematic_file_count",
       "value": 1,
       "remediation": "Simplify or split files with low reviewability scores."
@@ -53,6 +59,10 @@
     },
     {
       "name": "overall.problematic_hunk_count",
+      "value": 0
+    },
+    {
+      "name": "overall.problematic_move_count",
       "value": 0
     },
     {

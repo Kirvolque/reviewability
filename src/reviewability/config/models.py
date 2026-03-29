@@ -34,6 +34,9 @@ class ReviewabilityConfig:
     max_problematic_hunks: int | None = None
     """Maximum number of problematic hunks allowed."""
 
+    max_problematic_moves: int | None = None
+    """Maximum number of problematic moves allowed."""
+
     max_problematic_files: int | None = None
     """Maximum number of problematic files allowed."""
 

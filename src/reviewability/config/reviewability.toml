@@ -25,6 +25,9 @@ min_overall_score = 0.7
 # [optional] Maximum number of problematic hunks allowed before a violation is raised.
 max_problematic_hunks = 3
 
+# [optional] Maximum number of problematic moves allowed before a violation is raised.
+# max_problematic_moves = 2
+
 # [optional] Maximum number of problematic files allowed before a violation is raised.
 max_problematic_files = 2
 

@@ -108,6 +108,7 @@ min_overall_score = 0.7
 
 # Optional limits (remove a line to disable that check)
 max_problematic_hunks = 3
+# max_problematic_moves = 2
 max_problematic_files = 2
 max_files_changed = 10
 max_added_lines = 400
@@ -186,6 +187,7 @@ Computed only for **singleton hunks** (not part of any move).
 | `overall.files_changed` | Number of files changed |
 | `overall.scatter_factor` | Normalized entropy of how changes are distributed across files (0.0 = all in one file, 1.0 = evenly spread) |
 | `overall.problematic_hunk_count` | Singleton hunks with a score below the configured threshold |
+| `overall.problematic_move_count` | Moves with a score below the configured threshold |
 | `overall.problematic_file_count` | Files with more than one hunk and a score below the configured threshold |
 
 ## Scoring

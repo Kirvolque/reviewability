@@ -5,6 +5,7 @@ from reviewability.metrics.overall.files_changed import OverallFilesChanged
 from reviewability.metrics.overall.lines_changed import OverallLinesChanged
 from reviewability.metrics.overall.problematic_file_count import OverallProblematicFileCount
 from reviewability.metrics.overall.problematic_hunk_count import OverallProblematicHunkCount
+from reviewability.metrics.overall.problematic_move_count import OverallProblematicMoveCount
 from reviewability.rules.engine import Rule, Severity
 
 
@@ -62,6 +63,18 @@ def overall_rules(config: ReviewabilityConfig) -> list[Rule]:
                 ),
             )
             if config.max_problematic_hunks is not None
+            else None,
+            Rule(
+                severity=Severity.WARNING,
+                check=lambda s: (
+                    f"Diff has {v.value} problematic moves,"
+                    f" exceeds limit of {config.max_problematic_moves}"
+                    if (v := s.metric(OverallProblematicMoveCount.name)) is not None
+                    and v.value > config.max_problematic_moves
+                    else None
+                ),
+            )
+            if config.max_problematic_moves is not None
             else None,
             Rule(
                 severity=Severity.WARNING,

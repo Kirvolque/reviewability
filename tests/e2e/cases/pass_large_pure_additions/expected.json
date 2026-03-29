@@ -23,6 +23,10 @@
       "value": 1
     },
     {
+      "name": "overall.problematic_move_count",
+      "value": 0
+    },
+    {
       "name": "overall.problematic_file_count",
       "value": 0
     },
