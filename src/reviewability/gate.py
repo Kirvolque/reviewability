@@ -2,7 +2,8 @@ from dataclasses import dataclass
 from typing import Any
 
 from reviewability.config.models import ReviewabilityConfig
-from reviewability.domain.report import AnalysisReport
+from reviewability.domain.models import Hunk, Move
+from reviewability.domain.report import Analysis, AnalysisReport
 from reviewability.rules.engine import RuleViolation, Severity
 
 
@@ -57,26 +58,14 @@ class QualityGate:
     ) -> list[Recommendation]:
         recs: list[Recommendation] = []
 
-        for analysis in report.hunks:
+        for analysis in (*report.hunks, *report.moves):
             if analysis.score < config.hunk_score_threshold:
+                location = self._location(analysis)
                 for mv in analysis.metrics:
                     if mv.remediation is not None:
                         recs.append(
                             Recommendation(
-                                location=analysis.subject.file_path,
-                                metric=mv.name,
-                                value=mv.value,
-                                remediation=mv.remediation,
-                            )
-                        )
-
-        for analysis in report.moves:
-            if analysis.score < config.hunk_score_threshold:
-                for mv in analysis.metrics:
-                    if mv.remediation is not None:
-                        recs.append(
-                            Recommendation(
-                                location=f"move:{analysis.subject.move_id}",
+                                location=location,
                                 metric=mv.name,
                                 value=mv.value,
                                 remediation=mv.remediation,
@@ -95,3 +84,13 @@ class QualityGate:
                 )
 
         return recs
+
+    @staticmethod
+    def _location(analysis: Analysis) -> str:
+        """Derive a human-readable location string from an analysis subject."""
+        subject = analysis.subject
+        if isinstance(subject, Hunk):
+            return subject.file_path
+        if isinstance(subject, Move):
+            return f"move:{subject.move_id}"
+        return str(subject)
