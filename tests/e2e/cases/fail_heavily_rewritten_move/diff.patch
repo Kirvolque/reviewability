@@ -1,0 +1,36 @@
+diff --git a/services/worker.py b/services/worker.py
+deleted file mode 100644
+--- a/services/worker.py
++++ /dev/null
+@@ -1,12 +0,0 @@
+-class TaskWorker:
+-    max_tasks = 10
+-    def __init__(self):
+-        self.tasks = []
+-        self.running = False
+-    def run(self, task):
+-        self.tasks.append(task)
+-        task.execute()
+-        return task.result
+-    def shutdown(self):
+-        self.running = False
+-        self.tasks.clear()
+diff --git a/core/worker.py b/core/worker.py
+new file mode 100644
+--- /dev/null
++++ b/core/worker.py
+@@ -0,0 +1,14 @@
++class AsyncWorker:
++    concurrency = 4
++    def __init__(self, loop, metrics):
++        self.loop = loop
++        self.metrics = metrics
++        self.semaphore = asyncio.Semaphore(self.concurrency)
++    async def run(self, task):
++        async with self.semaphore:
++            result = await self.loop.submit(task)
++            self.metrics.record(result)
++            return result
++    async def shutdown(self):
++        await self.loop.drain()
++        self.metrics.flush()

@@ -34,7 +34,7 @@ class MoveEditComplexity(MoveMetric):
         "pure moves score high, rewrites score low. Higher = easier to review."
     )
     remediation = (
-        "If score is low, consider splitting the change into focused commits: "
+        "Consider splitting the change into focused commits: "
         "separate moves from logic changes, and rewrite large blocks incrementally."
     )
 

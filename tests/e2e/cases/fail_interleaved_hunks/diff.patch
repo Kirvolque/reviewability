@@ -1,0 +1,16 @@
+diff --git a/api/handler.py b/api/handler.py
+--- a/api/handler.py
++++ b/api/handler.py
+@@ -1,6 +1,6 @@
+-def handle_request(req, ctx):
++def handle_request(request, context):
+-    data = req.get_data()
++    data = request.body
+-    if not ctx.authenticated:
++    if not context.is_authenticated():
+-        raise AuthError("not allowed")
++        raise PermissionDenied(context.user)
+-    result = process(data, ctx.config)
++    result = pipeline.process(data, context.settings)
+-    return Response(result, 200)
++    return JsonResponse(result, status=200)

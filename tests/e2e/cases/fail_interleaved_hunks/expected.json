@@ -1,0 +1,135 @@
+{
+  "score": 0.0,
+  "passed": false,
+  "violations": [
+    "[ERROR] Diff has 12 lines changed, exceeds limit of 10",
+    "[ERROR] Overall score 0.00 is below the minimum of 0.5"
+  ],
+  "recommendations": [
+    {
+      "location": "api/handler.py",
+      "metric": "hunk.change_balance",
+      "value": 0.5,
+      "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
+    },
+    {
+      "location": "api/handler.py",
+      "metric": "hunk.interleaving",
+      "value": 1.0,
+      "remediation": "Additions and deletions are heavily interleaved, making the change hard to follow. Separate the deletions and additions into distinct commits or hunks."
+    },
+    {
+      "location": "overall",
+      "metric": "overall.files_changed",
+      "value": 1,
+      "remediation": "Split the change into smaller pull requests by concern."
+    },
+    {
+      "location": "overall",
+      "metric": "overall.lines_changed",
+      "value": 12,
+      "remediation": "Reduce patch size by splitting unrelated changes into separate commits."
+    },
+    {
+      "location": "overall",
+      "metric": "overall.added_lines",
+      "value": 6,
+      "remediation": "Keep additions under 400 lines per review session."
+    },
+    {
+      "location": "overall",
+      "metric": "overall.problematic_hunk_count",
+      "value": 1,
+      "remediation": "Simplify or split hunks with low reviewability scores."
+    },
+    {
+      "location": "overall",
+      "metric": "overall.problematic_move_count",
+      "value": 0,
+      "remediation": "Simplify or split moves with low reviewability scores."
+    },
+    {
+      "location": "overall",
+      "metric": "overall.problematic_file_count",
+      "value": 0,
+      "remediation": "Simplify or split files with low reviewability scores."
+    }
+  ],
+  "files_changed": 1,
+  "hunks_changed": 1,
+  "overall": [
+    {
+      "name": "overall.files_changed",
+      "value": 1
+    },
+    {
+      "name": "overall.lines_changed",
+      "value": 12
+    },
+    {
+      "name": "overall.added_lines",
+      "value": 6
+    },
+    {
+      "name": "overall.problematic_hunk_count",
+      "value": 1
+    },
+    {
+      "name": "overall.problematic_move_count",
+      "value": 0
+    },
+    {
+      "name": "overall.problematic_file_count",
+      "value": 0
+    },
+    {
+      "name": "overall.scatter_factor",
+      "value": 0.0
+    }
+  ],
+  "files": [
+    {
+      "file": "api/handler.py",
+      "score": 0.0,
+      "metrics": [
+        {
+          "name": "file.lines_changed",
+          "value": 12
+        }
+      ]
+    }
+  ],
+  "moves": [],
+  "hunks": [
+    {
+      "file": "api/handler.py",
+      "score": 0.0,
+      "metrics": [
+        {
+          "name": "hunk.lines_changed",
+          "value": 12
+        },
+        {
+          "name": "hunk.added_lines",
+          "value": 6
+        },
+        {
+          "name": "hunk.removed_lines",
+          "value": 6
+        },
+        {
+          "name": "hunk.context_lines",
+          "value": 0
+        },
+        {
+          "name": "hunk.change_balance",
+          "value": 0.5
+        },
+        {
+          "name": "hunk.interleaving",
+          "value": 1.0
+        }
+      ]
+    }
+  ]
+}

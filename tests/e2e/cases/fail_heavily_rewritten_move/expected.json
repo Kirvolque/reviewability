@@ -1,0 +1,120 @@
+{
+  "score": 1.0,
+  "passed": false,
+  "violations": [
+    "[WARNING] Diff has 1 problematic moves, exceeds limit of 0",
+    "[ERROR] Diff touches 2 files, exceeds limit of 1"
+  ],
+  "recommendations": [
+    {
+      "location": "move:0",
+      "metric": "move.edit_complexity",
+      "value": 0.0,
+      "remediation": "Consider splitting the change into focused commits: separate moves from logic changes, and rewrite large blocks incrementally."
+    },
+    {
+      "location": "overall",
+      "metric": "overall.files_changed",
+      "value": 2,
+      "remediation": "Split the change into smaller pull requests by concern."
+    },
+    {
+      "location": "overall",
+      "metric": "overall.lines_changed",
+      "value": 0,
+      "remediation": "Reduce patch size by splitting unrelated changes into separate commits."
+    },
+    {
+      "location": "overall",
+      "metric": "overall.added_lines",
+      "value": 0,
+      "remediation": "Keep additions under 400 lines per review session."
+    },
+    {
+      "location": "overall",
+      "metric": "overall.problematic_hunk_count",
+      "value": 0,
+      "remediation": "Simplify or split hunks with low reviewability scores."
+    },
+    {
+      "location": "overall",
+      "metric": "overall.problematic_move_count",
+      "value": 1,
+      "remediation": "Simplify or split moves with low reviewability scores."
+    },
+    {
+      "location": "overall",
+      "metric": "overall.problematic_file_count",
+      "value": 0,
+      "remediation": "Simplify or split files with low reviewability scores."
+    }
+  ],
+  "files_changed": 2,
+  "hunks_changed": 0,
+  "overall": [
+    {
+      "name": "overall.files_changed",
+      "value": 2
+    },
+    {
+      "name": "overall.lines_changed",
+      "value": 0
+    },
+    {
+      "name": "overall.added_lines",
+      "value": 0
+    },
+    {
+      "name": "overall.problematic_hunk_count",
+      "value": 0
+    },
+    {
+      "name": "overall.problematic_move_count",
+      "value": 1
+    },
+    {
+      "name": "overall.problematic_file_count",
+      "value": 0
+    },
+    {
+      "name": "overall.scatter_factor",
+      "value": 1.0
+    }
+  ],
+  "files": [
+    {
+      "file": "services/worker.py",
+      "score": 0.6,
+      "metrics": [
+        {
+          "name": "file.lines_changed",
+          "value": 12
+        }
+      ]
+    },
+    {
+      "file": "core/worker.py",
+      "score": 0.53,
+      "metrics": [
+        {
+          "name": "file.lines_changed",
+          "value": 14
+        }
+      ]
+    }
+  ],
+  "moves": [
+    {
+      "move_id": 0,
+      "hunk_count": 2,
+      "score": 0.0,
+      "metrics": [
+        {
+          "name": "move.edit_complexity",
+          "value": 0.0
+        }
+      ]
+    }
+  ],
+  "hunks": []
+}

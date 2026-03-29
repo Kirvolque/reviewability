@@ -1,0 +1,7 @@
+max_diff_lines = 10
+min_overall_score = 0.5
+hunk_score_threshold = 0.5
+file_score_threshold = 0.5
+max_hunk_lines = 12
+max_move_lines = 100
+move_similarity_penalty = 2.0
