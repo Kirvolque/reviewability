@@ -14,7 +14,7 @@ class OverallScatterFactor(OverallMetric):
         "Normalized Shannon entropy of the distribution of changes across files. "
         "0.0 means all changes are in one file; 1.0 means changes are spread equally across all files."  # noqa: E501
     )
-    remediation: str | None = None
+    remediation: str = "Changes are spread across too many files; split into focused, single-concern pull requests."  # noqa: E501
 
     @override
     def calculate(

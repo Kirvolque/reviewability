@@ -47,7 +47,7 @@ def main() -> None:
     else:
         diff = parse_git_diff(config, *args.git_args)
     report, violations = create_analyzer(config).run(diff)
-    gate_result = QualityGate().evaluate(report, violations)
+    gate_result = QualityGate().evaluate(report, violations, config)
 
     recommendations = [
         {

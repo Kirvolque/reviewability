@@ -7,15 +7,33 @@
   "recommendations": [
     {
       "location": "overall",
+      "metric": "overall.files_changed",
+      "value": 3,
+      "remediation": "Split the change into smaller pull requests by concern."
+    },
+    {
+      "location": "overall",
       "metric": "overall.lines_changed",
       "value": 28,
       "remediation": "Reduce patch size by splitting unrelated changes into separate commits."
     },
     {
       "location": "overall",
-      "metric": "overall.scatter_factor",
-      "value": 0.97,
-      "remediation": null
+      "metric": "overall.added_lines",
+      "value": 14,
+      "remediation": "Keep additions under 400 lines per review session."
+    },
+    {
+      "location": "overall",
+      "metric": "overall.problematic_hunk_count",
+      "value": 0,
+      "remediation": "Simplify or split hunks with low reviewability scores."
+    },
+    {
+      "location": "overall",
+      "metric": "overall.problematic_file_count",
+      "value": 0,
+      "remediation": "Simplify or split files with low reviewability scores."
     }
   ],
   "files_changed": 3,

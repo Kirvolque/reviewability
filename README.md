@@ -111,6 +111,18 @@ max_problematic_hunks = 3
 max_problematic_files = 2
 max_files_changed = 10
 max_added_lines = 400
+
+# Optional: per-extension line prefixes to exclude from analysis.
+# Lines starting with any of these prefixes are stripped before metrics are computed,
+# so import-only changes do not inflate hunk sizes or interleaving scores.
+# Use "*" as the fallback for file types not listed.
+# Remove this section entirely to use the built-in defaults.
+[import_prefixes]
+"*"   = ["import ", "#include ", "extern crate ", "package "]
+".py" = ["import ", "from "]
+".go" = ["import ", "package "]
+".ts" = ["import ", "from ", "require("]
+# ... (full list of extensions in the built-in config)
 ```
 
 ## Code Moves
@@ -136,8 +148,9 @@ are evaluated at the move level instead.
 
 Metrics are calculated at four levels: hunk, move, file, and overall diff.
 
-All size metrics exclude blank lines and import/package declarations, so import-only
-or formatting-only changes do not inflate scores.
+All size metrics and `hunk.interleaving` exclude blank lines and import/package declarations,
+so import-only or formatting-only changes do not inflate scores. The list of excluded prefixes
+is configurable per file extension via `[import_prefixes]` in the config.
 
 ### Hunk-level
 
@@ -150,12 +163,13 @@ Computed only for **singleton hunks** (not part of any move).
 | `hunk.removed_lines` | Meaningful lines removed in a hunk |
 | `hunk.context_lines` | Unchanged context lines surrounding the change |
 | `hunk.change_balance` | Ratio of added lines to total changed lines (0.0 = pure deletion, 1.0 = pure addition) |
+| `hunk.interleaving` | How much additions and deletions alternate within the hunk (0.0 = clean block substitution, 1.0 = every line alternates). Higher = harder to review. |
 
 ### Move-level
 
 | Metric | Description |
 |--------|-------------|
-| `move.edit_complexity` | Edit complexity score for a detected code move. Pure moves score high; rewrites score low. Higher = easier to review. |
+| `move.edit_complexity` | Edit complexity of a detected code move. Pure relocations score high (1.0); heavy rewrites score low (0.0). |
 
 ### File-level
 
@@ -179,8 +193,13 @@ Computed only for **singleton hunks** (not part of any move).
 ### Hunk score (singletons only)
 
 ```
-score = max(0, 1 − lines_changed / max_hunk_lines)
+score = max(0, 1 − (lines_changed / max_hunk_lines) × (1 + interleaving))
 ```
+
+`interleaving` measures how much additions and deletions alternate within the hunk. When all
+additions come before all deletions (or vice versa), `interleaving = 0.0` and the formula
+reduces to the plain size ratio. When every line alternates type, `interleaving = 1.0` and
+the size penalty doubles.
 
 ### Move score
 
