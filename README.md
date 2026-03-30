@@ -16,6 +16,8 @@ pip install reviewability
 
 Requires Python 3.12+.
 
+**Dependencies:** [`unidiff`](https://pypi.org/project/unidiff/) (diff parsing), [`rapidfuzz`](https://pypi.org/project/rapidfuzz/) (fast string similarity for move detection).
+
 ## The Idea
 
 A pull request can be hard to review not because the code is poorly written, but because of

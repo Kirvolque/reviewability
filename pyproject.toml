@@ -40,6 +40,7 @@ classifiers = [
 ]
 dependencies = [
     "unidiff>=0.7.5",
+    "rapidfuzz>=3.0",
 ]
 
 [project.urls]
