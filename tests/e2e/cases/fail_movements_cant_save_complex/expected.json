@@ -72,6 +72,10 @@
     {
       "name": "overall.scatter_factor",
       "value": 0.96
+    },
+    {
+      "name": "overall.mean_interleaving",
+      "value": 0.0
     }
   ],
   "files": [
@@ -213,11 +217,11 @@
     {
       "move_id": 3,
       "hunk_count": 2,
-      "score": 0.87,
+      "score": 0.86,
       "metrics": [
         {
           "name": "move.edit_complexity",
-          "value": 0.87
+          "value": 0.86
         }
       ]
     },

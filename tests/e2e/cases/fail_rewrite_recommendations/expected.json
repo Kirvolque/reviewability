@@ -72,6 +72,10 @@
     {
       "name": "overall.scatter_factor",
       "value": 0.94
+    },
+    {
+      "name": "overall.mean_interleaving",
+      "value": 0.0
     }
   ],
   "files": [

@@ -7,7 +7,7 @@ _REQUIRED = {
     "file_score_threshold": 0.5,
     "max_diff_lines": 500,
     "max_hunk_lines": 50,
-    "max_move_lines": 100,
+    "max_move_lines": 45,
     "move_similarity_penalty": 2.0,
 }
 

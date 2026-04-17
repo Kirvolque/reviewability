@@ -1,47 +1,8 @@
 {
-  "score": 0.0,
-  "passed": false,
-  "violations": [
-    "[ERROR] Overall score 0.00 is below the minimum of 0.5"
-  ],
-  "recommendations": [
-    {
-      "location": "overall",
-      "metric": "overall.files_changed",
-      "value": 10,
-      "remediation": "Split the change into smaller pull requests by concern."
-    },
-    {
-      "location": "overall",
-      "metric": "overall.lines_changed",
-      "value": 50,
-      "remediation": "Reduce patch size by splitting unrelated changes into separate commits."
-    },
-    {
-      "location": "overall",
-      "metric": "overall.added_lines",
-      "value": 50,
-      "remediation": "Keep additions under 400 lines per review session."
-    },
-    {
-      "location": "overall",
-      "metric": "overall.problematic_hunk_count",
-      "value": 0,
-      "remediation": "Simplify or split hunks with low reviewability scores."
-    },
-    {
-      "location": "overall",
-      "metric": "overall.problematic_move_count",
-      "value": 0,
-      "remediation": "Simplify or split moves with low reviewability scores."
-    },
-    {
-      "location": "overall",
-      "metric": "overall.problematic_file_count",
-      "value": 0,
-      "remediation": "Simplify or split files with low reviewability scores."
-    }
-  ],
+  "score": 0.5,
+  "passed": true,
+  "violations": [],
+  "recommendations": [],
   "files_changed": 10,
   "hunks_changed": 10,
   "overall": [
@@ -72,6 +33,10 @@
     {
       "name": "overall.scatter_factor",
       "value": 1.0
+    },
+    {
+      "name": "overall.mean_interleaving",
+      "value": 0.0
     }
   ],
   "files": [

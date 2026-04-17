@@ -1,5 +1,5 @@
 {
-  "score": 0.81,
+  "score": 0.8,
   "passed": true,
   "violations": [],
   "recommendations": [],
@@ -33,6 +33,10 @@
     {
       "name": "overall.scatter_factor",
       "value": 0.0
+    },
+    {
+      "name": "overall.mean_interleaving",
+      "value": 0.06
     }
   ],
   "files": [

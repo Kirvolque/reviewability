@@ -66,7 +66,7 @@ def test_parse_no_path_returns_bundled_defaults():
     assert config.max_hunk_lines == 50
     assert config.hunk_score_threshold == 0.5
     assert config.min_overall_score == 0.7
-    assert config.max_move_lines == 100
+    assert config.max_move_lines == 45
     assert config.move_similarity_penalty == 2.0
 
 

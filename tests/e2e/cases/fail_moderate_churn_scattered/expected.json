@@ -1,8 +1,8 @@
 {
-  "score": 0.8,
+  "score": 0.82,
   "passed": false,
   "violations": [
-    "[ERROR] Overall score 0.80 is below the minimum of 0.9"
+    "[ERROR] Overall score 0.82 is below the minimum of 0.9"
   ],
   "recommendations": [
     {
@@ -40,6 +40,12 @@
       "metric": "overall.problematic_file_count",
       "value": 0,
       "remediation": "Simplify or split files with low reviewability scores."
+    },
+    {
+      "location": "overall",
+      "metric": "overall.mean_interleaving",
+      "value": 0.78,
+      "remediation": "Many hunks have heavily interleaved additions and deletions. Separate deletions and additions into focused commits."
     }
   ],
   "files_changed": 5,
@@ -72,6 +78,10 @@
     {
       "name": "overall.scatter_factor",
       "value": 1.0
+    },
+    {
+      "name": "overall.mean_interleaving",
+      "value": 0.78
     }
   ],
   "files": [

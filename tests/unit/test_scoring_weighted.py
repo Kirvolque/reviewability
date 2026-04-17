@@ -72,19 +72,19 @@ def test_overall_score_half_size_no_scatter():
     assert make_scorer().overall_score(mr) == 0.5
 
 
-def test_overall_score_half_size_full_scatter():
-    # size_ratio=0.5, scatter=1.0 → 1 - 0.5 * 2.0 = 0.0
-    mr = make_mr(**{"overall.lines_changed": 50, "overall.scatter_factor": 1})
+def test_overall_score_half_size_full_interleaving():
+    # size_ratio=0.5, mean_interleaving=1.0 → 1 - 0.5 * 2.0 = 0.0
+    mr = make_mr(**{"overall.lines_changed": 50, "overall.mean_interleaving": 1.0})
     assert make_scorer().overall_score(mr) == 0.0
 
 
-def test_overall_score_half_size_half_scatter():
-    # size_ratio=0.5, scatter=0.5 → 1 - 0.5 * 1.5 = 0.25
-    mr = make_mr(**{"overall.lines_changed": 50, "overall.scatter_factor": 0.5})
+def test_overall_score_half_size_half_interleaving():
+    # size_ratio=0.5, mean_interleaving=0.5 → 1 - 0.5 * 1.5 = 0.25
+    mr = make_mr(**{"overall.lines_changed": 50, "overall.mean_interleaving": 0.5})
     assert make_scorer().overall_score(mr) == 0.25
 
 
-def test_overall_score_scatter_missing_treated_as_zero():
-    # scatter absent → scatter=0.0 → 1 - 0.5 * 1.0 = 0.5
+def test_overall_score_interleaving_missing_treated_as_zero():
+    # mean_interleaving absent → 0.0 → 1 - 0.5 * 1.0 = 0.5
     mr = make_mr(**{"overall.lines_changed": 50})
     assert make_scorer().overall_score(mr) == 0.5

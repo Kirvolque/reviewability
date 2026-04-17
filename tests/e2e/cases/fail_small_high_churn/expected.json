@@ -1,19 +1,18 @@
 {
-  "score": 0.0,
+  "score": 0.4,
   "passed": false,
   "violations": [
-    "[ERROR] Diff has 12 lines changed, exceeds limit of 10",
-    "[ERROR] Overall score 0.00 is below the minimum of 0.5"
+    "[ERROR] Overall score 0.40 is below the minimum of 0.5"
   ],
   "recommendations": [
     {
-      "location": "api/handler.py",
+      "location": "src/config.py",
       "metric": "hunk.change_balance",
       "value": 0.5,
       "remediation": "This hunk mixes deletions and additions together, making it hard to follow. Split into two separate commits: one that removes the old code, one that adds the new."
     },
     {
-      "location": "api/handler.py",
+      "location": "src/config.py",
       "metric": "hunk.interleaving",
       "value": 1.0,
       "remediation": "Additions and deletions are heavily interleaved, making the change hard to follow. Separate the deletions and additions into distinct commits or hunks."
@@ -27,13 +26,13 @@
     {
       "location": "overall",
       "metric": "overall.lines_changed",
-      "value": 12,
+      "value": 30,
       "remediation": "Reduce patch size by splitting unrelated changes into separate commits."
     },
     {
       "location": "overall",
       "metric": "overall.added_lines",
-      "value": 6,
+      "value": 15,
       "remediation": "Keep additions under 400 lines per review session."
     },
     {
@@ -70,11 +69,11 @@
     },
     {
       "name": "overall.lines_changed",
-      "value": 12
+      "value": 30
     },
     {
       "name": "overall.added_lines",
-      "value": 6
+      "value": 15
     },
     {
       "name": "overall.problematic_hunk_count",
@@ -99,12 +98,12 @@
   ],
   "files": [
     {
-      "file": "api/handler.py",
-      "score": 0.0,
+      "file": "src/config.py",
+      "score": 0.7,
       "metrics": [
         {
           "name": "file.lines_changed",
-          "value": 12
+          "value": 30
         }
       ]
     }
@@ -112,20 +111,20 @@
   "moves": [],
   "hunks": [
     {
-      "file": "api/handler.py",
+      "file": "src/config.py",
       "score": 0.0,
       "metrics": [
         {
           "name": "hunk.lines_changed",
-          "value": 12
+          "value": 30
         },
         {
           "name": "hunk.added_lines",
-          "value": 6
+          "value": 15
         },
         {
           "name": "hunk.removed_lines",
-          "value": 6
+          "value": 15
         },
         {
           "name": "hunk.context_lines",
