@@ -5,7 +5,7 @@ from reviewability.metrics.file.lines_changed import FileLinesChanged
 from reviewability.metrics.hunk.interleaving import HunkInterleaving
 from reviewability.metrics.hunk.lines_changed import HunkLinesChanged
 from reviewability.metrics.overall.lines_changed import OverallLinesChanged
-from reviewability.metrics.overall.scatter_factor import OverallScatterFactor
+from reviewability.metrics.overall.mean_interleaving import OverallMeanInterleaving
 from reviewability.scoring.base import ReviewabilityScorer
 
 
@@ -14,7 +14,7 @@ class DefaultScorer(ReviewabilityScorer):
 
     Hunk score:    max(0, 1 − (lines / max_hunk_lines) × (1 + interleaving))
     File score:    max(0, 1 − lines / max_diff_lines)
-    Overall score: max(0, 1 − size_ratio × (1 + scatter_factor))
+    Overall score: max(0, 1 − size_ratio × (1 + mean_interleaving))
     """
 
     def __init__(
@@ -54,6 +54,6 @@ class DefaultScorer(ReviewabilityScorer):
         if mv is None:
             return 1.0
         size_ratio = min(mv.value / self._max_diff_lines, 1.0)
-        scatter_mv = metrics.metric(OverallScatterFactor.name)
-        scatter = scatter_mv.value if scatter_mv is not None else 0.0
-        return max(0.0, 1.0 - size_ratio * (1.0 + scatter))
+        interleaving_mv = metrics.metric(OverallMeanInterleaving.name)
+        mean_interleaving = interleaving_mv.value if interleaving_mv is not None else 0.0
+        return max(0.0, 1.0 - size_ratio * (1.0 + mean_interleaving))

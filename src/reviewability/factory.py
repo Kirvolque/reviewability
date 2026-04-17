@@ -15,6 +15,7 @@ from reviewability.metrics.overall import (
     OverallAddedLines,
     OverallFilesChanged,
     OverallLinesChanged,
+    OverallMeanInterleaving,
     OverallProblematicFileCount,
     OverallProblematicHunkCount,
     OverallProblematicMoveCount,
@@ -44,6 +45,7 @@ def create_analyzer(config: ReviewabilityConfig) -> Analyzer:
         OverallProblematicMoveCount(config.hunk_score_threshold),
         OverallProblematicFileCount(config.file_score_threshold),
         OverallScatterFactor(),
+        OverallMeanInterleaving(),
         MoveEditComplexity(config.max_move_lines, config.move_similarity_penalty),
     ]:
         registry.add(metric)
