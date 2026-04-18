@@ -53,16 +53,16 @@ def test_fully_alternating():
 
 
 def test_single_add_single_remove():
-    # A R → 2 segments, 2 lines → (2-1)/(2-1) = 1.0
+    # A R → 2 lines → below MIN_CHANGES threshold → 0.0
     hunk = make_hunk(["a"], ["x"], (A, R))
-    assert metric.calculate(hunk) == result(1.0, has_remediation=True)
+    assert metric.calculate(hunk) == result(0.0)
 
 
 @pytest.mark.parametrize(
     "change_order, expected",
     [
-        # 3 lines, fully alternating: (3-1)/(3-1) = 1.0
-        ((A, R, A), 1.0),
+        # 3 lines → below MIN_CHANGES threshold → 0.0
+        ((A, R, A), 0.0),
         # 5 lines, 3 segments: (3-1)/(5-1) = 0.5
         ((A, A, R, R, A), 0.5),
         # 6 lines, 2 segments: (2-1)/(6-1) = 0.2

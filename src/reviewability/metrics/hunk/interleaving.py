@@ -11,9 +11,13 @@ class HunkInterleaving(HunkMetric):
     Counts alternating runs of added/removed lines, then normalizes by the maximum possible
     run count::
 
-        interleaving = (segments − 1) / max(changed − 1, 1)
+        interleaving = (segments − 1) / (changed − 1)
 
-    - 0.0 — all additions then all deletions (or vice versa): clean block substitution
+    Requires at least 4 changed lines to produce a meaningful signal; hunks with fewer
+    lines return 0.0 because the formula degenerates (a single add/remove pair always
+    yields 1.0 regardless of complexity).
+
+    - 0.0 — clean block substitution, or hunk too small to measure
     - 1.0 — every line alternates type: maximum interleaving, hardest to review
 
     Examples::
@@ -21,6 +25,7 @@ class HunkInterleaving(HunkMetric):
         ++ --      → 2 segments, 4 lines → 0.33
         + - + -    → 4 segments, 4 lines → 1.0
         +++ ---    → 2 segments, 6 lines → 0.2
+        + -        → 2 lines → 0.0  (below threshold)
     """
 
     name: str = "hunk.interleaving"
@@ -44,10 +49,12 @@ class HunkInterleaving(HunkMetric):
             remediation=self.remediation if value > 0.0 else None,
         )
 
+    _MIN_CHANGES = 4  # Below this the formula degenerates (single pair always scores 1.0)
+
     def _interleaving(self, sequence: tuple[ChangeType, ...]) -> float:
         """Compute normalized interleaving score from an ordered change-type sequence."""
         n = len(sequence)
-        if n <= 1:
+        if n < self._MIN_CHANGES:
             return 0.0
         segments = sum(1 for i in range(n) if i == 0 or sequence[i] != sequence[i - 1])
         return (segments - 1) / (n - 1)

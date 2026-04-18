@@ -1,5 +1,5 @@
 {
-  "score": 0.99,
+  "score": 1.0,
   "passed": true,
   "violations": [],
   "recommendations": [],
@@ -36,7 +36,7 @@
     },
     {
       "name": "overall.mean_interleaving",
-      "value": 1.0
+      "value": 0.0
     }
   ],
   "files": [
@@ -149,7 +149,7 @@
   "hunks": [
     {
       "file": "app/main.py",
-      "score": 0.92,
+      "score": 0.96,
       "metrics": [
         {
           "name": "hunk.lines_changed",
@@ -173,7 +173,7 @@
         },
         {
           "name": "hunk.interleaving",
-          "value": 1.0
+          "value": 0.0
         }
       ]
     }
