@@ -120,7 +120,7 @@ max_added_lines = 400
 # so import-only changes do not inflate hunk sizes or interleaving scores.
 # Use "*" as the fallback for file types not listed.
 # Remove this section entirely to use the built-in defaults.
-[import_prefixes]
+[excluded_prefixes]
 "*"   = ["import ", "#include ", "extern crate ", "package "]
 ".py" = ["import ", "from "]
 ".go" = ["import ", "package "]
@@ -153,7 +153,7 @@ Metrics are calculated at four levels: hunk, move, file, and overall diff.
 
 All size metrics and `hunk.interleaving` exclude blank lines and import/package declarations,
 so import-only or formatting-only changes do not inflate scores. The list of excluded prefixes
-is configurable per file extension via `[import_prefixes]` in the config.
+is configurable per file extension via `[excluded_prefixes]` in the config.
 
 ### Hunk-level
 

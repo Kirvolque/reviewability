@@ -1,7 +1,7 @@
 from unidiff import PatchSet
 
 from reviewability.config.models import ReviewabilityConfig
-from reviewability.diff.line_filter import import_prefixes_for
+from reviewability.diff.line_filter import excluded_prefixes_for
 from reviewability.diff.move_detector import MoveDetector
 from reviewability.diff.similarity_calculator import DiffSimilarityCalculator
 from reviewability.domain.models import ChangeType, Diff, FileDiff, Hunk, HunkType, Move, MoveType
@@ -32,7 +32,7 @@ def parse_diff_text(diff_text: str, config: ReviewabilityConfig) -> Diff:
 
 def _build_hunk(file_path: str, hunk, config: ReviewabilityConfig) -> Hunk:
     """Build a Hunk with pre-filtered added/removed lines and change_order."""
-    prefixes = import_prefixes_for(file_path, config.import_prefixes)
+    prefixes = excluded_prefixes_for(file_path, config.excluded_prefixes)
 
     # Build ordered change list then filter together so all three fields stay in sync.
     raw_changes = [

@@ -42,7 +42,7 @@ max_added_lines = 400
 # changes do not inflate hunk sizes, interleaving scores, or move detection.
 # Use "*" as the fallback for file types not listed below.
 # Remove this section entirely to use the built-in defaults.
-[import_prefixes]
+[excluded_prefixes]
 "*"    = ["import ", "#include ", "extern crate ", "package ", "// ", "/* ", "/** ", " * ", " */"]
 ".py"  = ["import ", "from ", "# "]
 ".go"  = ["import ", "package ", "// "]

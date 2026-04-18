@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-IMPORT_PREFIXES_BY_EXT: dict[str, tuple[str, ...]] = {
+EXCLUDED_PREFIXES_BY_EXT: dict[str, tuple[str, ...]] = {
     ".py": ("import ", "from "),
     ".go": ("import ", "package "),
     ".rs": ("use ", "extern crate ", "mod "),
@@ -33,7 +33,7 @@ IMPORT_PREFIXES_BY_EXT: dict[str, tuple[str, ...]] = {
     ".exs": ("import ", "alias ", "use ", "require "),
 }
 
-FALLBACK_IMPORT_PREFIXES: tuple[str, ...] = (
+FALLBACK_EXCLUDED_PREFIXES: tuple[str, ...] = (
     "import ",
     "#include ",
     "extern crate ",
@@ -41,20 +41,20 @@ FALLBACK_IMPORT_PREFIXES: tuple[str, ...] = (
 )
 
 
-def import_prefixes_for(
+def excluded_prefixes_for(
     file_path: str, prefixes_by_ext: dict[str, list[str]] | None
 ) -> tuple[str, ...]:
-    """Return the import/package prefixes for the given file path.
+    """Return the line-exclusion prefixes for the given file path.
 
     Uses ``prefixes_by_ext`` when provided (from config); falls back to the
-    built-in ``IMPORT_PREFIXES_BY_EXT`` and ``FALLBACK_IMPORT_PREFIXES`` otherwise.
+    built-in ``EXCLUDED_PREFIXES_BY_EXT`` and ``FALLBACK_EXCLUDED_PREFIXES`` otherwise.
     The special key ``"*"`` in ``prefixes_by_ext`` acts as the fallback for unknown extensions.
     """
     ext = Path(file_path).suffix.lower()
     if prefixes_by_ext is not None:
         prefixes = prefixes_by_ext.get(ext) or prefixes_by_ext.get("*") or []
         return tuple(prefixes)
-    return IMPORT_PREFIXES_BY_EXT.get(ext, FALLBACK_IMPORT_PREFIXES)
+    return EXCLUDED_PREFIXES_BY_EXT.get(ext, FALLBACK_EXCLUDED_PREFIXES)
 
 
 def meaningful_lines(lines: list[str], prefixes: tuple[str, ...]) -> list[str]:
