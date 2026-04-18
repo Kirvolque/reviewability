@@ -40,8 +40,12 @@ class DiffSimilarityCalculator:
 
         used_del, used_add, total = self._match_exact(deleted_lines, added_lines)
 
-        remaining_del = [(i, deleted_lines[i]) for i in range(len(deleted_lines)) if i not in used_del]
-        remaining_add = [(j, added_lines[j]) for j in range(len(added_lines)) if j not in used_add]
+        remaining_del = [
+            (i, deleted_lines[i]) for i in range(len(deleted_lines)) if i not in used_del
+        ]
+        remaining_add = [
+            (j, added_lines[j]) for j in range(len(added_lines)) if j not in used_add
+        ]
         total += self._match_approximate(remaining_del, remaining_add, used_del, used_add)
 
         return total / max(len(deleted_lines), len(added_lines))
