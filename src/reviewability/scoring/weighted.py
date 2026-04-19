@@ -12,18 +12,20 @@ from reviewability.scoring.base import ReviewabilityScorer
 class DefaultScorer(ReviewabilityScorer):
     """Concrete reviewability scorer used by the default analysis pipeline.
 
-    Hunk score:    max(0, 1 − (lines / max_hunk_lines) × (1 + interleaving))
+    Hunk score:    max(0, 1 − (lines / max_hunk_lines) × (1 + interleaving_w × interleaving))
     File score:    max(0, 1 − lines / max_diff_lines)
-    Overall score: max(0, 1 − size_ratio × (1 + mean_interleaving))
+    Overall score: max(0, 1 − size_ratio × (1 + interleaving_w × mean_interleaving))
     """
 
     def __init__(
         self,
         max_hunk_lines: float,
         max_diff_lines: float,
+        interleaving_w: float = 1.0,
     ) -> None:
         self._max_hunk_lines = max_hunk_lines
         self._max_diff_lines = max_diff_lines
+        self._interleaving_w = interleaving_w
 
     @override
     def hunk_score(self, metrics: MetricResults) -> float:
@@ -33,7 +35,7 @@ class DefaultScorer(ReviewabilityScorer):
         size_ratio = mv.value / self._max_hunk_lines
         interleaving_mv = metrics.metric(HunkInterleaving.name)
         interleaving = interleaving_mv.value if interleaving_mv is not None else 0.0
-        return max(0.0, 1.0 - size_ratio * (1.0 + interleaving))
+        return max(0.0, 1.0 - size_ratio * (1.0 + self._interleaving_w * interleaving))
 
     @override
     def file_score(self, metrics: MetricResults) -> float:
@@ -56,4 +58,4 @@ class DefaultScorer(ReviewabilityScorer):
         size_ratio = min(mv.value / self._max_diff_lines, 1.0)
         interleaving_mv = metrics.metric(OverallMeanInterleaving.name)
         mean_interleaving = interleaving_mv.value if interleaving_mv is not None else 0.0
-        return max(0.0, 1.0 - size_ratio * (1.0 + mean_interleaving))
+        return max(0.0, 1.0 - size_ratio * (1.0 + self._interleaving_w * mean_interleaving))

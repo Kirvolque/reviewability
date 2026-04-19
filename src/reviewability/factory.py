@@ -53,6 +53,7 @@ def create_analyzer(config: ReviewabilityConfig) -> Analyzer:
     scorer = DefaultScorer(
         max_hunk_lines=float(config.max_hunk_lines),
         max_diff_lines=float(config.max_diff_lines),
+        interleaving_w=config.weights.interleaving_weight,
     )
 
     return Analyzer(

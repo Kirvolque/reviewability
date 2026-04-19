@@ -1,4 +1,4 @@
-from reviewability.config.models import ReviewabilityConfig
+from reviewability.config.models import ReviewabilityConfig, Weights
 from reviewability.config.parser import parse_config
 
 # All required fields — used to construct configs in tests.
@@ -22,6 +22,7 @@ def test_defaults_match_defaults_toml():
         max_files_changed=10,
         max_added_lines=400,
         excluded_prefixes=from_toml.excluded_prefixes,
+        weights=Weights(interleaving_weight=1.0),
     )
     assert from_toml == from_constructor
 

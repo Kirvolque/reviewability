@@ -2,7 +2,7 @@ import tomllib
 from dataclasses import fields
 from pathlib import Path
 
-from reviewability.config.models import ReviewabilityConfig
+from reviewability.config.models import ReviewabilityConfig, Weights
 
 _KNOWN_FIELDS: frozenset[str] = frozenset(f.name for f in fields(ReviewabilityConfig))
 
@@ -24,4 +24,6 @@ def parse_config(path: Path | None = None) -> ReviewabilityConfig:
         raw = tomllib.load(f)
 
     values = {key: value for key, value in raw.items() if key in _KNOWN_FIELDS}
+    if isinstance(values.get("weights"), dict):
+        values["weights"] = Weights(**values["weights"])
     return ReviewabilityConfig(**values)

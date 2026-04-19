@@ -37,6 +37,13 @@ max_files_changed = 10
 # [optional] Maximum total added lines across the diff before an error is raised.
 max_added_lines = 400
 
+# [optional] Formula weights — controls how strongly each signal amplifies the size penalty.
+# Remove this section to use the built-in defaults.
+[weights]
+# How strongly interleaving amplifies the size penalty in hunk and overall scores.
+# 1.0 = full amplification; 0.0 = interleaving has no effect.
+interleaving_weight = 1.0
+
 # [optional] Per-extension prefixes for lines to exclude from analysis (imports, package
 # declarations, and comment lines). Comment prefixes are included so that comment-only
 # changes do not inflate hunk sizes, interleaving scores, or move detection.

@@ -1,4 +1,13 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+
+
+@dataclass(frozen=True)
+class Weights:
+    """Formula weights controlling how strongly each signal amplifies the size penalty."""
+
+    interleaving_weight: float = 1.0
+    """How strongly interleaving amplifies the size penalty in hunk and overall scores.
+    1.0 means full amplification; 0.0 disables interleaving's effect entirely."""
 
 
 @dataclass(frozen=True)
@@ -50,3 +59,6 @@ class ReviewabilityConfig:
     """Per-extension line prefixes to exclude from analysis (imports, declarations, comments).
     Use ``"*"`` as the key for a fallback applied to unknown extensions.
     If None, built-in defaults are used."""
+
+    weights: Weights = field(default_factory=Weights)
+    """Formula weights. Defaults to Weights() if the [weights] section is absent from config."""
