@@ -15,7 +15,7 @@ class Metric(ABC):
     name: str
     value_type: MetricValueType
     description: str
-    remediation: str
+    remediation: str | None
 
 
 class HunkMetric(Metric, ABC):

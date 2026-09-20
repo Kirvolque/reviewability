@@ -8,9 +8,15 @@
   "recommendations": [
     {
       "location": "move:0",
-      "metric": "move.edit_complexity",
-      "value": 0.0,
-      "remediation": "Consider splitting the change into focused commits: separate moves from logic changes, and rewrite large blocks incrementally."
+      "metric": "move.modified_relocation",
+      "value": 0.49,
+      "remediation": "This relocation also changes code. Review the behavioural edits separately from the movement."
+    },
+    {
+      "location": "move:0",
+      "metric": "move.rewrite_length",
+      "value": 14,
+      "remediation": "This moved rewrite spans a large block. Verify the rewritten behaviour incrementally instead of treating it as mechanical movement."
     },
     {
       "location": "overall",

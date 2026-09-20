@@ -34,6 +34,17 @@ def test_hunk_score_metric_missing():
     assert make_scorer().hunk_score(MetricResults([])) == 1.0
 
 
+def test_hunk_score_ignores_metric_causes():
+    metric = MetricValue(
+        "hunk.lines_changed",
+        25,
+        MetricValueType.INTEGER,
+        causes=(MetricValue("feedback.only", 999, MetricValueType.INTEGER),),
+    )
+
+    assert make_scorer().hunk_score(MetricResults([metric])) == 0.5
+
+
 # --- file_score ---
 
 

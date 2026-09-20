@@ -131,6 +131,50 @@ def test_gate_recommendations_from_low_scoring_move():
     assert result.recommendations[0].remediation == "Simplify this move."
 
 
+def test_gate_prefers_metric_causes_for_low_scoring_move():
+    causes = (
+        MetricValue(
+            name="move.modified_relocation",
+            value=0.4,
+            value_type=MetricValueType.RATIO,
+            remediation="Review the behavioural edits separately from the movement.",
+        ),
+        MetricValue(
+            name="move.rewrite_length",
+            value=30,
+            value_type=MetricValueType.INTEGER,
+            remediation="Review the large rewrite incrementally.",
+        ),
+    )
+    move_metric = MetricValue(
+        name="move.edit_complexity",
+        value=0.2,
+        value_type=MetricValueType.RATIO,
+        remediation="Generic move advice.",
+        causes=causes,
+    )
+    move = Move(
+        move_id=1,
+        hunks=(Hunk(file_path="src/foo.py"),),
+        similarity=0.4,
+        move_type=MoveType.MODIFIED,
+        length=30,
+    )
+    report = AnalysisReport(
+        overall=OverallAnalysis(metrics=MetricResults([]), score=0.5),
+        files=[],
+        moves=[Analysis(subject=move, metrics=MetricResults([move_metric]), score=0.2)],
+        hunks=[],
+    )
+
+    result = gate.evaluate(report, [make_violation(Severity.ERROR)], make_config())
+
+    assert [(rec.metric, rec.value) for rec in result.recommendations] == [
+        ("move.modified_relocation", 0.4),
+        ("move.rewrite_length", 30),
+    ]
+
+
 def test_gate_recommendations_from_overall_metrics():
     mv = MetricValue(
         name="overall.scatter_factor",

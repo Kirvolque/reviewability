@@ -15,7 +15,10 @@ class MetricValueType(Enum):
 
 @dataclass(frozen=True)
 class MetricValue:
-    """A single computed metric result: name, value, type, and optional remediation hint.
+    """A single computed metric result with optional remediation and contributing causes.
+
+    Causes are explanatory metadata for feedback and presentation only. They must not
+    be used as inputs to scoring, rules, or any other metric calculation.
 
     Ratio values are automatically rounded to 2 decimal places at construction.
     """
@@ -24,6 +27,7 @@ class MetricValue:
     value: Any
     value_type: MetricValueType
     remediation: str | None = None
+    causes: tuple[MetricValue, ...] = ()
 
     def __post_init__(self) -> None:
         if self.value_type in (MetricValueType.FLOAT, MetricValueType.RATIO) and isinstance(

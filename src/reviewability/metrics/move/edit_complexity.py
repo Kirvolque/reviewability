@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from reviewability.domain.metric import MetricValue, MetricValueType
-from reviewability.domain.models import Move
+from reviewability.domain.models import Move, MoveType
 from reviewability.domain.report import Analysis
 from reviewability.metrics.base import MoveMetric
 
@@ -33,10 +33,7 @@ class MoveEditComplexity(MoveMetric):
         "Combines the size of the largest hunk with move similarity: "
         "pure moves score high, rewrites score low. Higher = easier to review."
     )
-    remediation = (
-        "Consider splitting the change into focused commits: "
-        "separate moves from logic changes, and rewrite large blocks incrementally."
-    )
+    remediation = None
 
     def __init__(self, max_move_lines: int, similarity_penalty: float) -> None:
         self._max_move_lines = max_move_lines
@@ -55,4 +52,32 @@ class MoveEditComplexity(MoveMetric):
             value=score,
             value_type=self.value_type,
             remediation=self.remediation,
+            causes=self._causes(move),
+        )
+
+    @staticmethod
+    def _causes(move: Move) -> tuple[MetricValue, ...]:
+        """Explain why a modified move is costly without treating pure moves as rewrites."""
+        if move.move_type is not MoveType.MODIFIED:
+            return ()
+
+        return (
+            MetricValue(
+                name="move.modified_relocation",
+                value=move.similarity,
+                value_type=MetricValueType.RATIO,
+                remediation=(
+                    "This relocation also changes code. Review the behavioural edits "
+                    "separately from the movement."
+                ),
+            ),
+            MetricValue(
+                name="move.rewrite_length",
+                value=move.length,
+                value_type=MetricValueType.INTEGER,
+                remediation=(
+                    "This moved rewrite spans a large block. Verify the rewritten "
+                    "behaviour incrementally instead of treating it as mechanical movement."
+                ),
+            ),
         )

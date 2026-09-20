@@ -62,13 +62,15 @@ class QualityGate:
             if analysis.score < config.hunk_score_threshold:
                 location = self._location(analysis)
                 for mv in analysis.metrics:
-                    if mv.remediation is not None:
+                    for explanation in mv.causes or (mv,):
+                        if explanation.remediation is None:
+                            continue
                         recs.append(
                             Recommendation(
                                 location=location,
-                                metric=mv.name,
-                                value=mv.value,
-                                remediation=mv.remediation,
+                                metric=explanation.name,
+                                value=explanation.value,
+                                remediation=explanation.remediation,
                             )
                         )
 

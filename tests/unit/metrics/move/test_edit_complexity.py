@@ -30,7 +30,7 @@ def test_metric_attributes(metric):
     assert metric.name == "move.edit_complexity"
     assert metric.value_type.value == "ratio"
     assert "complex" in metric.description.lower() or "complexity" in metric.description.lower()
-    assert metric.remediation
+    assert metric.remediation is None
 
 
 # ---------------------------------------------------------------------------
@@ -158,3 +158,34 @@ def test_rewrite_move_scores_lower_than_pure_move(metric):
     rewrite_result = metric.calculate(rewrite_move, [])
 
     assert move_result.value > rewrite_result.value
+
+
+def test_modified_move_exposes_relocation_and_rewrite_causes(metric):
+    move = Move(
+        move_id=0,
+        hunks=(Hunk(file_path="a.py", added_lines=["new"] * 10),),
+        similarity=0.45,
+        move_type=MoveType.MODIFIED,
+        length=10,
+    )
+
+    result = metric.calculate(move, [])
+
+    assert [cause.name for cause in result.causes] == [
+        "move.modified_relocation",
+        "move.rewrite_length",
+    ]
+    assert result.causes[0].value == 0.45
+    assert result.causes[1].value == 10
+
+
+def test_pure_move_has_no_rewrite_causes(metric):
+    move = Move(
+        move_id=0,
+        hunks=(Hunk(file_path="a.py", added_lines=["new"] * 10),),
+        similarity=1.0,
+        move_type=MoveType.PURE,
+        length=10,
+    )
+
+    assert metric.calculate(move, []).causes == ()

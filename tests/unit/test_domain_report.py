@@ -52,6 +52,17 @@ def test_metric_value_remediation_set():
     assert mv.remediation == "Fix it"
 
 
+def test_metric_value_causes_default_to_empty_tuple():
+    mv = MetricValue("a", 1, MetricValueType.INTEGER)
+    assert mv.causes == ()
+
+
+def test_metric_value_causes_are_retained():
+    cause = MetricValue("cause", 1, MetricValueType.INTEGER, remediation="Fix it")
+    mv = MetricValue("a", 1, MetricValueType.INTEGER, causes=(cause,))
+    assert mv.causes == (cause,)
+
+
 # --- MetricResults tests ---
 
 
