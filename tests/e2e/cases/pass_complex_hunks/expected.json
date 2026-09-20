@@ -1,5 +1,5 @@
 {
-  "score": 0.69,
+  "score": 0.59,
   "passed": true,
   "violations": [],
   "recommendations": [],
@@ -12,11 +12,11 @@
     },
     {
       "name": "overall.lines_changed",
-      "value": 28
+      "value": 46
     },
     {
       "name": "overall.added_lines",
-      "value": 14
+      "value": 23
     },
     {
       "name": "overall.problematic_hunk_count",
@@ -37,6 +37,10 @@
     {
       "name": "overall.mean_interleaving",
       "value": 0.12
+    },
+    {
+      "name": "overall.unexplained_lines",
+      "value": 37
     }
   ],
   "files": [

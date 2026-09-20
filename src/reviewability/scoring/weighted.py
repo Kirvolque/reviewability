@@ -6,6 +6,7 @@ from reviewability.metrics.hunk.interleaving import HunkInterleaving
 from reviewability.metrics.hunk.lines_changed import HunkLinesChanged
 from reviewability.metrics.overall.lines_changed import OverallLinesChanged
 from reviewability.metrics.overall.mean_interleaving import OverallMeanInterleaving
+from reviewability.metrics.overall.unexplained_lines import OverallUnexplainedLines
 from reviewability.scoring.base import ReviewabilityScorer
 
 
@@ -14,7 +15,8 @@ class DefaultScorer(ReviewabilityScorer):
 
     Hunk score:    max(0, 1 − (lines / max_hunk_lines) × (1 + interleaving_w × interleaving))
     File score:    max(0, 1 − lines / max_diff_lines)
-    Overall score: max(0, 1 − size_ratio × (1 + interleaving_w × mean_interleaving))
+    Overall score: max(0, 1 − unexplained_size_ratio
+                          × (1 + interleaving_w × mean_interleaving))
     """
 
     def __init__(
@@ -52,7 +54,9 @@ class DefaultScorer(ReviewabilityScorer):
 
     @override
     def overall_score(self, metrics: MetricResults) -> float:
-        mv = metrics.metric(OverallLinesChanged.name)
+        mv = metrics.metric(OverallUnexplainedLines.name) or metrics.metric(
+            OverallLinesChanged.name
+        )
         if mv is None:
             return 1.0
         size_ratio = min(mv.value / self._max_diff_lines, 1.0)

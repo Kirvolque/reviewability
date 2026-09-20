@@ -99,3 +99,15 @@ def test_overall_score_interleaving_missing_treated_as_zero():
     # mean_interleaving absent → 0.0 → 1 - 0.5 * 1.0 = 0.5
     mr = make_mr(**{"overall.lines_changed": 50})
     assert make_scorer().overall_score(mr) == 0.5
+
+
+def test_overall_score_prefers_unexplained_lines_over_raw_size():
+    mr = make_mr(**{"overall.lines_changed": 100, "overall.unexplained_lines": 20})
+
+    assert make_scorer().overall_score(mr) == 0.8
+
+
+def test_overall_score_treats_pure_moves_as_explained_work():
+    mr = make_mr(**{"overall.lines_changed": 100, "overall.unexplained_lines": 0})
+
+    assert make_scorer().overall_score(mr) == 1.0

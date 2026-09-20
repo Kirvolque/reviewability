@@ -12,11 +12,11 @@
     },
     {
       "name": "overall.lines_changed",
-      "value": 2
+      "value": 88
     },
     {
       "name": "overall.added_lines",
-      "value": 1
+      "value": 44
     },
     {
       "name": "overall.problematic_hunk_count",
@@ -37,6 +37,10 @@
     {
       "name": "overall.mean_interleaving",
       "value": 0.0
+    },
+    {
+      "name": "overall.unexplained_lines",
+      "value": 2
     }
   ],
   "files": [

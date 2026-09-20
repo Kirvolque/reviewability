@@ -186,6 +186,7 @@ Computed only for **singleton hunks** (not part of any move).
 |--------|-------------|
 | `overall.lines_changed` | Total meaningful lines changed across the entire diff |
 | `overall.added_lines` | Total meaningful lines added across the entire diff |
+| `overall.unexplained_lines` | Changed lines not explained by exact move correspondence: all singleton hunk lines plus residual lines from modified moves |
 | `overall.files_changed` | Number of files changed |
 | `overall.scatter_factor` | Normalized entropy of how changes are distributed across files (0.0 = all in one file, 1.0 = evenly spread) |
 | `overall.problematic_hunk_count` | Singleton hunks with a score below the configured threshold |
@@ -220,18 +221,21 @@ so the same number of lines scores worse.
 ### Overall score
 
 ```
-score = max(0, 1 − size_ratio × (1 + scatter_factor))
+score = max(0, 1 − unexplained_size_ratio × (1 + scatter_factor))
 
-size_ratio = lines_changed / max_diff_lines   [capped at 1.0]
+unexplained_size_ratio = unexplained_lines / max_diff_lines   [capped at 1.0]
 ```
 
-The score is driven by **diff size** and **scatter**. `scatter_factor` measures how evenly
-changes are spread across files (normalized entropy, 0.0 = all in one file, 1.0 = evenly
-spread). It amplifies the size penalty: a large diff that touches many files evenly scores
-worse than an equally large diff concentrated in a few files.
+The score is driven by **unexplained work** and **scatter**. `unexplained_lines` includes
+every singleton hunk line and only the unmatched residual lines of a detected move; exact
+move correspondence does not add a size penalty. Raw `overall.lines_changed` remains the
+full diff size and is used by policy limits. `scatter_factor` measures how evenly changes
+are spread across files (normalized entropy, 0.0 = all in one file, 1.0 = evenly spread).
+It amplifies the unexplained-work penalty: a large change that touches many files evenly
+scores worse than an equally large change concentrated in a few files.
 
-A large but focused diff (e.g. a bulk rename in one file) or a scattered but small diff
-each score better than a diff that is both large *and* scattered.
+A large but focused mechanical relocation or a scattered but small change each scores
+better than a change that is both large *and* scattered.
 
 ## Validation
 

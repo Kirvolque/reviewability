@@ -20,6 +20,7 @@ from reviewability.metrics.overall import (
     OverallProblematicHunkCount,
     OverallProblematicMoveCount,
     OverallScatterFactor,
+    OverallUnexplainedLines,
 )
 from reviewability.metrics.registry import MetricRegistry
 from reviewability.rules.definitions import hunk_rules, overall_rules
@@ -46,6 +47,7 @@ def create_analyzer(config: ReviewabilityConfig) -> Analyzer:
         OverallProblematicFileCount(config.file_score_threshold),
         OverallScatterFactor(),
         OverallMeanInterleaving(),
+        OverallUnexplainedLines(),
         MoveEditComplexity(config.max_move_lines, config.move_similarity_penalty),
     ]:
         registry.add(metric)

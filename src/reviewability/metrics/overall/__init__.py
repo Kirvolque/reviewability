@@ -6,6 +6,7 @@ from reviewability.metrics.overall.problematic_file_count import OverallProblema
 from reviewability.metrics.overall.problematic_hunk_count import OverallProblematicHunkCount
 from reviewability.metrics.overall.problematic_move_count import OverallProblematicMoveCount
 from reviewability.metrics.overall.scatter_factor import OverallScatterFactor
+from reviewability.metrics.overall.unexplained_lines import OverallUnexplainedLines
 
 __all__ = [
     "OverallAddedLines",
@@ -16,4 +17,5 @@ __all__ = [
     "OverallProblematicHunkCount",
     "OverallProblematicMoveCount",
     "OverallScatterFactor",
+    "OverallUnexplainedLines",
 ]

@@ -1,7 +1,9 @@
 {
-  "score": 1.0,
+  "score": 0.22,
   "passed": false,
   "violations": [
+    "[ERROR] Diff has 51 lines changed, exceeds limit of 50",
+    "[ERROR] Overall score 0.22 is below the minimum of 0.5",
     "[ERROR] Diff touches 3 files, exceeds limit of 2"
   ],
   "recommendations": [
@@ -14,13 +16,13 @@
     {
       "location": "overall",
       "metric": "overall.lines_changed",
-      "value": 0,
+      "value": 51,
       "remediation": "Reduce patch size by splitting unrelated changes into separate commits."
     },
     {
       "location": "overall",
       "metric": "overall.added_lines",
-      "value": 0,
+      "value": 26,
       "remediation": "Keep additions under 400 lines per review session."
     },
     {
@@ -51,11 +53,11 @@
     },
     {
       "name": "overall.lines_changed",
-      "value": 0
+      "value": 51
     },
     {
       "name": "overall.added_lines",
-      "value": 0
+      "value": 26
     },
     {
       "name": "overall.problematic_hunk_count",
@@ -76,6 +78,10 @@
     {
       "name": "overall.mean_interleaving",
       "value": 0.0
+    },
+    {
+      "name": "overall.unexplained_lines",
+      "value": 39
     }
   ],
   "files": [

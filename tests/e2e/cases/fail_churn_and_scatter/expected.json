@@ -1,5 +1,5 @@
 {
-  "score": 1.0,
+  "score": 0.84,
   "passed": false,
   "violations": [
     "[ERROR] Diff touches 8 files, exceeds limit of 6"
@@ -14,13 +14,13 @@
     {
       "location": "overall",
       "metric": "overall.lines_changed",
-      "value": 0,
+      "value": 32,
       "remediation": "Reduce patch size by splitting unrelated changes into separate commits."
     },
     {
       "location": "overall",
       "metric": "overall.added_lines",
-      "value": 0,
+      "value": 16,
       "remediation": "Keep additions under 400 lines per review session."
     },
     {
@@ -51,11 +51,11 @@
     },
     {
       "name": "overall.lines_changed",
-      "value": 0
+      "value": 32
     },
     {
       "name": "overall.added_lines",
-      "value": 0
+      "value": 16
     },
     {
       "name": "overall.problematic_hunk_count",
@@ -76,6 +76,10 @@
     {
       "name": "overall.mean_interleaving",
       "value": 0.0
+    },
+    {
+      "name": "overall.unexplained_lines",
+      "value": 16
     }
   ],
   "files": [
