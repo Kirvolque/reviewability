@@ -28,6 +28,7 @@ from reviewability.diff_reader import parse_diff_text  # noqa: E402
 from reviewability.factory import create_analyzer  # noqa: E402
 
 FIXTURES = ROOT / "tests" / "fixtures" / "move_semantics"
+EXPECTATIONS = FIXTURES / "expectations.json"
 _MOVED_COLOR = re.compile(r"\x1b\[1;(?:35|36)m")
 
 
@@ -55,14 +56,17 @@ def main() -> int:
         parser.error(f"Java home does not contain bin/java: {args.java_home}")
 
     config = parse_config()
+    expectations = json.loads(EXPECTATIONS.read_text())
+    fixtures = [
+        _benchmark_fixture(path, config, args.refactoring_miner, args.java_home)
+        for path in sorted(FIXTURES.glob("*.diff"))
+    ]
     report = {
-        "fixture_count": len(list(FIXTURES.glob("*.diff"))),
+        "fixture_count": len(fixtures),
         "git_version": _git_version(),
         "refactoring_miner": _refactoring_miner_status(args.refactoring_miner, args.java_home),
-        "fixtures": [
-            _benchmark_fixture(path, config, args.refactoring_miner, args.java_home)
-            for path in sorted(FIXTURES.glob("*.diff"))
-        ],
+        "fixtures": fixtures,
+        "evaluation": _evaluate(fixtures, expectations),
     }
     output = json.dumps(report, indent=2) + "\n"
 
@@ -110,6 +114,102 @@ def _metric_value(analysis: Any, name: str) -> int:
     if metric is None:
         raise ValueError(f"Benchmark metric is not registered: {name}")
     return metric.value
+
+
+def _evaluate(fixtures: list[dict[str, Any]], expectations: dict[str, Any]) -> dict[str, Any]:
+    expected_pairs = {
+        fixture["name"]: {
+            (move["source"], move["target"])
+            for move in expectations[fixture["name"]]["moves"]
+        }
+        for fixture in fixtures
+    }
+    reviewability_pairs = {
+        fixture["name"]: {
+            (move["source"]["file"], move["target"]["file"])
+            for move in fixture["reviewability"]["moves"]
+        }
+        for fixture in fixtures
+    }
+    git_pairs = {
+        fixture["name"]: {
+            (rename["source"], rename["target"])
+            for rename in fixture["git"]["renames"]
+        }
+        for fixture in fixtures
+    }
+    return {
+        "reviewability_file_pair": _pair_metrics(expected_pairs, reviewability_pairs),
+        "git_file_rename": _pair_metrics(expected_pairs, git_pairs),
+        "refactoring_miner_fixture_claim": _refactoring_miner_claim_metrics(
+            fixtures, expected_pairs
+        ),
+    }
+
+
+def _pair_metrics(
+    expected_by_fixture: dict[str, set[tuple[str, str]]],
+    predicted_by_fixture: dict[str, set[tuple[str, str]]],
+) -> dict[str, float | int]:
+    true_positive = sum(
+        len(expected_by_fixture[name] & predicted_by_fixture[name])
+        for name in expected_by_fixture
+    )
+    false_positive = sum(
+        len(predicted_by_fixture[name] - expected_by_fixture[name])
+        for name in expected_by_fixture
+    )
+    false_negative = sum(
+        len(expected_by_fixture[name] - predicted_by_fixture[name])
+        for name in expected_by_fixture
+    )
+    return _classification_metrics(true_positive, false_positive, false_negative)
+
+
+def _refactoring_miner_claim_metrics(
+    fixtures: list[dict[str, Any]], expected_pairs: dict[str, set[tuple[str, str]]]
+) -> dict[str, float | int | str]:
+    statuses = {fixture["refactoring_miner"]["status"] for fixture in fixtures}
+    if statuses == {"not_requested"}:
+        return {"status": "not_requested"}
+
+    true_positive = sum(
+        bool(expected_pairs[fixture["name"]])
+        and bool(fixture["refactoring_miner"]["refactorings"])
+        for fixture in fixtures
+    )
+    false_positive = sum(
+        not expected_pairs[fixture["name"]]
+        and bool(fixture["refactoring_miner"]["refactorings"])
+        for fixture in fixtures
+    )
+    false_negative = sum(
+        bool(expected_pairs[fixture["name"]])
+        and not bool(fixture["refactoring_miner"]["refactorings"])
+        for fixture in fixtures
+    )
+    return {
+        "status": "completed_with_fixture_level_claims",
+        **_classification_metrics(true_positive, false_positive, false_negative),
+    }
+
+
+def _classification_metrics(
+    true_positive: int, false_positive: int, false_negative: int
+) -> dict[str, float | int]:
+    precision_denominator = true_positive + false_positive
+    recall_denominator = true_positive + false_negative
+    precision = true_positive / precision_denominator if precision_denominator else 1.0
+    recall = true_positive / recall_denominator if recall_denominator else 1.0
+    f1_denominator = precision + recall
+    return {
+        "true_positive": true_positive,
+        "false_positive": false_positive,
+        "false_negative": false_negative,
+        "precision": round(precision, 3),
+        "recall": round(recall, 3),
+        "f1": round(2 * precision * recall / f1_denominator, 3) if f1_denominator else 0.0,
+    }
 
 
 def _hunk_location(hunk: Any) -> dict[str, int | str | None] | None:

@@ -135,6 +135,207 @@
       },
       "hunk_count": 2,
       "score": 0.77,
+      "alignment": [
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "services/processor.py",
+            "line": 1,
+            "content": "class DataProcessor:"
+          },
+          "target": {
+            "file": "services/processor.py",
+            "line": 2,
+            "content": "class DataProcessor:"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "services/processor.py",
+            "line": 2,
+            "content": "def __init__(self, source):"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "services/processor.py",
+            "line": 3,
+            "content": "self.source = source"
+          },
+          "target": {
+            "file": "services/processor.py",
+            "line": 4,
+            "content": "self.source = source"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "services/processor.py",
+            "line": 4,
+            "content": "self.cache = {}"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "services/processor.py",
+            "line": 5,
+            "content": "self.timeout = 30"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "services/processor.py",
+            "line": 6,
+            "content": "def process(self, items):"
+          },
+          "target": {
+            "file": "services/processor.py",
+            "line": 8,
+            "content": "def process(self, items):"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "services/processor.py",
+            "line": 7,
+            "content": "result = []"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "services/processor.py",
+            "line": 8,
+            "content": "for item in items:"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "services/processor.py",
+            "line": 9,
+            "content": "if item.valid:"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "services/processor.py",
+            "line": 10,
+            "content": "result.append(item.value)"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "services/processor.py",
+            "line": 11,
+            "content": "return result"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "services/processor.py",
+            "line": 12,
+            "content": "def flush(self):"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "services/processor.py",
+            "line": 13,
+            "content": "self.cache.clear()"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "services/processor.py",
+            "line": 3,
+            "content": "def __init__(self, source, config):"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "services/processor.py",
+            "line": 5,
+            "content": "self.config = config"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "services/processor.py",
+            "line": 6,
+            "content": "self.cache = LRUCache(maxsize=config.cache_size)"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "services/processor.py",
+            "line": 7,
+            "content": "self.timeout = config.timeout"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "services/processor.py",
+            "line": 9,
+            "content": "validated = [i for i in items if self._validate(i)]"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "services/processor.py",
+            "line": 10,
+            "content": "return [self._transform(i) for i in validated]"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "services/processor.py",
+            "line": 11,
+            "content": "def _validate(self, item):"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "services/processor.py",
+            "line": 12,
+            "content": "return item.valid and item.value > 0"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "services/processor.py",
+            "line": 13,
+            "content": "def _transform(self, item):"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "services/processor.py",
+            "line": 14,
+            "content": "return item.value * self.config.multiplier"
+          }
+        }
+      ],
       "residual_removed_lines": [
         "def __init__(self, source):",
         "self.cache = {}",
@@ -184,6 +385,199 @@
       },
       "hunk_count": 2,
       "score": 0.78,
+      "alignment": [
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/handler.py",
+            "line": 1,
+            "content": "class RequestHandler:"
+          },
+          "target": {
+            "file": "domain/handler.py",
+            "line": 1,
+            "content": "class RequestHandler:"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "models/handler.py",
+            "line": 2,
+            "content": "def __init__(self, router):"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/handler.py",
+            "line": 3,
+            "content": "self.router = router"
+          },
+          "target": {
+            "file": "domain/handler.py",
+            "line": 3,
+            "content": "self.router = router"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "models/handler.py",
+            "line": 4,
+            "content": "self.middleware = []"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "models/handler.py",
+            "line": 5,
+            "content": "self.timeout = 60"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/handler.py",
+            "line": 6,
+            "content": "def handle(self, request):"
+          },
+          "target": {
+            "file": "domain/handler.py",
+            "line": 7,
+            "content": "def handle(self, request):"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "models/handler.py",
+            "line": 7,
+            "content": "for mw in self.middleware:"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "models/handler.py",
+            "line": 8,
+            "content": "request = mw.process(request)"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "models/handler.py",
+            "line": 9,
+            "content": "return self.router.dispatch(request)"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "models/handler.py",
+            "line": 10,
+            "content": "def add_middleware(self, mw):"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "models/handler.py",
+            "line": 11,
+            "content": "self.middleware.append(mw)"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "models/handler.py",
+            "line": 12,
+            "content": "return self"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "domain/handler.py",
+            "line": 2,
+            "content": "def __init__(self, router, config):"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "domain/handler.py",
+            "line": 4,
+            "content": "self.config = config"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "domain/handler.py",
+            "line": 5,
+            "content": "self.middleware = MiddlewareChain()"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "domain/handler.py",
+            "line": 6,
+            "content": "self.timeout = config.handler_timeout"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "domain/handler.py",
+            "line": 8,
+            "content": "ctx = self.middleware.execute(request)"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "domain/handler.py",
+            "line": 9,
+            "content": "response = self.router.dispatch(ctx)"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "domain/handler.py",
+            "line": 10,
+            "content": "return self._finalize(response)"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "domain/handler.py",
+            "line": 11,
+            "content": "def _finalize(self, response):"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "domain/handler.py",
+            "line": 12,
+            "content": "response.headers[\"X-Timeout\"] = str(self.timeout)"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "domain/handler.py",
+            "line": 13,
+            "content": "return response"
+          }
+        }
+      ],
       "residual_removed_lines": [
         "def __init__(self, router):",
         "self.middleware = []",

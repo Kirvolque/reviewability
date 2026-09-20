@@ -94,6 +94,80 @@
       },
       "hunk_count": 2,
       "score": 0.78,
+      "alignment": [
+        {
+          "kind": "removed",
+          "source": {
+            "file": "src/validator.py",
+            "line": 1,
+            "content": "def validate(data):"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "src/validator.py",
+            "line": 2,
+            "content": "if not data:"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "src/validator.py",
+            "line": 3,
+            "content": "return False"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "src/validator.py",
+            "line": 4,
+            "content": "return True"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "src/processor.py",
+            "line": 1,
+            "content": "def process(data: list) -> list:"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "src/processor.py",
+            "line": 2,
+            "content": "validate(data)"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "src/processor.py",
+            "line": 3,
+            "content": "items = [transform(item) for item in data]"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "src/processor.py",
+            "line": 4,
+            "content": "log(f\"processed {len(items)} items\")"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "src/processor.py",
+            "line": 5,
+            "content": "return items"
+          }
+        }
+      ],
       "residual_removed_lines": [
         "def validate(data):",
         "if not data:",

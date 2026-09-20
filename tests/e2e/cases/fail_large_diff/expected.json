@@ -125,6 +125,48 @@
       },
       "hunk_count": 2,
       "score": 0.9,
+      "alignment": [
+        {
+          "kind": "removed",
+          "source": {
+            "file": "src/greeter.py",
+            "line": 1,
+            "content": "def greet(name: str) -> str:"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "src/greeter.py",
+            "line": 2,
+            "content": "return f\"Hello, {name}!\""
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "src/farewell.py",
+            "line": 1,
+            "content": "DEFAULT_FAREWELL = \"Goodbye\""
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "src/farewell.py",
+            "line": 2,
+            "content": "def say_goodbye(name: str, farewell: str = DEFAULT_FAREWELL) -> str:"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "src/farewell.py",
+            "line": 3,
+            "content": "return f\"{farewell}, {name}!\""
+          }
+        }
+      ],
       "residual_removed_lines": [
         "def greet(name: str) -> str:",
         "return f\"Hello, {name}!\""

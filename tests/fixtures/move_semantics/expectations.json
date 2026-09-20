@@ -1,0 +1,22 @@
+{
+  "context_narrow_move": {"raw_lines": 4, "unexplained_lines": 0, "moves": [{"source": "src/legacy.py", "target": "src/summary.py", "type": "pure"}]},
+  "context_wide_move": {"raw_lines": 4, "unexplained_lines": 0, "moves": [{"source": "src/legacy.py", "target": "src/summary.py", "type": "pure"}]},
+  "import_only_behavior_change": {"raw_lines": 0, "unexplained_lines": 0, "moves": []},
+  "in_place_rewrite": {"raw_lines": 9, "unexplained_lines": 9, "moves": []},
+  "large_straightforward_addition": {"raw_lines": 12, "unexplained_lines": 12, "moves": []},
+  "modified_added_guard": {"raw_lines": 10, "unexplained_lines": 2, "moves": [{"source": "src/legacy.py", "target": "src/publisher.py", "type": "modified", "residual_removed": 0, "residual_added": 2}]},
+  "modified_large_rewrite": {"raw_lines": 17, "unexplained_lines": 13, "moves": [{"source": "src/legacy.py", "target": "src/billing.py", "type": "modified", "residual_removed": 6, "residual_added": 7}]},
+  "modified_operator": {"raw_lines": 10, "unexplained_lines": 2, "moves": [{"source": "src/legacy.py", "target": "src/policy.py", "type": "modified", "residual_removed": 1, "residual_added": 1}]},
+  "modified_removed_log": {"raw_lines": 9, "unexplained_lines": 1, "moves": [{"source": "src/legacy.py", "target": "src/archive.py", "type": "modified", "residual_removed": 1, "residual_added": 0}]},
+  "modified_rename": {"raw_lines": 10, "unexplained_lines": 2, "moves": [{"source": "src/legacy.py", "target": "src/pricing.py", "type": "modified", "residual_removed": 1, "residual_added": 1}]},
+  "modified_rename_and_guard": {"raw_lines": 12, "unexplained_lines": 4, "moves": [{"source": "src/legacy.py", "target": "src/reservations.py", "type": "modified", "residual_removed": 1, "residual_added": 3}]},
+  "pure_cross_file": {"raw_lines": 10, "unexplained_lines": 0, "moves": [{"source": "src/legacy.py", "target": "src/pricing.py", "type": "pure"}]},
+  "pure_reordered_lines": {"raw_lines": 8, "unexplained_lines": 0, "moves": [{"source": "src/legacy.py", "target": "src/presenter.py", "type": "pure"}]},
+  "pure_same_file": {"raw_lines": 8, "unexplained_lines": 0, "moves": [{"source": "src/ledger.py", "target": "src/ledger.py", "type": "pure"}]},
+  "pure_whitespace_normalized": {"raw_lines": 6, "unexplained_lines": 0, "moves": [{"source": "src/legacy.py", "target": "src/normalization.py", "type": "pure"}]},
+  "rename_with_inconsistent_occurrence": {"raw_lines": 6, "unexplained_lines": 4, "moves": [{"source": "src/legacy.py", "target": "src/profiles.py", "type": "modified", "residual_removed": 2, "residual_added": 2}]},
+  "repeated_migration": {"raw_lines": 24, "unexplained_lines": 0, "moves": [{"source": "src/legacy_a.py", "target": "src/current_a.py", "type": "pure"}, {"source": "src/legacy_b.py", "target": "src/current_b.py", "type": "pure"}, {"source": "src/legacy_c.py", "target": "src/current_c.py", "type": "pure"}]},
+  "string_whitespace_change": {"raw_lines": 2, "unexplained_lines": 2, "moves": []},
+  "tiny_contract_change": {"raw_lines": 2, "unexplained_lines": 2, "moves": []},
+  "unrelated_hunks": {"raw_lines": 8, "unexplained_lines": 8, "moves": []}
+}

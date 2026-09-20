@@ -20,6 +20,22 @@ def test_benchmark_runner_reports_current_and_git_signals(tmp_path: Path) -> Non
     fixtures = {fixture["name"]: fixture for fixture in report["fixtures"]}
 
     assert report["fixture_count"] == 20
+    assert report["evaluation"]["reviewability_file_pair"] == {
+        "true_positive": 16,
+        "false_positive": 0,
+        "false_negative": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+    }
+    assert report["evaluation"]["git_file_rename"] == {
+        "true_positive": 11,
+        "false_positive": 0,
+        "false_negative": 5,
+        "precision": 1.0,
+        "recall": 0.688,
+        "f1": 0.815,
+    }
     assert fixtures["pure_cross_file"]["reviewability"]["unexplained_lines"] == 0
     assert fixtures["modified_operator"]["reviewability"]["moves"][0][
         "residual_removed_lines"

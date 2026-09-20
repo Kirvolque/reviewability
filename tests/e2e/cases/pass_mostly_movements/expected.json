@@ -134,6 +134,229 @@
       },
       "hunk_count": 2,
       "score": 0.83,
+      "alignment": [
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/user.py",
+            "line": 1,
+            "content": "@dataclass"
+          },
+          "target": {
+            "file": "domain/user.py",
+            "line": 1,
+            "content": "@dataclass"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/user.py",
+            "line": 2,
+            "content": "class User:"
+          },
+          "target": {
+            "file": "domain/user.py",
+            "line": 2,
+            "content": "class User:"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/user.py",
+            "line": 3,
+            "content": "id: int"
+          },
+          "target": {
+            "file": "domain/user.py",
+            "line": 3,
+            "content": "id: int"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/user.py",
+            "line": 4,
+            "content": "name: str"
+          },
+          "target": {
+            "file": "domain/user.py",
+            "line": 4,
+            "content": "name: str"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/user.py",
+            "line": 5,
+            "content": "email: str"
+          },
+          "target": {
+            "file": "domain/user.py",
+            "line": 5,
+            "content": "email: str"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/user.py",
+            "line": 6,
+            "content": "is_active: bool = True"
+          },
+          "target": {
+            "file": "domain/user.py",
+            "line": 6,
+            "content": "is_active: bool = True"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/user.py",
+            "line": 7,
+            "content": "def deactivate(self) -> None:"
+          },
+          "target": {
+            "file": "domain/user.py",
+            "line": 7,
+            "content": "def deactivate(self) -> None:"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/user.py",
+            "line": 8,
+            "content": "self.is_active = False"
+          },
+          "target": {
+            "file": "domain/user.py",
+            "line": 8,
+            "content": "self.is_active = False"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/user.py",
+            "line": 9,
+            "content": "def display_name(self) -> str:"
+          },
+          "target": {
+            "file": "domain/user.py",
+            "line": 9,
+            "content": "def display_name(self) -> str:"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/user.py",
+            "line": 10,
+            "content": "return self.name.strip()"
+          },
+          "target": {
+            "file": "domain/user.py",
+            "line": 10,
+            "content": "return self.name.strip()"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/user.py",
+            "line": 11,
+            "content": "def to_dict(self) -> dict:"
+          },
+          "target": {
+            "file": "domain/user.py",
+            "line": 11,
+            "content": "def to_dict(self) -> dict:"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/user.py",
+            "line": 12,
+            "content": "return {"
+          },
+          "target": {
+            "file": "domain/user.py",
+            "line": 12,
+            "content": "return {"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/user.py",
+            "line": 13,
+            "content": "\"id\": self.id,"
+          },
+          "target": {
+            "file": "domain/user.py",
+            "line": 13,
+            "content": "\"id\": self.id,"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/user.py",
+            "line": 14,
+            "content": "\"name\": self.name,"
+          },
+          "target": {
+            "file": "domain/user.py",
+            "line": 14,
+            "content": "\"name\": self.name,"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/user.py",
+            "line": 15,
+            "content": "\"email\": self.email,"
+          },
+          "target": {
+            "file": "domain/user.py",
+            "line": 15,
+            "content": "\"email\": self.email,"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/user.py",
+            "line": 16,
+            "content": "\"is_active\": self.is_active,"
+          },
+          "target": {
+            "file": "domain/user.py",
+            "line": 16,
+            "content": "\"is_active\": self.is_active,"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/user.py",
+            "line": 17,
+            "content": "}"
+          },
+          "target": {
+            "file": "domain/user.py",
+            "line": 17,
+            "content": "}"
+          }
+        }
+      ],
       "residual_removed_lines": [],
       "residual_added_lines": [],
       "metrics": [
@@ -161,6 +384,216 @@
       },
       "hunk_count": 2,
       "score": 0.84,
+      "alignment": [
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/order.py",
+            "line": 1,
+            "content": "@dataclass"
+          },
+          "target": {
+            "file": "domain/order.py",
+            "line": 1,
+            "content": "@dataclass"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/order.py",
+            "line": 2,
+            "content": "class Order:"
+          },
+          "target": {
+            "file": "domain/order.py",
+            "line": 2,
+            "content": "class Order:"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/order.py",
+            "line": 3,
+            "content": "id: int"
+          },
+          "target": {
+            "file": "domain/order.py",
+            "line": 3,
+            "content": "id: int"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/order.py",
+            "line": 4,
+            "content": "user_id: int"
+          },
+          "target": {
+            "file": "domain/order.py",
+            "line": 4,
+            "content": "user_id: int"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/order.py",
+            "line": 5,
+            "content": "total: Decimal"
+          },
+          "target": {
+            "file": "domain/order.py",
+            "line": 5,
+            "content": "total: Decimal"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/order.py",
+            "line": 6,
+            "content": "status: str = \"pending\""
+          },
+          "target": {
+            "file": "domain/order.py",
+            "line": 6,
+            "content": "status: str = \"pending\""
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/order.py",
+            "line": 7,
+            "content": "def is_pending(self) -> bool:"
+          },
+          "target": {
+            "file": "domain/order.py",
+            "line": 7,
+            "content": "def is_pending(self) -> bool:"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/order.py",
+            "line": 8,
+            "content": "return self.status == \"pending\""
+          },
+          "target": {
+            "file": "domain/order.py",
+            "line": 8,
+            "content": "return self.status == \"pending\""
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/order.py",
+            "line": 9,
+            "content": "def complete(self) -> None:"
+          },
+          "target": {
+            "file": "domain/order.py",
+            "line": 9,
+            "content": "def complete(self) -> None:"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/order.py",
+            "line": 10,
+            "content": "self.status = \"completed\""
+          },
+          "target": {
+            "file": "domain/order.py",
+            "line": 10,
+            "content": "self.status = \"completed\""
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/order.py",
+            "line": 11,
+            "content": "def cancel(self) -> None:"
+          },
+          "target": {
+            "file": "domain/order.py",
+            "line": 11,
+            "content": "def cancel(self) -> None:"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/order.py",
+            "line": 12,
+            "content": "self.status = \"cancelled\""
+          },
+          "target": {
+            "file": "domain/order.py",
+            "line": 12,
+            "content": "self.status = \"cancelled\""
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/order.py",
+            "line": 13,
+            "content": "def item_count(self) -> int:"
+          },
+          "target": {
+            "file": "domain/order.py",
+            "line": 13,
+            "content": "def item_count(self) -> int:"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/order.py",
+            "line": 14,
+            "content": "return 0"
+          },
+          "target": {
+            "file": "domain/order.py",
+            "line": 14,
+            "content": "return 0"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/order.py",
+            "line": 15,
+            "content": "def __str__(self) -> str:"
+          },
+          "target": {
+            "file": "domain/order.py",
+            "line": 15,
+            "content": "def __str__(self) -> str:"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/order.py",
+            "line": 16,
+            "content": "return f\"Order({self.id}, {self.total})\""
+          },
+          "target": {
+            "file": "domain/order.py",
+            "line": 16,
+            "content": "return f\"Order({self.id}, {self.total})\""
+          }
+        }
+      ],
       "residual_removed_lines": [],
       "residual_added_lines": [],
       "metrics": [
@@ -188,6 +621,138 @@
       },
       "hunk_count": 2,
       "score": 0.9,
+      "alignment": [
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "services/user_service.py",
+            "line": 12,
+            "content": "def _normalize_email(email: str) -> str:"
+          },
+          "target": {
+            "file": "utils/helpers.py",
+            "line": 8,
+            "content": "def _normalize_email(email: str) -> str:"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "services/user_service.py",
+            "line": 13,
+            "content": "email = email.strip().lower()"
+          },
+          "target": {
+            "file": "utils/helpers.py",
+            "line": 9,
+            "content": "email = email.strip().lower()"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "services/user_service.py",
+            "line": 14,
+            "content": "if \"@\" not in email:"
+          },
+          "target": {
+            "file": "utils/helpers.py",
+            "line": 10,
+            "content": "if \"@\" not in email:"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "services/user_service.py",
+            "line": 15,
+            "content": "raise ValueError(f\"Invalid email: {email!r}\")"
+          },
+          "target": {
+            "file": "utils/helpers.py",
+            "line": 11,
+            "content": "raise ValueError(f\"Invalid email: {email!r}\")"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "services/user_service.py",
+            "line": 16,
+            "content": "local, domain = email.rsplit(\"@\", 1)"
+          },
+          "target": {
+            "file": "utils/helpers.py",
+            "line": 12,
+            "content": "local, domain = email.rsplit(\"@\", 1)"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "services/user_service.py",
+            "line": 17,
+            "content": "if not local or not domain:"
+          },
+          "target": {
+            "file": "utils/helpers.py",
+            "line": 13,
+            "content": "if not local or not domain:"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "services/user_service.py",
+            "line": 18,
+            "content": "raise ValueError(f\"Invalid email: {email!r}\")"
+          },
+          "target": {
+            "file": "utils/helpers.py",
+            "line": 14,
+            "content": "raise ValueError(f\"Invalid email: {email!r}\")"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "services/user_service.py",
+            "line": 19,
+            "content": "if \".\" not in domain:"
+          },
+          "target": {
+            "file": "utils/helpers.py",
+            "line": 15,
+            "content": "if \".\" not in domain:"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "services/user_service.py",
+            "line": 20,
+            "content": "raise ValueError(f\"Invalid email: {email!r}\")"
+          },
+          "target": {
+            "file": "utils/helpers.py",
+            "line": 16,
+            "content": "raise ValueError(f\"Invalid email: {email!r}\")"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "services/user_service.py",
+            "line": 21,
+            "content": "return f\"{local}@{domain}\""
+          },
+          "target": {
+            "file": "utils/helpers.py",
+            "line": 17,
+            "content": "return f\"{local}@{domain}\""
+          }
+        }
+      ],
       "residual_removed_lines": [],
       "residual_added_lines": [],
       "metrics": [

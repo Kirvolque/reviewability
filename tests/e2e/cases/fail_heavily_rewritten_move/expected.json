@@ -136,6 +136,216 @@
       },
       "hunk_count": 2,
       "score": 0.0,
+      "alignment": [
+        {
+          "kind": "removed",
+          "source": {
+            "file": "services/worker.py",
+            "line": 1,
+            "content": "class TaskWorker:"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "services/worker.py",
+            "line": 2,
+            "content": "max_tasks = 10"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "services/worker.py",
+            "line": 3,
+            "content": "def __init__(self):"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "services/worker.py",
+            "line": 4,
+            "content": "self.tasks = []"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "services/worker.py",
+            "line": 5,
+            "content": "self.running = False"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "services/worker.py",
+            "line": 6,
+            "content": "def run(self, task):"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "services/worker.py",
+            "line": 7,
+            "content": "self.tasks.append(task)"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "services/worker.py",
+            "line": 8,
+            "content": "task.execute()"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "services/worker.py",
+            "line": 9,
+            "content": "return task.result"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "services/worker.py",
+            "line": 10,
+            "content": "def shutdown(self):"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "services/worker.py",
+            "line": 11,
+            "content": "self.running = False"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "services/worker.py",
+            "line": 12,
+            "content": "self.tasks.clear()"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "core/worker.py",
+            "line": 1,
+            "content": "class AsyncWorker:"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "core/worker.py",
+            "line": 2,
+            "content": "concurrency = 4"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "core/worker.py",
+            "line": 3,
+            "content": "def __init__(self, loop, metrics):"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "core/worker.py",
+            "line": 4,
+            "content": "self.loop = loop"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "core/worker.py",
+            "line": 5,
+            "content": "self.metrics = metrics"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "core/worker.py",
+            "line": 6,
+            "content": "self.semaphore = asyncio.Semaphore(self.concurrency)"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "core/worker.py",
+            "line": 7,
+            "content": "async def run(self, task):"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "core/worker.py",
+            "line": 8,
+            "content": "async with self.semaphore:"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "core/worker.py",
+            "line": 9,
+            "content": "result = await self.loop.submit(task)"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "core/worker.py",
+            "line": 10,
+            "content": "self.metrics.record(result)"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "core/worker.py",
+            "line": 11,
+            "content": "return result"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "core/worker.py",
+            "line": 12,
+            "content": "async def shutdown(self):"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "core/worker.py",
+            "line": 13,
+            "content": "await self.loop.drain()"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "core/worker.py",
+            "line": 14,
+            "content": "self.metrics.flush()"
+          }
+        }
+      ],
       "residual_removed_lines": [
         "class TaskWorker:",
         "max_tasks = 10",

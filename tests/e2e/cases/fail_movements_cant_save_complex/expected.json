@@ -203,6 +203,203 @@
       },
       "hunk_count": 2,
       "score": 0.85,
+      "alignment": [
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/service_a.py",
+            "line": 1,
+            "content": "class ServiceA:"
+          },
+          "target": {
+            "file": "domain/service_a.py",
+            "line": 1,
+            "content": "class ServiceA:"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/service_a.py",
+            "line": 2,
+            "content": "name = \"service_a\""
+          },
+          "target": {
+            "file": "domain/service_a.py",
+            "line": 2,
+            "content": "name = \"service_a\""
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/service_a.py",
+            "line": 3,
+            "content": "version = \"1.0\""
+          },
+          "target": {
+            "file": "domain/service_a.py",
+            "line": 3,
+            "content": "version = \"1.0\""
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/service_a.py",
+            "line": 4,
+            "content": "timeout = 30"
+          },
+          "target": {
+            "file": "domain/service_a.py",
+            "line": 4,
+            "content": "timeout = 30"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/service_a.py",
+            "line": 5,
+            "content": "retries = 3"
+          },
+          "target": {
+            "file": "domain/service_a.py",
+            "line": 5,
+            "content": "retries = 3"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/service_a.py",
+            "line": 6,
+            "content": "enabled = True"
+          },
+          "target": {
+            "file": "domain/service_a.py",
+            "line": 6,
+            "content": "enabled = True"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/service_a.py",
+            "line": 7,
+            "content": "debug = False"
+          },
+          "target": {
+            "file": "domain/service_a.py",
+            "line": 7,
+            "content": "debug = False"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/service_a.py",
+            "line": 8,
+            "content": "host = \"localhost\""
+          },
+          "target": {
+            "file": "domain/service_a.py",
+            "line": 8,
+            "content": "host = \"localhost\""
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/service_a.py",
+            "line": 9,
+            "content": "port = 8080"
+          },
+          "target": {
+            "file": "domain/service_a.py",
+            "line": 9,
+            "content": "port = 8080"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/service_a.py",
+            "line": 10,
+            "content": "def start(self):"
+          },
+          "target": {
+            "file": "domain/service_a.py",
+            "line": 10,
+            "content": "def start(self):"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/service_a.py",
+            "line": 11,
+            "content": "return True"
+          },
+          "target": {
+            "file": "domain/service_a.py",
+            "line": 11,
+            "content": "return True"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/service_a.py",
+            "line": 12,
+            "content": "def stop(self):"
+          },
+          "target": {
+            "file": "domain/service_a.py",
+            "line": 12,
+            "content": "def stop(self):"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/service_a.py",
+            "line": 13,
+            "content": "return False"
+          },
+          "target": {
+            "file": "domain/service_a.py",
+            "line": 13,
+            "content": "return False"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/service_a.py",
+            "line": 14,
+            "content": "def status(self):"
+          },
+          "target": {
+            "file": "domain/service_a.py",
+            "line": 14,
+            "content": "def status(self):"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/service_a.py",
+            "line": 15,
+            "content": "return self.enabled"
+          },
+          "target": {
+            "file": "domain/service_a.py",
+            "line": 15,
+            "content": "return self.enabled"
+          }
+        }
+      ],
       "residual_removed_lines": [],
       "residual_added_lines": [],
       "metrics": [
@@ -230,6 +427,203 @@
       },
       "hunk_count": 2,
       "score": 0.85,
+      "alignment": [
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/service_b.py",
+            "line": 1,
+            "content": "class ServiceB:"
+          },
+          "target": {
+            "file": "domain/service_b.py",
+            "line": 1,
+            "content": "class ServiceB:"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/service_b.py",
+            "line": 2,
+            "content": "name = \"service_b\""
+          },
+          "target": {
+            "file": "domain/service_b.py",
+            "line": 2,
+            "content": "name = \"service_b\""
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/service_b.py",
+            "line": 3,
+            "content": "version = \"2.0\""
+          },
+          "target": {
+            "file": "domain/service_b.py",
+            "line": 3,
+            "content": "version = \"2.0\""
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/service_b.py",
+            "line": 4,
+            "content": "timeout = 60"
+          },
+          "target": {
+            "file": "domain/service_b.py",
+            "line": 4,
+            "content": "timeout = 60"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/service_b.py",
+            "line": 5,
+            "content": "retries = 5"
+          },
+          "target": {
+            "file": "domain/service_b.py",
+            "line": 5,
+            "content": "retries = 5"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/service_b.py",
+            "line": 6,
+            "content": "enabled = True"
+          },
+          "target": {
+            "file": "domain/service_b.py",
+            "line": 6,
+            "content": "enabled = True"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/service_b.py",
+            "line": 7,
+            "content": "debug = False"
+          },
+          "target": {
+            "file": "domain/service_b.py",
+            "line": 7,
+            "content": "debug = False"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/service_b.py",
+            "line": 8,
+            "content": "host = \"0.0.0.0\""
+          },
+          "target": {
+            "file": "domain/service_b.py",
+            "line": 8,
+            "content": "host = \"0.0.0.0\""
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/service_b.py",
+            "line": 9,
+            "content": "port = 9090"
+          },
+          "target": {
+            "file": "domain/service_b.py",
+            "line": 9,
+            "content": "port = 9090"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/service_b.py",
+            "line": 10,
+            "content": "def start(self):"
+          },
+          "target": {
+            "file": "domain/service_b.py",
+            "line": 10,
+            "content": "def start(self):"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/service_b.py",
+            "line": 11,
+            "content": "return True"
+          },
+          "target": {
+            "file": "domain/service_b.py",
+            "line": 11,
+            "content": "return True"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/service_b.py",
+            "line": 12,
+            "content": "def stop(self):"
+          },
+          "target": {
+            "file": "domain/service_b.py",
+            "line": 12,
+            "content": "def stop(self):"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/service_b.py",
+            "line": 13,
+            "content": "return False"
+          },
+          "target": {
+            "file": "domain/service_b.py",
+            "line": 13,
+            "content": "return False"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/service_b.py",
+            "line": 14,
+            "content": "def status(self):"
+          },
+          "target": {
+            "file": "domain/service_b.py",
+            "line": 14,
+            "content": "def status(self):"
+          }
+        },
+        {
+          "kind": "exact_match",
+          "source": {
+            "file": "models/service_b.py",
+            "line": 15,
+            "content": "return self.enabled"
+          },
+          "target": {
+            "file": "domain/service_b.py",
+            "line": 15,
+            "content": "return self.enabled"
+          }
+        }
+      ],
       "residual_removed_lines": [],
       "residual_added_lines": [],
       "metrics": [
@@ -257,6 +651,56 @@
       },
       "hunk_count": 2,
       "score": 0.88,
+      "alignment": [
+        {
+          "kind": "removed",
+          "source": {
+            "file": "api/auth.py",
+            "line": 5,
+            "content": "verify_token = False"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "api/auth.py",
+            "line": 6,
+            "content": "token_ttl = 900"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "api/auth.py",
+            "line": 7,
+            "content": "algorithm = \"none\""
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "api/cache.py",
+            "line": 5,
+            "content": "ttl = 300"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "api/cache.py",
+            "line": 6,
+            "content": "max_size = 1000"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "api/cache.py",
+            "line": 7,
+            "content": "eviction = \"lru\""
+          }
+        }
+      ],
       "residual_removed_lines": [
         "verify_token = False",
         "token_ttl = 900",
@@ -292,6 +736,56 @@
       },
       "hunk_count": 2,
       "score": 0.86,
+      "alignment": [
+        {
+          "kind": "removed",
+          "source": {
+            "file": "api/billing.py",
+            "line": 5,
+            "content": "tax_rate = 0.05"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "api/billing.py",
+            "line": 6,
+            "content": "currency = \"EUR\""
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "api/billing.py",
+            "line": 7,
+            "content": "invoice_days = 14"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "api/email.py",
+            "line": 5,
+            "content": "use_tls = True"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "api/email.py",
+            "line": 6,
+            "content": "smtp_port = 587"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "api/email.py",
+            "line": 7,
+            "content": "timeout = 30"
+          }
+        }
+      ],
       "residual_removed_lines": [
         "tax_rate = 0.05",
         "currency = \"EUR\"",
@@ -327,6 +821,56 @@
       },
       "hunk_count": 2,
       "score": 0.88,
+      "alignment": [
+        {
+          "kind": "removed",
+          "source": {
+            "file": "api/search.py",
+            "line": 5,
+            "content": "max_results = 10"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "api/search.py",
+            "line": 6,
+            "content": "min_score = 0.1"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "api/search.py",
+            "line": 7,
+            "content": "page_size = 5"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "api/queue.py",
+            "line": 5,
+            "content": "max_retries = 3"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "api/queue.py",
+            "line": 6,
+            "content": "retry_delay = 5"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "api/queue.py",
+            "line": 7,
+            "content": "visibility_timeout = 30"
+          }
+        }
+      ],
       "residual_removed_lines": [
         "max_results = 10",
         "min_score = 0.1",

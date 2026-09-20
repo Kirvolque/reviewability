@@ -183,6 +183,40 @@
       },
       "hunk_count": 2,
       "score": 0.94,
+      "alignment": [
+        {
+          "kind": "removed",
+          "source": {
+            "file": "services/cache.py",
+            "line": 1,
+            "content": "TTL = 30"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "services/cache.py",
+            "line": 2,
+            "content": "MAX_SIZE = 100"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "services/auth.py",
+            "line": 1,
+            "content": "TIMEOUT = 30"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "services/auth.py",
+            "line": 2,
+            "content": "MAX_SESSIONS = 100"
+          }
+        }
+      ],
       "residual_removed_lines": [
         "TTL = 30",
         "MAX_SIZE = 100"
@@ -216,6 +250,40 @@
       },
       "hunk_count": 2,
       "score": 0.92,
+      "alignment": [
+        {
+          "kind": "removed",
+          "source": {
+            "file": "services/billing.py",
+            "line": 1,
+            "content": "TAX_RATE = 0.05"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "services/billing.py",
+            "line": 2,
+            "content": "INVOICE_DAYS = 14"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "services/queue.py",
+            "line": 1,
+            "content": "MAX_RETRIES = 3"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "services/queue.py",
+            "line": 2,
+            "content": "RETRY_DELAY = 5"
+          }
+        }
+      ],
       "residual_removed_lines": [
         "TAX_RATE = 0.05",
         "INVOICE_DAYS = 14"
@@ -249,6 +317,40 @@
       },
       "hunk_count": 2,
       "score": 0.92,
+      "alignment": [
+        {
+          "kind": "removed",
+          "source": {
+            "file": "services/email.py",
+            "line": 1,
+            "content": "SMTP_PORT = 25"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "services/email.py",
+            "line": 2,
+            "content": "USE_TLS = False"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "services/search.py",
+            "line": 1,
+            "content": "MAX_RESULTS = 100"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "services/search.py",
+            "line": 2,
+            "content": "MIN_SCORE = 0.5"
+          }
+        }
+      ],
       "residual_removed_lines": [
         "SMTP_PORT = 25",
         "USE_TLS = False"
@@ -282,6 +384,40 @@
       },
       "hunk_count": 2,
       "score": 0.92,
+      "alignment": [
+        {
+          "kind": "removed",
+          "source": {
+            "file": "services/metrics.py",
+            "line": 1,
+            "content": "FLUSH_INTERVAL = 10"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "services/metrics.py",
+            "line": 2,
+            "content": "BUFFER_SIZE = 64"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "services/storage.py",
+            "line": 1,
+            "content": "MAX_FILE_SIZE = 10485760"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "services/storage.py",
+            "line": 2,
+            "content": "CHUNK_SIZE = 65536"
+          }
+        }
+      ],
       "residual_removed_lines": [
         "FLUSH_INTERVAL = 10",
         "BUFFER_SIZE = 64"

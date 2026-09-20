@@ -159,6 +159,88 @@
       },
       "hunk_count": 2,
       "score": 0.77,
+      "alignment": [
+        {
+          "kind": "removed",
+          "source": {
+            "file": "services/auth.py",
+            "line": 1,
+            "content": "TIMEOUT = 10"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "services/auth.py",
+            "line": 2,
+            "content": "MAX_SESSIONS = 5"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "services/auth.py",
+            "line": 3,
+            "content": "TOKEN_TTL = 900"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "services/auth.py",
+            "line": 4,
+            "content": "ALGORITHM = \"MD5\""
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "services/cache.py",
+            "line": 1,
+            "content": "TTL = 300"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "services/cache.py",
+            "line": 2,
+            "content": "NEGATIVE_TTL = 60"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "services/cache.py",
+            "line": 3,
+            "content": "MAX_SIZE = 1000"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "services/cache.py",
+            "line": 4,
+            "content": "EVICTION = \"lru\""
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "services/cache.py",
+            "line": 5,
+            "content": "COMPRESS = True"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "services/cache.py",
+            "line": 6,
+            "content": "SERIALIZER = \"json\""
+          }
+        }
+      ],
       "residual_removed_lines": [
         "TIMEOUT = 10",
         "MAX_SESSIONS = 5",
@@ -198,6 +280,88 @@
       },
       "hunk_count": 2,
       "score": 0.79,
+      "alignment": [
+        {
+          "kind": "removed",
+          "source": {
+            "file": "services/search.py",
+            "line": 1,
+            "content": "MAX_RESULTS = 10"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "services/search.py",
+            "line": 2,
+            "content": "MIN_SCORE = 0.1"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "services/search.py",
+            "line": 3,
+            "content": "PAGE_SIZE = 5"
+          }
+        },
+        {
+          "kind": "removed",
+          "source": {
+            "file": "services/search.py",
+            "line": 4,
+            "content": "TIMEOUT = 2"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "services/email.py",
+            "line": 1,
+            "content": "SMTP_PORT = 587"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "services/email.py",
+            "line": 2,
+            "content": "IMAP_PORT = 993"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "services/email.py",
+            "line": 3,
+            "content": "USE_TLS = True"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "services/email.py",
+            "line": 4,
+            "content": "MAX_RETRIES = 3"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "services/email.py",
+            "line": 5,
+            "content": "TIMEOUT = 30"
+          }
+        },
+        {
+          "kind": "added",
+          "target": {
+            "file": "services/email.py",
+            "line": 6,
+            "content": "POOL_SIZE = 5"
+          }
+        }
+      ],
       "residual_removed_lines": [
         "MAX_RESULTS = 10",
         "MIN_SCORE = 0.1",
