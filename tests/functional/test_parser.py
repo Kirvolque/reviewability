@@ -57,6 +57,16 @@ def test_logic_change():
     ]
 
 
+def test_parser_preserves_raw_changed_lines_for_structure_aware_experiments():
+    diff = parse_diff_text(load("logic_change.diff"), _DEFAULT_CONFIG)
+    hunk = diff.files[0].hunks[0]
+
+    assert hunk.raw_added_lines == [
+        "    if not name:\n",
+        '        raise ValueError("name must not be empty")\n',
+    ]
+
+
 def test_tangled_commit():
     diff = parse_diff_text(load("tangled_commit.diff"), _DEFAULT_CONFIG)
     assert diff.files == [

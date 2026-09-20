@@ -41,7 +41,7 @@ def _build_hunk(file_path: str, hunk, config: ReviewabilityConfig) -> Hunk:
         if not line.is_context
     ]
     filtered = [
-        (ct, norm)
+        (ct, raw, norm)
         for ct, raw in raw_changes
         if (norm := " ".join(raw.split()))
         if not norm.startswith(prefixes)
@@ -53,10 +53,12 @@ def _build_hunk(file_path: str, hunk, config: ReviewabilityConfig) -> Hunk:
         source_length=hunk.source_length,
         target_start=hunk.target_start,
         target_length=hunk.target_length,
-        added_lines=[norm for ct, norm in filtered if ct == ChangeType.ADDED],
-        removed_lines=[norm for ct, norm in filtered if ct == ChangeType.REMOVED],
+        added_lines=[norm for ct, raw, norm in filtered if ct == ChangeType.ADDED],
+        removed_lines=[norm for ct, raw, norm in filtered if ct == ChangeType.REMOVED],
+        raw_added_lines=[raw for ct, raw, norm in filtered if ct == ChangeType.ADDED],
+        raw_removed_lines=[raw for ct, raw, norm in filtered if ct == ChangeType.REMOVED],
         context_lines=[str(line.value) for line in hunk if line.is_context],
-        change_order=tuple(ct for ct, _ in filtered),
+        change_order=tuple(ct for ct, _, _ in filtered),
     )
 
 

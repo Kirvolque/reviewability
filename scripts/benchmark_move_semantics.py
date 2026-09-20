@@ -25,6 +25,9 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from reviewability.config.parser import parse_config  # noqa: E402
 from reviewability.diff_reader import parse_diff_text  # noqa: E402
+from reviewability.experiments.python_function_correspondence import (  # noqa: E402
+    match_python_functions,
+)
 from reviewability.factory import create_analyzer  # noqa: E402
 
 FIXTURES = ROOT / "tests" / "fixtures" / "move_semantics"
@@ -87,6 +90,7 @@ def _benchmark_fixture(
     diff_text = path.read_text()
     diff = parse_diff_text(diff_text, config)
     analysis, _ = create_analyzer(config).run(diff)
+    python_function_matches = match_python_functions(diff.all_hunks)
 
     return {
         "name": path.stem,
@@ -105,6 +109,14 @@ def _benchmark_fixture(
                 for move in diff.moves
             ],
         },
+        "python_function_experiment": [
+            {
+                "source": match.source.file_path,
+                "target": match.target.file_path,
+                "identifier_overlap": round(match.identifier_overlap, 3),
+            }
+            for match in python_function_matches
+        ],
         **_external_signals(diff_text, refactoring_miner, java_home),
     }
 
@@ -138,9 +150,17 @@ def _evaluate(fixtures: list[dict[str, Any]], expectations: dict[str, Any]) -> d
         }
         for fixture in fixtures
     }
+    python_function_pairs = {
+        fixture["name"]: {
+            (match["source"], match["target"])
+            for match in fixture["python_function_experiment"]
+        }
+        for fixture in fixtures
+    }
     return {
         "reviewability_file_pair": _pair_metrics(expected_pairs, reviewability_pairs),
         "git_file_rename": _pair_metrics(expected_pairs, git_pairs),
+        "python_function_experiment": _pair_metrics(expected_pairs, python_function_pairs),
         "refactoring_miner_fixture_claim": _refactoring_miner_claim_metrics(
             fixtures, expected_pairs
         ),

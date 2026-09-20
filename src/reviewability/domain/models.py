@@ -41,6 +41,8 @@ class Hunk(DiffNode):
     target_length: int | None = field(default=None, compare=False)
     added_lines: list[str] = field(default_factory=list)
     removed_lines: list[str] = field(default_factory=list)
+    raw_added_lines: list[str] = field(default_factory=list, compare=False)
+    raw_removed_lines: list[str] = field(default_factory=list, compare=False)
     context_lines: list[str] = field(default_factory=list)
     change_order: tuple[ChangeType, ...] = field(default_factory=tuple)
     hunk_type: HunkType | None = None

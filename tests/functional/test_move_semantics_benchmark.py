@@ -36,6 +36,14 @@ def test_benchmark_runner_reports_current_and_git_signals(tmp_path: Path) -> Non
         "recall": 0.688,
         "f1": 0.815,
     }
+    assert report["evaluation"]["python_function_experiment"] == {
+        "true_positive": 14,
+        "false_positive": 0,
+        "false_negative": 2,
+        "precision": 1.0,
+        "recall": 0.875,
+        "f1": 0.933,
+    }
     assert fixtures["pure_cross_file"]["reviewability"]["unexplained_lines"] == 0
     assert fixtures["modified_operator"]["reviewability"]["moves"][0][
         "residual_removed_lines"
