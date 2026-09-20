@@ -1,0 +1,22 @@
+diff --git a/src/invoices.py b/src/invoices.py
+index 1111111..2222222 100644
+--- a/src/invoices.py
++++ b/src/invoices.py
+@@ -10,6 +10,0 @@
+-def archive_invoice(invoice, audit):
+-    if not invoice.is_final:
+-        return False
+-    audit.log("invoice archived", invoice.id)
+-    invoice.mark_archived()
+-    return True
+diff --git a/src/sessions.py b/src/sessions.py
+index 3333333..4444444 100644
+--- a/src/sessions.py
++++ b/src/sessions.py
+@@ -0,0 +10,6 @@
++def refresh_session(session, audit):
++    if not session.is_active:
++        return False
++    audit.log("session refreshed", session.id)
++    session.rotate_token()
++    return True

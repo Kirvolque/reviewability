@@ -44,6 +44,8 @@ FIXTURES_TO_EXPECTATIONS = (
     FixtureExpectation("context_wide_move", 4, 0, MoveType.PURE),
     FixtureExpectation("in_place_rewrite", 9, 9, None),
     FixtureExpectation("unrelated_hunks", 8, 8, None),
+    # Current language-agnostic fuzzy matching incorrectly pairs this decoy.
+    FixtureExpectation("unrelated_boilerplate_decoy", 12, 8, MoveType.MODIFIED, 4, 4),
 )
 
 

@@ -19,14 +19,14 @@ def test_benchmark_runner_reports_current_and_git_signals(tmp_path: Path) -> Non
     report = json.loads(output_path.read_text())
     fixtures = {fixture["name"]: fixture for fixture in report["fixtures"]}
 
-    assert report["fixture_count"] == 20
+    assert report["fixture_count"] == 21
     assert report["evaluation"]["reviewability_file_pair"] == {
         "true_positive": 16,
-        "false_positive": 0,
+        "false_positive": 1,
         "false_negative": 0,
-        "precision": 1.0,
+        "precision": 0.941,
         "recall": 1.0,
-        "f1": 1.0,
+        "f1": 0.97,
     }
     assert report["evaluation"]["git_file_rename"] == {
         "true_positive": 11,

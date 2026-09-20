@@ -18,5 +18,6 @@
   "repeated_migration": {"raw_lines": 24, "unexplained_lines": 0, "moves": [{"source": "src/legacy_a.py", "target": "src/current_a.py", "type": "pure"}, {"source": "src/legacy_b.py", "target": "src/current_b.py", "type": "pure"}, {"source": "src/legacy_c.py", "target": "src/current_c.py", "type": "pure"}]},
   "string_whitespace_change": {"raw_lines": 2, "unexplained_lines": 2, "moves": []},
   "tiny_contract_change": {"raw_lines": 2, "unexplained_lines": 2, "moves": []},
-  "unrelated_hunks": {"raw_lines": 8, "unexplained_lines": 8, "moves": []}
+  "unrelated_hunks": {"raw_lines": 8, "unexplained_lines": 8, "moves": []},
+  "unrelated_boilerplate_decoy": {"raw_lines": 12, "unexplained_lines": 12, "moves": []}
 }
