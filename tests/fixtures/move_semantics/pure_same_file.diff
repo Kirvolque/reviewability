@@ -1,0 +1,14 @@
+diff --git a/src/ledger.py b/src/ledger.py
+index 1111111..2222222 100644
+--- a/src/ledger.py
++++ b/src/ledger.py
+@@ -4,4 +4,0 @@
+-def close_period(period):
+-    period.locked = True
+-    period.closed_at = now()
+-    return period
+@@ -30,0 +27,4 @@
++def close_period(period):
++    period.locked = True
++    period.closed_at = now()
++    return period

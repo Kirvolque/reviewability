@@ -1,0 +1,18 @@
+diff --git a/src/legacy.py b/src/legacy.py
+index 1111111..2222222 100644
+--- a/src/legacy.py
++++ b/src/legacy.py
+@@ -4,4 +4,0 @@
+-aaaaaaaaaaaaaaaaaaaa
+-aaaaaaaaaaaaaaaaaaaa
+-aaaaaaaaaaaaaaaaaaaa
+-aaaaaaaaaaaaaaaaaaaa
+diff --git a/src/current.py b/src/current.py
+index 3333333..4444444 100644
+--- a/src/current.py
++++ b/src/current.py
+@@ -0,0 +1,4 @@
++zzzzzzzzzzzzzzzzzzzz
++zzzzzzzzzzzzzzzzzzzz
++zzzzzzzzzzzzzzzzzzzz
++zzzzzzzzzzzzzzzzzzzz

@@ -1,0 +1,20 @@
+diff --git a/src/legacy.py b/src/legacy.py
+index 1111111..2222222 100644
+--- a/src/legacy.py
++++ b/src/legacy.py
+@@ -4,5 +4,0 @@
+-def calculate_fee(order):
+-    subtotal = order.subtotal
+-    if order.expedited:
+-        subtotal += 15
+-    return subtotal
+diff --git a/src/pricing.py b/src/pricing.py
+index 3333333..4444444 100644
+--- a/src/pricing.py
++++ b/src/pricing.py
+@@ -0,0 +1,5 @@
++def calculate_order_fee(order):
++    subtotal = order.subtotal
++    if order.expedited:
++        subtotal += 15
++    return subtotal

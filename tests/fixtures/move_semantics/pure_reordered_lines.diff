@@ -1,0 +1,18 @@
+diff --git a/src/legacy.py b/src/legacy.py
+index 1111111..2222222 100644
+--- a/src/legacy.py
++++ b/src/legacy.py
+@@ -4,4 +4,0 @@
+-def labels(record):
+-    owner = record.owner
+-    status = record.status
+-    return owner, status
+diff --git a/src/presenter.py b/src/presenter.py
+index 3333333..4444444 100644
+--- a/src/presenter.py
++++ b/src/presenter.py
+@@ -0,0 +1,4 @@
++def labels(record):
++    status = record.status
++    owner = record.owner
++    return owner, status

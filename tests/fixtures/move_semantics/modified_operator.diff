@@ -1,0 +1,20 @@
+diff --git a/src/legacy.py b/src/legacy.py
+index 1111111..2222222 100644
+--- a/src/legacy.py
++++ b/src/legacy.py
+@@ -4,5 +4,0 @@
+-def eligible(account):
+-    balance = account.balance
+-    if balance > 0:
+-        return True
+-    return False
+diff --git a/src/policy.py b/src/policy.py
+index 3333333..4444444 100644
+--- a/src/policy.py
++++ b/src/policy.py
+@@ -0,0 +1,5 @@
++def eligible(account):
++    balance = account.balance
++    if balance >= 0:
++        return True
++    return False

@@ -1,0 +1,28 @@
+diff --git a/src/legacy.py b/src/legacy.py
+index 1111111..2222222 100644
+--- a/src/legacy.py
++++ b/src/legacy.py
+@@ -4,8 +4,0 @@
+-def prepare_invoice(invoice):
+-    invoice.load_customer()
+-    invoice.load_items()
+-    invoice.apply_discounts()
+-    invoice.apply_tax()
+-    invoice.validate()
+-    invoice.save()
+-    return invoice
+diff --git a/src/billing.py b/src/billing.py
+index 3333333..4444444 100644
+--- a/src/billing.py
++++ b/src/billing.py
+@@ -0,0 +1,9 @@
++def finalize_invoice(invoice):
++    invoice.load_account()
++    invoice.load_entries()
++    invoice.apply_pricing_rules()
++    invoice.apply_regional_tax()
++    invoice.validate()
++    invoice.persist()
++    invoice.publish()
++    return invoice
++    return invoice

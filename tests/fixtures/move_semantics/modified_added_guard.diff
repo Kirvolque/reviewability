@@ -1,0 +1,21 @@
+diff --git a/src/legacy.py b/src/legacy.py
+index 1111111..2222222 100644
+--- a/src/legacy.py
++++ b/src/legacy.py
+@@ -4,4 +4,0 @@
+-def publish(report):
+-    report.prepare()
+-    report.send()
+-    return report.id
+diff --git a/src/publisher.py b/src/publisher.py
+index 3333333..4444444 100644
+--- a/src/publisher.py
++++ b/src/publisher.py
+@@ -0,0 +1,6 @@
++def publish(report):
++    report.prepare()
++    if not report.valid:
++        return None
++    report.send()
++    return report.id
++    return report.id

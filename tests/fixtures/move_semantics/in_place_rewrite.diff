@@ -1,0 +1,14 @@
+diff --git a/src/policy.py b/src/policy.py
+index 1111111..2222222 100644
+--- a/src/policy.py
++++ b/src/policy.py
+@@ -10,4 +10,5 @@ def apply_policy(account):
+-    account.load_limits()
+-    account.apply_default_limit()
+-    account.save()
+-    return account
++    limits = account.resolve_limits()
++    if limits is None:
++        return account
++    account.apply(limits)
++    return account.persist()

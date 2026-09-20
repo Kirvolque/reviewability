@@ -1,0 +1,23 @@
+diff --git a/src/legacy.py b/src/legacy.py
+index 1111111..2222222 100644
+--- a/src/legacy.py
++++ b/src/legacy.py
+@@ -4,5 +4,0 @@
+-def reserve(stock, quantity):
+-    available = stock.available
+-    stock.available -= quantity
+-    stock.save()
+-    return available
+diff --git a/src/reservations.py b/src/reservations.py
+index 3333333..4444444 100644
+--- a/src/reservations.py
++++ b/src/reservations.py
+@@ -0,0 +1,7 @@
++def reserve_inventory(stock, quantity):
++    available = stock.available
++    if available < quantity:
++        return None
++    stock.available -= quantity
++    stock.save()
++    return available
++    return available
