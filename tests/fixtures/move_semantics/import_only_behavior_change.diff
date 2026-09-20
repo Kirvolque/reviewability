@@ -1,0 +1,7 @@
+diff --git a/src/access.py b/src/access.py
+index 1111111..2222222 100644
+--- a/src/access.py
++++ b/src/access.py
+@@ -1,1 +1,1 @@
+-from strict_policy import authorize
++from permissive_policy import authorize

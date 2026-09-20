@@ -1,0 +1,7 @@
+diff --git a/src/limits.py b/src/limits.py
+index 1111111..2222222 100644
+--- a/src/limits.py
++++ b/src/limits.py
+@@ -4,1 +4,1 @@
+-    return balance > minimum
++    return balance >= minimum

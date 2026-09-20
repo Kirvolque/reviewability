@@ -20,6 +20,7 @@ class FixtureExpectation:
     move_type: MoveType | None
     residual_removed_count: int = 0
     residual_added_count: int = 0
+    move_count: int | None = None
 
 
 FIXTURES_TO_EXPECTATIONS = (
@@ -33,6 +34,14 @@ FIXTURES_TO_EXPECTATIONS = (
     FixtureExpectation("modified_removed_log", 9, 1, MoveType.MODIFIED, 1, 0),
     FixtureExpectation("modified_rename_and_guard", 12, 4, MoveType.MODIFIED, 1, 3),
     FixtureExpectation("modified_large_rewrite", 17, 13, MoveType.MODIFIED, 6, 7),
+    FixtureExpectation("repeated_migration", 24, 0, MoveType.PURE, move_count=3),
+    FixtureExpectation("rename_with_inconsistent_occurrence", 6, 4, MoveType.MODIFIED, 2, 2),
+    FixtureExpectation("string_whitespace_change", 2, 2, None),
+    FixtureExpectation("import_only_behavior_change", 0, 0, None),
+    FixtureExpectation("tiny_contract_change", 2, 2, None),
+    FixtureExpectation("large_straightforward_addition", 12, 12, None),
+    FixtureExpectation("context_narrow_move", 4, 0, MoveType.PURE),
+    FixtureExpectation("context_wide_move", 4, 0, MoveType.PURE),
     FixtureExpectation("in_place_rewrite", 9, 9, None),
     FixtureExpectation("unrelated_hunks", 8, 8, None),
 )
@@ -54,11 +63,25 @@ def test_move_semantics_fixture(expectation: FixtureExpectation) -> None:
         assert diff.moves == []
         return
 
-    assert len(diff.moves) == 1
-    move = diff.moves[0]
-    assert move.move_type is expectation.move_type
-    assert len(move.residual_removed_lines) == expectation.residual_removed_count
-    assert len(move.residual_added_lines) == expectation.residual_added_count
+    assert all(move.move_type is expectation.move_type for move in diff.moves)
+    residual_removed_count = sum(len(move.residual_removed_lines) for move in diff.moves)
+    residual_added_count = sum(len(move.residual_added_lines) for move in diff.moves)
+    assert residual_removed_count == expectation.residual_removed_count
+    assert residual_added_count == expectation.residual_added_count
+
+    expected_move_count = expectation.move_count or 1
+    assert len(diff.moves) == expected_move_count
+
+
+def test_context_width_does_not_change_move_accounting() -> None:
+    narrow = parse_diff_text(_load("context_narrow_move"), CONFIG)
+    wide = parse_diff_text(_load("context_wide_move"), CONFIG)
+
+    narrow_report, _ = create_analyzer(CONFIG).run(narrow)
+    wide_report, _ = create_analyzer(CONFIG).run(wide)
+
+    assert narrow_report.overall.metrics == wide_report.overall.metrics
+    assert narrow_report.overall.score == wide_report.overall.score
 
 
 def test_score_ordering_for_move_fixture_extremes() -> None:

@@ -1,0 +1,19 @@
+diff --git a/src/fixtures.py b/src/fixtures.py
+new file mode 100644
+index 0000000..1111111
+--- /dev/null
++++ b/src/fixtures.py
+@@ -0,0 +1,13 @@
++def make_fixture(index):
++    return {"id": index, "enabled": True}
++
++FIXTURES = [
++    make_fixture(1),
++    make_fixture(2),
++    make_fixture(3),
++    make_fixture(4),
++    make_fixture(5),
++    make_fixture(6),
++    make_fixture(7),
++    make_fixture(8),
++]

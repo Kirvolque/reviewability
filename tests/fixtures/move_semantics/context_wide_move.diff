@@ -1,0 +1,21 @@
+diff --git a/src/legacy.py b/src/legacy.py
+index 1111111..2222222 100644
+--- a/src/legacy.py
++++ b/src/legacy.py
+@@ -2,5 +2,2 @@
+ class Summary:
+     enabled = True
+-def summarize(items):
+-    return len(items)
+-
+     mode = "legacy"
+diff --git a/src/summary.py b/src/summary.py
+index 3333333..4444444 100644
+--- a/src/summary.py
++++ b/src/summary.py
+@@ -2,2 +2,5 @@
+ class Summary:
+     enabled = True
++def summarize(items):
++    return len(items)
++

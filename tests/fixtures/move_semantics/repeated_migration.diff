@@ -1,0 +1,54 @@
+diff --git a/src/legacy_a.py b/src/legacy_a.py
+index 1111111..2222222 100644
+--- a/src/legacy_a.py
++++ b/src/legacy_a.py
+@@ -1,4 +1,0 @@
+-def migrate_one(record):
+-    record.enabled = True
+-    record.save()
+-    return record
+diff --git a/src/legacy_b.py b/src/legacy_b.py
+index 3333333..4444444 100644
+--- a/src/legacy_b.py
++++ b/src/legacy_b.py
+@@ -1,4 +1,0 @@
+-def migrate_two(record):
+-    record.enabled = True
+-    record.save()
+-    return record
+diff --git a/src/legacy_c.py b/src/legacy_c.py
+index 5555555..6666666 100644
+--- a/src/legacy_c.py
++++ b/src/legacy_c.py
+@@ -1,4 +1,0 @@
+-def migrate_three(record):
+-    record.enabled = True
+-    record.save()
+-    return record
+diff --git a/src/current_a.py b/src/current_a.py
+index 7777777..8888888 100644
+--- a/src/current_a.py
++++ b/src/current_a.py
+@@ -0,0 +1,4 @@
++def migrate_one(record):
++    record.enabled = True
++    record.save()
++    return record
+diff --git a/src/current_b.py b/src/current_b.py
+index 9999999..aaaaaaa 100644
+--- a/src/current_b.py
++++ b/src/current_b.py
+@@ -0,0 +1,4 @@
++def migrate_two(record):
++    record.enabled = True
++    record.save()
++    return record
+diff --git a/src/current_c.py b/src/current_c.py
+index bbbbbbb..ccccccc 100644
+--- a/src/current_c.py
++++ b/src/current_c.py
+@@ -0,0 +1,4 @@
++def migrate_three(record):
++    record.enabled = True
++    record.save()
++    return record

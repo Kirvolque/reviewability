@@ -1,0 +1,18 @@
+diff --git a/src/legacy.py b/src/legacy.py
+index 1111111..2222222 100644
+--- a/src/legacy.py
++++ b/src/legacy.py
+@@ -1,4 +1,0 @@
+-def load_legacy_profile(legacy_profile):
+-    legacy_profile.validate()
+-    return legacy_profile.identifier
+-
+diff --git a/src/profiles.py b/src/profiles.py
+index 3333333..4444444 100644
+--- a/src/profiles.py
++++ b/src/profiles.py
+@@ -0,0 +1,4 @@
++def load_profile(profile):
++    profile.validate()
++    return legacy_profile.identifier
++

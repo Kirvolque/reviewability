@@ -1,0 +1,16 @@
+diff --git a/src/legacy.py b/src/legacy.py
+index 1111111..2222222 100644
+--- a/src/legacy.py
++++ b/src/legacy.py
+@@ -4,3 +4,0 @@
+-def summarize(items):
+-    return len(items)
+-
+diff --git a/src/summary.py b/src/summary.py
+index 3333333..4444444 100644
+--- a/src/summary.py
++++ b/src/summary.py
+@@ -0,0 +1,3 @@
++def summarize(items):
++    return len(items)
++

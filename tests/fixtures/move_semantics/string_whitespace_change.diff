@@ -1,0 +1,7 @@
+diff --git a/src/status.py b/src/status.py
+index 1111111..2222222 100644
+--- a/src/status.py
++++ b/src/status.py
+@@ -4,1 +4,1 @@
+-    return "ready  now"
++    return "ready now"
