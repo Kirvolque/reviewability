@@ -50,6 +50,20 @@ class DiffSimilarityCalculator:
 
         return total / max(len(deleted_lines), len(added_lines))
 
+    def exact_residual_lines(
+        self, deleted_lines: list[str], added_lines: list[str]
+    ) -> tuple[tuple[str, ...], tuple[str, ...]]:
+        """Return lines not explained by exact correspondence between two change sides.
+
+        This is deliberately conservative. Similar-but-different lines remain residual
+        so a detected move never hides a rename or behavioural edit.
+        """
+        used_del, used_add, _ = self._match_exact(deleted_lines, added_lines)
+        return (
+            tuple(line for index, line in enumerate(deleted_lines) if index not in used_del),
+            tuple(line for index, line in enumerate(added_lines) if index not in used_add),
+        )
+
     def _match_exact(
         self,
         deleted_lines: list[str],

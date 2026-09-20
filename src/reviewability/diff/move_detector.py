@@ -44,14 +44,14 @@ class MoveDetector:
         accepted_pairs = self._greedy_match(scored_pairs)
 
         parent = self._initialize_union_find(len(hunks))
-        similarity_by_root: dict[int, float] = {}
-        for i, j, sim in accepted_pairs:
-            parent = self._union(parent, i, j)
-            root = self._find(parent, i)
-            similarity_by_root[root] = sim
+        match_by_root: dict[int, tuple[int, int, float]] = {}
+        for source_index, target_index, similarity in accepted_pairs:
+            parent = self._union(parent, source_index, target_index)
+            root = self._find(parent, source_index)
+            match_by_root[root] = (source_index, target_index, similarity)
 
         root_to_move = self._assign_move_ids(parent, len(hunks))
-        return self._build_result(hunks, filtered, parent, root_to_move, similarity_by_root)
+        return self._build_result(hunks, filtered, parent, root_to_move, match_by_root)
 
     def _precompute_content(self, hunks: list[Hunk]) -> list[_HunkContent]:
         """Return pre-filtered lines for each hunk (filtering already done at parse time)."""
@@ -60,7 +60,8 @@ class MoveDetector:
     def _score_all_pairs(self, filtered: list[_HunkContent]) -> list[tuple[float, int, int]]:
         """Score all hunk pairs using pre-filtered lines.
 
-        For each pair (i, j) computes max(sim(i.removed, j.added), sim(j.removed, i.added)).
+        For each pair, computes both deleted-to-added directions and preserves the
+        higher-scoring source/target orientation.
         Empty line lists produce 0.0, so two pure additions or two pure deletions never pair.
         Returns list of (similarity, i, j) with i < j, sorted descending by similarity.
         """
@@ -73,9 +74,11 @@ class MoveDetector:
                 j_removed, j_added = filtered[j]
                 sim_ij = calc.move_aware_similarity(i_removed, j_added)
                 sim_ji = calc.move_aware_similarity(j_removed, i_added)
-                sim = max(sim_ij, sim_ji)
+                sim, source_index, target_index = (
+                    (sim_ij, i, j) if sim_ij >= sim_ji else (sim_ji, j, i)
+                )
                 if sim >= 0.3:  # Low threshold: metric layer handles scoring nuance
-                    scored.append((sim, i, j))
+                    scored.append((sim, source_index, target_index))
 
         scored.sort(reverse=True, key=lambda x: x[0])
         return scored
@@ -87,16 +90,16 @@ class MoveDetector:
         """Greedily select best unmatched pairs, preserving the similarity score.
 
         Each hunk index appears in at most one accepted pair.
-        Returns list of (i, j, similarity).
+        Returns list of (source_index, target_index, similarity).
         """
         matched: set[int] = set()
         pairs: list[tuple[int, int, float]] = []
 
-        for sim, i, j in scored_pairs:
-            if i not in matched and j not in matched:
-                pairs.append((i, j, sim))
-                matched.add(i)
-                matched.add(j)
+        for similarity, source_index, target_index in scored_pairs:
+            if source_index not in matched and target_index not in matched:
+                pairs.append((source_index, target_index, similarity))
+                matched.add(source_index)
+                matched.add(target_index)
 
         return pairs
 
@@ -136,29 +139,50 @@ class MoveDetector:
         filtered: list[_HunkContent],
         parent: dict[int, int],
         root_to_move: dict[int, int],
-        similarity_by_root: dict[int, float],
+        match_by_root: dict[int, tuple[int, int, float]],
     ) -> list[Move]:
         """Build Move list from union-find result.
 
         Only multi-hunk moves are returned; singletons (ungrouped hunks) are omitted.
-        Multi-hunk moves get their move_id, stored similarity score, and length
-        (max meaningful-line size across the move's hunks).
+        Multi-hunk moves retain their source/target hunks and residual lines not
+        explained by exact correspondence. A move is pure only when it has high
+        similarity and no residual edits; a fuzzy match must not hide a rewrite.
         """
         buckets: dict[int, list[int]] = {}
         for i in range(len(hunks)):
             root = self._find(parent, i)
             buckets.setdefault(root, []).append(i)
 
-        return [
-            Move(
-                move_id=root_to_move[root],
-                hunks=tuple(hunks[i] for i in indices),
-                similarity=(sim := similarity_by_root.get(root, 0.0)),
-                move_type=(
-                    MoveType.PURE if sim >= _PURE_SIMILARITY_THRESHOLD else MoveType.MODIFIED
-                ),
-                length=max(len(filtered[i][0]) + len(filtered[i][1]) for i in indices),
+        result: list[Move] = []
+        for root, indices in buckets.items():
+            if len(indices) <= 1:
+                continue
+
+            source_index, target_index, similarity = match_by_root[root]
+            residual_removed_lines, residual_added_lines = (
+                self.similarity_calculator.exact_residual_lines(
+                    filtered[source_index][0], filtered[target_index][1]
+                )
             )
-            for root, indices in buckets.items()
-            if len(indices) > 1
-        ]
+            result.append(
+                Move(
+                    move_id=root_to_move[root],
+                    hunks=tuple(hunks[index] for index in indices),
+                    similarity=similarity,
+                    move_type=(
+                        MoveType.PURE
+                        if (
+                            similarity >= _PURE_SIMILARITY_THRESHOLD
+                            and not residual_removed_lines
+                            and not residual_added_lines
+                        )
+                        else MoveType.MODIFIED
+                    ),
+                    length=max(len(filtered[index][0]) + len(filtered[index][1]) for index in indices),
+                    source_hunk=hunks[source_index],
+                    target_hunk=hunks[target_index],
+                    residual_removed_lines=residual_removed_lines,
+                    residual_added_lines=residual_added_lines,
+                )
+            )
+        return result

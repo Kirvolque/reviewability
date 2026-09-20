@@ -114,8 +114,24 @@
   "moves": [
     {
       "move_id": 0,
+      "source": {
+        "file": "models/user.py",
+        "source_start": 1,
+        "source_length": 23,
+        "target_start": 0,
+        "target_length": 0
+      },
+      "target": {
+        "file": "domain/user.py",
+        "source_start": 0,
+        "source_length": 0,
+        "target_start": 1,
+        "target_length": 25
+      },
       "hunk_count": 2,
       "score": 0.83,
+      "residual_removed_lines": [],
+      "residual_added_lines": [],
       "metrics": [
         {
           "name": "move.edit_complexity",
@@ -125,8 +141,24 @@
     },
     {
       "move_id": 1,
+      "source": {
+        "file": "models/order.py",
+        "source_start": 1,
+        "source_length": 25,
+        "target_start": 0,
+        "target_length": 0
+      },
+      "target": {
+        "file": "domain/order.py",
+        "source_start": 0,
+        "source_length": 0,
+        "target_start": 1,
+        "target_length": 27
+      },
       "hunk_count": 2,
       "score": 0.84,
+      "residual_removed_lines": [],
+      "residual_added_lines": [],
       "metrics": [
         {
           "name": "move.edit_complexity",
@@ -136,8 +168,24 @@
     },
     {
       "move_id": 2,
+      "source": {
+        "file": "services/user_service.py",
+        "source_start": 12,
+        "source_length": 12,
+        "target_start": 12,
+        "target_length": 1
+      },
+      "target": {
+        "file": "utils/helpers.py",
+        "source_start": 8,
+        "source_length": 1,
+        "target_start": 8,
+        "target_length": 12
+      },
       "hunk_count": 2,
       "score": 0.9,
+      "residual_removed_lines": [],
+      "residual_added_lines": [],
       "metrics": [
         {
           "name": "move.edit_complexity",

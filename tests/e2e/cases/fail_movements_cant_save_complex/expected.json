@@ -183,8 +183,24 @@
   "moves": [
     {
       "move_id": 0,
+      "source": {
+        "file": "models/service_a.py",
+        "source_start": 1,
+        "source_length": 18,
+        "target_start": 0,
+        "target_length": 0
+      },
+      "target": {
+        "file": "domain/service_a.py",
+        "source_start": 0,
+        "source_length": 0,
+        "target_start": 1,
+        "target_length": 20
+      },
       "hunk_count": 2,
       "score": 0.85,
+      "residual_removed_lines": [],
+      "residual_added_lines": [],
       "metrics": [
         {
           "name": "move.edit_complexity",
@@ -194,8 +210,24 @@
     },
     {
       "move_id": 1,
+      "source": {
+        "file": "models/service_b.py",
+        "source_start": 1,
+        "source_length": 18,
+        "target_start": 0,
+        "target_length": 0
+      },
+      "target": {
+        "file": "domain/service_b.py",
+        "source_start": 0,
+        "source_length": 0,
+        "target_start": 1,
+        "target_length": 20
+      },
       "hunk_count": 2,
       "score": 0.85,
+      "residual_removed_lines": [],
+      "residual_added_lines": [],
       "metrics": [
         {
           "name": "move.edit_complexity",
@@ -205,8 +237,32 @@
     },
     {
       "move_id": 2,
+      "source": {
+        "file": "api/auth.py",
+        "source_start": 5,
+        "source_length": 3,
+        "target_start": 5,
+        "target_length": 3
+      },
+      "target": {
+        "file": "api/cache.py",
+        "source_start": 5,
+        "source_length": 3,
+        "target_start": 5,
+        "target_length": 3
+      },
       "hunk_count": 2,
       "score": 0.88,
+      "residual_removed_lines": [
+        "verify_token = False",
+        "token_ttl = 900",
+        "algorithm = \"none\""
+      ],
+      "residual_added_lines": [
+        "ttl = 300",
+        "max_size = 1000",
+        "eviction = \"lru\""
+      ],
       "metrics": [
         {
           "name": "move.edit_complexity",
@@ -216,8 +272,32 @@
     },
     {
       "move_id": 3,
+      "source": {
+        "file": "api/billing.py",
+        "source_start": 5,
+        "source_length": 3,
+        "target_start": 5,
+        "target_length": 3
+      },
+      "target": {
+        "file": "api/email.py",
+        "source_start": 5,
+        "source_length": 3,
+        "target_start": 5,
+        "target_length": 3
+      },
       "hunk_count": 2,
       "score": 0.86,
+      "residual_removed_lines": [
+        "tax_rate = 0.05",
+        "currency = \"EUR\"",
+        "invoice_days = 14"
+      ],
+      "residual_added_lines": [
+        "use_tls = True",
+        "smtp_port = 587",
+        "timeout = 30"
+      ],
       "metrics": [
         {
           "name": "move.edit_complexity",
@@ -227,8 +307,32 @@
     },
     {
       "move_id": 4,
+      "source": {
+        "file": "api/search.py",
+        "source_start": 5,
+        "source_length": 3,
+        "target_start": 5,
+        "target_length": 3
+      },
+      "target": {
+        "file": "api/queue.py",
+        "source_start": 5,
+        "source_length": 3,
+        "target_start": 5,
+        "target_length": 3
+      },
       "hunk_count": 2,
       "score": 0.88,
+      "residual_removed_lines": [
+        "max_results = 10",
+        "min_score = 0.1",
+        "page_size = 5"
+      ],
+      "residual_added_lines": [
+        "max_retries = 3",
+        "retry_delay = 5",
+        "visibility_timeout = 30"
+      ],
       "metrics": [
         {
           "name": "move.edit_complexity",

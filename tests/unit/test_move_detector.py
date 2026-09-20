@@ -116,6 +116,49 @@ def test_deletion_identical_to_addition_is_detected(detector):
     assert len(move.hunks) == 2
     assert del_hunk in move.hunks
     assert add_hunk in move.hunks
+    assert move.source_hunk is del_hunk
+    assert move.target_hunk is add_hunk
+    assert move.residual_removed_lines == ()
+    assert move.residual_added_lines == ()
+
+
+def test_modified_move_retains_lines_not_explained_by_exact_correspondence(detector):
+    deletion = Hunk(
+        file_path="legacy.py",
+        removed_lines=[
+            "def evaluate_access(user, required_level):",
+            "    policy = user.policy",
+            "    if policy.level > required_level:",
+            "        return True",
+            "    return False",
+        ],
+    )
+    addition = Hunk(
+        file_path="access.py",
+        added_lines=[
+            "def assess_access(user, required_level):",
+            "    policy = user.policy",
+            "    if policy.level >= required_level:",
+            "        return True",
+            "    return False",
+        ],
+    )
+
+    result = detector.detect([deletion, addition])
+
+    assert len(result) == 1
+    move = result[0]
+    assert move.move_type is MoveType.MODIFIED
+    assert move.source_hunk is deletion
+    assert move.target_hunk is addition
+    assert move.residual_removed_lines == (
+        "def evaluate_access(user, required_level):",
+        "    if policy.level > required_level:",
+    )
+    assert move.residual_added_lines == (
+        "def assess_access(user, required_level):",
+        "    if policy.level >= required_level:",
+    )
 
 
 def test_mixed_hunk_detected_with_similar_counterpart(detector):

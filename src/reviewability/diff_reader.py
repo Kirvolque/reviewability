@@ -49,6 +49,10 @@ def _build_hunk(file_path: str, hunk, config: ReviewabilityConfig) -> Hunk:
 
     return Hunk(
         file_path=file_path,
+        source_start=hunk.source_start,
+        source_length=hunk.source_length,
+        target_start=hunk.target_start,
+        target_length=hunk.target_length,
         added_lines=[norm for ct, norm in filtered if ct == ChangeType.ADDED],
         removed_lines=[norm for ct, norm in filtered if ct == ChangeType.REMOVED],
         context_lines=[str(line.value) for line in hunk if line.is_context],

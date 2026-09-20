@@ -116,8 +116,52 @@
   "moves": [
     {
       "move_id": 0,
+      "source": {
+        "file": "services/worker.py",
+        "source_start": 1,
+        "source_length": 12,
+        "target_start": 0,
+        "target_length": 0
+      },
+      "target": {
+        "file": "core/worker.py",
+        "source_start": 0,
+        "source_length": 0,
+        "target_start": 1,
+        "target_length": 14
+      },
       "hunk_count": 2,
       "score": 0.0,
+      "residual_removed_lines": [
+        "class TaskWorker:",
+        "max_tasks = 10",
+        "def __init__(self):",
+        "self.tasks = []",
+        "self.running = False",
+        "def run(self, task):",
+        "self.tasks.append(task)",
+        "task.execute()",
+        "return task.result",
+        "def shutdown(self):",
+        "self.running = False",
+        "self.tasks.clear()"
+      ],
+      "residual_added_lines": [
+        "class AsyncWorker:",
+        "concurrency = 4",
+        "def __init__(self, loop, metrics):",
+        "self.loop = loop",
+        "self.metrics = metrics",
+        "self.semaphore = asyncio.Semaphore(self.concurrency)",
+        "async def run(self, task):",
+        "async with self.semaphore:",
+        "result = await self.loop.submit(task)",
+        "self.metrics.record(result)",
+        "return result",
+        "async def shutdown(self):",
+        "await self.loop.drain()",
+        "self.metrics.flush()"
+      ],
       "metrics": [
         {
           "name": "move.edit_complexity",

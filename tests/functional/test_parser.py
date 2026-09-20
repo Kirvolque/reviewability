@@ -159,3 +159,24 @@ def test_multi_file_change():
             ],
         ),
     ]
+
+
+def test_move_rename_with_behavior_change_preserves_locations_and_residuals():
+    diff = parse_diff_text(load("move_rename_with_behavior_change.diff"), _DEFAULT_CONFIG)
+
+    assert len(diff.moves) == 1
+    move = diff.moves[0]
+    assert move.source_hunk is not None
+    assert move.target_hunk is not None
+    assert move.source_hunk.file_path == "src/legacy_policy.py"
+    assert move.source_hunk.source_start == 1
+    assert move.target_hunk.file_path == "src/access_policy.py"
+    assert move.target_hunk.target_start == 1
+    assert move.residual_removed_lines == (
+        "def evaluate_access(user, required_level):",
+        "if policy.level > required_level:",
+    )
+    assert move.residual_added_lines == (
+        "def assess_access(user, required_level):",
+        "if policy.level >= required_level:",
+    )

@@ -139,8 +139,36 @@
   "moves": [
     {
       "move_id": 0,
+      "source": {
+        "file": "services/auth.py",
+        "source_start": 1,
+        "source_length": 4,
+        "target_start": 1,
+        "target_length": 6
+      },
+      "target": {
+        "file": "services/cache.py",
+        "source_start": 1,
+        "source_length": 4,
+        "target_start": 1,
+        "target_length": 6
+      },
       "hunk_count": 2,
       "score": 0.77,
+      "residual_removed_lines": [
+        "TIMEOUT = 10",
+        "MAX_SESSIONS = 5",
+        "TOKEN_TTL = 900",
+        "ALGORITHM = \"MD5\""
+      ],
+      "residual_added_lines": [
+        "TTL = 300",
+        "NEGATIVE_TTL = 60",
+        "MAX_SIZE = 1000",
+        "EVICTION = \"lru\"",
+        "COMPRESS = True",
+        "SERIALIZER = \"json\""
+      ],
       "metrics": [
         {
           "name": "move.edit_complexity",
@@ -150,8 +178,36 @@
     },
     {
       "move_id": 2,
+      "source": {
+        "file": "services/search.py",
+        "source_start": 1,
+        "source_length": 4,
+        "target_start": 1,
+        "target_length": 6
+      },
+      "target": {
+        "file": "services/email.py",
+        "source_start": 1,
+        "source_length": 4,
+        "target_start": 1,
+        "target_length": 6
+      },
       "hunk_count": 2,
       "score": 0.79,
+      "residual_removed_lines": [
+        "MAX_RESULTS = 10",
+        "MIN_SCORE = 0.1",
+        "PAGE_SIZE = 5",
+        "TIMEOUT = 2"
+      ],
+      "residual_added_lines": [
+        "SMTP_PORT = 587",
+        "IMAP_PORT = 993",
+        "USE_TLS = True",
+        "MAX_RETRIES = 3",
+        "TIMEOUT = 30",
+        "POOL_SIZE = 5"
+      ],
       "metrics": [
         {
           "name": "move.edit_complexity",

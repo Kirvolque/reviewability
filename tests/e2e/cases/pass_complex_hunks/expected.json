@@ -74,8 +74,35 @@
   "moves": [
     {
       "move_id": 0,
+      "source": {
+        "file": "src/validator.py",
+        "source_start": 1,
+        "source_length": 4,
+        "target_start": 1,
+        "target_length": 4
+      },
+      "target": {
+        "file": "src/processor.py",
+        "source_start": 1,
+        "source_length": 5,
+        "target_start": 1,
+        "target_length": 5
+      },
       "hunk_count": 2,
       "score": 0.78,
+      "residual_removed_lines": [
+        "def validate(data):",
+        "if not data:",
+        "return False",
+        "return True"
+      ],
+      "residual_added_lines": [
+        "def process(data: list) -> list:",
+        "validate(data)",
+        "items = [transform(item) for item in data]",
+        "log(f\"processed {len(items)} items\")",
+        "return items"
+      ],
       "metrics": [
         {
           "name": "move.edit_complexity",

@@ -35,6 +35,10 @@ class Hunk(DiffNode):
     """A contiguous block of changes within a single file."""
 
     file_path: str
+    source_start: int | None = field(default=None, compare=False)
+    source_length: int | None = field(default=None, compare=False)
+    target_start: int | None = field(default=None, compare=False)
+    target_length: int | None = field(default=None, compare=False)
     added_lines: list[str] = field(default_factory=list)
     removed_lines: list[str] = field(default_factory=list)
     context_lines: list[str] = field(default_factory=list)
@@ -77,6 +81,10 @@ class Move(DiffNode):
     similarity: float
     move_type: MoveType
     length: int
+    source_hunk: Hunk | None = None
+    target_hunk: Hunk | None = None
+    residual_removed_lines: tuple[str, ...] = ()
+    residual_added_lines: tuple[str, ...] = ()
 
 
 @dataclass

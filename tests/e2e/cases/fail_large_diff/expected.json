@@ -103,8 +103,31 @@
   "moves": [
     {
       "move_id": 0,
+      "source": {
+        "file": "src/greeter.py",
+        "source_start": 1,
+        "source_length": 4,
+        "target_start": 1,
+        "target_length": 6
+      },
+      "target": {
+        "file": "src/farewell.py",
+        "source_start": 1,
+        "source_length": 4,
+        "target_start": 1,
+        "target_length": 6
+      },
       "hunk_count": 2,
       "score": 0.9,
+      "residual_removed_lines": [
+        "def greet(name: str) -> str:",
+        "return f\"Hello, {name}!\""
+      ],
+      "residual_added_lines": [
+        "DEFAULT_FAREWELL = \"Goodbye\"",
+        "def say_goodbye(name: str, farewell: str = DEFAULT_FAREWELL) -> str:",
+        "return f\"{farewell}, {name}!\""
+      ],
       "metrics": [
         {
           "name": "move.edit_complexity",

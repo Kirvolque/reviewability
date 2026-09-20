@@ -113,8 +113,46 @@
   "moves": [
     {
       "move_id": 0,
+      "source": {
+        "file": "services/processor.py",
+        "source_start": 1,
+        "source_length": 15,
+        "target_start": 0,
+        "target_length": 0
+      },
+      "target": {
+        "file": "services/processor.py",
+        "source_start": 17,
+        "source_length": 0,
+        "target_start": 2,
+        "target_length": 17
+      },
       "hunk_count": 2,
       "score": 0.77,
+      "residual_removed_lines": [
+        "def __init__(self, source):",
+        "self.cache = {}",
+        "self.timeout = 30",
+        "result = []",
+        "for item in items:",
+        "if item.valid:",
+        "result.append(item.value)",
+        "return result",
+        "def flush(self):",
+        "self.cache.clear()"
+      ],
+      "residual_added_lines": [
+        "def __init__(self, source, config):",
+        "self.config = config",
+        "self.cache = LRUCache(maxsize=config.cache_size)",
+        "self.timeout = config.timeout",
+        "validated = [i for i in items if self._validate(i)]",
+        "return [self._transform(i) for i in validated]",
+        "def _validate(self, item):",
+        "return item.valid and item.value > 0",
+        "def _transform(self, item):",
+        "return item.value * self.config.multiplier"
+      ],
       "metrics": [
         {
           "name": "move.edit_complexity",
@@ -124,8 +162,45 @@
     },
     {
       "move_id": 1,
+      "source": {
+        "file": "models/handler.py",
+        "source_start": 1,
+        "source_length": 14,
+        "target_start": 0,
+        "target_length": 0
+      },
+      "target": {
+        "file": "domain/handler.py",
+        "source_start": 0,
+        "source_length": 0,
+        "target_start": 1,
+        "target_length": 16
+      },
       "hunk_count": 2,
       "score": 0.78,
+      "residual_removed_lines": [
+        "def __init__(self, router):",
+        "self.middleware = []",
+        "self.timeout = 60",
+        "for mw in self.middleware:",
+        "request = mw.process(request)",
+        "return self.router.dispatch(request)",
+        "def add_middleware(self, mw):",
+        "self.middleware.append(mw)",
+        "return self"
+      ],
+      "residual_added_lines": [
+        "def __init__(self, router, config):",
+        "self.config = config",
+        "self.middleware = MiddlewareChain()",
+        "self.timeout = config.handler_timeout",
+        "ctx = self.middleware.execute(request)",
+        "response = self.router.dispatch(ctx)",
+        "return self._finalize(response)",
+        "def _finalize(self, response):",
+        "response.headers[\"X-Timeout\"] = str(self.timeout)",
+        "return response"
+      ],
       "metrics": [
         {
           "name": "move.edit_complexity",
